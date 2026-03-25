@@ -16,6 +16,45 @@ export async function extractFromUrl(url) {
   // Wait for rendering to settle
   await page.waitForTimeout(2000);
 
+  // Dismiss cookie banners and overlays
+  await page.evaluate(() => {
+    const bannerSelectors = [
+      '[class*="cookie"]', '[id*="cookie"]',
+      '[class*="consent"]', '[id*="consent"]',
+      '[class*="gdpr"]', '[id*="gdpr"]',
+      '[class*="banner"]', '[id*="onetrust"]',
+      '[class*="cc-"]', '[id*="cc-"]',
+    ];
+    for (const sel of bannerSelectors) {
+      for (const el of document.querySelectorAll(sel)) {
+        const style = getComputedStyle(el);
+        if (style.position === "fixed" || style.position === "sticky") {
+          el.remove();
+        }
+      }
+    }
+    // Remove any full-screen overlays
+    for (const el of document.querySelectorAll('[class*="overlay"], [class*="modal"]')) {
+      const style = getComputedStyle(el);
+      if (style.position === "fixed" && parseFloat(style.zIndex) > 100) {
+        el.remove();
+      }
+    }
+  });
+
+  // Scroll to bottom and back to trigger lazy-loaded content
+  await page.evaluate(async () => {
+    const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+    const step = window.innerHeight;
+    const max = document.body.scrollHeight;
+    for (let y = 0; y < max; y += step) {
+      window.scrollTo(0, y);
+      await delay(200);
+    }
+    window.scrollTo(0, 0);
+    await delay(500);
+  });
+
   const raw = await page.evaluate(() => {
     const colors = { background: {}, text: {}, border: {} };
     const fonts = {};

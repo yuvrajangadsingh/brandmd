@@ -2,6 +2,10 @@
 
 Extract any website's design system into a `DESIGN.md` file.
 
+<p align="center">
+  <img src="demo.gif" alt="brandmd demo" width="700">
+</p>
+
 ```bash
 npx brandmd https://stripe.com
 ```
