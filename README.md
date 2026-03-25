@@ -75,6 +75,18 @@ brandmd https://stripe.com --json
 - **Border radii** and shadow styles
 - **Component patterns** (buttons, cards, inputs)
 
+## Output format
+
+The output follows [Google Stitch's DESIGN.md spec](https://stitch.withgoogle.com/docs/design-md/overview) with 5 sections:
+
+1. **Visual Theme & Atmosphere** — mood, density, shape language, depth
+2. **Color Palette & Roles** — every color with a semantic role (background, text, accent, border)
+3. **Typography Rules** — font families, size scale grouped by heading/body/caption, weights
+4. **Component Stylings** — buttons, cards, inputs with their radii, colors, shadows
+5. **Layout Principles** — spacing scale, base grid unit, border radii
+
+Drop the file in your project root. AI coding agents (Claude Code, Cursor, Gemini CLI, Stitch) will read it and generate UI that matches your brand.
+
 ## How it works
 
 1. Renders the page in a headless browser (Playwright)
