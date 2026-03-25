@@ -19,7 +19,7 @@ program
   .option("--json", "output raw tokens as JSON")
   .action(async (url, opts) => {
     // Normalize URL
-    if (!url.startsWith("http")) {
+    if (!/^https?:\/\//i.test(url)) {
       url = "https://" + url;
     }
 

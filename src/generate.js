@@ -156,7 +156,7 @@ export function generate(tokens) {
 
   if (tokens.spacing.length > 0) {
     // Find the most common spacing values (likely the base grid)
-    const topSpacings = tokens.spacing
+    const topSpacings = [...tokens.spacing]
       .sort((a, b) => b.freq - a.freq)
       .slice(0, 8)
       .sort((a, b) => a.px - b.px);

@@ -4,16 +4,17 @@ import { chromium } from "playwright";
  * Launch browser, navigate to URL, extract all computed styles from visible elements.
  * Returns raw tokens: colors, fonts, spacing, radii, shadows.
  */
-export async function extractFromUrl(url, opts = {}) {
+export async function extractFromUrl(url) {
   const browser = await chromium.launch({ headless: true });
+  try {
   const page = await browser.newPage({
     viewport: { width: 1440, height: 900 },
   });
 
-  await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
+  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
 
-  // Wait a bit for lazy-loaded content
-  await page.waitForTimeout(1500);
+  // Wait for rendering to settle
+  await page.waitForTimeout(2000);
 
   const raw = await page.evaluate(() => {
     const colors = { background: {}, text: {}, border: {} };
@@ -23,10 +24,8 @@ export async function extractFromUrl(url, opts = {}) {
     const spacings = {};
     const radii = {};
     const shadows = {};
-    const lineHeights = {};
-    const letterSpacings = {};
 
-    const elements = document.querySelectorAll("body *");
+    const elements = document.querySelectorAll("html, body, body *");
 
     for (const el of elements) {
       const rect = el.getBoundingClientRect();
@@ -71,16 +70,6 @@ export async function extractFromUrl(url, opts = {}) {
         fontWeights[fontWeight] = (fontWeights[fontWeight] || 0) + 1;
       }
 
-      const lineHeight = style.lineHeight;
-      if (lineHeight && lineHeight !== "normal") {
-        lineHeights[lineHeight] = (lineHeights[lineHeight] || 0) + 1;
-      }
-
-      const ls = style.letterSpacing;
-      if (ls && ls !== "normal") {
-        letterSpacings[ls] = (letterSpacings[ls] || 0) + 1;
-      }
-
       // Spacing (margin + padding)
       for (const prop of [
         "marginTop",
@@ -117,22 +106,16 @@ export async function extractFromUrl(url, opts = {}) {
       fonts,
       fontSizes,
       fontWeights,
-      lineHeights,
-      letterSpacings,
       spacings,
       radii,
       shadows,
     };
   });
 
-  // Get page title and meta description
   const title = await page.title();
-  const metaDesc = await page
-    .locator('meta[name="description"]')
-    .getAttribute("content")
-    .catch(() => "");
 
-  await browser.close();
-
-  return { ...raw, title, metaDesc, url };
+  return { ...raw, title, url };
+  } finally {
+    await browser.close();
+  }
 }

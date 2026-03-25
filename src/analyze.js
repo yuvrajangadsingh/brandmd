@@ -232,7 +232,9 @@ export function analyze(raw) {
     }, 0) / (dedupedPalette.length || 1);
 
   const atmosphere =
-    avgLum > 0.6 ? "Light and airy" : avgLum < 0.3 ? "Dark and moody" : "Balanced and professional";
+    dedupedPalette.length === 0
+      ? "Balanced and professional"
+      : avgLum > 0.6 ? "Light and airy" : avgLum < 0.3 ? "Dark and moody" : "Balanced and professional";
 
   return {
     title: raw.title,
