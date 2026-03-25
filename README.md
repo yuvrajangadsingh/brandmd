@@ -2,30 +2,68 @@
 
 Extract any website's design system into a `DESIGN.md` file.
 
+```bash
+npx brandmd https://stripe.com
+```
+
+```
+# Design System: Stripe | Financial Infrastructure to Grow Your Revenue
+
+## 1. Visual Theme & Atmosphere
+**Overall mood:** Dark and moody
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+**Depth:** Uses 4 shadow styles for layering and elevation.
+
+## 2. Color Palette & Roles
+- **White** (`#FFFFFF`) — Page background
+- **Dark Blue** (`#533AFD`) — Accent background
+- **Cyan** (`#00D66F`) — Accent background
+- **Dark Muted Blue** (`#64748D`) — Secondary text
+
+## 3. Typography Rules
+**Primary font:** sohne-var
+**Size scale:**
+- Headings: 26px, 32px, 48px, 56px
+- Body / UI: 14px, 16px, 18px, 22px
+
+## 4. Component Stylings
+...
+
+## 5. Layout Principles
+**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
+**Base unit:** 4px grid
+```
+
 One command. No API key. Works with [Google Stitch](https://stitch.withgoogle.com/), Claude Code, Cursor, Gemini CLI, or any AI coding agent that reads markdown context.
+
+## Why
+
+AI coding agents generate generic UI because they don't know your brand. Google Stitch introduced [DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) to fix this, a markdown file that encodes your design system in a format LLMs can read.
+
+Problem is, nobody wants to write one from scratch. And Stitch only generates them through its web UI.
+
+brandmd does it from the terminal. Point it at any URL, get a DESIGN.md back. Drop it in your project root and your AI tools start generating on-brand UI.
 
 ## Install
 
 ```bash
+# Run directly (no install)
 npx brandmd https://linear.app
-```
 
-Or install globally:
-
-```bash
+# Install globally
 npm i -g brandmd
 ```
 
 ## Usage
 
 ```bash
-# Output DESIGN.md to stdout
+# Output to stdout
 brandmd https://stripe.com
 
 # Save to file
 brandmd https://stripe.com -o DESIGN.md
 
-# Get raw tokens as JSON
+# Raw tokens as JSON
 brandmd https://stripe.com --json
 ```
 
@@ -36,18 +74,6 @@ brandmd https://stripe.com --json
 - **Spacing scale** and base grid unit
 - **Border radii** and shadow styles
 - **Component patterns** (buttons, cards, inputs)
-
-## Output format
-
-The output follows [Google Stitch's DESIGN.md spec](https://stitch.withgoogle.com/docs/design-md/overview) with 5 sections:
-
-1. Visual Theme & Atmosphere
-2. Color Palette & Roles
-3. Typography Rules
-4. Component Stylings
-5. Layout Principles
-
-Drop the file in your project root. AI coding agents will read it and generate UI that matches your brand.
 
 ## How it works
 
