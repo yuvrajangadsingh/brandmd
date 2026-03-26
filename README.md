@@ -1,6 +1,8 @@
 # brandmd
 
-Extract any website's design system into a `DESIGN.md` file.
+[![npm version](https://img.shields.io/npm/v/brandmd)](https://www.npmjs.com/package/brandmd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Extract any website's design system into a `DESIGN.md`, CSS custom properties, Tailwind config, or visual brand guide.
 
 <p align="center">
   <img src="demo.gif" alt="brandmd demo" width="700">
@@ -11,27 +13,15 @@ npx brandmd https://stripe.com
 ```
 
 ```
-# Design System: Stripe | Financial Infrastructure to Grow Your Revenue
-
-## 1. Visual Theme & Atmosphere
-**Overall mood:** Dark and moody
-**Shape language:** Rounded, friendly aesthetic with generous corner radii.
-**Depth:** Uses 4 shadow styles for layering and elevation.
-
 ## 2. Color Palette & Roles
-- **White** (`#FFFFFF`) — Page background
-- **Dark Blue** (`#533AFD`) — Accent background
-- **Cyan** (`#00D66F`) — Accent background
-- **Dark Muted Blue** (`#64748D`) — Secondary text
+- **--color-accents-1** (`#FAFAFA`) — Page background
+- **--color-blue-600** (`#0075DE`) — Accent background
+- **--color-gray-500** (`#78736F`) — Secondary text
 
 ## 3. Typography Rules
 **Primary font:** sohne-var
-**Size scale:**
 - Headings: 26px, 32px, 48px, 56px
 - Body / UI: 14px, 16px, 18px, 22px
-
-## 4. Component Stylings
-...
 
 ## 5. Layout Principles
 **Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
@@ -56,49 +46,104 @@ npx brandmd https://linear.app
 
 # Install globally
 npm i -g brandmd
+
+# As an agent skill (Claude Code, Cursor, Gemini CLI, Copilot, Codex, 30+ platforms)
+npx skills add yuvrajangadsingh/brandmd
 ```
 
 ## Usage
 
 ```bash
-# Output to stdout
+# DESIGN.md (default)
 brandmd https://stripe.com
-
-# Save to file
 brandmd https://stripe.com -o DESIGN.md
+
+# CSS custom properties
+brandmd https://vercel.com --css
+brandmd https://vercel.com --css -o tokens.css
+
+# Tailwind v4 @theme
+brandmd https://linear.app --tailwind
+brandmd https://linear.app --tailwind -o theme.css
+
+# HTML brand guide (visual, shareable)
+brandmd https://github.com --html
+brandmd https://github.com --html -o brand-guide.html
 
 # Raw tokens as JSON
 brandmd https://stripe.com --json
 ```
 
+## Output formats
+
+### DESIGN.md (default)
+
+Follows [Google Stitch's DESIGN.md spec](https://stitch.withgoogle.com/docs/design-md/overview) with 5 sections. Drop it in your project root and AI coding agents use it to generate on-brand UI.
+
+### CSS custom properties (`--css`)
+
+```css
+:root {
+  --color-accents-1: #FAFAFA;
+  --color-blue-600: #0075DE;
+  --font-primary: "Geist";
+  --space-1: 4px;
+  --radius-sm: 4px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+}
+```
+
+### Tailwind v4 (`--tailwind`)
+
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0075DE;
+  --font-sans: "Geist", system-ui, sans-serif;
+  --spacing-1: 4px;
+  --radius-sm: 4px;
+}
+```
+
+### HTML brand guide (`--html`)
+
+A self-contained dark-themed HTML page with color swatches, font specimens, spacing visualization, and shadow examples. Open it in a browser or share it with stakeholders.
+
+### JSON (`--json`)
+
+Raw extracted tokens for programmatic use.
+
 ## What it extracts
 
-- **Colors** with roles (background, text, accent, border)
+- **CSS custom properties** from `:root` (uses actual variable names when available)
+- **Colors** with semantic roles (background, text, accent, border)
 - **Typography** (font families, size scale, weights)
 - **Spacing scale** and base grid unit
 - **Border radii** and shadow styles
 - **Component patterns** (buttons, cards, inputs)
 
-## Output format
-
-The output follows [Google Stitch's DESIGN.md spec](https://stitch.withgoogle.com/docs/design-md/overview) with 5 sections:
-
-1. **Visual Theme & Atmosphere** — mood, density, shape language, depth
-2. **Color Palette & Roles** — every color with a semantic role (background, text, accent, border)
-3. **Typography Rules** — font families, size scale grouped by heading/body/caption, weights
-4. **Component Stylings** — buttons, cards, inputs with their radii, colors, shadows
-5. **Layout Principles** — spacing scale, base grid unit, border radii
-
-Drop the file in your project root. AI coding agents (Claude Code, Cursor, Gemini CLI, Stitch) will read it and generate UI that matches your brand.
-
 ## How it works
 
 1. Renders the page in a headless browser (Playwright)
-2. Extracts computed styles from every visible element
-3. Clusters similar colors, identifies the spacing scale
-4. Templates everything into the DESIGN.md format
+2. Scrolls through the page to trigger lazy-loaded content
+3. Dismisses cookie banners and overlays
+4. Extracts CSS custom properties from `:root`
+5. Extracts computed styles from every visible element
+6. Clusters similar colors, identifies the spacing scale
+7. Outputs in your chosen format
 
 No LLM calls, no API keys, runs entirely on your machine.
+
+## Agent skill
+
+brandmd ships as an [Agent Skill](https://agentskills.io/) that works across 30+ platforms including Claude Code, Cursor, VS Code/Copilot, Codex, and Gemini CLI.
+
+```bash
+npx skills add yuvrajangadsingh/brandmd
+```
+
+Then tell your agent: "extract the design system from https://linear.app"
 
 ## License
 
