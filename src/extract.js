@@ -140,6 +140,23 @@ export async function extractFromUrl(url) {
       }
     }
 
+    // Extract CSS custom properties from :root and html
+    const cssVars = {};
+    for (const sheet of document.styleSheets) {
+      try {
+        for (const rule of sheet.cssRules) {
+          const sel = (rule.selectorText || '').toLowerCase();
+          if (sel.includes(':root') || sel === 'html' || sel.startsWith('html[')) {
+            for (const prop of rule.style) {
+              if (prop.startsWith('--')) {
+                cssVars[prop] = rule.style.getPropertyValue(prop).trim();
+              }
+            }
+          }
+        }
+      } catch { /* cross-origin sheets */ }
+    }
+
     return {
       colors,
       fonts,
@@ -148,6 +165,7 @@ export async function extractFromUrl(url) {
       spacings,
       radii,
       shadows,
+      cssVars,
     };
   });
 

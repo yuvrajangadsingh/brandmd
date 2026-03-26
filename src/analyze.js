@@ -10,7 +10,7 @@ function toHex(cssColor) {
   } catch {
     // Try parsing rgb/rgba manually
     const match = cssColor.match(
-      /rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\s*\)/
+      /rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\s*\)/i
     );
     if (match) {
       try {
@@ -157,6 +157,14 @@ function pxToNum(px) {
  * Analyze raw extracted data into structured design tokens.
  */
 export function analyze(raw) {
+  // Build a reverse map from hex values to CSS variable names
+  const cssVars = raw.cssVars || {};
+  const hexToVar = {};
+  for (const [varName, value] of Object.entries(cssVars)) {
+    const hex = toHex(value);
+    if (hex) hexToVar[hex.toUpperCase()] = varName;
+  }
+
   // Colors
   const bgColors = clusterColors(Object.entries(raw.colors.background));
   const textColors = clusterColors(Object.entries(raw.colors.text));
@@ -165,19 +173,19 @@ export function analyze(raw) {
   const palette = [
     ...bgColors.slice(0, 6).map((c, i) => ({
       hex: c.hex.toUpperCase(),
-      name: describeColor(c.hex),
+      name: hexToVar[c.hex.toUpperCase()] || describeColor(c.hex),
       role: guessColorRole(c.hex, i, "background"),
       freq: c.freq,
     })),
     ...textColors.slice(0, 4).map((c, i) => ({
       hex: c.hex.toUpperCase(),
-      name: describeColor(c.hex),
+      name: hexToVar[c.hex.toUpperCase()] || describeColor(c.hex),
       role: guessColorRole(c.hex, i, "text"),
       freq: c.freq,
     })),
     ...borderColors.slice(0, 2).map((c, i) => ({
       hex: c.hex.toUpperCase(),
-      name: describeColor(c.hex),
+      name: hexToVar[c.hex.toUpperCase()] || describeColor(c.hex),
       role: guessColorRole(c.hex, i, "border"),
       freq: c.freq,
     })),
@@ -250,5 +258,6 @@ export function analyze(raw) {
     spacing: spacingList,
     radii: radiiList,
     shadows: shadowList,
+    cssVars,
   };
 }
