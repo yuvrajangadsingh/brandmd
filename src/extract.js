@@ -8,9 +8,9 @@ async function extractPage(browser, url, colorScheme = "light") {
     viewport: { width: 1440, height: 900 },
     colorScheme,
   });
-  const page = await context.newPage();
 
   try {
+    const page = await context.newPage();
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForTimeout(2000);
 
@@ -114,19 +114,25 @@ async function extractPage(browser, url, colorScheme = "light") {
       }
 
       const cssVars = {};
-      for (const sheet of document.styleSheets) {
-        try {
-          for (const rule of sheet.cssRules) {
-            const sel = (rule.selectorText || "").toLowerCase();
-            if (sel.includes(":root") || sel === "html" || sel.startsWith("html[")) {
-              for (const prop of rule.style) {
-                if (prop.startsWith("--")) {
-                  cssVars[prop] = rule.style.getPropertyValue(prop).trim();
-                }
+      function extractVarsFromRules(rules) {
+        for (const rule of rules) {
+          // Recurse into @media, @supports, @layer
+          if (rule.cssRules) {
+            extractVarsFromRules(rule.cssRules);
+            continue;
+          }
+          const sel = (rule.selectorText || "").toLowerCase();
+          if (sel.includes(":root") || sel === "html" || sel.startsWith("html[")) {
+            for (const prop of rule.style) {
+              if (prop.startsWith("--")) {
+                cssVars[prop] = rule.style.getPropertyValue(prop).trim();
               }
             }
           }
-        } catch { /* cross-origin */ }
+        }
+      }
+      for (const sheet of document.styleSheets) {
+        try { extractVarsFromRules(sheet.cssRules); } catch { /* cross-origin */ }
       }
 
       return { colors, fonts, fontSizes, fontWeights, spacings, radii, shadows, cssVars };
@@ -158,6 +164,7 @@ function mergeFreqMaps(maps) {
  * Merge multiple raw extractions into one.
  */
 function mergeRaw(pages) {
+  if (pages.length === 0) throw new Error("No pages extracted successfully");
   if (pages.length === 1) return pages[0];
 
   const merged = {
@@ -197,7 +204,11 @@ export async function extractFromUrls(urls, { dark = false } = {}) {
     // Light mode extraction
     const lightPages = [];
     for (const url of urls) {
-      lightPages.push(await extractPage(browser, url, "light"));
+      try {
+        lightPages.push(await extractPage(browser, url, "light"));
+      } catch (err) {
+        process.stderr.write(`Warning: failed to extract ${url}: ${err.message}\n`);
+      }
     }
     const light = mergeRaw(lightPages);
 
@@ -206,9 +217,15 @@ export async function extractFromUrls(urls, { dark = false } = {}) {
     if (dark) {
       const darkPages = [];
       for (const url of urls) {
-        darkPages.push(await extractPage(browser, url, "dark"));
+        try {
+          darkPages.push(await extractPage(browser, url, "dark"));
+        } catch (err) {
+          process.stderr.write(`Warning: failed dark extraction for ${url}: ${err.message}\n`);
+        }
       }
-      darkTokens = mergeRaw(darkPages);
+      if (darkPages.length > 0) {
+        darkTokens = mergeRaw(darkPages);
+      }
     }
 
     return { light, dark: darkTokens };
