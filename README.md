@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/brandmd)](https://www.npmjs.com/package/brandmd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Extract any website's design system into a `DESIGN.md`, CSS custom properties, Tailwind config, or visual brand guide.
+Extract any website's design system into a `DESIGN.md`, CSS custom properties, Tailwind v4 CSS, or visual brand guide.
 
 <p align="center">
   <img src="demo.gif" alt="brandmd demo" width="700">
@@ -34,11 +34,13 @@ One command. No API key. Works with [Google Stitch](https://stitch.withgoogle.co
 
 See what brandmd extracts from real sites:
 
-- [Stripe](examples/stripe.md)
-- [Linear](examples/linear.md)
-- [GitHub](examples/github.md)
-- [Vercel](examples/vercel.md)
-- [Notion](examples/notion.md)
+- [Stripe](examples/stripe.md) (DESIGN.md)
+- [Linear](examples/linear.md) (DESIGN.md)
+- [GitHub](examples/github.md) (DESIGN.md)
+- [Vercel](examples/vercel.md) (DESIGN.md)
+- [Notion](examples/notion.md) (DESIGN.md)
+- [Vercel](examples/vercel.css) (CSS custom properties)
+- [Linear](examples/linear-tailwind.css) (Tailwind v4)
 
 ## Why
 
@@ -145,7 +147,7 @@ Extract dark theme tokens as a separate section:
 brandmd https://github.com --dark
 ```
 
-Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palette. Uses `prefers-color-scheme: dark` via Playwright, so it captures what users actually see in dark mode.
+Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palette. Uses `prefers-color-scheme: dark` via Playwright, so it captures what users actually see in dark mode. Only affects DESIGN.md output (ignored for `--css`, `--tailwind`, `--html`).
 
 ## What it extracts
 
