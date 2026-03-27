@@ -30,6 +30,16 @@ npx brandmd https://stripe.com
 
 One command. No API key. Works with [Google Stitch](https://stitch.withgoogle.com/), Claude Code, Cursor, Gemini CLI, or any AI coding agent that reads markdown context.
 
+## Examples
+
+See what brandmd extracts from real sites:
+
+- [Stripe](examples/stripe.md)
+- [Linear](examples/linear.md)
+- [GitHub](examples/github.md)
+- [Vercel](examples/vercel.md)
+- [Notion](examples/notion.md)
+
 ## Why
 
 AI coding agents generate generic UI because they don't know your brand. Google Stitch introduced [DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) to fix this, a markdown file that encodes your design system in a format LLMs can read.
@@ -58,17 +68,20 @@ npx skills add yuvrajangadsingh/brandmd
 brandmd https://stripe.com
 brandmd https://stripe.com -o DESIGN.md
 
+# Multiple pages (merges tokens)
+brandmd https://stripe.com https://stripe.com/pricing https://stripe.com/docs
+
+# Dark mode extraction
+brandmd https://github.com --dark
+
 # CSS custom properties
 brandmd https://vercel.com --css
-brandmd https://vercel.com --css -o tokens.css
 
 # Tailwind v4 @theme
 brandmd https://linear.app --tailwind
-brandmd https://linear.app --tailwind -o theme.css
 
 # HTML brand guide (visual, shareable)
 brandmd https://github.com --html
-brandmd https://github.com --html -o brand-guide.html
 
 # Raw tokens as JSON
 brandmd https://stripe.com --json
@@ -114,9 +127,29 @@ A self-contained dark-themed HTML page with color swatches, font specimens, spac
 
 Raw extracted tokens for programmatic use.
 
+## Multi-page extraction
+
+Pass multiple URLs to merge tokens from different pages into one DESIGN.md. Each page is normalized so long content pages don't dominate.
+
+```bash
+brandmd https://stripe.com https://stripe.com/pricing https://stripe.com/docs
+```
+
+Failed pages are skipped with a warning. Mixed domains show a warning.
+
+## Dark mode
+
+Extract dark theme tokens as a separate section:
+
+```bash
+brandmd https://github.com --dark
+```
+
+Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palette. Uses `prefers-color-scheme: dark` via Playwright, so it captures what users actually see in dark mode.
+
 ## What it extracts
 
-- **CSS custom properties** from `:root` (uses actual variable names when available)
+- **CSS custom properties** from `:root` and `@media` rules (uses actual variable names when available)
 - **Colors** with semantic roles (background, text, accent, border)
 - **Typography** (font families, size scale, weights)
 - **Spacing scale** and base grid unit
@@ -125,13 +158,14 @@ Raw extracted tokens for programmatic use.
 
 ## How it works
 
-1. Renders the page in a headless browser (Playwright)
-2. Scrolls through the page to trigger lazy-loaded content
+1. Renders each page in a headless browser (Playwright)
+2. Scrolls through to trigger lazy-loaded content
 3. Dismisses cookie banners and overlays
-4. Extracts CSS custom properties from `:root`
+4. Extracts CSS custom properties from `:root` (recurses into `@media` rules)
 5. Extracts computed styles from every visible element
 6. Clusters similar colors, identifies the spacing scale
-7. Outputs in your chosen format
+7. Merges tokens across pages (normalized per page)
+8. Outputs in your chosen format
 
 No LLM calls, no API keys, runs entirely on your machine.
 
