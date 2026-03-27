@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { extractFromUrl } from "./extract.js";
+import { extractFromUrls } from "./extract.js";
 import { analyze } from "./analyze.js";
 import { generate } from "./generate.js";
 import { generateCSS } from "./generate-css.js";
@@ -17,23 +17,32 @@ program
   .name("brandmd")
   .description("Extract any website's design system into a DESIGN.md file")
   .version(pkg.version)
-  .argument("<url>", "URL of the website to extract from")
+  .argument("<urls...>", "URLs to extract from (multiple URLs merge tokens)")
   .option("-o, --output <file>", "write to file instead of stdout")
   .option("--json", "output raw tokens as JSON")
   .option("--css", "output CSS custom properties")
   .option("--tailwind", "output Tailwind v4 @theme CSS")
   .option("--html", "output HTML brand guide")
-  .action(async (url, opts) => {
-    // Normalize URL
-    if (!/^https?:\/\//i.test(url)) {
-      url = "https://" + url;
-    }
+  .option("--dark", "also extract dark mode tokens")
+  .action(async (urls, opts) => {
+    // Normalize URLs
+    urls = urls.map((u) => {
+      if (!/^https?:\/\//i.test(u)) u = "https://" + u;
+      try {
+        new URL(u);
+        return u;
+      } catch {
+        console.error(`Invalid URL: ${u}`);
+        process.exit(1);
+      }
+    });
 
-    try {
-      new URL(url);
-    } catch {
-      console.error(`Invalid URL: ${url}`);
-      process.exit(1);
+    // Warn if mixing domains
+    const hosts = new Set(urls.map((u) => new URL(u).hostname));
+    if (hosts.size > 1) {
+      process.stderr.write(
+        `Warning: extracting from ${hosts.size} different domains. Results may be inconsistent.\n`
+      );
     }
 
     // Reject conflicting format flags
@@ -43,12 +52,26 @@ program
       process.exit(1);
     }
 
+    // Skip dark mode extraction for non-DESIGN.md formats
+    if (opts.dark && (opts.css || opts.tailwind || opts.html)) {
+      process.stderr.write("Note: --dark only affects DESIGN.md output. Skipping dark extraction.\n");
+      opts.dark = false;
+    }
+
     try {
-      process.stderr.write(`Extracting from ${url}...\n`);
-      const raw = await extractFromUrl(url);
+      const label = urls.length > 1 ? `${urls.length} pages` : urls[0];
+      process.stderr.write(`Extracting from ${label}...\n`);
+      const { light, dark } = await extractFromUrls(urls, { dark: opts.dark });
 
       process.stderr.write("Analyzing design tokens...\n");
-      const tokens = analyze(raw);
+      const tokens = analyze(light);
+      if (light.sources) tokens.sources = light.sources;
+
+      let darkTokens = null;
+      if (dark) {
+        darkTokens = analyze(dark);
+        tokens.dark = darkTokens;
+      }
 
       if (opts.json) {
         const output = JSON.stringify(tokens, null, 2);

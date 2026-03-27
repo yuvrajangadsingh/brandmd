@@ -9,7 +9,14 @@ export function generate(tokens) {
 
   lines.push(`# Design System: ${siteName}`);
   lines.push("");
-  lines.push(`> Extracted from [${tokens.url}](${tokens.url}) by brandmd`);
+  if (tokens.sources && tokens.sources.length > 1) {
+    lines.push(`> Extracted from ${tokens.sources.length} pages by brandmd:`);
+    for (const src of tokens.sources) {
+      lines.push(`> - [${src}](${src})`);
+    }
+  } else {
+    lines.push(`> Extracted from [${tokens.url}](${tokens.url}) by brandmd`);
+  }
   lines.push("");
 
   // Section 1: Visual Theme & Atmosphere
@@ -186,7 +193,22 @@ export function generate(tokens) {
     lines.push("");
   }
 
-  // Section 6: Usage notes
+  // Dark mode section
+  if (tokens.dark) {
+    lines.push("## 6. Dark Theme Overrides");
+    lines.push("");
+    lines.push(`**Overall mood:** ${tokens.dark.atmosphere}`);
+    lines.push("");
+    if (tokens.dark.palette.length > 0) {
+      lines.push("**Colors:**");
+      for (const color of tokens.dark.palette) {
+        lines.push(`- **${color.name}** (\`${color.hex}\`) — ${color.role}`);
+      }
+      lines.push("");
+    }
+  }
+
+  // Usage notes
   lines.push("---");
   lines.push("");
   lines.push(
