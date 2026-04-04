@@ -1,6 +1,6 @@
 # brandmd
 
-[![npm version](https://img.shields.io/npm/v/brandmd)](https://www.npmjs.com/package/brandmd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/brandmd)](https://www.npmjs.com/package/brandmd) [![License: FSL](https://img.shields.io/badge/License-FSL--1.1-blue.svg)](https://fsl.software/)
 
 Extract any website's design system into a `DESIGN.md`, CSS custom properties, Tailwind v4 CSS, or visual brand guide.
 
@@ -185,4 +185,4 @@ If brandmd saved you time, consider [starring the repo](https://github.com/yuvra
 
 ## License
 
-MIT
+[FSL-1.1-Apache-2.0](LICENSE)
