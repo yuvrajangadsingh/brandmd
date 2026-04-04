@@ -181,6 +181,8 @@ npx skills add yuvrajangadsingh/brandmd
 
 Then tell your agent: "extract the design system from https://linear.app"
 
+If brandmd saved you time, consider [starring the repo](https://github.com/yuvrajangadsingh/brandmd).
+
 ## License
 
 MIT

@@ -123,6 +123,9 @@ program
       } else {
         console.log(md);
       }
+      if (process.stderr.isTTY) {
+        process.stderr.write('\n\u2605 If this saved you time, star the repo: https://github.com/yuvrajangadsingh/brandmd\n');
+      }
     } catch (err) {
       console.error(`Error: ${err.message}`);
       process.exit(1);
