@@ -11,15 +11,27 @@
   },
   "keywords": [
     "design-system",
+    "design-system-cli",
     "design-tokens",
+    "design-token-extractor",
     "design-md",
-    "stitch",
+    "css-variables",
+    "tailwind-v4",
+    "brand-guide",
+    "claude-code",
+    "cursor",
+    "gemini-cli",
     "google-stitch",
+    "stitch",
     "css",
     "brand",
     "ui",
     "cli"
   ],
+  "homepage": "https://github.com/yuvrajangadsingh/brandmd#readme",
+  "bugs": {
+    "url": "https://github.com/yuvrajangadsingh/brandmd/issues"
+  },
   "author": "Yuvraj Angad Singh <yuvrajangad.s@gmail.com>",
   "license": "FSL-1.1-Apache-2.0",
   "repository": {
