@@ -33,7 +33,7 @@
     "url": "https://github.com/yuvrajangadsingh/brandmd/issues"
   },
   "author": "Yuvraj Angad Singh <yuvrajangad.s@gmail.com>",
-  "license": "FSL-1.1-Apache-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yuvrajangadsingh/brandmd.git"
