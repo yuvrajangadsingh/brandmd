@@ -31,27 +31,34 @@
 **Primary font:** Inter Variable
 **Secondary font:** Berkeley Mono
 
-**Size scale:**
+**Type scale:**
 - Headings: 24px, 32px, 48px, 64px
 - Body / UI: 14px, 15px, 16px, 18px, 20px
 - Captions / Small: 10px, 11px, 12px, 12.25px, 13px, 13.3333px
 
 **Weights in use:** 300, 400, 510, 590
 
+**Line heights:** 24px, 16.8px, 19.5px, 15px, 21px, 18px, 28.8px, 48px, 64px, 31.92px
+
+**Letter spacing:** -0.13px, -0.165px, -0.182px, -0.15px, -0.12px, -1.056px
+
 ## 4. Component Stylings
 
 ### Buttons
-- Corner radius: 2px
-- Primary action color: `#5E6AD2` (Dark Blue)
+- Text color: `rgb(138, 143, 152)`
+- Corner radius: 4px
+- Padding: 0px 12px 0px 12px
+- Font: 13px, weight 400
 
 ### Cards
-- Shadow: `rgba(0, 0, 0, 0.03) 0px 1.2px 0px 0px`
-- Corner radius: 2px
-- Background: `#E6E6E6`
+- Padding: 12px 12px 0px 12px
 
 ### Inputs
-- Border color: `#24282C`
-- Corner radius: 2px
+- Background: `rgba(255, 255, 255, 0.02)`
+- Border: 1px solid rgba(255, 255, 255, 0.08)
+- Corner radius: 6px
+- Padding: 12px 14px 12px 14px
+- Font size: 13.3333px
 
 ## 5. Layout Principles
 
@@ -60,6 +67,20 @@
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
 **Border radii:** 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 22px, 50%
+
+## 6. Guidelines
+
+### Do
+- Use 4px grid for all spacing
+- Use `#5E6AD2` for primary actions and CTAs
+- Stick to 4 font weights: 300, 400, 510, 590
+- Use `Inter Variable` as the primary typeface
+
+### Don't
+- Don't introduce colors outside the palette above
+- Don't mix fonts beyond Inter Variable and Berkeley Mono
+- Don't use inline styles when the design system covers the pattern
+- Don't use border-radius values outside: 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 22px, 50%
 
 ---
 

@@ -27,25 +27,29 @@
 **Primary font:** sohne-var
 **Secondary font:** SourceCodePro
 
-**Size scale:**
+**Type scale:**
 - Headings: 26px, 32px, 48px, 56px
 - Body / UI: 14px, 15px, 16px, 18px, 22px
 - Captions / Small: 8px, 9px, 10px, 11px, 12px, 13px
 
 **Weights in use:** 300, 400, 500, 700
 
+**Line heights:** 16px, 14.5px, 15.95px, 20px, 22.4px, 14px, 11.5px, 24px, 15.4px, 9px
+
+**Letter spacing:** -0.3px, 0.1px, -0.42px, -0.33px, -0.26px, -0.22px
+
 ## 4. Component Stylings
 
 ### Buttons
-- Corner radius: 0px 0px 6px 6px
-- Primary action color: `#533AFD` (Dark Blue)
+- Text color: `rgb(6, 27, 49)`
+- Corner radius: 4px
+- Padding: 12px 0px 12px 0px
+- Font: 14px, weight 400
 
 ### Cards
-- Shadow: `rgba(3, 3, 39, 0.25) 0px 14.088px 21.132px -14.088px, rgba(0, 0, 0, 0.1) 0px 8.453px 16.906px -8.453px`
-- Corner radius: 0px 0px 6px 6px
+- Padding: 0px 0px 0px 0px
 
 ### Inputs
-- Corner radius: 0px 0px 6px 6px
 
 ## 5. Layout Principles
 
@@ -54,6 +58,20 @@
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
 **Border radii:** 0px 0px 6px 6px, 4px, 5px, 6px, 6px 6px 0px 0px, 8px, 16px, 100%
+
+## 6. Guidelines
+
+### Do
+- Use 4px grid for all spacing
+- Use `#533AFD` for primary actions and CTAs
+- Stick to 4 font weights: 300, 400, 500, 700
+- Use `sohne-var` as the primary typeface
+
+### Don't
+- Don't introduce colors outside the palette above
+- Don't mix fonts beyond sohne-var and SourceCodePro
+- Don't use inline styles when the design system covers the pattern
+- Don't use border-radius values outside: 0px 0px 6px 6px, 4px, 5px, 6px, 6px 6px 0px 0px, 8px, 16px, 100%
 
 ---
 
