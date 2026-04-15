@@ -57,6 +57,8 @@ async function extractPage(browser, url, colorScheme = "light") {
       const fonts = {};
       const fontSizes = {};
       const fontWeights = {};
+      const lineHeights = {};
+      const letterSpacings = {};
       const spacings = {};
       const radii = {};
       const shadows = {};
@@ -96,6 +98,12 @@ async function extractPage(browser, url, colorScheme = "light") {
         const fontWeight = style.fontWeight;
         if (fontWeight) fontWeights[fontWeight] = (fontWeights[fontWeight] || 0) + 1;
 
+        const lh = style.lineHeight;
+        if (lh && lh !== "normal") lineHeights[lh] = (lineHeights[lh] || 0) + 1;
+
+        const ls = style.letterSpacing;
+        if (ls && ls !== "normal" && ls !== "0px") letterSpacings[ls] = (letterSpacings[ls] || 0) + 1;
+
         for (const prop of [
           "marginTop", "marginRight", "marginBottom", "marginLeft",
           "paddingTop", "paddingRight", "paddingBottom", "paddingLeft", "gap",
@@ -111,6 +119,39 @@ async function extractPage(browser, url, colorScheme = "light") {
 
         const shadow = style.boxShadow;
         if (shadow && shadow !== "none") shadows[shadow] = (shadows[shadow] || 0) + 1;
+      }
+
+      // Extract real component styles from DOM
+      const components = { buttons: [], cards: [], inputs: [] };
+
+      for (const btn of document.querySelectorAll('button, a[class*="btn"], a[class*="button"], [role="button"]')) {
+        const s = getComputedStyle(btn);
+        const rect = btn.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) continue;
+        components.buttons.push({
+          bg: s.backgroundColor, color: s.color, radius: s.borderRadius,
+          padding: `${s.paddingTop} ${s.paddingRight} ${s.paddingBottom} ${s.paddingLeft}`,
+          fontSize: s.fontSize, fontWeight: s.fontWeight, border: s.border,
+        });
+      }
+
+      for (const el of document.querySelectorAll('[class*="card"], [class*="Card"], article')) {
+        const s = getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        if (rect.width < 100 || rect.height < 50) continue;
+        components.cards.push({
+          bg: s.backgroundColor, radius: s.borderRadius,
+          shadow: s.boxShadow, padding: `${s.paddingTop} ${s.paddingRight} ${s.paddingBottom} ${s.paddingLeft}`,
+        });
+      }
+
+      for (const inp of document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], input:not([type]), textarea, select')) {
+        const s = getComputedStyle(inp);
+        components.inputs.push({
+          bg: s.backgroundColor, color: s.color, radius: s.borderRadius,
+          border: s.border, padding: `${s.paddingTop} ${s.paddingRight} ${s.paddingBottom} ${s.paddingLeft}`,
+          fontSize: s.fontSize,
+        });
       }
 
       const cssVars = {};
@@ -135,7 +176,7 @@ async function extractPage(browser, url, colorScheme = "light") {
         try { extractVarsFromRules(sheet.cssRules); } catch { /* cross-origin */ }
       }
 
-      return { colors, fonts, fontSizes, fontWeights, spacings, radii, shadows, cssVars };
+      return { colors, fonts, fontSizes, fontWeights, lineHeights, letterSpacings, spacings, radii, shadows, cssVars, components };
     });
 
     const title = await page.title();
@@ -176,14 +217,26 @@ function mergeRaw(pages) {
     fonts: mergeFreqMaps(pages.map((p) => p.fonts)),
     fontSizes: mergeFreqMaps(pages.map((p) => p.fontSizes)),
     fontWeights: mergeFreqMaps(pages.map((p) => p.fontWeights)),
+    lineHeights: mergeFreqMaps(pages.map((p) => p.lineHeights || {})),
+    letterSpacings: mergeFreqMaps(pages.map((p) => p.letterSpacings || {})),
     spacings: mergeFreqMaps(pages.map((p) => p.spacings)),
     radii: mergeFreqMaps(pages.map((p) => p.radii)),
     shadows: mergeFreqMaps(pages.map((p) => p.shadows)),
     cssVars: {},
+    components: { buttons: [], cards: [], inputs: [] },
     title: pages[0].title,
     url: pages[0].url,
     sources: pages.map((p) => p.url),
   };
+
+  // Merge components (concat all)
+  for (const page of pages) {
+    if (page.components) {
+      merged.components.buttons.push(...(page.components.buttons || []));
+      merged.components.cards.push(...(page.components.cards || []));
+      merged.components.inputs.push(...(page.components.inputs || []));
+    }
+  }
 
   // Union CSS vars (first value wins for duplicates)
   for (const page of pages) {

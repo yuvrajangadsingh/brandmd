@@ -100,6 +100,46 @@ function guessColorRole(hex, index, type) {
 }
 
 /**
+ * Make a CSS variable name human-readable.
+ * --color-primary -> Color Primary
+ * --bg-surface -> Bg Surface
+ */
+function semanticName(varName) {
+  return varName
+    .replace(/^--/, "")
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .trim();
+}
+
+/**
+ * Analyze extracted component styles into representative tokens.
+ */
+function analyzeComponents(components) {
+  const result = { buttons: null, cards: null, inputs: null };
+
+  if (components?.buttons?.length > 0) {
+    const bgFreq = {};
+    for (const b of components.buttons) {
+      const hex = toHex(b.bg);
+      if (hex) bgFreq[hex] = (bgFreq[hex] || 0) + 1;
+    }
+    const topBg = Object.entries(bgFreq).sort((a, b) => b[1] - a[1])[0];
+    result.buttons = components.buttons.find((b) => toHex(b.bg) === topBg?.[0]) || components.buttons[0];
+  }
+
+  if (components?.cards?.length > 0) {
+    result.cards = components.cards[0];
+  }
+
+  if (components?.inputs?.length > 0) {
+    result.inputs = components.inputs[0];
+  }
+
+  return result;
+}
+
+/**
  * Describe a color in human-readable terms.
  */
 function describeColor(hex) {
@@ -171,24 +211,36 @@ export function analyze(raw) {
   const borderColors = clusterColors(Object.entries(raw.colors.border));
 
   const palette = [
-    ...bgColors.slice(0, 6).map((c, i) => ({
-      hex: c.hex.toUpperCase(),
-      name: hexToVar[c.hex.toUpperCase()] || describeColor(c.hex),
-      role: guessColorRole(c.hex, i, "background"),
-      freq: c.freq,
-    })),
-    ...textColors.slice(0, 4).map((c, i) => ({
-      hex: c.hex.toUpperCase(),
-      name: hexToVar[c.hex.toUpperCase()] || describeColor(c.hex),
-      role: guessColorRole(c.hex, i, "text"),
-      freq: c.freq,
-    })),
-    ...borderColors.slice(0, 2).map((c, i) => ({
-      hex: c.hex.toUpperCase(),
-      name: hexToVar[c.hex.toUpperCase()] || describeColor(c.hex),
-      role: guessColorRole(c.hex, i, "border"),
-      freq: c.freq,
-    })),
+    ...bgColors.slice(0, 6).map((c, i) => {
+      const varName = hexToVar[c.hex.toUpperCase()];
+      return {
+        hex: c.hex.toUpperCase(),
+        name: varName ? semanticName(varName) : describeColor(c.hex),
+        varName: varName || null,
+        role: guessColorRole(c.hex, i, "background"),
+        freq: c.freq,
+      };
+    }),
+    ...textColors.slice(0, 4).map((c, i) => {
+      const varName = hexToVar[c.hex.toUpperCase()];
+      return {
+        hex: c.hex.toUpperCase(),
+        name: varName ? semanticName(varName) : describeColor(c.hex),
+        varName: varName || null,
+        role: guessColorRole(c.hex, i, "text"),
+        freq: c.freq,
+      };
+    }),
+    ...borderColors.slice(0, 2).map((c, i) => {
+      const varName = hexToVar[c.hex.toUpperCase()];
+      return {
+        hex: c.hex.toUpperCase(),
+        name: varName ? semanticName(varName) : describeColor(c.hex),
+        varName: varName || null,
+        role: guessColorRole(c.hex, i, "border"),
+        freq: c.freq,
+      };
+    }),
   ];
 
   // Deduplicate palette by hex
@@ -244,6 +296,17 @@ export function analyze(raw) {
       ? "Balanced and professional"
       : avgLum > 0.6 ? "Light and airy" : avgLum < 0.3 ? "Dark and moody" : "Balanced and professional";
 
+  // Line heights
+  const lineHeightList = topByFreq(raw.lineHeights || {}, 10)
+    .map(([val, freq]) => ({ val, freq }));
+
+  // Letter spacings
+  const letterSpacingList = topByFreq(raw.letterSpacings || {}, 6)
+    .map(([val, freq]) => ({ val, freq }));
+
+  // Components
+  const components = analyzeComponents(raw.components);
+
   return {
     title: raw.title,
     url: raw.url,
@@ -254,10 +317,13 @@ export function analyze(raw) {
       secondary: secondaryFont,
       sizes: sizeList,
       weights: weightList,
+      lineHeights: lineHeightList,
+      letterSpacings: letterSpacingList,
     },
     spacing: spacingList,
     radii: radiiList,
     shadows: shadowList,
+    components,
     cssVars,
   };
 }
