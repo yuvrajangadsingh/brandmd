@@ -5,6 +5,7 @@ import { generate } from "./generate.js";
 import { generateCSS } from "./generate-css.js";
 import { generateTailwind } from "./generate-tailwind.js";
 import { generateHTML } from "./generate-html.js";
+import { extractVision } from "./extract-vision.js";
 import { writeFileSync } from "fs";
 import { createRequire } from "module";
 
@@ -24,6 +25,7 @@ program
   .option("--tailwind", "output Tailwind v4 @theme CSS")
   .option("--html", "output HTML brand guide")
   .option("--dark", "also extract dark mode tokens")
+  .option("--vision", "use Gemini vision to capture illustration style, photography mood, copywriting voice, microcopy patterns. Requires GEMINI_API_KEY or GOOGLE_API_KEY env var (free tier: aistudio.google.com/apikey).")
   .action(async (urls, opts) => {
     // Normalize URLs
     urls = urls.map((u) => {
@@ -58,10 +60,24 @@ program
       opts.dark = false;
     }
 
+    // Vision is only embedded in the DESIGN.md output. Other formats stay token-only.
+    if (opts.vision && (opts.json || opts.css || opts.tailwind || opts.html)) {
+      process.stderr.write("Note: --vision only affects DESIGN.md output. Skipping vision call.\n");
+      opts.vision = false;
+    }
+
+    // Validate vision key upfront so users don't pay for the Playwright run before failing.
+    const visionApiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+    if (opts.vision && !visionApiKey) {
+      console.error("Error: --vision requires GEMINI_API_KEY or GOOGLE_API_KEY env var.");
+      console.error("Get a free key: https://aistudio.google.com/apikey");
+      process.exit(1);
+    }
+
     try {
       const label = urls.length > 1 ? `${urls.length} pages` : urls[0];
       process.stderr.write(`Extracting from ${label}...\n`);
-      const { light, dark } = await extractFromUrls(urls, { dark: opts.dark });
+      const { light, dark } = await extractFromUrls(urls, { dark: opts.dark, vision: opts.vision });
 
       process.stderr.write("Analyzing design tokens...\n");
       const tokens = analyze(light);
@@ -71,6 +87,28 @@ program
       if (dark) {
         darkTokens = analyze(dark);
         tokens.dark = darkTokens;
+      }
+
+      // Vision call after CSS analysis. CSS-only fallback on API failure so users still get DESIGN.md.
+      if (opts.vision && light.vision) {
+        process.stderr.write("Calling Gemini vision API. Est. cost: free tier (~$0 if under quota)...\n");
+        try {
+          const pageText = [
+            ...(light.vision.toneSnippets.h1 || []).map((s) => `H1: ${s}`),
+            ...(light.vision.toneSnippets.h2 || []).map((s) => `H2: ${s}`),
+            ...(light.vision.toneSnippets.hero_text || []).map((s) => `HERO: ${s}`),
+            ...(light.vision.toneSnippets.buttons || []).map((s) => `BTN: ${s}`),
+          ].join("\n").slice(0, 4000);
+
+          const visionResult = await extractVision({
+            screenshotBase64: light.vision.screenshotBase64,
+            pageText,
+            apiKey: visionApiKey,
+          });
+          tokens.vision = visionResult;
+        } catch (err) {
+          process.stderr.write(`Warning: vision extraction failed (${err.message}). Continuing CSS-only.\n`);
+        }
       }
 
       if (opts.json) {

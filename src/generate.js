@@ -254,6 +254,34 @@ export function generate(tokens) {
     }
   }
 
+  // Visual identity beyond CSS — the layer Gemini sees that grep can't.
+  if (tokens.vision) {
+    const v = tokens.vision;
+    lines.push("## 7. Visual Identity Beyond CSS");
+    lines.push("");
+    if (v.illustration_style && v.illustration_style !== "none") {
+      lines.push(`**Illustration style:** ${v.illustration_style}`);
+    }
+    if (v.photography_mood && v.photography_mood !== "none") {
+      lines.push(`**Photography mood:** ${v.photography_mood}`);
+    }
+    if (v.copywriting_voice) {
+      lines.push(`**Copywriting voice:** ${v.copywriting_voice}`);
+    }
+    if (v.microcopy_patterns && v.microcopy_patterns.length > 0) {
+      lines.push("");
+      lines.push("**Microcopy patterns:**");
+      for (const p of v.microcopy_patterns) {
+        lines.push(`- ${p}`);
+      }
+    }
+    if (v.notes) {
+      lines.push("");
+      lines.push(`> ${v.notes}`);
+    }
+    lines.push("");
+  }
+
   // Usage notes
   lines.push("---");
   lines.push("");

@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 /**
  * Extract styles from a single page using a shared browser instance.
  */
-async function extractPage(browser, url, colorScheme = "light") {
+async function extractPage(browser, url, colorScheme = "light", { vision = false } = {}) {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     colorScheme,
@@ -180,7 +180,36 @@ async function extractPage(browser, url, colorScheme = "light") {
     });
 
     const title = await page.title();
-    return { ...raw, title, url };
+
+    let visionData = null;
+    if (vision) {
+      // Hero screenshot is a viewport snapshot at top of page
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForTimeout(400);
+      const screenshotBuf = await page.screenshot({ type: "png", fullPage: false });
+
+      // Tone snippets — headers, hero, primary CTAs (caps text length so prompt stays small)
+      const toneSnippets = await page.evaluate(() => {
+        const grab = (sel, max) =>
+          Array.from(document.querySelectorAll(sel))
+            .map((el) => el.innerText.trim())
+            .filter(Boolean)
+            .slice(0, max);
+        return {
+          h1: grab("h1", 3),
+          h2: grab("h2", 5),
+          buttons: grab("button, a[role='button'], a[class*='button']", 10),
+          hero_text: grab("section:first-of-type p, header p, [class*='hero'] p", 5),
+        };
+      });
+
+      visionData = {
+        screenshotBase64: screenshotBuf.toString("base64"),
+        toneSnippets,
+      };
+    }
+
+    return { ...raw, title, url, vision: visionData };
   } finally {
     await context.close();
   }
@@ -251,19 +280,23 @@ function mergeRaw(pages) {
 /**
  * Extract from one or more URLs with optional dark mode.
  */
-export async function extractFromUrls(urls, { dark = false } = {}) {
+export async function extractFromUrls(urls, { dark = false, vision = false } = {}) {
   const browser = await chromium.launch({ headless: true });
   try {
-    // Light mode extraction
+    // Light mode extraction. Only the first URL gets vision data — the screenshot
+    // represents the brand hero, not a multi-page average.
     const lightPages = [];
-    for (const url of urls) {
+    for (let i = 0; i < urls.length; i++) {
       try {
-        lightPages.push(await extractPage(browser, url, "light"));
+        lightPages.push(await extractPage(browser, urls[i], "light", { vision: vision && i === 0 }));
       } catch (err) {
-        process.stderr.write(`Warning: failed to extract ${url}: ${err.message}\n`);
+        process.stderr.write(`Warning: failed to extract ${urls[i]}: ${err.message}\n`);
       }
     }
     const light = mergeRaw(lightPages);
+    if (vision && lightPages.length > 0 && lightPages[0].vision) {
+      light.vision = lightPages[0].vision;
+    }
 
     // Dark mode extraction
     let darkTokens = null;

@@ -76,6 +76,11 @@ brandmd https://stripe.com https://stripe.com/pricing https://stripe.com/docs
 # Dark mode extraction
 brandmd https://github.com --dark
 
+# Vision: capture illustration style, photography mood, copywriting voice
+# (CSS can't see these — Gemini reads the screenshot.)
+export GEMINI_API_KEY=your-key-here  # free: https://aistudio.google.com/apikey
+brandmd https://linear.app --vision
+
 # CSS custom properties
 brandmd https://vercel.com --css
 
