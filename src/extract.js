@@ -183,10 +183,11 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
     let visionData = null;
     if (vision) {
-      // Hero screenshot is a viewport snapshot at top of page
+      // Full-page screenshot, not viewport, so below-the-fold illustrations
+      // and photography (Stripe-style) are seen by the vision model.
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.waitForTimeout(400);
-      const screenshotBuf = await page.screenshot({ type: "png", fullPage: false });
+      const screenshotBuf = await page.screenshot({ type: "png", fullPage: true });
 
       // Tone snippets — headers, hero, primary CTAs (caps text length so prompt stays small)
       const toneSnippets = await page.evaluate(() => {
