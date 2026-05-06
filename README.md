@@ -80,6 +80,8 @@ brandmd https://github.com --dark
 # (CSS can't see these — Gemini reads the screenshot.)
 export GEMINI_API_KEY=your-key-here  # free: https://aistudio.google.com/apikey
 brandmd https://linear.app --vision
+# Note: sites behind Cloudflare bot challenges (e.g. openai.com)
+# return loading-state observations, not the brand. Workaround pending.
 
 # CSS custom properties
 brandmd https://vercel.com --css
