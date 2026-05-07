@@ -28,7 +28,9 @@ npx brandmd https://stripe.com
 **Base unit:** 4px grid
 ```
 
-One command. No API key. Works with [Google Stitch](https://stitch.withgoogle.com/), Claude Code, Cursor, Gemini CLI, or any AI coding agent that reads markdown context.
+One command. No API key for the default extraction. Works with [Google Stitch](https://stitch.withgoogle.com/), Claude Code, Cursor, Gemini CLI, or any AI coding agent that reads markdown context.
+
+> **New in v0.6.0:** `--vision` flag adds a "Visual Identity Beyond CSS" section to DESIGN.md — illustration style, photography mood, copywriting voice, microcopy patterns. CSS can't see these. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
 
 ## Examples
 
