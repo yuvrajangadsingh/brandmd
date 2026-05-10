@@ -1,6 +1,26 @@
 import { chromium } from "playwright";
 
 /**
+ * Detect if the current page is a Cloudflare challenge / block.
+ * Runs in the browser context so it sees what the user sees.
+ */
+async function isCloudflareChallenge(page) {
+  try {
+    return await page.evaluate(() => {
+      const title = (document.title || "").toLowerCase();
+      const body = (document.body?.innerText || "").toLowerCase();
+      const html = document.documentElement?.outerHTML || "";
+      if (/just a moment|attention required|please wait|verifying you are human/.test(title)) return true;
+      if (/cloudflare ray id|verifying you are human|enable javascript and cookies to continue/.test(body)) return true;
+      if (/cf-browser-verification|cf-challenge-running|cf-error-details|__cf_chl_/.test(html)) return true;
+      return false;
+    });
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Extract styles from a single page using a shared browser instance.
  */
 async function extractPage(browser, url, colorScheme = "light", { vision = false } = {}) {
@@ -13,6 +33,27 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     const page = await context.newPage();
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForTimeout(2000);
+
+    // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
+    // Most JS challenges clear in 5-10s without intervention.
+    if (await isCloudflareChallenge(page)) {
+      const start = Date.now();
+      const maxWaitMs = 12000;
+      while (Date.now() - start < maxWaitMs) {
+        await page.waitForTimeout(1000);
+        if (!(await isCloudflareChallenge(page))) break;
+      }
+      // Tier A: still on challenge after wait — tell the caller clearly.
+      if (await isCloudflareChallenge(page)) {
+        throw new Error(
+          `Cloudflare challenge active on ${url} after ${maxWaitMs}ms. ` +
+          `The site is bot-protected; brandmd cannot extract through it. ` +
+          `Try a non-protected page (e.g. /docs, /pricing) or run from a residential IP.`
+        );
+      }
+      // Resolved — give the real page a beat to settle before extraction.
+      await page.waitForTimeout(1500);
+    }
 
     // Dismiss cookie banners and overlays
     await page.evaluate(() => {
