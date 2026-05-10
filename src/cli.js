@@ -26,6 +26,7 @@ program
   .option("--html", "output HTML brand guide")
   .option("--dark", "also extract dark mode tokens")
   .option("--vision", "use Gemini vision to capture illustration style, photography mood, copywriting voice, microcopy patterns. Requires GEMINI_API_KEY or GOOGLE_API_KEY env var (free tier: aistudio.google.com/apikey).")
+  .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge to auto-resolve (default 20000)", (v) => parseInt(v, 10), 20000)
   .action(async (urls, opts) => {
     // Normalize URLs
     urls = urls.map((u) => {
@@ -77,7 +78,7 @@ program
     try {
       const label = urls.length > 1 ? `${urls.length} pages` : urls[0];
       process.stderr.write(`Extracting from ${label}...\n`);
-      const { light, dark } = await extractFromUrls(urls, { dark: opts.dark, vision: opts.vision });
+      const { light, dark } = await extractFromUrls(urls, { dark: opts.dark, vision: opts.vision, cfWaitMs: opts.cfWaitMs });
 
       process.stderr.write("Analyzing design tokens...\n");
       const tokens = analyze(light);

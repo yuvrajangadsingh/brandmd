@@ -2,28 +2,48 @@ import { chromium } from "playwright";
 
 /**
  * Detect if the current page is a Cloudflare challenge / block.
- * Runs in the browser context so it sees what the user sees.
+ * Returns "yes" | "no" | "unknown".
+ *
+ * Confidence-based: STRONG markers (CF-specific paths/classes/IDs) are
+ * sufficient on their own. WEAK markers (title/body phrases) only count
+ * when paired with a CF corroborator, since "Just a moment..." or
+ * "Attention required" can appear on legitimate pages.
+ *
+ * Returns "unknown" if page.evaluate fails (page mid-navigation/redirect),
+ * so the caller can keep polling instead of treating uncertainty as "no".
  */
 async function isCloudflareChallenge(page) {
   try {
     return await page.evaluate(() => {
       const title = (document.title || "").toLowerCase();
       const body = (document.body?.innerText || "").toLowerCase();
-      const html = document.documentElement?.outerHTML || "";
-      if (/just a moment|attention required|please wait|verifying you are human/.test(title)) return true;
-      if (/cloudflare ray id|verifying you are human|enable javascript and cookies to continue/.test(body)) return true;
-      if (/cf-browser-verification|cf-challenge-running|cf-error-details|__cf_chl_/.test(html)) return true;
-      return false;
+      const html = (document.documentElement?.outerHTML || "").toLowerCase();
+
+      // STRONG markers — Cloudflare-specific, sufficient alone
+      const strong =
+        /cf-browser-verification|cf-challenge-running|cf-error-details|__cf_chl_|\/cdn-cgi\/challenge-platform\//.test(html) ||
+        /cloudflare ray id/.test(body);
+
+      if (strong) return "yes";
+
+      // WEAK markers — phrases that need a CF corroborator
+      const weakTitle = /just a moment|attention required|verifying you are human/.test(title);
+      const weakBody = /verifying you are human|enable javascript and cookies to continue/.test(body);
+      const cfFootprint = /cloudflare/.test(html);
+
+      if ((weakTitle || weakBody) && cfFootprint) return "yes";
+
+      return "no";
     });
   } catch {
-    return false;
+    return "unknown";
   }
 }
 
 /**
  * Extract styles from a single page using a shared browser instance.
  */
-async function extractPage(browser, url, colorScheme = "light", { vision = false } = {}) {
+async function extractPage(browser, url, colorScheme = "light", { vision = false, cfWaitMs = 20000 } = {}) {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     colorScheme,
@@ -35,23 +55,27 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     await page.waitForTimeout(2000);
 
     // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
-    // Most JS challenges clear in 5-10s without intervention.
-    if (await isCloudflareChallenge(page)) {
+    // Most JS challenges clear in 5-10s; some take longer on first visit.
+    // Default 20s, configurable via cfWaitMs option.
+    if ((await isCloudflareChallenge(page)) === "yes") {
       const start = Date.now();
-      const maxWaitMs = 12000;
-      while (Date.now() - start < maxWaitMs) {
+      while (Date.now() - start < cfWaitMs) {
         await page.waitForTimeout(1000);
-        if (!(await isCloudflareChallenge(page))) break;
+        const state = await isCloudflareChallenge(page);
+        // "no" = cleared; "unknown" = mid-navigation, keep polling
+        if (state === "no") break;
       }
-      // Tier A: still on challenge after wait — tell the caller clearly.
-      if (await isCloudflareChallenge(page)) {
+      // Tier A: still on challenge after the wait — tell the caller clearly.
+      if ((await isCloudflareChallenge(page)) === "yes") {
         throw new Error(
-          `Cloudflare challenge active on ${url} after ${maxWaitMs}ms. ` +
+          `Cloudflare challenge active on ${url} after ${cfWaitMs}ms. ` +
           `The site is bot-protected; brandmd cannot extract through it. ` +
           `Try a non-protected page (e.g. /docs, /pricing) or run from a residential IP.`
         );
       }
-      // Resolved — give the real page a beat to settle before extraction.
+      // Resolved (or unknown) — wait for the real page to be loaded enough
+      // to extract from, then give it a small settle window.
+      await page.waitForLoadState("domcontentloaded", { timeout: 5000 }).catch(() => {});
       await page.waitForTimeout(1500);
     }
 
@@ -322,7 +346,7 @@ function mergeRaw(pages) {
 /**
  * Extract from one or more URLs with optional dark mode.
  */
-export async function extractFromUrls(urls, { dark = false, vision = false } = {}) {
+export async function extractFromUrls(urls, { dark = false, vision = false, cfWaitMs = 20000 } = {}) {
   const browser = await chromium.launch({ headless: true });
   try {
     // Light mode extraction. Only the first URL gets vision data — the screenshot
@@ -330,7 +354,7 @@ export async function extractFromUrls(urls, { dark = false, vision = false } = {
     const lightPages = [];
     for (let i = 0; i < urls.length; i++) {
       try {
-        lightPages.push(await extractPage(browser, urls[i], "light", { vision: vision && i === 0 }));
+        lightPages.push(await extractPage(browser, urls[i], "light", { vision: vision && i === 0, cfWaitMs }));
       } catch (err) {
         process.stderr.write(`Warning: failed to extract ${urls[i]}: ${err.message}\n`);
       }
@@ -346,7 +370,7 @@ export async function extractFromUrls(urls, { dark = false, vision = false } = {
       const darkPages = [];
       for (const url of urls) {
         try {
-          darkPages.push(await extractPage(browser, url, "dark"));
+          darkPages.push(await extractPage(browser, url, "dark", { cfWaitMs }));
         } catch (err) {
           process.stderr.write(`Warning: failed dark extraction for ${url}: ${err.message}\n`);
         }
