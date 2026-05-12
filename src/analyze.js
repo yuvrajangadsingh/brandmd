@@ -252,9 +252,24 @@ export function analyze(raw) {
   });
 
   // Typography
-  const fontList = topByFreq(raw.fonts, 5);
+  const fontList = topByFreq(raw.fonts, 10);
   const primaryFont = fontList[0]?.[0] || "system-ui";
   const secondaryFont = fontList[1]?.[0] || null;
+
+  // Per-element-role fonts. Frequency on h1-h6 vs paragraph tells AI tools
+  // "use X for headings, Y for body" instead of a single global ranking that
+  // gets dominated by whichever font happens to be on the most divs.
+  const roleFonts = (key, limit = 2) =>
+    topByFreq(raw.fontsByRole?.[key] || {}, limit).map(([f]) => f);
+  const headingFonts = roleFonts("heading", 2);
+  const bodyFonts = roleFonts("body", 1);
+  const buttonFonts = roleFonts("button", 1);
+  const displayFonts = roleFonts("display", 2);
+
+  const allDetected = fontList.map(([font, count]) => ({
+    font,
+    count: typeof count === "number" ? Math.round(count * 100) / 100 : count,
+  }));
 
   const sizeList = topByFreq(raw.fontSizes, 15)
     .map(([size, freq]) => ({ size, px: pxToNum(size), freq }))
@@ -315,6 +330,11 @@ export function analyze(raw) {
     typography: {
       primary: primaryFont,
       secondary: secondaryFont,
+      headingFonts,
+      bodyFonts,
+      buttonFonts,
+      displayFonts,
+      allDetected,
       sizes: sizeList,
       weights: weightList,
       lineHeights: lineHeightList,

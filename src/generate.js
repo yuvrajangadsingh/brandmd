@@ -72,6 +72,40 @@ export function generate(tokens) {
   }
   lines.push("");
 
+  // Per-role font breakdown. Surfaces the brand font even when it's only on
+  // a few headings (e.g. Vercel-stack sites where Inter wins by count but
+  // Geist is the actual heading font).
+  const t = tokens.typography;
+  const roleLines = [];
+  if (t.headingFonts && t.headingFonts.length) {
+    roleLines.push(`- Headings: ${t.headingFonts.join(", ")}`);
+  }
+  if (t.displayFonts && t.displayFonts.length) {
+    const display = t.displayFonts.filter((f) => !t.headingFonts?.includes(f));
+    if (display.length) roleLines.push(`- Display / hero: ${display.join(", ")}`);
+  }
+  if (t.bodyFonts && t.bodyFonts.length) {
+    roleLines.push(`- Body: ${t.bodyFonts.join(", ")}`);
+  }
+  if (t.buttonFonts && t.buttonFonts.length) {
+    const btn = t.buttonFonts.filter((f) => !t.bodyFonts?.includes(f));
+    if (btn.length) roleLines.push(`- Buttons / nav: ${btn.join(", ")}`);
+  }
+  if (roleLines.length) {
+    lines.push("**Fonts by role:**");
+    lines.push(...roleLines);
+    lines.push("");
+  }
+
+  if (t.allDetected && t.allDetected.length > 2) {
+    const list = t.allDetected
+      .slice(0, 8)
+      .map((d) => `${d.font} (${d.count})`)
+      .join(", ");
+    lines.push(`**All detected fonts:** ${list}`);
+    lines.push("");
+  }
+
   if (tokens.typography.sizes.length > 0) {
     lines.push("**Type scale:**");
     const sizes = tokens.typography.sizes;

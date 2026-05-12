@@ -132,6 +132,10 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     const raw = await page.evaluate(() => {
       const colors = { background: {}, text: {}, border: {} };
       const fonts = {};
+      // Brand fonts are often used on headings only, while body text falls back
+      // to a workhorse system font. Tracking per-role lets the output surface
+      // "use X for headings, Y for body" instead of just the most-frequent font.
+      const fontsByRole = { heading: {}, body: {}, button: {}, display: {} };
       const fontSizes = {};
       const fontWeights = {};
       const lineHeights = {};
@@ -180,6 +184,21 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
           const isGeneric = genericKeywords.has(lower) || /(^|\s)Placeholder$/i.test(clean);
           if (!isGeneric) {
             fonts[clean] = (fonts[clean] || 0) + 1;
+
+            // Element-role classification. The same font on h1 vs body p tells
+            // a different brand story; one role per element keeps counts honest.
+            const tag = el.tagName;
+            const role = el.getAttribute("role");
+            const fontSizePx = parseFloat(style.fontSize) || 0;
+            if (/^H[1-6]$/.test(tag)) {
+              fontsByRole.heading[clean] = (fontsByRole.heading[clean] || 0) + 1;
+            } else if (tag === "BUTTON" || role === "button") {
+              fontsByRole.button[clean] = (fontsByRole.button[clean] || 0) + 1;
+            } else if (fontSizePx >= 40) {
+              fontsByRole.display[clean] = (fontsByRole.display[clean] || 0) + 1;
+            } else if (tag === "P" || tag === "LI" || tag === "SPAN" || tag === "DIV") {
+              fontsByRole.body[clean] = (fontsByRole.body[clean] || 0) + 1;
+            }
           }
         }
 
@@ -267,7 +286,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         try { extractVarsFromRules(sheet.cssRules); } catch { /* cross-origin */ }
       }
 
-      return { colors, fonts, fontSizes, fontWeights, lineHeights, letterSpacings, spacings, radii, shadows, cssVars, components };
+      return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, spacings, radii, shadows, cssVars, components };
     });
 
     const title = await page.title();
@@ -336,6 +355,12 @@ function mergeRaw(pages) {
       border: mergeFreqMaps(pages.map((p) => p.colors.border)),
     },
     fonts: mergeFreqMaps(pages.map((p) => p.fonts)),
+    fontsByRole: {
+      heading: mergeFreqMaps(pages.map((p) => p.fontsByRole?.heading || {})),
+      body: mergeFreqMaps(pages.map((p) => p.fontsByRole?.body || {})),
+      button: mergeFreqMaps(pages.map((p) => p.fontsByRole?.button || {})),
+      display: mergeFreqMaps(pages.map((p) => p.fontsByRole?.display || {})),
+    },
     fontSizes: mergeFreqMaps(pages.map((p) => p.fontSizes)),
     fontWeights: mergeFreqMaps(pages.map((p) => p.fontWeights)),
     lineHeights: mergeFreqMaps(pages.map((p) => p.lineHeights || {})),
