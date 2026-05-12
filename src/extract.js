@@ -117,6 +117,18 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       await delay(500);
     });
 
+    // Without this wait, getComputedStyle() can return the fallback font (e.g.
+    // "Inter" or system-ui) while a slow web font is still loading. 5s cap so a
+    // sluggish font CDN doesn't stall extraction indefinitely.
+    await page.evaluate(async () => {
+      if (document.fonts && document.fonts.ready) {
+        await Promise.race([
+          document.fonts.ready,
+          new Promise((r) => setTimeout(r, 5000)),
+        ]);
+      }
+    });
+
     const raw = await page.evaluate(() => {
       const colors = { background: {}, text: {}, border: {} };
       const fonts = {};
@@ -154,7 +166,21 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         const fontFamily = style.fontFamily;
         if (fontFamily) {
           const clean = fontFamily.split(",")[0].replace(/['"]/g, "").trim();
-          fonts[clean] = (fonts[clean] || 0) + 1;
+          // Next/font and similar font-loaders inject "<Name> Placeholder" entries
+          // into the computed stack while real fonts are loading; treating those as
+          // brand fonts pollutes the ranking.
+          const genericKeywords = new Set([
+            "sans-serif", "serif", "monospace", "cursive", "fantasy", "math",
+            "fangsong", "emoji", "system-ui", "-apple-system", "blinkmacsystemfont",
+            "ui-sans-serif", "ui-serif", "ui-monospace", "ui-rounded",
+            "apple color emoji", "segoe ui emoji", "noto color emoji",
+            "inherit", "initial", "unset",
+          ]);
+          const lower = clean.toLowerCase();
+          const isGeneric = genericKeywords.has(lower) || /(^|\s)Placeholder$/i.test(clean);
+          if (!isGeneric) {
+            fonts[clean] = (fonts[clean] || 0) + 1;
+          }
         }
 
         const fontSize = style.fontSize;
