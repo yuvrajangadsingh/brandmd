@@ -51,7 +51,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
   try {
     const page = await context.newPage();
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
     await page.waitForTimeout(2000);
 
     // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
@@ -169,10 +169,10 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
         const fontFamily = style.fontFamily;
         if (fontFamily) {
-          const clean = fontFamily.split(",")[0].replace(/['"]/g, "").trim();
-          // Next/font and similar font-loaders inject "<Name> Placeholder" entries
-          // into the computed stack while real fonts are loading; treating those as
-          // brand fonts pollutes the ranking.
+          // Quote-aware splitter. Some sites have weird values like
+          // `--font-display: CUSTOMV2;Aeonik Pro TRIAL Regular` that end up
+          // as a single computed name; naive split-on-comma misses the `;`
+          // and treats the whole thing as one font.
           const genericKeywords = new Set([
             "sans-serif", "serif", "monospace", "cursive", "fantasy", "math",
             "fangsong", "emoji", "system-ui", "-apple-system", "blinkmacsystemfont",
@@ -180,9 +180,43 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
             "apple color emoji", "segoe ui emoji", "noto color emoji",
             "inherit", "initial", "unset",
           ]);
-          const lower = clean.toLowerCase();
-          const isGeneric = genericKeywords.has(lower) || /(^|\s)Placeholder$/i.test(clean);
-          if (!isGeneric) {
+          const tokens = [];
+          let buf = "";
+          let inSingle = false;
+          let inDouble = false;
+          let parenDepth = 0;
+          // Backslash escape: getComputedStyle should already resolve CSS string
+          // escapes, but handling \" / \' / \\ keeps us safe if a UA returns a
+          // less-normalized value. Also track paren depth so commas inside
+          // `var(--font, 'Inter')` don't trigger a split.
+          let escapeNext = false;
+          for (const ch of fontFamily) {
+            if (escapeNext) { buf += ch; escapeNext = false; continue; }
+            if (ch === "\\") { buf += ch; escapeNext = true; continue; }
+            if (ch === "'" && !inDouble) { inSingle = !inSingle; buf += ch; continue; }
+            if (ch === '"' && !inSingle) { inDouble = !inDouble; buf += ch; continue; }
+            if (ch === "(" && !inSingle && !inDouble) { parenDepth++; buf += ch; continue; }
+            if (ch === ")" && !inSingle && !inDouble) {
+              if (parenDepth > 0) parenDepth--;
+              buf += ch;
+              continue;
+            }
+            if ((ch === "," || ch === ";") && !inSingle && !inDouble && parenDepth === 0) {
+              tokens.push(buf); buf = ""; continue;
+            }
+            buf += ch;
+          }
+          if (buf) tokens.push(buf);
+          let clean = null;
+          for (const t of tokens) {
+            const c = t.replace(/['"]/g, "").trim();
+            if (!c) continue;
+            if (/(^|\s)Placeholder$/i.test(c)) continue;
+            if (genericKeywords.has(c.toLowerCase())) continue;
+            clean = c;
+            break;
+          }
+          if (clean) {
             fonts[clean] = (fonts[clean] || 0) + 1;
 
             // Element-role classification. The same font on h1 vs body p tells

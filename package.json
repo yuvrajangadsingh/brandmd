@@ -1,6 +1,6 @@
 {
   "name": "brandmd",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Extract any website's design system into a DESIGN.md file",
   "type": "module",
   "bin": {

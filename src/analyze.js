@@ -253,18 +253,76 @@ export function analyze(raw) {
 
   // Typography
   const fontList = topByFreq(raw.fonts, 10);
-  const primaryFont = fontList[0]?.[0] || "system-ui";
-  const secondaryFont = fontList[1]?.[0] || null;
 
   // Per-element-role fonts. Frequency on h1-h6 vs paragraph tells AI tools
   // "use X for headings, Y for body" instead of a single global ranking that
   // gets dominated by whichever font happens to be on the most divs.
-  const roleFonts = (key, limit = 2) =>
+  const rawRoleFonts = (key, limit = 2) =>
     topByFreq(raw.fontsByRole?.[key] || {}, limit).map(([f]) => f);
-  const headingFonts = roleFonts("heading", 2);
-  const bodyFonts = roleFonts("body", 1);
-  const buttonFonts = roleFonts("button", 1);
-  const displayFonts = roleFonts("display", 2);
+  const rawHeading = rawRoleFonts("heading", 2);
+  const rawBody = rawRoleFonts("body", 1);
+  const rawButton = rawRoleFonts("button", 1);
+  const rawDisplay = rawRoleFonts("display", 2);
+
+  // Fix D: per-role fallback hierarchy. When a bucket is empty, cascade so the
+  // output always has a heading font and a body font, never blank.
+  // - heading: heading > display > body > global top
+  // - body: body > body-sized-from-sizes > global top
+  // - display: display only (no fallback; absent = no large fontSize present)
+  // - button: button > body
+  const globalTop = fontList[0]?.[0] || null;
+  const headingFonts =
+    rawHeading.length ? rawHeading :
+    rawDisplay.length ? rawDisplay :
+    rawBody.length ? rawBody.slice(0, 1) :
+    globalTop ? [globalTop] : [];
+  const bodyFonts =
+    rawBody.length ? rawBody :
+    globalTop ? [globalTop] : [];
+  const displayFonts = rawDisplay;
+  const buttonFonts =
+    rawButton.length ? rawButton :
+    rawBody.length ? rawBody.slice(0, 1) : [];
+
+  // Fix A: smarter Primary. Pick from heading > display > body > global, but
+  // skip monospace, common fallback fonts (Times/Arial/Georgia), and icon
+  // fonts. Body-text-by-frequency picks up Menlo on dev sites or Inter on
+  // utility-heavy sites where Geist is the actual brand on the hero.
+  // `\bmono\b` so we catch "JetBrains Mono", "Berkeley Mono", "Apercu Mono"
+  // etc. without false-positive-matching "Monotype" or "Harmonia". Explicit
+  // monospace family names below are belt-and-suspenders for cases like
+  // "GeistMono" (no whitespace) where \b would not fire.
+  const MONO_RE = /\bmono\b|menlo|consolas|courier|jetbrains|geistmono|sfmono|source code|fira code|cascadia|operator mono|ibm plex mono|figmamono|iosevka/i;
+  const FALLBACK_RE = /^(times|times new roman|arial|helvetica|georgia|verdana|tahoma|trebuchet|courier|courier new)$/i;
+  // Material Symbols (Outlined/Rounded/Sharp) is the successor to Material Icons;
+  // both can dominate counts on icon-heavy UIs and must not become Primary.
+  const ICON_RE = /(^material (icons|symbols)|font awesome|^feather$|heroicons|phosphor|^tabler([\s-]?icons?)?$|^lucide$|simple line icons|bootstrap.?icons|ionicons|^remixicon$|fontello)/i;
+  const isExcluded = (f) => !f || MONO_RE.test(f) || FALLBACK_RE.test(f) || ICON_RE.test(f);
+  const pickNonExcluded = (arr) => arr.find((f) => !isExcluded(f)) || null;
+
+  // Order matters: display (fontSize >= 40px, hero text) carries the brand
+  // signal more reliably than h1-h6 count, because a site can have many small
+  // h2/h3 in the utility font while the hero is the actual brand. See valura.ai:
+  // heading-by-count = Inter (loses to body-dominated h2/h3), but display = Manrope.
+  const primaryFont =
+    pickNonExcluded(rawDisplay) ||
+    pickNonExcluded(rawHeading) ||
+    pickNonExcluded(rawBody) ||
+    pickNonExcluded(fontList.map(([f]) => f)) ||
+    // Everything was excluded (e.g. site only has Times). Fall back to top
+    // frequency so the field is never empty.
+    fontList[0]?.[0] || "system-ui";
+
+  const allCandidates = [
+    ...rawDisplay,
+    ...rawHeading,
+    ...rawBody,
+    ...fontList.map(([f]) => f),
+  ];
+  const secondaryFont =
+    allCandidates.find((f) => f !== primaryFont && !isExcluded(f)) ||
+    allCandidates.find((f) => f !== primaryFont && MONO_RE.test(f)) ||
+    null;
 
   const allDetected = fontList.map(([font, count]) => ({
     font,
