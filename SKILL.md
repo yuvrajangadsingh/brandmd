@@ -32,7 +32,7 @@ The output follows Google Stitch's DESIGN.md format. Sections 1-5 are always pre
 
 1. **Visual Theme & Atmosphere** - mood, shape language, depth
 2. **Color Palette & Roles** - colors with semantic roles (background, text, accent, border)
-3. **Typography Rules** - font families, size scale, weights
+3. **Typography Rules** - Primary font (role-aware: display > heading > body, skipping mono/fallback/icon fonts), per-role font breakdown (Headings, Display, Body, Buttons), all detected fonts with frequencies, size scale, weights, line heights, letter spacing
 4. **Component Stylings** - buttons, cards, inputs with radii, colors, shadows
 5. **Layout Principles** - spacing scale, base grid unit, border radii
 6. **Dark Theme Overrides** (with `--dark`) - palette + atmosphere for dark mode
@@ -63,4 +63,4 @@ The output follows Google Stitch's DESIGN.md format. Sections 1-5 are always pre
 - Can't read Figma tokens or design tool files
 - Color role assignment is heuristic (based on usage frequency and luminance)
 - Requires a publicly accessible URL (no auth-gated pages)
-- `--vision` on Cloudflare-protected sites returns loading-state observations because Playwright hits the bot challenge before the brand renders. Workaround pending in v0.7.0.
+- Cloudflare-protected sites: brandmd waits up to 20s for the JS challenge to auto-resolve (`--cf-wait-ms` to tune). If the challenge persists, you get a clear error rather than garbage tokens. Hard-blocked sites (openai.com, perplexity.ai, discord.com, etc.) are correctly flagged as bot-protected and not bypassed.

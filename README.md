@@ -30,7 +30,11 @@ npx brandmd https://stripe.com
 
 One command. No API key for the default extraction. Works with [Google Stitch](https://stitch.withgoogle.com/), Claude Code, Cursor, Gemini CLI, or any AI coding agent that reads markdown context.
 
-> **New in v0.6.0:** `--vision` flag adds a "Visual Identity Beyond CSS" section to DESIGN.md — illustration style, photography mood, copywriting voice, microcopy patterns. CSS can't see these. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
+> **New in v0.8:** Primary font picker is now role-aware. Cascades through display (hero) > heading > body > global, excluding monospace, default fallbacks (Times/Arial/Georgia), and icon fonts (Material Icons/Symbols, Font Awesome, Heroicons, etc.) from Primary candidates. Tested against 100 popular design system sites: fixes 7 of 9 cases where v0.7.2 returned the wrong Primary (Menlo on mantine.dev → Outfit, Inter on valura.ai → Manrope, JetBrains Mono on remix.run → Inter Variable, etc.).
+>
+> Also new in v0.8: quote-aware font-family parser (handles `var(--font, 'Inter')` and backslash escapes), per-role cascade so heading/body sections are never blank, 45s nav timeout for slow SPAs.
+
+> **v0.6.0:** `--vision` flag adds a "Visual Identity Beyond CSS" section to DESIGN.md — illustration style, photography mood, copywriting voice, microcopy patterns. CSS can't see these. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
 
 ## Examples
 
@@ -163,7 +167,7 @@ Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palet
 
 - **CSS custom properties** from `:root` and `@media` rules (uses actual variable names when available)
 - **Colors** with semantic roles (background, text, accent, border)
-- **Typography** (font families, size scale, weights)
+- **Typography** with role-aware Primary detection (display > heading > body), per-role font breakdown, and a full "all detected fonts" frequency list. Skips monospace, default fallbacks, and icon fonts when picking Primary.
 - **Spacing scale** and base grid unit
 - **Border radii** and shadow styles
 - **Component patterns** (buttons, cards, inputs)
