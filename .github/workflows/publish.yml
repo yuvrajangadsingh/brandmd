@@ -24,11 +24,14 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           registry-url: https://registry.npmjs.org
+
+      # Trusted Publishing requires npm CLI >= 11.5.1.
+      - run: npm install -g npm@latest
 
       - run: npm ci
 
+      # Authenticates via npm Trusted Publishing (OIDC) — no long-lived NPM_TOKEN needed.
+      # Configure once at https://www.npmjs.com/package/brandmd/access (Trusted Publishers section).
       - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
