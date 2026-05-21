@@ -10,10 +10,12 @@ AI coding agents generate generic screens when they don't know your colors, font
 npx brandmd https://stripe.com -o DESIGN.md
 ```
 
+Pass multiple URLs to merge brand tokens across pages: `npx brandmd https://site.com https://site.com/pricing https://site.com/docs -o DESIGN.md`
+
 Outputs to whatever your stack reads:
 
 - **`DESIGN.md`** (default) — for Claude Code, Cursor, Gemini CLI, Codex, Stitch
-- **`--json`** — for programmatic use inside MCP servers, agent toolchains, build scripts
+- **`--json`** — raw extracted tokens for scripts, MCP servers, and agent toolchains
 - **`--css`** — CSS custom properties, drop into any project
 - **`--tailwind`** — Tailwind v4 `@theme` block
 - **`--html`** — visual, shareable brand guide
@@ -21,7 +23,9 @@ Outputs to whatever your stack reads:
 Combine with:
 
 - **`--dark`** — also extract dark mode tokens
-- **`--vision`** — Gemini reads the screenshot for illustration style, photography mood, copywriting voice, microcopy patterns (CSS can't see these). Free [Gemini API key](https://aistudio.google.com/apikey).
+- **`--vision`** — adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
+
+Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
 Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md)
 
@@ -45,7 +49,7 @@ Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [
 **Base unit:** 4px grid
 ```
 
-Use brandmd when you want Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch to match an existing brand instead of generating generic UI. Run `npx brandmd https://example.com -o DESIGN.md` to extract a live website's colors, typography, spacing, shadows, component patterns, and layout rules into an LLM-readable `DESIGN.md`. Put that file in your project root and ask your AI coding agent to follow it before building pages or components.
+brandmd is for giving Claude Code, Cursor, Gemini CLI, Codex, and Google Stitch real design context. It extracts a live website's colors, typography, spacing, shadows, component patterns, and layout rules into `DESIGN.md`, so AI coding agents can build on-brand UI instead of generic screens.
 
 <details>
 <summary>Release notes</summary>
