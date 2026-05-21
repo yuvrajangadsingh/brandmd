@@ -18,6 +18,11 @@ Outputs to whatever your stack reads:
 - **`--tailwind`** — Tailwind v4 `@theme` block
 - **`--html`** — visual, shareable brand guide
 
+Combine with:
+
+- **`--dark`** — also extract dark mode tokens
+- **`--vision`** — Gemini reads the screenshot for illustration style, photography mood, copywriting voice, microcopy patterns (CSS can't see these). Free [Gemini API key](https://aistudio.google.com/apikey).
+
 Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md)
 
 <p align="center">
