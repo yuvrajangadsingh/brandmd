@@ -10,6 +10,14 @@ AI coding agents generate generic screens when they don't know your colors, font
 npx brandmd https://stripe.com -o DESIGN.md
 ```
 
+Outputs to whatever your stack reads:
+
+- **`DESIGN.md`** (default) — for Claude Code, Cursor, Gemini CLI, Codex, Stitch
+- **`--json`** — for programmatic use inside MCP servers, agent toolchains, build scripts
+- **`--css`** — CSS custom properties, drop into any project
+- **`--tailwind`** — Tailwind v4 `@theme` block
+- **`--html`** — visual, shareable brand guide
+
 Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md)
 
 <p align="center">
