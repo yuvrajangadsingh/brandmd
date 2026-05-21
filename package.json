@@ -1,7 +1,7 @@
 {
   "name": "brandmd",
   "version": "0.8.0",
-  "description": "Extract any website's design system into a DESIGN.md file",
+  "description": "Stop Claude Code/Cursor from guessing UI. Extract any website's design system into a Stitch-ready DESIGN.md.",
   "type": "module",
   "bin": {
     "brandmd": "./bin/brandmd.js"

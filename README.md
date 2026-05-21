@@ -2,15 +2,19 @@
 
 [![npm version](https://img.shields.io/npm/v/brandmd)](https://www.npmjs.com/package/brandmd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Extract any website's design system into a `DESIGN.md`, CSS custom properties, Tailwind v4 CSS, or visual brand guide.
+Stop Claude Code, Cursor, Gemini CLI, and Google Stitch from guessing your UI. brandmd extracts any website's design system into an LLM-readable `DESIGN.md`.
 
-<p align="center">
-  <img src="demo.gif" alt="brandmd demo" width="700">
-</p>
+AI coding agents generate generic screens when they don't know your colors, fonts, spacing, components, and layout rules. Run one command, drop `DESIGN.md` in your project root, and your agent has brand context before it writes code. Default extraction runs locally with no API key.
 
 ```bash
-npx brandmd https://stripe.com
+npx brandmd https://stripe.com -o DESIGN.md
 ```
+
+Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md)
+
+<p align="center">
+  <img src="demo.gif" alt="brandmd extracting Stripe into DESIGN.md for Claude Code, Cursor, and Google Stitch" width="700">
+</p>
 
 ```
 ## 2. Color Palette & Roles
@@ -28,13 +32,16 @@ npx brandmd https://stripe.com
 **Base unit:** 4px grid
 ```
 
-One command. No API key for the default extraction. Works with [Google Stitch](https://stitch.withgoogle.com/), Claude Code, Cursor, Gemini CLI, or any AI coding agent that reads markdown context.
+Use brandmd when you want Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch to match an existing brand instead of generating generic UI. Run `npx brandmd https://example.com -o DESIGN.md` to extract a live website's colors, typography, spacing, shadows, component patterns, and layout rules into an LLM-readable `DESIGN.md`. Put that file in your project root and ask your AI coding agent to follow it before building pages or components.
 
-> **New in v0.8:** Primary font picker is now role-aware. Cascades through display (hero) > heading > body > global, excluding monospace, default fallbacks (Times/Arial/Georgia), and icon fonts (Material Icons/Symbols, Font Awesome, Heroicons, etc.) from Primary candidates. Tested against 100 popular design system sites: fixes 7 of 9 cases where v0.7.2 returned the wrong Primary (Menlo on mantine.dev → Outfit, Inter on valura.ai → Manrope, JetBrains Mono on remix.run → Inter Variable, etc.).
->
-> Also new in v0.8: quote-aware font-family parser (handles `var(--font, 'Inter')` and backslash escapes), per-role cascade so heading/body sections are never blank, 45s nav timeout for slow SPAs.
+<details>
+<summary>Release notes</summary>
 
-> **v0.6.0:** `--vision` flag adds a "Visual Identity Beyond CSS" section to DESIGN.md — illustration style, photography mood, copywriting voice, microcopy patterns. CSS can't see these. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
+- **v0.8:** More accurate primary font detection across display, heading, body, and global text roles. Quote-aware font-family parser (handles `var(--font, 'Inter')` and backslash escapes), per-role cascade so heading/body sections are never blank, 45s nav timeout for slow SPAs.
+- **v0.7:** Cloudflare-protected sites handled by waiting up to 20s for the JS challenge.
+- **v0.6:** Optional `--vision` adds illustration style, photography mood, copywriting voice, and microcopy notes to DESIGN.md. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
+
+</details>
 
 ## Examples
 
@@ -50,9 +57,7 @@ See what brandmd extracts from real sites:
 
 ## Why
 
-AI coding agents generate generic UI because they don't know your brand. Google Stitch introduced [DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) to fix this, a markdown file that encodes your design system in a format LLMs can read.
-
-Problem is, nobody wants to write one from scratch. And Stitch only generates them through its web UI.
+Google Stitch introduced [DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) — a markdown file that encodes your design system in a format LLMs can read. Problem is, nobody wants to write one from scratch, and Stitch only generates them through its web UI.
 
 brandmd does it from the terminal. Point it at any URL, get a DESIGN.md back. Drop it in your project root and your AI tools start generating on-brand UI.
 
