@@ -22,6 +22,7 @@ Outputs to whatever your stack reads:
 
 Combine with:
 
+- **`--agent`** — also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring.
 - **`--dark`** — also extract dark mode tokens
 - **`--vision`** — adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
 
@@ -54,9 +55,12 @@ brandmd is for giving Claude Code, Cursor, Gemini CLI, Codex, and Google Stitch 
 <details>
 <summary>Release notes</summary>
 
-- **v0.8:** More accurate primary font detection across display, heading, body, and global text roles. Quote-aware font-family parser (handles `var(--font, 'Inter')` and backslash escapes), per-role cascade so heading/body sections are never blank, 45s nav timeout for slow SPAs.
+- **v0.9:** `--agent` flag writes Cursor rule + Claude Code skill alongside DESIGN.md. CI switched to npm Trusted Publishing.
+- **v0.8:** More accurate primary font detection across display, heading, body, and global text roles.
 - **v0.7:** Cloudflare-protected sites handled by waiting up to 20s for the JS challenge.
-- **v0.6:** Optional `--vision` adds illustration style, photography mood, copywriting voice, and microcopy notes to DESIGN.md. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
+- **v0.6:** Optional `--vision` adds illustration style, photography mood, copywriting voice, and microcopy notes. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
+
+See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 </details>
 
