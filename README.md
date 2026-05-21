@@ -10,7 +10,7 @@ AI coding agents generate generic screens when they don't know your colors, font
 npx brandmd https://stripe.com -o DESIGN.md
 ```
 
-Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md)
+Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md)
 
 <p align="center">
   <img src="demo.gif" alt="brandmd extracting Stripe into DESIGN.md for Claude Code, Cursor, and Google Stitch" width="700">
@@ -52,6 +52,11 @@ See what brandmd extracts from real sites:
 - [GitHub](examples/github.md) (DESIGN.md)
 - [Vercel](examples/vercel.md) (DESIGN.md)
 - [Notion](examples/notion.md) (DESIGN.md)
+- [Cursor](examples/cursor.md) (DESIGN.md)
+- [Anthropic](examples/anthropic.md) (DESIGN.md)
+- [Figma](examples/figma.md) (DESIGN.md)
+- [Supabase](examples/supabase.md) (DESIGN.md)
+- [Raycast](examples/raycast.md) (DESIGN.md)
 - [Vercel](examples/vercel.css) (CSS custom properties)
 - [Linear](examples/linear-tailwind.css) (Tailwind v4)
 
