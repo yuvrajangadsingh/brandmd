@@ -1,7 +1,10 @@
 # Design System: Home \ Anthropic
 
-> Extracted from [https://anthropic.com](https://anthropic.com) by brandmd
-
+> Extracted from [https://anthropic.com](https://anthropic.com) using `npx brandmd`.
+>
+> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match Home \ Anthropic's brand when generating UI.
+>
+> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Balanced and professional

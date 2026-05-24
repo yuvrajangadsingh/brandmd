@@ -1,7 +1,10 @@
 # Design System: Linear – The system for product development
 
-> Extracted from [https://linear.app](https://linear.app) by brandmd
-
+> Extracted from [https://linear.app](https://linear.app) using `npx brandmd`.
+>
+> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match Linear – The system for product development's brand when generating UI.
+>
+> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Balanced and professional

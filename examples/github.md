@@ -1,7 +1,10 @@
 # Design System: GitHub · Change is constant. GitHub keeps you ahead. · GitHub
 
-> Extracted from [https://github.com](https://github.com) by brandmd
-
+> Extracted from [https://github.com](https://github.com) using `npx brandmd`.
+>
+> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match GitHub · Change is constant. GitHub keeps you ahead. · GitHub's brand when generating UI.
+>
+> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Balanced and professional

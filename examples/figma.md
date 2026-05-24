@@ -1,7 +1,10 @@
 # Design System: Figma: The Collaborative Interface Design Tool
 
-> Extracted from [https://figma.com](https://figma.com) by brandmd
-
+> Extracted from [https://figma.com](https://figma.com) using `npx brandmd`.
+>
+> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match Figma: The Collaborative Interface Design Tool's brand when generating UI.
+>
+> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Balanced and professional

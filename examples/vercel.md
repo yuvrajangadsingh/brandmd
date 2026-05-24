@@ -1,7 +1,10 @@
 # Design System: Vercel: Build and deploy the best web experiences with the AI Cloud
 
-> Extracted from [https://vercel.com](https://vercel.com) by brandmd
-
+> Extracted from [https://vercel.com](https://vercel.com) using `npx brandmd`.
+>
+> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match Vercel: Build and deploy the best web experiences with the AI Cloud's brand when generating UI.
+>
+> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Balanced and professional

@@ -1,7 +1,10 @@
 # Design System: Raycast - Your shortcut to everything
 
-> Extracted from [https://raycast.com](https://raycast.com) by brandmd
-
+> Extracted from [https://raycast.com](https://raycast.com) using `npx brandmd`.
+>
+> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match Raycast - Your shortcut to everything's brand when generating UI.
+>
+> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Balanced and professional

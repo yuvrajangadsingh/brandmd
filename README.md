@@ -28,7 +28,7 @@ Combine with:
 
 Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
-Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md)
+Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md) · [+20 more in the gallery](examples/README.md)
 
 <p align="center">
   <img src="demo.gif" alt="brandmd extracting Stripe into DESIGN.md for Claude Code, Cursor, and Google Stitch" width="700">
@@ -66,20 +66,13 @@ See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 ## Examples
 
-See what brandmd extracts from real sites:
+**[30 real DESIGN.md extractions in the gallery →](examples/README.md)**
 
-- [Stripe](examples/stripe.md) (DESIGN.md)
-- [Linear](examples/linear.md) (DESIGN.md)
-- [GitHub](examples/github.md) (DESIGN.md)
-- [Vercel](examples/vercel.md) (DESIGN.md)
-- [Notion](examples/notion.md) (DESIGN.md)
-- [Cursor](examples/cursor.md) (DESIGN.md)
-- [Anthropic](examples/anthropic.md) (DESIGN.md)
-- [Figma](examples/figma.md) (DESIGN.md)
-- [Supabase](examples/supabase.md) (DESIGN.md)
-- [Raycast](examples/raycast.md) (DESIGN.md)
+Grouped by category: developer tools & AI (Anthropic, Claude, Cursor, OpenAI, Hugging Face, GitHub, Raycast, Tailwind CSS, Mintlify), infra & APIs (Stripe, Vercel, Supabase, Railway, Clerk, Resend, Replit), productivity (Linear, Notion, Figma, Loom, Intercom, Atlassian), observability (PostHog, Sentry), design / no-code (Framer, Webflow), and consumer brands (Apple, Spotify, Airbnb, Shopify).
+
+Other formats also in the gallery:
 - [Vercel](examples/vercel.css) (CSS custom properties)
-- [Linear](examples/linear-tailwind.css) (Tailwind v4)
+- [Linear](examples/linear-tailwind.css) (Tailwind v4 `@theme`)
 
 ## Why
 

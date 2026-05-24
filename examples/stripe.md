@@ -1,7 +1,10 @@
 # Design System: Stripe | Financial Infrastructure to Grow Your Revenue
 
-> Extracted from [https://stripe.com](https://stripe.com) by brandmd
-
+> Extracted from [https://stripe.com](https://stripe.com) using `npx brandmd`.
+>
+> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match Stripe's brand when generating UI.
+>
+> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Dark and moody
