@@ -1,6 +1,6 @@
-# brandmd examples — 30 real design systems
+# DESIGN.md examples from 31 real sites
 
-DESIGN.md files extracted with `npx brandmd <url>` from live sites. Drop any of these into your project root and your AI coding agent (Claude Code, Cursor, Gemini CLI, Codex, Google Stitch) will start matching that brand instead of generating generic UI.
+Each file in this folder is a real `DESIGN.md` extracted with `npx brandmd <url>` from a live website. Drop any of these into your project root and your AI coding agent (Claude Code, Cursor, Gemini CLI, Codex, Google Stitch) will start matching that site's visual system instead of generating generic UI.
 
 Generate your own:
 
@@ -9,52 +9,50 @@ npx brandmd https://yoursite.com
 npx brandmd https://yoursite.com --agent   # also writes Cursor rule + Claude skill
 ```
 
-Repo: [github.com/yuvrajangadsingh/brandmd](https://github.com/yuvrajangadsingh/brandmd)
+Repo: [github.com/yuvrajangadsingh/brandmd](https://github.com/yuvrajangadsingh/brandmd) · npm: [brandmd](https://www.npmjs.com/package/brandmd)
 
 ---
 
-## Developer tools & AI
+## AI & developer tools
 
 - [Anthropic](anthropic.md) — anthropic.com
 - [Claude](claude.md) — claude.com
-- [Cursor](cursor.md) — cursor.com
 - [OpenAI](openai.md) — platform.openai.com/docs
+- [Stitch](stitch.md) — stitch.withgoogle.com
+- [Cursor](cursor.md) — cursor.com
 - [Hugging Face](huggingface.md) — huggingface.co
 - [GitHub](github.md) — github.com
 - [Raycast](raycast.md) — raycast.com
-- [Tailwind CSS](tailwindcss.md) — tailwindcss.com
+- [Replit](replit.md) — docs.replit.com
 - [Mintlify](mintlify.md) — mintlify.com
 
-## Infrastructure & APIs
+## Infra, APIs & auth
 
 - [Stripe](stripe.md) — stripe.com
 - [Vercel](vercel.md) — vercel.com
 - [Supabase](supabase.md) — supabase.com
-- [Railway](railway.md) — railway.com
+- [Railway](railway.md) — railway.app
 - [Clerk](clerk.md) — clerk.com
 - [Resend](resend.md) — resend.com
-- [Replit](replit.md) — docs.replit.com
 
-## Productivity & collab
+## Frontend, design & no-code
 
-- [Linear](linear.md) — linear.app
-- [Notion](notion.md) — notion.com
+- [Tailwind CSS](tailwindcss.md) — tailwindcss.com
 - [Figma](figma.md) — figma.com
-- [Loom](loom.md) — loom.com
-- [Intercom](intercom.md) — intercom.com
-- [Atlassian](atlassian.md) — atlassian.com
-
-## Observability & devops
-
-- [PostHog](posthog.md) — posthog.com
-- [Sentry](sentry.md) — sentry.io
-
-## Design & no-code
-
 - [Framer](framer.md) — framer.com
 - [Webflow](webflow.md) — webflow.com
 
-## Consumer brands
+## Productivity, support & ops
+
+- [Linear](linear.md) — linear.app
+- [Notion](notion.md) — notion.com
+- [Loom](loom.md) — loom.com
+- [Intercom](intercom.md) — intercom.com
+- [Atlassian](atlassian.md) — atlassian.com
+- [PostHog](posthog.md) — posthog.com
+- [Sentry](sentry.md) — sentry.io
+
+## Consumer & commerce
 
 - [Apple](apple.md) — apple.com
 - [Spotify](spotify.md) — spotify.com
@@ -65,7 +63,7 @@ Repo: [github.com/yuvrajangadsingh/brandmd](https://github.com/yuvrajangadsingh/
 
 ## Other output formats
 
-brandmd can also emit CSS custom properties, a Tailwind v4 theme block, JSON tokens, or an HTML brand guide. A couple of examples in this folder:
+brandmd can also emit CSS custom properties, a Tailwind v4 theme block, JSON tokens, or an HTML brand guide. Samples:
 
 - [Vercel](vercel.css) — CSS custom properties (`--css`)
 - [Linear](linear-tailwind.css) — Tailwind v4 `@theme` block (`--tailwind`)

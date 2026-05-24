@@ -1,10 +1,10 @@
 # Design System: Collaboration software for software, IT and business teams | Atlassian
 
-> Extracted from [https://atlassian.com](https://atlassian.com) using `npx brandmd`.
+> This is a real `DESIGN.md` example generated from [https://atlassian.com](https://atlassian.com) with `npx brandmd`.
 >
-> Drop this file in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can match Collaboration software for software, IT and business teams's brand when generating UI.
+> Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
-> Generate your own: `npx brandmd https://yoursite.com` ([repo](https://github.com/yuvrajangadsingh/brandmd))
+> Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 ## 1. Visual Theme & Atmosphere
 
 **Overall mood:** Balanced and professional

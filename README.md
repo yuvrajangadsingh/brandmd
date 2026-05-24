@@ -66,11 +66,26 @@ See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 ## Examples
 
-**[30 real DESIGN.md extractions in the gallery →](examples/README.md)**
+**[See all 31 DESIGN.md examples in the gallery →](examples/README.md)**
 
-Grouped by category: developer tools & AI (Anthropic, Claude, Cursor, OpenAI, Hugging Face, GitHub, Raycast, Tailwind CSS, Mintlify), infra & APIs (Stripe, Vercel, Supabase, Railway, Clerk, Resend, Replit), productivity (Linear, Notion, Figma, Loom, Intercom, Atlassian), observability (PostHog, Sentry), design / no-code (Framer, Webflow), and consumer brands (Apple, Spotify, Airbnb, Shopify).
+Flagship deep links (DESIGN.md):
 
-Other formats also in the gallery:
+- [Stitch](examples/stitch.md)
+- [Stripe](examples/stripe.md)
+- [Linear](examples/linear.md)
+- [GitHub](examples/github.md)
+- [Vercel](examples/vercel.md)
+- [Notion](examples/notion.md)
+- [Cursor](examples/cursor.md)
+- [Anthropic](examples/anthropic.md)
+- [Figma](examples/figma.md)
+- [Supabase](examples/supabase.md)
+- [Raycast](examples/raycast.md)
+- [OpenAI](examples/openai.md)
+- [Tailwind CSS](examples/tailwindcss.md)
+
+Other output formats:
+
 - [Vercel](examples/vercel.css) (CSS custom properties)
 - [Linear](examples/linear-tailwind.css) (Tailwind v4 `@theme`)
 
