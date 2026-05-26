@@ -14,17 +14,17 @@ Pass multiple URLs to merge brand tokens across pages: `npx brandmd https://site
 
 Outputs to whatever your stack reads:
 
-- **`DESIGN.md`** (default) — for Claude Code, Cursor, Gemini CLI, Codex, Stitch
-- **`--json`** — raw extracted tokens for scripts, MCP servers, and agent toolchains
-- **`--css`** — CSS custom properties, drop into any project
-- **`--tailwind`** — Tailwind v4 `@theme` block
-- **`--html`** — visual, shareable brand guide
+- **`DESIGN.md`** (default): for Claude Code, Cursor, Gemini CLI, Codex, Stitch
+- **`--json`**: raw extracted tokens for scripts, MCP servers, and agent toolchains
+- **`--css`**: CSS custom properties, drop into any project
+- **`--tailwind`**: Tailwind v4 `@theme` block
+- **`--html`**: visual, shareable brand guide
 
 Combine with:
 
-- **`--agent`** — also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring.
-- **`--dark`** — also extract dark mode tokens
-- **`--vision`** — adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
+- **`--agent`**: also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring.
+- **`--dark`**: also extract dark mode tokens
+- **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
 
 Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
@@ -91,7 +91,7 @@ Other output formats:
 
 ## Why
 
-Google Stitch introduced [DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) — a markdown file that encodes your design system in a format LLMs can read. Problem is, nobody wants to write one from scratch, and Stitch only generates them through its web UI.
+Google Stitch introduced [DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview), a markdown file that encodes your design system in a format LLMs can read. Problem is, nobody wants to write one from scratch, and Stitch only generates them through its web UI.
 
 brandmd does it from the terminal. Point it at any URL, get a DESIGN.md back. Drop it in your project root and your AI tools start generating on-brand UI.
 

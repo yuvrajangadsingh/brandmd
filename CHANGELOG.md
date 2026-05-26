@@ -6,7 +6,7 @@ All notable changes to brandmd are documented here. The format roughly follows [
 
 ### Added
 
-- **`--agent` flag** — writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` alongside `DESIGN.md`, so Claude Code and Cursor pick up the brand context automatically without any manual wiring.
+- **`--agent` flag**: writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` alongside `DESIGN.md`, so Claude Code and Cursor pick up the brand context automatically without any manual wiring.
   - The Cursor rule is Auto Attached on UI files (`**/*.{tsx,jsx,ts,vue,svelte,css,scss,html,astro,mdx}`)
   - The Claude Code skill is auto-discoverable by description and points at `DESIGN.md` as the source of truth
   - Wrappers reference `@DESIGN.md` rather than inlining tokens, so updates to `DESIGN.md` propagate automatically
@@ -44,7 +44,7 @@ All notable changes to brandmd are documented here. The format roughly follows [
 
 ### Added
 
-- **`--vision` flag.** Adds a "Visual Identity Beyond CSS" section to DESIGN.md — illustration style, photography mood, copywriting voice, microcopy patterns. CSS can't see these. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
+- **`--vision` flag.** Adds a "Visual Identity Beyond CSS" section to DESIGN.md covering illustration style, photography mood, copywriting voice, microcopy patterns. CSS can't see these. Requires a free [Gemini API key](https://aistudio.google.com/apikey).
 
 ## [0.5.0] - 2026-04-16
 
