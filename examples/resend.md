@@ -13,22 +13,22 @@
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Depth:** Uses 4 shadow styles for layering and elevation.
+**Depth:** Uses 3 shadow styles for layering and elevation.
 
 ## 2. Color Palette & Roles
 
-- **Black** (`#000000`) — Dark background / footer
-- **Light Blue** (`#D6EBFD30`) — Surface / card background
-- **Light Cyan** (`#22FF991E`) — Surface / card background
-- **Red** (`#FF173F2D`) — Accent background
-- **Orange** (`#FA820022`) — Accent background
-- **Light Yellow** (`#FFD60A`) — Accent background
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Medium gray** (`#A1A4A5`) — Muted text
-- **Dark gray** (`#464A4D`) — Primary text
-- **Black** (`#00000000`) — Primary text
-- **White** (`#FFFFFF0D`) — Divider / border
-- **Dark Muted Blue** (`#262A2D`) — Divider / border
+- **Black** (`#000000`): Dark background / footer
+- **Light Blue** (`#D6EBFD30`): Surface / card background
+- **Light Cyan** (`#22FF991E`): Surface / card background
+- **Red** (`#FF173F2D`): Accent background
+- **Dark Muted Blue** (`#6A7282`): Secondary background
+- **Dark Purple** (`#8354FE36`): Accent background
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Medium gray** (`#A1A4A5`): Muted text
+- **Dark gray** (`#464A4D`): Primary text
+- **Black** (`#00000000`): Primary text
+- **White** (`#FFFFFF0D`): Divider / border
+- **Dark Muted Blue** (`#262A2D`): Divider / border
 
 ## 3. Typography Rules
 
@@ -39,7 +39,7 @@
 - Headings: aBCFavorit, domaine
 - Body: inter
 
-**All detected fonts:** inter (1572), commitMono (733), aBCFavorit (30), Helvetica (22), Segoe UI (15), domaine (2), Arial (2)
+**All detected fonts:** inter (1340), commitMono (727), aBCFavorit (29), Helvetica (22), domaine (2)
 
 **Type scale:**
 - Headings: 24px, 56px, 76.8px, 96px
@@ -48,7 +48,7 @@
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 24px, 16px, 20px, 22.4px, 0px, 27px, 21px, 67.2px, 14px, 26px
+**Line heights:** 24px, 16px, 20px, 22.4px, 27px, 67.2px, 14px, 26px, 33.6px, 96px
 
 **Letter spacing:** -2.8px, 0.35px, -0.8px, -0.96px, -0.768px
 
@@ -60,11 +60,13 @@
 - Font: 14px, weight 500
 
 ### Cards
-- Shadow: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(176, 199, 217, 0.145) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
+- Shadow: `rgb(0, 0, 0) 0px 0px 0px 8px`
 - Corner radius: 4px
 
 ### Inputs
-- Border color: `#FFFFFF0D`
+- Border: 0px none rgb(240, 240, 240)
+- Padding: 0px 0px 0px 0px
+- Font size: 16px
 
 ## 5. Layout Principles
 

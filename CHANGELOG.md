@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.9.1] - 2026-05-26
+
+### Changed
+
+- Generator output now uses colons instead of em dashes in palette descriptions. `**White** (`#FFFFFF`): Page background` instead of `... — Page background`. Cleaner consistency across all generated DESIGN.md files.
+
 ## [0.9.0] - 2026-05-21
 
 ### Added

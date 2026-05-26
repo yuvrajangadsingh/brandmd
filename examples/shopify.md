@@ -17,14 +17,14 @@
 
 ## 2. Color Palette & Roles
 
-- **Black** (`#000000`) — Dark background / footer
-- **White** (`#FFFFFF`) — Page background
-- **Dark Purple** (`#5A31F4`) — Accent background
-- **Dark Cyan** (`#072720`) — Dark background / footer
-- **Muted Blue** (`#A1A1AA`) — Muted text
-- **Light Cyan** (`#36F4A4`) — Link / accent text
-- **Light Muted Blue** (`#E5E7EB`) — Divider / border
-- **Dark Muted Blue** (`#1E2C31`) — Divider / border
+- **Black** (`#000000`): Dark background / footer
+- **White** (`#FFFFFF`): Page background
+- **Dark Purple** (`#5A31F4`): Accent background
+- **Dark Cyan** (`#072720`): Dark background / footer
+- **Muted Blue** (`#A1A1AA`): Muted text
+- **Light Cyan** (`#36F4A4`): Link / accent text
+- **Light Muted Blue** (`#E5E7EB`): Divider / border
+- **Dark Muted Blue** (`#1E2C31`): Divider / border
 
 ## 3. Typography Rules
 
@@ -34,9 +34,8 @@
 **Fonts by role:**
 - Headings: NeueHaasGrotesk, Inter-Variable
 - Body: NeueHaasGrotesk
-- Buttons / nav: Inter-Variable
 
-**All detected fonts:** NeueHaasGrotesk (608), Inter-Variable (412), SFMono-Regular (4)
+**All detected fonts:** NeueHaasGrotesk (561), Inter-Variable (407), SFMono-Regular (4)
 
 **Type scale:**
 - Headings: 24px, 28px, 32px, 48px, 55px, 70px, 96px
@@ -45,7 +44,7 @@
 
 **Weights in use:** 330, 360, 400, 420, 500, 550
 
-**Line heights:** 24px, 20px, 96px, 28px, 22.56px, 20.8px, 64px, 18px, 14.4px, 54.72px
+**Line heights:** 24px, 20px, 96px, 22.56px, 20.8px, 28px, 64px, 18px, 14.4px, 54.72px
 
 **Letter spacing:** 0.72px, 0.28px, 0.3px, 0.32px, 0.42px, 2.4px
 

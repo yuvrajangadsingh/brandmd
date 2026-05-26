@@ -17,11 +17,11 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Black** (`#000000`) — Dark background / footer
-- **Dark Blue** (`#0007CB`) — Dark background / footer
-- **Orange** (`#FF5600`) — Accent background
-- **Light Muted Orange** (`#DEDBD6`) — Divider / border
+- **White** (`#FFFFFF`): Page background
+- **Black** (`#000000`): Dark background / footer
+- **Dark Blue** (`#0007CB`): Dark background / footer
+- **Orange** (`#FF5600`): Accent background
+- **Light Muted Orange** (`#DEDBD6`): Divider / border
 
 ## 3. Typography Rules
 
@@ -32,7 +32,7 @@
 - Headings: Saans
 - Body: Saans
 
-**All detected fonts:** Saans (806), SaansMono (129), Serrif (34), MediumLL (19), Segoe UI Symbol (3)
+**All detected fonts:** Saans (800), SaansMono (129), Serrif (34), MediumLL (19), Segoe UI Symbol (3)
 
 **Type scale:**
 - Headings: 24px, 25.6px, 28px, 40px, 54px, 80px

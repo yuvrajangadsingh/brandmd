@@ -17,15 +17,15 @@
 
 ## 2. Color Palette & Roles
 
-- **Black** (`#1E1E1F`) — Dark background / footer
-- **Dark gray** (`#77716F`) — Secondary background
-- **Red** (`#FF3C00`) — Accent background
-- **White** (`#FFFFFF08`) — Page background
-- **Medium gray** (`#A6A09E`) — Muted text
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Dark gray** (`#57514F`) — Primary text
-- **Dark Muted Orange** (`#2D2725`) — Divider / border
-- **White** (`#FFFFFF1A`) — Divider / border
+- **Black** (`#1E1E1F`): Dark background / footer
+- **Dark gray** (`#77716F`): Secondary background
+- **Red** (`#FF3C00`): Accent background
+- **White** (`#FFFFFF08`): Page background
+- **Medium gray** (`#A6A09E`): Muted text
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Dark gray** (`#57514F`): Primary text
+- **Dark Muted Orange** (`#2D2725`): Divider / border
+- **White** (`#FFFFFF1A`): Divider / border
 
 ## 3. Typography Rules
 
@@ -36,7 +36,7 @@
 - Headings: ABC Diatype Plus
 - Body: ABC Diatype Plus
 
-**All detected fonts:** ABC Diatype Plus (569), Inter (1), JetBrains Mono (1)
+**All detected fonts:** ABC Diatype Plus (566), Inter (1), JetBrains Mono (1)
 
 **Type scale:**
 - Headings: 24px, 30px

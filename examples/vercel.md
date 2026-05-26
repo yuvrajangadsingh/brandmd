@@ -17,48 +17,72 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FAFAFA`) — Page background
-- **Black** (`#171717`) — Dark background / footer
-- **Dark gray** (`#666666`) — Secondary background
-- **Dark gray** (`#4D4D4D`) — Primary text
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Dark gray** (`#8F8F8F`) — Secondary text
-- **Black** (`#00000014`) — Divider / border
-- **Light gray** (`#EAEAEA`) — Divider / border
+- **White** (`#FAFAFA`): Page background
+- **Black** (`#171717`): Dark background / footer
+- **Dark Blue** (`#0070F3`): Accent background
+- **Dark gray** (`#4D4D4D`): Primary text
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Dark gray** (`#8F8F8F`): Secondary text
+- **Light gray** (`#EBEBEB`): Divider / border
+- **Black** (`#00000014`): Divider / border
 
 ## 3. Typography Rules
 
 **Primary font:** Geist
-**Secondary font:** Geist Mono
+**Secondary font:** geistMonoFont
 
-**Size scale:**
+**Fonts by role:**
+- Headings: Geist, geistMonoFont
+- Body: Geist
+
+**Type scale:**
 - Headings: 24px, 32px, 48px
 - Body / UI: 14px, 16px, 20px
 - Captions / Small: 8px, 12px
 
 **Weights in use:** 400, 500, 600
 
+**Line heights:** 21px, 24px, 20px, 16px, 14px, 40px, 12px, 32px, 8px, 48px
+
+**Letter spacing:** -1.28px, -0.96px, -0.32px, -2.4px
+
 ## 4. Component Stylings
 
 ### Buttons
-- Corner radius: 2px
-- Primary action color: `#4D4D4D` (Dark gray)
+- Background: `rgb(255, 255, 255)`
+- Text color: `rgb(23, 23, 23)`
+- Corner radius: 6px
+- Padding: 0px 6px 0px 6px
+- Font: 14px, weight 500
 
 ### Cards
 - Shadow: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`
 - Corner radius: 2px
 
 ### Inputs
-- Border color: `#00000014`
-- Corner radius: 2px
+- Border color: `#EBEBEB`
 
 ## 5. Layout Principles
 
-**Spacing scale:** 2px, 3px, 4px, 6px, 8px, 10px, 12px, 48px
+**Spacing scale:** 1px, 2px, 3px, 6px, 8px, 10px, 12px, 48px
 
-**Base unit:** 4px grid (values are mostly multiples of 4).
+**Base unit:** 8px grid (values are mostly multiples of 8).
 
-**Border radii:** 2px, 4px, 6px, 100px, 9999px
+**Border radii:** 2px, 4px, 6px, 100px, 100%, 9999px
+
+## 6. Guidelines
+
+### Do
+- Use 8px grid for all spacing
+- Use `#0070F3` for primary actions and CTAs
+- Stick to 3 font weights: 400, 500, 600
+- Use `Geist` as the primary typeface
+
+### Don't
+- Don't introduce colors outside the palette above
+- Don't mix fonts beyond Geist and geistMonoFont
+- Don't use inline styles when the design system covers the pattern
+- Don't use border-radius values outside: 2px, 4px, 6px, 100px, 100%, 9999px
 
 ---
 

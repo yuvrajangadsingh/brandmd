@@ -13,17 +13,17 @@
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Depth:** Uses 3 shadow styles for layering and elevation.
+**Depth:** Uses 1 shadow style for layering and elevation.
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Black** (`#222222`) — Dark background / footer
-- **Dark Red** (`#E00B41`) — Accent background
-- **Black** (`#000000`) — Primary text
-- **Dark gray** (`#6A6A6A`) — Secondary text
-- **Red** (`#FF385C`) — Secondary text
-- **Light gray** (`#DDDDDD`) — Divider / border
+- **White** (`#FFFFFF`): Page background
+- **Dark Red** (`#E00B41`): Accent background
+- **Black** (`#00000040`): Dark background / footer
+- **Black** (`#000000`): Primary text
+- **Dark gray** (`#6A6A6A`): Secondary text
+- **Red** (`#FF385C`): Secondary text
+- **Light gray** (`#DDDDDD`): Divider / border
 
 ## 3. Typography Rules
 
@@ -34,15 +34,13 @@
 - Body: Airbnb Cereal VF
 
 **Type scale:**
-- Headings: 26px, 28px
-- Body / UI: 14px, 16px, 21px, 22px
-- Captions / Small: 8px, 12px
+- Headings: 28px
+- Body / UI: 14px, 16px
+- Captions / Small: 12px
 
-**Weights in use:** 400, 500, 600, 700
+**Weights in use:** 400, 500, 700
 
-**Line heights:** 20.02px, 18px, 0px, 10px, 20px, 16px, 11.44px, 22px, 40.04px, 26px
-
-**Letter spacing:** 0.32px, -0.44px, -0.52px
+**Line heights:** 20.02px, 18px, 16px, 40.04px
 
 ## 4. Component Stylings
 
@@ -53,33 +51,33 @@
 - Font: 14px, weight 400
 
 ### Cards
-- Shadow: `rgba(60, 77, 107, 0.25) 0px 0.953955px 1.90791px 0px, rgba(60, 77, 107, 0.25) 0px 3.81582px 5.72373px 0px, rgb(0, 28, 64) 0px 0px 2px 0.5px inset, rgb(215, 235, 255) 0px -1px 3px 0px inset`
-- Corner radius: 1.5px 0px 0px 1.5px
+- Shadow: `rgba(0, 0, 0, 0.02) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 8px 24px 0px`
+- Corner radius: 4px
 
 ### Inputs
 - Border color: `#DDDDDD`
 
 ## 5. Layout Principles
 
-**Spacing scale:** 4px, 6px, 8px, 10px, 12px, 15px, 24px, 48px
+**Spacing scale:** 2px, 8px, 10px, 11px, 12px, 15px, 24px, 48px
 
-**Base unit:** 4px grid (values are mostly multiples of 4).
+**Base unit:** 8px grid (values are mostly multiples of 8).
 
-**Border radii:** 1.5px 0px 0px 1.5px, 4px, 8px, 10px 10px 10px 2px, 32px, 50%, 50px, 100px
+**Border radii:** 4px, 8px, 20px, 32px, 50%, 50px, 100px
 
 ## 6. Guidelines
 
 ### Do
-- Use 4px grid for all spacing
+- Use 8px grid for all spacing
 - Use `#E00B41` for primary actions and CTAs
-- Stick to 4 font weights: 400, 500, 600, 700
+- Stick to 3 font weights: 400, 500, 700
 - Use `Airbnb Cereal VF` as the primary typeface
 
 ### Don't
 - Don't introduce colors outside the palette above
 - Don't mix fonts. Use Airbnb Cereal VF everywhere
 - Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 1.5px 0px 0px 1.5px, 4px, 8px, 10px 10px 10px 2px, 32px, 50%, 50px, 100px
+- Don't use border-radius values outside: 4px, 8px, 20px, 32px, 50%, 50px, 100px
 
 ---
 

@@ -17,14 +17,14 @@
 
 ## 2. Color Palette & Roles
 
-- **Light Yellow** (`#FAF9F5`) — Page background
-- **Black** (`#141413`) — Dark background / footer
-- **Dark gray** (`#5E5D59`) — Secondary background
-- **Orange** (`#C6613F`) — Accent background
-- **Black** (`#000000`) — Primary text
-- **Dark gray** (`#87867F`) — Secondary text
-- **Light Muted Yellow** (`#D1CFC5`) — Divider / border
-- **Black** (`#30302E`) — Divider / border
+- **Light Yellow** (`#FAF9F5`): Page background
+- **Black** (`#141413`): Dark background / footer
+- **Dark gray** (`#5E5D59`): Secondary background
+- **Orange** (`#C6613F`): Accent background
+- **Black** (`#000000`): Primary text
+- **Muted Yellow** (`#B0AEA5`): Muted text
+- **Light Muted Yellow** (`#D1CFC5`): Divider / border
+- **Black** (`#30302E`): Divider / border
 
 ## 3. Typography Rules
 
@@ -35,25 +35,26 @@
 - Headings: anthropicSans, anthropicSerif
 - Body: anthropicSans
 
-**All detected fonts:** anthropicSans (770), anthropicSerif (10), Segoe UI (1)
+**All detected fonts:** anthropicSans (782), anthropicSerif (11), Segoe UI (1)
 
 **Type scale:**
-- Headings: 24px, 30px, 52px
+- Headings: 24px, 25px, 30px, 52px
 - Body / UI: 14px, 15px, 16px, 17px
 - Captions / Small: 11px, 12px
 
 **Weights in use:** 330, 400, 500, 600, 700
 
-**Line heights:** 22.5px, 18px, 26px, 24px, 17.25px, 19.55px, 28px, 36px, 20px, 16px
+**Line heights:** 22.5px, 18px, 26px, 24px, 19.55px, 17.25px, 28px, 36px, 20px, 16px
 
 **Letter spacing:** 0.15px
 
 ## 4. Component Stylings
 
 ### Buttons
-- Text color: `rgb(48, 48, 46)`
-- Padding: 8px 0px 8px 0px
-- Font: 15px, weight 400
+- Text color: `rgb(250, 249, 245)`
+- Corner radius: 8px
+- Padding: 8px 16px 8px 16px
+- Font: 17px, weight 500
 
 ### Cards
 - Padding: 0px 0px 0px 0px

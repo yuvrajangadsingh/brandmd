@@ -17,41 +17,54 @@
 
 ## 2. Color Palette & Roles
 
-- **Dark Muted Blue** (`#0D1117`) — Dark background / footer
-- **White** (`#FFFFFF`) — Page background
-- **Dark Green** (`#1A7F37`) — Accent background
-- **Dark Blue** (`#1F6FEB`) — Accent background
-- **Light Blue** (`#F0F6FC`) — Light text (on dark)
-- **Dark Muted Blue** (`#24292F`) — Primary text
-- **Muted Blue** (`#8B949E`) — Secondary text
-- **Blue** (`#79C0FF`) — Link / accent text
-- **Dark Muted Blue** (`#484F58`) — Divider / border
+- **Dark Muted Blue** (`#0D1117`): Dark background / footer
+- **White** (`#FFFFFF`): Page background
+- **Dark Green** (`#08872B`): Accent background
+- **Dark Blue** (`#1F6FEB`): Accent background
+- **Light Blue** (`#F0F6FC`): Light text (on dark)
+- **Dark Muted Blue** (`#1F2328`): Primary text
+- **Muted Green** (`#A4AEA6`): Muted text
+- **Light Blue** (`#8DD6FF`): Link / accent text
+- **Light Muted Blue** (`#D1D9E0`): Divider / border
 
 ## 3. Typography Rules
 
 **Primary font:** Mona Sans
 **Secondary font:** Mona Sans VF
 
-**Size scale:**
+**Fonts by role:**
+- Headings: Mona Sans, SFMono-Regular
+- Body: Mona Sans
+
+**All detected fonts:** Mona Sans (1100), Mona Sans VF (197), Mona Sans Mono (17), SFMono-Regular (4)
+
+**Type scale:**
 - Headings: 24px, 40px, 48px, 64px
 - Body / UI: 14px, 16px, 18px, 22px
 - Captions / Small: 12px
 
 **Weights in use:** 400, 425, 460, 480, 500, 600
 
+**Line heights:** 24px, 17.5px, 21px, 27px, 18px, 12px, 30.8px, 20.8px, 48px, 20px
+
+**Letter spacing:** 0.24px, 0.18px, 0.5px, 0.21px, -2.24px
+
 ## 4. Component Stylings
 
 ### Buttons
-- Corner radius: 6px
-- Primary action color: `#1A7F37` (Dark Green)
+- Text color: `rgb(255, 255, 255)`
+- Padding: 8px 8px 8px 8px
+- Font: 16px, weight 400
 
 ### Cards
-- Shadow: `rgba(209, 217, 224, 0.5) 0px 0px 0px 1px, rgba(37, 41, 46, 0.04) 0px 6px 12px -3px, rgba(37, 41, 46, 0.12) 0px 6px 18px 0px`
+- Shadow: `rgba(209, 217, 224, 0.25) 0px 0px 0px 1px, rgba(37, 41, 46, 0.04) 0px 6px 12px -3px, rgba(37, 41, 46, 0.12) 0px 6px 18px 0px`
 - Corner radius: 6px
 
 ### Inputs
-- Border color: `#484F58`
+- Border: 0px none rgba(0, 0, 0, 0)
 - Corner radius: 6px
+- Padding: 0px 0px 0px 0px
+- Font size: 14px
 
 ## 5. Layout Principles
 
@@ -60,6 +73,19 @@
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
 **Border radii:** 6px, 8px, 16px 0px 0px, 16px, 24px 24px 0px 0px, 24px, 50%, 60px
+
+## 6. Guidelines
+
+### Do
+- Use 4px grid for all spacing
+- Use `#08872B` for primary actions and CTAs
+- Use `Mona Sans` as the primary typeface
+
+### Don't
+- Don't introduce colors outside the palette above
+- Don't mix fonts beyond Mona Sans and Mona Sans VF
+- Don't use inline styles when the design system covers the pattern
+- Don't use border-radius values outside: 6px, 8px, 16px 0px 0px, 16px, 24px 24px 0px 0px, 24px, 50%, 60px
 
 ---
 

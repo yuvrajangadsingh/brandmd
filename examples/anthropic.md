@@ -17,11 +17,11 @@
 
 ## 2. Color Palette & Roles
 
-- **Light Yellow** (`#FAF9F5`) — Page background
-- **Black** (`#141413`) — Dark background / footer
-- **Black** (`#000000`) — Primary text
-- **Dark gray** (`#87867F`) — Secondary text
-- **Muted Yellow** (`#B0AEA5`) — Divider / border
+- **Light Yellow** (`#FAF9F5`): Page background
+- **Black** (`#141413`): Dark background / footer
+- **Black** (`#000000`): Primary text
+- **Dark gray** (`#87867F`): Secondary text
+- **Muted Yellow** (`#B0AEA5`): Divider / border
 
 ## 3. Typography Rules
 
@@ -33,7 +33,7 @@
 - Body: Anthropic Sans
 - Buttons / nav: Anthropic Serif
 
-**All detected fonts:** Anthropic Sans (420), Anthropic Serif (266), Anthropic Mono (6)
+**All detected fonts:** Anthropic Sans (426), Anthropic Serif (266), Anthropic Mono (6)
 
 **Type scale:**
 - Headings: 24px, 60.8653px, 90.7755px

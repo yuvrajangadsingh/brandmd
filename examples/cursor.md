@@ -17,16 +17,15 @@
 
 ## 2. Color Palette & Roles
 
-- **Light Muted Yellow** (`#F7F7F4`) — Page background
-- **Dark Muted Yellow** (`#26251E`) — Dark background / footer
-- **Orange** (`#C08532`) — Accent background
-- **Dark Blue** (`#3A6A9F14`) — Accent background
-- **Dark Cyan** (`#34785C`) — Secondary background
-- **Green** (`#22C55E1F`) — Accent background
-- **Black** (`#000000`) — Primary text
-- **Dark Red** (`#E7000B`) — Secondary text
-- **Dark Cyan** (`#1F8A65`) — Secondary text
-- **Light Muted Yellow** (`#F2F1ED`) — Divider / border
+- **Light Muted Yellow** (`#F7F7F4`): Page background
+- **Dark Muted Yellow** (`#26251E`): Dark background / footer
+- **Orange** (`#C08532`): Accent background
+- **Dark Blue** (`#3A6A9F14`): Accent background
+- **Dark Cyan** (`#34785C`): Secondary background
+- **Black** (`#000000`): Primary text
+- **Orange** (`#F54E00`): Secondary text
+- **Blue** (`#9E94D5`): Muted text
+- **Light Muted Yellow** (`#F2F1ED`): Divider / border
 
 ## 3. Typography Rules
 
@@ -37,7 +36,7 @@
 - Headings: CursorGothic, Segoe UI
 - Body: CursorGothic
 
-**All detected fonts:** CursorGothic (975), Segoe UI (304), berkeleyMono (277), EB Garamond (135), Lato (69), CursorIcons16 (6)
+**All detected fonts:** CursorGothic (935), Segoe UI (241), EB Garamond (141), berkeleyMono (131), Lato (69), CursorIcons16 (6)
 
 **Type scale:**
 - Headings: 26px, 36px, 72px
@@ -46,9 +45,9 @@
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 24px, 20px, 16px, 21px, 19.5px, 14px, 18.6666px, 23.328px, 18px, 17.3333px
+**Line heights:** 24px, 21px, 20px, 14px, 16px, 18.6666px, 23.328px, 17.3333px, 20.15px, 18px
 
-**Letter spacing:** 0.14px, 0.0484px, 0.08px, -0.11px, 0.0528px, -0.325px
+**Letter spacing:** 0.14px, 0.08px, 0.0484px, -0.11px, 0.0528px, -0.325px
 
 ## 4. Component Stylings
 
@@ -70,11 +69,11 @@
 
 ## 5. Layout Principles
 
-**Spacing scale:** 2px, 4px, 4.66667px, 6px, 8px, 12px, 16px, 17.5px
+**Spacing scale:** 2px, 3px, 4px, 4.66667px, 6px, 8px, 12px, 17.5px
 
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
-**Border radii:** 2px, 3px, 4px, 8px, 10px, 12px, 3.35544e+07px
+**Border radii:** 1.5px, 2px, 3px, 4px, 8px, 10px, 12px, 3.35544e+07px
 
 ## 6. Guidelines
 
@@ -88,7 +87,7 @@
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond CursorGothic and Segoe UI
 - Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 2px, 3px, 4px, 8px, 10px, 12px, 3.35544e+07px
+- Don't use border-radius values outside: 1.5px, 2px, 3px, 4px, 8px, 10px, 12px, 3.35544e+07px
 
 ---
 

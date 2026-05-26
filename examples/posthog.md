@@ -13,20 +13,20 @@
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Depth:** Uses 3 shadow styles for layering and elevation.
+**Depth:** Uses 2 shadow styles for layering and elevation.
 
 ## 2. Color Palette & Roles
 
-- **Light Muted Green** (`#E5E7E0BF`) — Surface / card background
-- **Orange** (`#CD8407`) — Accent background
-- **Red** (`#F35454`) — Accent background
-- **Green** (`#6AA84F`) — Secondary background
-- **Dark gray** (`#65675E`) — Secondary text
-- **Black** (`#000000`) — Primary text
-- **Dark Muted Blue** (`#374151`) — Primary text
-- **Medium gray** (`#9EA096`) — Muted text
-- **Muted Green** (`#BFC1B7`) — Divider / border
-- **Orange** (`#B17816`) — Focus / active border
+- **Light Orange** (`#E1D7C2`): Secondary background
+- **Orange** (`#CD8407`): Accent background
+- **Orange** (`#F54E00`): Accent background
+- **Blue** (`#2F80FA`): Accent background
+- **Green** (`#6AA84F`): Secondary background
+- **Dark Muted Green** (`#4D4F46`): Primary text
+- **Black** (`#000000`): Primary text
+- **Dark Muted Blue** (`#374151`): Primary text
+- **Medium gray** (`#9EA096`): Muted text
+- **Orange** (`#B17816`): Focus / active border
 
 ## 3. Typography Rules
 
@@ -37,36 +37,36 @@
 - Headings: IBM Plex Sans Variable
 - Body: IBM Plex Sans Variable
 
-**All detected fonts:** IBM Plex Sans Variable (1095), SFMono-Regular (6), Source Code Pro (1)
+**All detected fonts:** IBM Plex Sans Variable (796), SFMono-Regular (6), Source Code Pro (1)
 
 **Type scale:**
-- Headings: 24px, 36px
-- Body / UI: 14px, 15px, 16px, 18px, 19.2857px, 20px, 21.4286px
+- Headings: 24px
+- Body / UI: 14px, 15px, 16px, 18px, 20px
 - Captions / Small: 12px, 13px
 
 **Weights in use:** 400, 500, 600, 700, 800
 
-**Line heights:** 25.7143px, 24px, 20px, 22.5px, 13px, 17.875px, 21px, 16px, 16.25px, 32px
+**Line heights:** 25.7143px, 24px, 20px, 22.5px, 17.875px, 21px, 16px, 16.25px, 32px, 13px
 
-**Letter spacing:** -0.6px, -0.535714px, -0.482143px
+**Letter spacing:** -0.6px
 
 ## 4. Component Stylings
 
 ### Buttons
-- Text color: `rgb(35, 37, 29)`
-- Corner radius: 4px
-- Padding: 2px 8px 2px 8px
-- Font: 13px, weight 500
+- Text color: `rgb(77, 79, 70)`
+- Padding: 0px 0px 0px 0px
+- Font: 16px, weight 400
 
 ### Cards
-- Padding: 16px 32px 16px 32px
+- Shadow: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`
+- Corner radius: 0px 0px 6px 6px
 
 ### Inputs
-- Border color: `#BFC1B7`
+- Border color: `#B17816`
 
 ## 5. Layout Principles
 
-**Spacing scale:** 2px, 4px, 4.28571px, 6px, 8px, 10px, 16px, 17.1429px
+**Spacing scale:** 2px, 4px, 4.28571px, 6px, 6.42857px, 8px, 12px, 16px
 
 **Base unit:** 4px grid (values are mostly multiples of 4).
 

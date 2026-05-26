@@ -17,16 +17,16 @@
 
 ## 2. Color Palette & Roles
 
-- **Light Purple** (`#F8EEFE`) — Surface / card background
-- **Dark Blue** (`#1868DB`) — Accent background
-- **Dark Muted Blue** (`#101214`) — Dark background / footer
-- **Green** (`#82B536`) — Accent background
-- **Light Green** (`#EFFFD6`) — Page background
-- **Dark Blue** (`#123263`) — Dark background / footer
-- **Black** (`#000000`) — Primary text
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Purple** (`#BF63F3`) — Secondary text
-- **Dark Muted Blue** (`#292A2E`) — Divider / border
+- **Light Purple** (`#F8EEFE`): Surface / card background
+- **Dark Blue** (`#1868DB`): Accent background
+- **Dark Muted Blue** (`#101214`): Dark background / footer
+- **Green** (`#82B536`): Accent background
+- **Light Green** (`#EFFFD6`): Page background
+- **Dark Blue** (`#123263`): Dark background / footer
+- **Black** (`#000000`): Primary text
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Purple** (`#BF63F3`): Secondary text
+- **Dark Muted Blue** (`#292A2E`): Divider / border
 
 ## 3. Typography Rules
 
@@ -37,7 +37,7 @@
 - Headings: Charlie Display, Charlie Text
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (839), Charlie Display (30), Segoe UI (1)
+**All detected fonts:** Charlie Text (842), Charlie Display (30), Segoe UI (1)
 
 **Type scale:**
 - Headings: 25.2692px, 26.6538px, 32.5px, 44.1538px, 63.2692px

@@ -17,15 +17,15 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FCFCFC`) — Page background
-- **Black** (`#000000`) — Dark background / footer
-- **Light Cyan** (`#72E3AD`) — Accent background
-- **Dark gray** (`#707070`) — Secondary background
-- **Dark gray** (`#525252`) — Primary text
-- **Medium gray** (`#B2B2B2`) — Muted text
-- **Cyan** (`#3FCF8E`) — Link / accent text
-- **Light gray** (`#DFDFDF`) — Divider / border
-- **Cyan** (`#16B674BF`) — Focus / active border
+- **White** (`#FCFCFC`): Page background
+- **Black** (`#000000`): Dark background / footer
+- **Light Cyan** (`#72E3AD`): Accent background
+- **Dark gray** (`#707070`): Secondary background
+- **Dark gray** (`#525252`): Primary text
+- **Medium gray** (`#B2B2B2`): Muted text
+- **Cyan** (`#3FCF8E`): Link / accent text
+- **Light gray** (`#DFDFDF`): Divider / border
+- **Cyan** (`#16B674BF`): Focus / active border
 
 ## 3. Typography Rules
 

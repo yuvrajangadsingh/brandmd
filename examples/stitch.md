@@ -16,9 +16,9 @@
 
 ## 2. Color Palette & Roles
 
-- **Dark Muted Blue** (`#191A1F`) — Dark background / footer
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Black** (`#000000`) — Primary text
+- **Dark Muted Blue** (`#191A1F`): Dark background / footer
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Black** (`#000000`): Primary text
 
 ## 3. Typography Rules
 

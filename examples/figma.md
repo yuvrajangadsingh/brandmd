@@ -17,14 +17,14 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Black** (`#000000`) — Dark background / footer
-- **Blue** (`#C4BAFF`) — Accent background
-- **Dark Blue** (`#4D49FC`) — Accent background
-- **Light Green** (`#E4FF97`) — Page background
-- **Blue** (`#00B6FF`) — Accent background
-- **Cyan** (`#33DFDF`) — Link / accent text
-- **Yellow** (`#B98E01`) — Secondary text
+- **White** (`#FFFFFF`): Page background
+- **Black** (`#000000`): Dark background / footer
+- **Blue** (`#C4BAFF`): Accent background
+- **Dark Blue** (`#4D49FC`): Accent background
+- **Light Green** (`#E4FF97`): Page background
+- **Blue** (`#00B6FF`): Accent background
+- **Cyan** (`#33DFDF`): Link / accent text
+- **Yellow** (`#B98E01`): Secondary text
 
 ## 3. Typography Rules
 
@@ -54,7 +54,7 @@
 - Font: 18px, weight 330
 
 ### Cards
-- Background: `rgba(0, 0, 0, 0.01)`
+- Background: `rgba(0, 0, 0, 0.16)`
 - Padding: 0px 0px 0px 0px
 
 ### Inputs

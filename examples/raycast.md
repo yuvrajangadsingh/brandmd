@@ -17,17 +17,17 @@
 
 ## 2. Color Palette & Roles
 
-- **Light gray** (`#E6E6E6`) — Surface / card background
-- **Dark Muted Blue** (`#07080A`) — Dark background / footer
-- **Dark gray** (`#434345`) — Dark background / footer
-- **Dark Red** (`#452324`) — Dark background / footer
-- **Blue** (`#56C2FF`) — Accent background
-- **Red** (`#FF6363`) — Accent background
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Dark gray** (`#6A6B6C`) — Secondary text
-- **Black** (`#2F3031`) — Primary text
-- **Medium gray** (`#9C9C9D`) — Muted text
-- **White** (`#FFFFFF0F`) — Divider / border
+- **Light gray** (`#E6E6E6`): Surface / card background
+- **Dark gray** (`#434345`): Dark background / footer
+- **Dark Muted Blue** (`#07080A`): Dark background / footer
+- **Dark Red** (`#452324`): Dark background / footer
+- **Dark Red** (`#D72A2A05`): Accent background
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Dark gray** (`#6A6B6C`): Secondary text
+- **Black** (`#2F3031`): Primary text
+- **Medium gray** (`#9C9C9D`): Muted text
+- **White** (`#FFFFFF0F`): Divider / border
+- **Dark Muted Blue** (`#1B1C1E`): Divider / border
 
 ## 3. Typography Rules
 
@@ -38,18 +38,18 @@
 - Headings: Inter
 - Body: Inter
 
-**All detected fonts:** Inter (1896), SF Pro Text (523), SF Pro (37), GeistMono (31)
+**All detected fonts:** Inter (970), SF Pro Text (523), GeistMono (31)
 
 **Type scale:**
 - Headings: 24px, 32px, 56px, 64px
 - Body / UI: 14px, 16px, 18px, 20px, 22px, 23.75px
-- Captions / Small: 10px, 11px, 12px, 13px
+- Captions / Small: 10px, 12px
 
 **Weights in use:** 300, 400, 500, 600, 700
 
-**Line heights:** 18.4px, 27.3125px, 36.8px, 27.6px, 16px, 22.4px, 25.6px, 38.4px, 16.1px, 19.6px
+**Line heights:** 18.4px, 27.3125px, 36.8px, 27.6px, 22.4px, 25.6px, 38.4px, 16.1px, 16px, 19.6px
 
-**Letter spacing:** 0.1px, 0.2px, 0.3px, 0.8px, 0.5px, -0.05px
+**Letter spacing:** 0.2px, 0.3px, 0.5px, 0.1px, 0.4px
 
 ## 4. Component Stylings
 
@@ -70,24 +70,24 @@
 
 ## 5. Layout Principles
 
-**Spacing scale:** 8px, 10px, 12px, 14.5px, 15px, 16px, 20px, 24px
+**Spacing scale:** 8px, 12px, 14.5px, 15px, 16px, 20px, 24px, 50px
 
 **Base unit:** 8px grid (values are mostly multiples of 8).
 
-**Border radii:** 6px, 8px, 11px, 12px, 16px, 20px, 100%, 99999px
+**Border radii:** 6px, 8px, 9px, 11px, 12px, 16px, 20px, 99999px
 
 ## 6. Guidelines
 
 ### Do
 - Use 8px grid for all spacing
-- Use `#56C2FF` for primary actions and CTAs
+- Use `#D72A2A05` for primary actions and CTAs
 - Use `Inter` as the primary typeface
 
 ### Don't
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and SF Pro Text
 - Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 6px, 8px, 11px, 12px, 16px, 20px, 100%, 99999px
+- Don't use border-radius values outside: 6px, 8px, 9px, 11px, 12px, 16px, 20px, 99999px
 
 ---
 

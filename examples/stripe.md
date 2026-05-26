@@ -17,18 +17,22 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Dark Blue** (`#0D1738`) — Dark background / footer
-- **Dark Blue** (`#533AFD`) — Accent background
-- **Cyan** (`#00D66F`) — Accent background
-- **Dark Blue** (`#2863B11A`) — Accent background
-- **Black** (`#000000`) — Dark background / footer
-- **Dark Muted Blue** (`#64748D`) — Secondary text
+- **White** (`#FFFFFF`): Page background
+- **Dark Blue** (`#0D1738`): Dark background / footer
+- **Dark Blue** (`#533AFD`): Accent background
+- **Cyan** (`#00D66F`): Accent background
+- **Dark Blue** (`#2863B11A`): Accent background
+- **Black** (`#000000`): Dark background / footer
+- **Dark Muted Blue** (`#64748D`): Secondary text
 
 ## 3. Typography Rules
 
 **Primary font:** sohne-var
 **Secondary font:** SourceCodePro
+
+**Fonts by role:**
+- Headings: sohne-var
+- Body: sohne-var
 
 **Type scale:**
 - Headings: 26px, 32px, 48px, 56px
@@ -56,7 +60,7 @@
 
 ## 5. Layout Principles
 
-**Spacing scale:** 2px, 4px, 6px, 8px, 10px, 12px, 16px, 24px
+**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
 
 **Base unit:** 4px grid (values are mostly multiples of 4).
 

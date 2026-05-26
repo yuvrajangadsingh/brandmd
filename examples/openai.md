@@ -17,14 +17,14 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Black** (`#0D0D0D14`) — Dark background / footer
-- **Green** (`#04B84C26`) — Accent background
-- **Black** (`#000000E6`) — Primary text
-- **Dark gray** (`#5D5D5D`) — Secondary text
-- **Dark gray** (`#8F8F8F`) — Secondary text
-- **Black** (`#0D0D0D0D`) — Divider / border
-- **Light gray** (`#EDEDED`) — Divider / border
+- **White** (`#FFFFFF`): Page background
+- **Black** (`#0D0D0D14`): Dark background / footer
+- **Green** (`#04B84C26`): Accent background
+- **Black** (`#000000E6`): Primary text
+- **Dark gray** (`#5D5D5D`): Secondary text
+- **Dark gray** (`#8F8F8F`): Secondary text
+- **Black** (`#0D0D0D0D`): Divider / border
+- **Light gray** (`#EDEDED`): Divider / border
 
 ## 3. Typography Rules
 

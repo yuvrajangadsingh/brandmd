@@ -36,9 +36,9 @@ Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [
 
 ```
 ## 2. Color Palette & Roles
-- **--color-accents-1** (`#FAFAFA`) — Page background
-- **--color-blue-600** (`#0075DE`) — Accent background
-- **--color-gray-500** (`#78736F`) — Secondary text
+- **--color-accents-1** (`#FAFAFA`): Page background
+- **--color-blue-600** (`#0075DE`): Accent background
+- **--color-gray-500** (`#78736F`): Secondary text
 
 ## 3. Typography Rules
 **Primary font:** sohne-var
@@ -122,7 +122,7 @@ brandmd https://stripe.com https://stripe.com/pricing https://stripe.com/docs
 brandmd https://github.com --dark
 
 # Vision: capture illustration style, photography mood, copywriting voice
-# (CSS can't see these — Gemini reads the screenshot.)
+# (CSS can't see these; Gemini reads the screenshot.)
 export GEMINI_API_KEY=your-key-here  # free: https://aistudio.google.com/apikey
 brandmd https://linear.app --vision
 # Cloudflare-protected sites: brandmd waits up to 20s for the JS challenge

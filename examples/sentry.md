@@ -17,17 +17,17 @@
 
 ## 2. Color Palette & Roles
 
-- **Dark Purple** (`#1F1633`) — Dark background / footer
-- **White** (`#FFFFFF2E`) — Page background
-- **Dark Purple** (`#7553FF`) — Accent background
-- **Dark Purple** (`#422082`) — Dark background / footer
-- **Dark Muted Purple** (`#79628C`) — Secondary background
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Light Yellow** (`#DCDCAA`) — Muted text
-- **Blue** (`#569CD6`) — Link / accent text
-- **Orange** (`#CE9178`) — Muted text
-- **Light Muted Blue** (`#E5E7EB`) — Divider / border
-- **Dark Muted Purple** (`#584674`) — Divider / border
+- **Dark Purple** (`#1F1633`): Dark background / footer
+- **White** (`#FFFFFF2E`): Page background
+- **Dark Purple** (`#7553FF`): Accent background
+- **Dark Purple** (`#422082`): Dark background / footer
+- **Dark Muted Purple** (`#79628C`): Secondary background
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Light Yellow** (`#DCDCAA`): Muted text
+- **Blue** (`#569CD6`): Link / accent text
+- **Orange** (`#CE9178`): Muted text
+- **Light Muted Blue** (`#E5E7EB`): Divider / border
+- **Dark Muted Purple** (`#584674`): Divider / border
 
 ## 3. Typography Rules
 

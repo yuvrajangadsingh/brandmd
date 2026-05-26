@@ -17,64 +17,64 @@
 
 ## 2. Color Palette & Roles
 
-- **Dark Muted Purple** (`#13111C`) — Dark background / footer
-- **White** (`#FFFFFF33`) — Page background
-- **Cyan** (`#428A7233`) — Secondary background
-- **Dark Purple** (`#180D43`) — Dark background / footer
-- **Dark Purple** (`#553F83`) — Dark background / footer
-- **Dark Orange** (`#9C701633`) — Accent background
-- **White** (`#FFFFFF`) — Light text (on dark)
-- **Dark Muted Blue** (`#545260`) — Primary text
-- **Muted Blue** (`#A1A0AB`) — Muted text
-- **Dark Muted Blue** (`#33323E`) — Divider / border
-- **White** (`#FFFFFF26`) — Divider / border
+- **Dark Muted Purple** (`#13111C`): Dark background / footer
+- **White** (`#FFFFFF33`): Page background
+- **Cyan** (`#428A7233`): Secondary background
+- **Dark Purple** (`#553F83`): Dark background / footer
+- **Dark Orange** (`#9C701633`): Accent background
+- **Orange** (`#ED852F1F`): Accent background
+- **White** (`#FFFFFF`): Light text (on dark)
+- **Muted Blue** (`#A1A0AB`): Muted text
+- **Dark Muted Blue** (`#545260`): Primary text
+- **Dark Muted Blue** (`#33323E`): Divider / border
+- **White** (`#FFFFFF26`): Divider / border
 
 ## 3. Typography Rules
 
 **Primary font:** Inter Tight
-**Secondary font:** IBM Plex Serif
+**Secondary font:** Inter
 
 **Fonts by role:**
 - Headings: IBM Plex Serif
-- Display / hero: SFMono-Regular, Inter Tight
+- Display / hero: Inter Tight, Inter
 - Body: SFMono-Regular
 - Buttons / nav: Inter
 
-**All detected fonts:** Inter (7068), SFMono-Regular (2149), JetBrains Mono (142), SF Mono (16), Helvetica (9), IBM Plex Serif (8), Inter Tight (4)
+**All detected fonts:** Inter (6706), SFMono-Regular (660), JetBrains Mono (142), SF Mono (16), IBM Plex Serif (8), Inter Tight (4)
 
 **Type scale:**
-- Headings: 24px, 36px, 40px
+- Headings: 24px, 36px, 40px, 54px
 - Body / UI: 14px, 16px, 18px, 20px
-- Captions / Small: 5.83333px, 6.66667px, 10px, 11px, 11.6667px, 12px, 13px, 13.3333px
+- Captions / Small: 5.83333px, 6.66667px, 11px, 11.6667px, 12px, 13px, 13.3333px
 
 **Weights in use:** 400, 500, 600, 700, 800
 
-**Line heights:** 26px, 56px, 65px, 22.75px, 9.47916px, 19.5px, 10.8333px, 17.875px, 20px, 32px
+**Line heights:** 26px, 22.75px, 9.47916px, 19.5px, 10.8333px, 17.875px, 20px, 32px, 21.125px, 27px
 
 **Letter spacing:** -0.22px, -0.24px, -0.09px, 0.24px, -0.06px, -0.07px
 
 ## 4. Component Stylings
 
 ### Buttons
-- Text color: `rgb(255, 255, 255)`
-- Corner radius: 50%
-- Padding: 0px 0px 0px 0px
+- Text color: `rgb(247, 247, 248)`
+- Corner radius: 6px
+- Padding: 6px 12px 6px 12px
 - Font: 16px, weight 400
 
 ### Cards
-- Shadow: `rgba(65, 78, 166, 0.1) 0px -12px 127px 0px, rgba(65, 78, 166, 0.07) 0px -4.38px 46.357px 0px, rgba(65, 78, 166, 0.06) 0px -2.127px 22.506px 0px, rgba(65, 78, 166, 0.04) 0px -1.042px 11.033px 0px, rgba(65, 78, 166, 0.03) 0px -0.412px 4.362px 0px`
-- Corner radius: 0px 0px 4px 4px
+- Shadow: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset`
+- Corner radius: 0px 12px 12px 0px
 
 ### Inputs
 - Border color: `#33323E`
 
 ## 5. Layout Principles
 
-**Spacing scale:** 4px, 6px, 8px, 12px, 16px, 24px, 32px, 40px
+**Spacing scale:** 4px, 6px, 12px, 16px, 24px, 32px, 40px, 48px
 
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
-**Border radii:** 0px 0px 4px 4px, 4px, 4px 4px 0px 0px, 6px, 8px, 12px, 16px, 9999px
+**Border radii:** 0px 12px 12px 0px, 4px, 6px, 8px, 10px, 12px, 16px, 9999px
 
 ## 6. Guidelines
 
@@ -85,9 +85,9 @@
 
 ### Don't
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond Inter Tight and IBM Plex Serif
+- Don't mix fonts beyond Inter Tight and Inter
 - Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 0px 0px 4px 4px, 4px, 4px 4px 0px 0px, 6px, 8px, 12px, 16px, 9999px
+- Don't use border-radius values outside: 0px 12px 12px 0px, 4px, 6px, 8px, 10px, 12px, 16px, 9999px
 
 ---
 

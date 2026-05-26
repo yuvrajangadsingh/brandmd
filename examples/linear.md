@@ -17,22 +17,26 @@
 
 ## 2. Color Palette & Roles
 
-- **Light gray** (`#E6E6E6`) — Surface / card background
-- **Dark Muted Blue** (`#08090A`) — Dark background / footer
-- **Light Green** (`#00FF0512`) — Surface / card background
-- **Dark Blue** (`#5E6AD2`) — Accent background
-- **Red** (`#EB5757`) — Accent background
-- **Cyan** (`#06B6D4`) — Accent background
-- **Light Muted Cyan** (`#F7F8F8`) — Light text (on dark)
-- **Dark Muted Blue** (`#62666D`) — Secondary text
-- **Muted Blue** (`#8A8F98`) — Secondary text
-- **Pink** (`#F79CE0`) — Link / accent text
-- **Dark Muted Blue** (`#24282C`) — Divider / border
+- **Light gray** (`#E5E5E6`): Surface / card background
+- **Dark Muted Blue** (`#08090A`): Dark background / footer
+- **Light Green** (`#00FF051A`): Surface / card background
+- **Dark Blue** (`#5E6AD2`): Accent background
+- **Red** (`#EB5757`): Accent background
+- **Cyan** (`#06B6D4`): Accent background
+- **Light Muted Cyan** (`#F7F8F8`): Light text (on dark)
+- **Dark Muted Blue** (`#62666D`): Secondary text
+- **Muted Blue** (`#8A8F98`): Secondary text
+- **Pink** (`#F79CE0`): Link / accent text
+- **Dark Muted Blue** (`#24282C`): Divider / border
 
 ## 3. Typography Rules
 
 **Primary font:** Inter Variable
 **Secondary font:** Berkeley Mono
+
+**Fonts by role:**
+- Headings: Inter Variable
+- Body: Inter Variable
 
 **Type scale:**
 - Headings: 24px, 32px, 48px, 64px
@@ -41,7 +45,7 @@
 
 **Weights in use:** 300, 400, 510, 590
 
-**Line heights:** 24px, 16.8px, 19.5px, 15px, 21px, 18px, 28.8px, 48px, 64px, 31.92px
+**Line heights:** 24px, 19.5px, 16.8px, 15px, 21px, 18px, 32px, 28.8px, 48px, 64px
 
 **Letter spacing:** -0.13px, -0.165px, -0.182px, -0.15px, -0.12px, -1.056px
 
@@ -49,7 +53,7 @@
 
 ### Buttons
 - Text color: `rgb(138, 143, 152)`
-- Corner radius: 4px
+- Corner radius: 9999px
 - Padding: 0px 12px 0px 12px
 - Font: 13px, weight 400
 
@@ -69,7 +73,7 @@
 
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
-**Border radii:** 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 22px, 50%
+**Border radii:** 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 50%, 9999px
 
 ## 6. Guidelines
 
@@ -83,7 +87,7 @@
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter Variable and Berkeley Mono
 - Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 22px, 50%
+- Don't use border-radius values outside: 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 50%, 9999px
 
 ---
 

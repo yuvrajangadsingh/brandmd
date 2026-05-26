@@ -13,20 +13,20 @@
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Depth:** Uses 3 shadow styles for layering and elevation.
+**Depth:** Uses 2 shadow styles for layering and elevation.
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Dark Muted Blue** (`#101214`) — Dark background / footer
-- **Dark Blue** (`#1868DB`) — Accent background
-- **Dark Green** (`#4C6B1F`) — Accent background
-- **Light Green** (`#EFFFD6`) — Page background
-- **Dark Purple** (`#803FA5`) — Accent background
-- **Black** (`#000000`) — Primary text
-- **Dark gray** (`#505258`) — Primary text
-- **Dark Blue** (`#09326C`) — Primary text
-- **Light Muted Blue** (`#DDDEE1`) — Divider / border
+- **White** (`#FFFFFF`): Page background
+- **Dark Muted Blue** (`#101214`): Dark background / footer
+- **Dark Blue** (`#1868DB`): Accent background
+- **Dark Green** (`#4C6B1F`): Accent background
+- **Light Green** (`#EFFFD6`): Page background
+- **Dark Purple** (`#803FA5`): Accent background
+- **Black** (`#000000`): Primary text
+- **Dark gray** (`#505258`): Primary text
+- **Dark Blue** (`#09326C`): Primary text
+- **Light Muted Blue** (`#DDDEE1`): Divider / border
 
 ## 3. Typography Rules
 
@@ -38,7 +38,7 @@
 - Display / hero: Atlassian Mono
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (2521), Charlie Display (702), Atlassian Mono (12)
+**All detected fonts:** Charlie Text (2518), Charlie Display (702), Atlassian Mono (12)
 
 **Type scale:**
 - Headings: 24px, 28px, 52px, 64px, 96px

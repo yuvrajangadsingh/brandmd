@@ -13,54 +13,78 @@
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Depth:** Uses 4 shadow styles for layering and elevation.
+**Depth:** Uses 5 shadow styles for layering and elevation.
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Black** (`#0000000D`) — Dark background / footer
-- **Dark Blue** (`#0075DE`) — Accent background
-- **Dark gray** (`#78736F`) — Secondary background
-- **Red** (`#F77463`) — Accent background
-- **Blue** (`#62AEF0`) — Accent background
-- **Black** (`#000000F2`) — Primary text
-- **Muted Orange** (`#A39E98`) — Muted text
-- **Black** (`#0000001A`) — Divider / border
-- **White** (`#FFFFFF00`) — Divider / border
+- **White** (`#FFFFFF`): Page background
+- **Black** (`#0000000D`): Dark background / footer
+- **Blue** (`#097FE8`): Accent background
+- **Dark Blue** (`#02093A`): Dark background / footer
+- **Light Orange** (`#FFC95E`): Accent background
+- **Red** (`#F77463`): Accent background
+- **Black** (`#000000F2`): Primary text
+- **Muted Orange** (`#A39E98`): Muted text
+- **Dark gray** (`#78736F`): Secondary text
+- **White** (`#FFFFFF00`): Divider / border
+- **Black** (`#0000001A`): Divider / border
 
 ## 3. Typography Rules
 
 **Primary font:** NotionInter
 **Secondary font:** Lyon Text
 
-**Size scale:**
-- Headings: 24px, 26px, 32px, 42px, 48px, 54px, 64px
-- Body / UI: 14px, 15px, 16px, 18.72px, 20px, 22px
+**Fonts by role:**
+- Headings: NotionInter
+- Body: NotionInter
+
+**Type scale:**
+- Headings: 24px, 26px, 32px, 40px, 42px, 48px, 54px, 64px
+- Body / UI: 14px, 15px, 16px, 20px, 22px
 - Captions / Small: 0px, 12px
 
 **Weights in use:** 400, 500, 600, 700
 
+**Line heights:** 24px, 20px, 0px, 30px, 16px, 28px, 60px, 56px, 72px, 48px
+
+**Letter spacing:** 0.125px, -0.25px, -0.125px, -1.875px, -1.5px, -0.625px
+
 ## 4. Component Stylings
 
 ### Buttons
-- Corner radius: 4px
-- Primary action color: `#0075DE` (Dark Blue)
+- Text color: `rgb(163, 158, 152)`
+- Padding: 12px 12px 12px 12px
+- Font: 20px, weight 400
 
 ### Cards
-- Shadow: `rgba(0, 0, 0, 0.04) 0px 4px 18px 0px, rgba(0, 0, 0, 0.027) 0px 2.025px 7.84688px 0px, rgba(0, 0, 0, 0.02) 0px 0.8px 2.925px 0px, rgba(0, 0, 0, 0.01) 0px 0.175px 1.04062px 0px`
-- Corner radius: 4px
+- Background: `rgb(255, 255, 255)`
+- Corner radius: 12px
+- Padding: 24px 24px 24px 24px
 
 ### Inputs
-- Border color: `#0000001A`
-- Corner radius: 4px
+- Border color: `#FFFFFF00`
 
 ## 5. Layout Principles
 
-**Spacing scale:** 3px, 4px, 5px, 6px, 8px, 10px, 16px, 24px
+**Spacing scale:** 3px, 4px, 5px, 6px, 8px, 12px, 16px, 24px
 
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
-**Border radii:** 4px, 5px, 8px, 12px, 12px 0px 0px, 16px, 50%, 100%
+**Border radii:** 4px, 5px, 8px, 12px, 12px 0px 0px, 16px, 100%, 9999px
+
+## 6. Guidelines
+
+### Do
+- Use 4px grid for all spacing
+- Use `#097FE8` for primary actions and CTAs
+- Stick to 4 font weights: 400, 500, 600, 700
+- Use `NotionInter` as the primary typeface
+
+### Don't
+- Don't introduce colors outside the palette above
+- Don't mix fonts beyond NotionInter and Lyon Text
+- Don't use inline styles when the design system covers the pattern
+- Don't use border-radius values outside: 4px, 5px, 8px, 12px, 12px 0px 0px, 16px, 100%, 9999px
 
 ---
 

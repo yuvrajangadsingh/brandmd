@@ -17,36 +17,35 @@
 
 ## 2. Color Palette & Roles
 
-- **Black** (`#000000`) — Dark background / footer
-- **White** (`#FFFFFF`) — Page background
-- **Blue** (`#0099FF`) — Accent background
-- **Dark gray** (`#666666`) — Secondary background
-- **Medium gray** (`#999999`) — Secondary background
-- **Cyan** (`#00BB881A`) — Accent background
-- **Dark Blue** (`#0000EE`) — Primary text
+- **Black** (`#000000`): Dark background / footer
+- **White** (`#FFFFFF`): Page background
+- **Blue** (`#0099FF`): Accent background
+- **Dark gray** (`#666666`): Secondary background
+- **Medium gray** (`#999999`): Secondary background
+- **Cyan** (`#00BB881A`): Accent background
+- **Dark Blue** (`#0000EE`): Primary text
 
 ## 3. Typography Rules
 
-**Primary font:** mona sans
-**Secondary font:** Inter Variable
+**Primary font:** Inter Variable
+**Secondary font:** GT Walsheim Medium
 
 **Fonts by role:**
 - Headings: Inter Variable, GT Walsheim Medium
-- Display / hero: mona sans
 - Body: Inter Variable
 
-**All detected fonts:** Inter Variable (387), Inter (185), GT Walsheim Medium (26), Mona Sans (11), mona sans (3), Open Runde (3), Times (1), GT Walsheim Framer Medium (1)
+**All detected fonts:** Inter Variable (339), Inter (181), GT Walsheim Medium (26), Mona Sans (11), Open Runde (3), Times (1), GT Walsheim Framer Medium (1)
 
 **Type scale:**
-- Headings: 24px, 32px, 61.5px, 62px, 110px
-- Body / UI: 14px, 15px, 16px, 18px, 20px
+- Headings: 24px, 32px, 62px, 110px
+- Body / UI: 14px, 15px, 16px, 17px, 18px, 20px
 - Captions / Small: 7px, 9px, 10px, 12px, 13px
 
-**Weights in use:** 100, 400, 500, 600, 700
+**Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 19.5px, 15px, 14.4px, 20.8px, 16.8px, 14px, 36px, 12px, 15.6px, 23.4px
+**Line heights:** 19.5px, 15px, 14.4px, 20.8px, 16.8px, 36px, 12px, 15.6px, 14px, 23.4px
 
-**Letter spacing:** -0.01px, -0.15px, -0.25px, -0.28px, -1px, -0.3px
+**Letter spacing:** -0.01px, -0.15px, -0.25px, -1px, -0.28px, -0.3px
 
 ## 4. Component Stylings
 
@@ -65,7 +64,7 @@
 
 ## 5. Layout Principles
 
-**Spacing scale:** 2px, 5px, 8px, 10px, 14px, 15px, 20px, 60px
+**Spacing scale:** 1px, 2px, 5px, 8px, 10px, 15px, 20px, 60px
 
 **Base unit:** 8px grid (values are mostly multiples of 8).
 
@@ -76,11 +75,12 @@
 ### Do
 - Use 8px grid for all spacing
 - Use `#0099FF` for primary actions and CTAs
-- Use `mona sans` as the primary typeface
+- Stick to 4 font weights: 400, 500, 600, 700
+- Use `Inter Variable` as the primary typeface
 
 ### Don't
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond mona sans and Inter Variable
+- Don't mix fonts beyond Inter Variable and GT Walsheim Medium
 - Don't use inline styles when the design system covers the pattern
 - Don't use border-radius values outside: 1px, 6px, 8px, 10px, 12px, 15px, 50%, 100px
 

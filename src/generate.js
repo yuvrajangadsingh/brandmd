@@ -58,7 +58,7 @@ export function generate(tokens) {
   lines.push("");
 
   for (const color of tokens.palette) {
-    lines.push(`- **${color.name}** (\`${color.hex}\`) — ${color.role}`);
+    lines.push(`- **${color.name}** (\`${color.hex}\`): ${color.role}`);
   }
   lines.push("");
 
@@ -282,13 +282,13 @@ export function generate(tokens) {
     if (tokens.dark.palette.length > 0) {
       lines.push("**Colors:**");
       for (const color of tokens.dark.palette) {
-        lines.push(`- **${color.name}** (\`${color.hex}\`) — ${color.role}`);
+        lines.push(`- **${color.name}** (\`${color.hex}\`): ${color.role}`);
       }
       lines.push("");
     }
   }
 
-  // Visual identity beyond CSS — the layer Gemini sees that grep can't.
+  // Visual identity beyond CSS: the layer Gemini sees that grep can't.
   if (tokens.vision) {
     const v = tokens.vision;
     lines.push("## 7. Visual Identity Beyond CSS");

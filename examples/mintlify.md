@@ -17,12 +17,12 @@
 
 ## 2. Color Palette & Roles
 
-- **Dark Muted Blue** (`#08090A08`) — Dark background / footer
-- **White** (`#FFFFFF`) — Page background
-- **Dark Cyan** (`#0C8C5E`) — Accent background
-- **Black** (`#000000`) — Primary text
-- **Dark Muted Blue** (`#08090A`) — Divider / border
-- **White** (`#FFFFFF26`) — Divider / border
+- **Dark Muted Blue** (`#08090A08`): Dark background / footer
+- **White** (`#FFFFFF`): Page background
+- **Dark Cyan** (`#0C8C5E`): Accent background
+- **Black** (`#000000`): Primary text
+- **Dark Muted Blue** (`#08090A`): Divider / border
+- **White** (`#FFFFFF26`): Divider / border
 
 ## 3. Typography Rules
 

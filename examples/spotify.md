@@ -13,39 +13,32 @@
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Depth:** Uses 3 shadow styles for layering and elevation.
+**Depth:** Uses 1 shadow style for layering and elevation.
 
 ## 2. Color Palette & Roles
 
-- **Green** (`#1ED760`) — Accent background
-- **Black** (`#121212`) — Dark background / footer
-- **White** (`#FFFFFF`) — Page background
-- **Dark Red** (`#B03830`) — Accent background
-- **Dark gray** (`#535353`) — Dark background / footer
-- **Dark Blue** (`#2870B8`) — Accent background
-- **Medium gray** (`#B3B3B3`) — Muted text
-- **Black** (`#000000`) — Primary text
-- **Dark gray** (`#7C7C7C`) — Secondary text
+- **Black** (`#121212`): Dark background / footer
+- **White** (`#FFFFFF`): Page background
+- **Medium gray** (`#B3B3B3`): Muted text
+- **Black** (`#000000`): Primary text
+- **Dark Blue** (`#0000EE`): Primary text
+- **Black** (`#292929`): Divider / border
 
 ## 3. Typography Rules
 
-**Primary font:** SpotifyMixUITitle
-**Secondary font:** SpotifyMixUI
+**Primary font:** SpotifyMixUI
 
 **Fonts by role:**
-- Headings: SpotifyMixUITitle, SpotifyMixUI
+- Headings: SpotifyMixUI
 - Body: SpotifyMixUI
 
-**All detected fonts:** SpotifyMixUI (1769), SpotifyMixUITitle (15), Times (1)
-
 **Type scale:**
-- Headings: 24px
 - Body / UI: 14px, 16px
-- Captions / Small: 10.5px, 12px, 13.3333px
+- Captions / Small: 13.3333px
 
-**Weights in use:** 400, 600, 700
+**Weights in use:** 400, 700
 
-**Line heights:** 14px, 24px
+**Line heights:** 24px
 
 ## 4. Component Stylings
 
@@ -56,8 +49,8 @@
 - Font: 16px, weight 400
 
 ### Cards
-- Corner radius: 6px
-- Padding: 12px 12px 12px 12px
+- Shadow: `rgb(18, 18, 18) 0px 1px 0px 0px, rgb(124, 124, 124) 0px 0px 0px 1px inset`
+- Corner radius: 4px
 
 ### Inputs
 - Background: `rgb(255, 255, 255)`
@@ -67,25 +60,25 @@
 
 ## 5. Layout Principles
 
-**Spacing scale:** 2px, 4px, 8px, 8px normal, 12px, 16px, 24px, 171.5px
+**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 20px, 24px
 
 **Base unit:** 4px grid (values are mostly multiples of 4).
 
-**Border radii:** 2px, 4px, 6px, 8px, 10px, 50%, 500px, 9999px
+**Border radii:** 4px, 8px, 10px, 50%, 500px, 9999px
 
 ## 6. Guidelines
 
 ### Do
 - Use 4px grid for all spacing
-- Use `#1ED760` for primary actions and CTAs
-- Stick to 3 font weights: 400, 600, 700
-- Use `SpotifyMixUITitle` as the primary typeface
+- Use `#000000` for primary actions and CTAs
+- Stick to 2 font weights: 400, 700
+- Use `SpotifyMixUI` as the primary typeface
 
 ### Don't
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond SpotifyMixUITitle and SpotifyMixUI
+- Don't mix fonts. Use SpotifyMixUI everywhere
 - Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 2px, 4px, 6px, 8px, 10px, 50%, 500px, 9999px
+- Don't use border-radius values outside: 4px, 8px, 10px, 50%, 500px, 9999px
 
 ---
 

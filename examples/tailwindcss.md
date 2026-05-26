@@ -17,16 +17,16 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Dark Blue** (`#0307120D`) — Dark background / footer
-- **Blue** (`#00BCFF1A`) — Accent background
-- **Dark Purple** (`#5D0EC0`) — Dark background / footer
-- **Dark Orange** (`#7E2A0C`) — Dark background / footer
-- **Pink** (`#F6339A`) — Accent background
-- **Black** (`#000000`) — Primary text
-- **Muted Blue** (`#90A1B9`) — Muted text
-- **Blue** (`#00A6F4`) — Link / accent text
-- **Black** (`#0000000D`) — Divider / border
+- **White** (`#FFFFFF`): Page background
+- **Dark Blue** (`#0307120D`): Dark background / footer
+- **Blue** (`#00BCFF1A`): Accent background
+- **Dark Purple** (`#5D0EC0`): Dark background / footer
+- **Dark Orange** (`#7E2A0C`): Dark background / footer
+- **Pink** (`#F6339A`): Accent background
+- **Black** (`#000000`): Primary text
+- **Muted Blue** (`#90A1B9`): Muted text
+- **Pink** (`#FB64B6`): Link / accent text
+- **Black** (`#0000000D`): Divider / border
 
 ## 3. Typography Rules
 

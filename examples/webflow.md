@@ -17,14 +17,14 @@
 
 ## 2. Color Palette & Roles
 
-- **White** (`#FFFFFF`) — Page background
-- **Black** (`#080808`) — Dark background / footer
-- **Dark Blue** (`#146EF5`) — Accent background
-- **Dark gray** (`#464646`) — Dark background / footer
-- **Black** (`#000000`) — Primary text
-- **Dark gray** (`#5A5A5A`) — Secondary text
-- **Blue** (`#6CA7FF`) — Link / accent text
-- **Medium gray** (`#D8D8D8`) — Divider / border
+- **White** (`#FFFFFF`): Page background
+- **Black** (`#080808`): Dark background / footer
+- **Dark Blue** (`#146EF5`): Accent background
+- **Dark gray** (`#464646`): Dark background / footer
+- **Black** (`#000000`): Primary text
+- **Dark gray** (`#5A5A5A`): Secondary text
+- **Blue** (`#6CA7FF`): Link / accent text
+- **Medium gray** (`#D8D8D8`): Divider / border
 
 ## 3. Typography Rules
 

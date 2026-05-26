@@ -17,17 +17,17 @@
 
 ## 2. Color Palette & Roles
 
-- **Black** (`#161617`) — Dark background / footer
-- **White** (`#FFFFFF`) — Page background
-- **Dark Blue** (`#0071E3`) — Accent background
-- **Dark Blue** (`#1246C4`) — Dark background / footer
-- **Blue** (`#9FC6F4`) — Accent background
-- **Muted Cyan** (`#729585`) — Secondary background
-- **Black** (`#000000`) — Primary text
-- **White** (`#FFFFFFEB`) — Light text (on dark)
-- **Blue** (`#2997FF`) — Secondary text
-- **Dark gray** (`#86868B`) — Secondary text
-- **White** (`#FFFFFF14`) — Divider / border
+- **Black** (`#161617`): Dark background / footer
+- **White** (`#FFFFFF`): Page background
+- **Dark Blue** (`#0071E3`): Accent background
+- **Dark Muted Pink** (`#A4618D`): Secondary background
+- **Blue** (`#9FC6F4`): Accent background
+- **Dark Blue** (`#1246C4`): Dark background / footer
+- **Black** (`#000000`): Primary text
+- **White** (`#FFFFFFEB`): Light text (on dark)
+- **Blue** (`#2997FF`): Secondary text
+- **Dark gray** (`#86868B`): Secondary text
+- **White** (`#FFFFFF14`): Divider / border
 
 ## 3. Typography Rules
 
