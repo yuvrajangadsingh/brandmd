@@ -2,6 +2,16 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.9.2] - 2026-05-27
+
+### Added
+
+- `--agent` SKILL.md now includes a `compatibility:` frontmatter field, matching the schema used by [google/skills](https://github.com/google/skills) and the broader Agent Skills ecosystem. Existing `name` + `description` fields unchanged.
+
+### Docs
+
+- README clarifies that brandmd's generated `SKILL.md` is schema-compatible with Anthropic Claude Code Skills and google/skills.
+
 ## [0.9.1] - 2026-05-26
 
 ### Changed

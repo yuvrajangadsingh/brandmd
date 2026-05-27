@@ -49,6 +49,7 @@ Default to what's in @${designMdPath}. If a token isn't specified, derive it fro
   const skill = `---
 name: brand-style
 description: Apply the project's brand and design system before building or modifying any UI. Use whenever generating components, pages, layouts, or styles. The actual tokens (colors, typography, spacing, components) are in ${designMdPath} at the project root.
+compatibility: Requires ${designMdPath} at the project root (generate with brandmd).
 ---
 
 # Brand Style Context

@@ -22,7 +22,7 @@ Outputs to whatever your stack reads:
 
 Combine with:
 
-- **`--agent`**: also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring.
+- **`--agent`**: also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring. The generated `SKILL.md` follows the same schema as [Anthropic Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills) and [google/skills](https://github.com/google/skills).
 - **`--dark`**: also extract dark mode tokens
 - **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
 
