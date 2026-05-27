@@ -22,7 +22,7 @@ Outputs to whatever your stack reads:
 
 Combine with:
 
-- **`--agent`**: also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring. The generated `SKILL.md` follows the same schema as [Anthropic Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills) and [google/skills](https://github.com/google/skills).
+- **`--agent`**: also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring. The generated `SKILL.md` follows the same installable-skills convention as [Anthropic Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills), [google/skills](https://github.com/google/skills), and [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 - **`--dark`**: also extract dark mode tokens
 - **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
 
@@ -51,6 +51,16 @@ Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [
 ```
 
 brandmd is for giving Claude Code, Cursor, Gemini CLI, Codex, and Google Stitch real design context. It extracts a live website's colors, typography, spacing, shadows, component patterns, and layout rules into `DESIGN.md`, so AI coding agents can build on-brand UI instead of generic screens.
+
+## Installable example skills repo
+
+If you want ready-made brand skills without running brandmd yourself, install [`yuvrajangadsingh/brand-skills`](https://github.com/yuvrajangadsingh/brand-skills) directly:
+
+```bash
+npx skills add yuvrajangadsingh/brand-skills
+```
+
+That installs 5 brandmd-generated skills (Tailwind CSS, shadcn/ui, Vercel, Mintlify, Anthropic) into your project's agent skills folder. Each skill is self-contained with a bundled `references/DESIGN.md`. Community examples generated from public marketing sites, not affiliated with the named brands.
 
 <details>
 <summary>Release notes</summary>
