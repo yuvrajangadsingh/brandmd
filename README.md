@@ -22,7 +22,7 @@ Outputs to whatever your stack reads:
 
 Combine with:
 
-- **`--agent`**: also writes `.cursor/rules/brand.mdc` and `.claude/skills/brand-style/SKILL.md` so Claude Code and Cursor pick up the brand context automatically. No manual wiring. The generated `SKILL.md` follows the same installable-skills convention as [Anthropic Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills), [google/skills](https://github.com/google/skills), and [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
+- **`--agent`**: also writes `.cursor/rules/brand.mdc` and `SKILL.md` to both `.agents/skills/brand-style/` (the universal Agent Skills path used by [skills.sh](https://skills.sh) across 50+ agents) and `.claude/skills/brand-style/` (backward-compat for direct Claude Code users). No manual wiring. Picked up automatically by Claude Code, Cursor, Codex, Gemini CLI, Kiro CLI, and the rest of the skills.sh ecosystem. Schema-compatible with [Anthropic Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills), [google/skills](https://github.com/google/skills), and [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 - **`--dark`**: also extract dark mode tokens
 - **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
 

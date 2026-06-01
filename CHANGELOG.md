@@ -2,6 +2,20 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.10.0] - 2026-06-01
+
+### Changed
+
+- **`--agent` now writes to the universal `.agents/skills/brand-style/SKILL.md` path** in addition to the existing `.claude/skills/brand-style/SKILL.md` location. The `.agents/skills/` path matches the [skills.sh](https://skills.sh) universal convention adopted by Claude Code, Cursor, Codex, Gemini CLI, Kiro CLI, and 50+ other agents. Existing `.claude/skills/` path is still written for backward compatibility with direct Claude Code users.
+
+### Why
+
+The Agent Skills ecosystem converged on `.agents/skills/` as the universal install path (with per-tool symlinks back to `.claude/skills/`, `.kiro/skills/`, etc). brandmd's `--agent` flag was previously single-target (Claude Code only). Now it produces output that any skills.sh-compatible agent reads natively, while keeping the legacy path so existing setups don't break.
+
+### Migration
+
+No action required. Existing Claude Code projects keep working because `.claude/skills/brand-style/SKILL.md` is still written. If you use any other skills.sh-compatible agent (Codex, Cursor, Gemini CLI, Kiro CLI, etc), it will now find the skill at `.agents/skills/brand-style/SKILL.md` automatically.
+
 ## [0.9.2] - 2026-05-27
 
 ### Added

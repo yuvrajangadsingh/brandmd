@@ -2,20 +2,24 @@ import { writeFileSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 
 /**
- * Generate a Cursor rule + Claude Code skill that point at DESIGN.md.
+ * Generate a Cursor rule + universal Agent Skill that point at DESIGN.md.
  * Wrappers are lightweight: they reference @DESIGN.md rather than inlining content,
  * so updates to DESIGN.md propagate automatically.
  *
  * Files written:
  *   <outputDir>/.cursor/rules/brand.mdc
- *   <outputDir>/.claude/skills/brand-style/SKILL.md
+ *   <outputDir>/.agents/skills/brand-style/SKILL.md   (canonical universal Agent Skills path)
+ *   <outputDir>/.claude/skills/brand-style/SKILL.md   (backward-compat for direct Claude Code users)
  *
- * Overwrite behavior: always overwrite. Both files are generated artifacts.
+ * The .agents/skills/ path matches the skills.sh universal convention used by
+ * Claude Code, Cursor, Codex, Gemini CLI, Kiro CLI, and 50+ other agents.
+ *
+ * Overwrite behavior: always overwrite. All files are generated artifacts.
  * Hand-edits should live in DESIGN.md, which is the source of truth.
  *
- * @param {string} outputDir - project root to write the .cursor/ and .claude/ trees into
+ * @param {string} outputDir - project root to write the agent skill trees into
  * @param {string} designMdPath - path to DESIGN.md relative to outputDir (default "DESIGN.md")
- * @returns {string[]} list of paths written (absolute or relative to cwd, matching outputDir)
+ * @returns {string[]} list of paths written
  */
 export function generateAgentPack(outputDir, designMdPath = "DESIGN.md") {
   const cursorRulePath = join(outputDir, ".cursor", "rules", "brand.mdc");
@@ -45,7 +49,8 @@ Default to what's in @${designMdPath}. If a token isn't specified, derive it fro
   mkdirSync(dirname(cursorRulePath), { recursive: true });
   writeFileSync(cursorRulePath, cursorRule);
 
-  const skillPath = join(outputDir, ".claude", "skills", "brand-style", "SKILL.md");
+  const agentsSkillPath = join(outputDir, ".agents", "skills", "brand-style", "SKILL.md");
+  const claudeSkillPath = join(outputDir, ".claude", "skills", "brand-style", "SKILL.md");
   const skill = `---
 name: brand-style
 description: Apply the project's brand and design system before building or modifying any UI. Use whenever generating components, pages, layouts, or styles. The actual tokens (colors, typography, spacing, components) are in ${designMdPath} at the project root.
@@ -80,8 +85,11 @@ This project has a documented design system at @${designMdPath}. Read it before 
 AI coding agents generate generic UI when they don't have brand context. ${designMdPath} was extracted from the live brand by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Following it keeps generated UI on-brand and reduces review cycles.
 `;
 
-  mkdirSync(dirname(skillPath), { recursive: true });
-  writeFileSync(skillPath, skill);
+  mkdirSync(dirname(agentsSkillPath), { recursive: true });
+  writeFileSync(agentsSkillPath, skill);
 
-  return [cursorRulePath, skillPath];
+  mkdirSync(dirname(claudeSkillPath), { recursive: true });
+  writeFileSync(claudeSkillPath, skill);
+
+  return [cursorRulePath, agentsSkillPath, claudeSkillPath];
 }

@@ -28,7 +28,7 @@ program
   .option("--html", "output HTML brand guide")
   .option("--dark", "also extract dark mode tokens")
   .option("--vision", "use Gemini vision to capture illustration style, photography mood, copywriting voice, microcopy patterns. Requires GEMINI_API_KEY or GOOGLE_API_KEY env var (free tier: aistudio.google.com/apikey).")
-  .option("--agent", "also write .cursor/rules/brand.mdc and .claude/skills/brand-style/SKILL.md alongside DESIGN.md so Claude Code and Cursor pick up the brand context automatically")
+  .option("--agent", "also write .cursor/rules/brand.mdc and SKILL.md to both .agents/skills/brand-style/ (universal Agent Skills path) and .claude/skills/brand-style/ (backward-compat) alongside DESIGN.md so Claude Code, Cursor, Codex, Gemini CLI, Kiro CLI, and 50+ other agents pick up the brand context automatically")
   .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge to auto-resolve (default 20000)", (v) => parseInt(v, 10), 20000)
   .action(async (urls, opts) => {
     // Normalize URLs
