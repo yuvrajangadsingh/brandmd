@@ -1,0 +1,26 @@
+brands:
+  - slug: stripe
+    name: Stripe
+    url: https://stripe.com
+    category: payments
+    example: examples/stripe.md
+  - slug: vercel
+    name: Vercel
+    url: https://vercel.com
+    category: dev-platform
+    example: examples/vercel.md
+  - slug: linear
+    name: Linear
+    url: https://linear.app
+    category: productivity
+    example: examples/linear.md
+  - slug: anthropic
+    name: Anthropic
+    url: https://anthropic.com
+    category: ai
+    example: examples/anthropic.md
+  - slug: mintlify
+    name: Mintlify
+    url: https://mintlify.com
+    category: docs
+    example: examples/mintlify.md

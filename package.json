@@ -1,6 +1,6 @@
 {
   "name": "brandmd",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Stop Claude Code/Cursor from guessing UI. Extract any website's design system into a Stitch-ready DESIGN.md.",
   "type": "module",
   "bin": {

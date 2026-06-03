@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vercel brand snapshot — brandmd</title>
+<meta name="description" content="Vercel design system snapshot extracted by brandmd from https://vercel.com">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;background:#0d1117;color:#e6edf3;line-height:1.6}
+  a{color:#79c0ff;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .container{max-width:960px;margin:0 auto;padding:48px 24px}
+  header.site{border-bottom:1px solid #30363d;padding-bottom:24px;margin-bottom:32px}
+  header.site h1{margin:0 0 8px;font-size:32px;font-weight:600}
+  header.site p{margin:0;color:#7d8590}
+  h2{font-size:20px;font-weight:600;margin:40px 0 16px;color:#e6edf3}
+  h3{font-size:15px;font-weight:600;margin:24px 0 12px;color:#c9d1d9;text-transform:uppercase;letter-spacing:0.05em}
+  .meta{color:#7d8590;font-size:13px;margin-top:4px}
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:16px 0}
+  .swatch{padding:16px;border-radius:6px;font-size:12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+  .swatch .name{font-weight:600;margin-bottom:4px}
+  .swatch .hex{opacity:0.85}
+  .swatch .role{opacity:0.7;font-size:11px;margin-top:6px;font-family:inherit}
+  .type-sample{padding:24px;background:#161b22;border:1px solid #30363d;border-radius:6px;margin:16px 0}
+  .type-sample .display{font-size:36px;font-weight:600;margin-bottom:8px}
+  .type-sample .body{font-size:14px;color:#c9d1d9}
+  .tokens{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+  .token{background:#161b22;border:1px solid #30363d;border-radius:4px;padding:6px 10px;font-size:12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#c9d1d9}
+  .component{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:16px;margin:8px 0}
+  .component .label{font-weight:600;font-size:14px;color:#e6edf3;margin-bottom:8px}
+  .component .props{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;color:#7d8590;line-height:1.8}
+  .guidelines{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:16px 0}
+  .guidelines ul{padding-left:20px;margin:0}
+  .guidelines li{margin:4px 0;font-size:13px;color:#c9d1d9}
+  .do-col h3{color:#3fb950}
+  .dont-col h3{color:#f85149}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:24px 0}
+  .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:24px;transition:border-color 0.15s}
+  .card:hover{border-color:#79c0ff}
+  .card h2{margin:0 0 8px;font-size:18px}
+  .card .cat{display:inline-block;padding:2px 8px;background:#21262d;border-radius:10px;font-size:11px;color:#7d8590;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
+  .card .preview{display:flex;gap:4px;margin-top:12px}
+  .card .preview span{width:24px;height:24px;border-radius:4px;display:inline-block}
+  footer.site{margin-top:64px;padding-top:24px;border-top:1px solid #30363d;color:#7d8590;font-size:13px}
+  footer.site code{background:#161b22;padding:2px 6px;border-radius:4px;font-size:12px}
+  @media (max-width:600px){.guidelines{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="site">
+  <p style="margin:0 0 8px"><a href="./index.html">← brandmd gallery</a></p>
+  <h1>Vercel</h1>
+  <p>Snapshot of <a href="https://vercel.com" target="_blank" rel="noopener">https://vercel.com</a>, extracted by brandmd. This is not the canonical Vercel brand guideline.</p>
+  <p class="meta">Category: dev-platform · Generated 2026-06-03</p>
+</header>
+
+<h2>Color palette</h2>
+<div class="swatches">
+    <div class="swatch" style="background:#FAFAFA;color:#000">
+      <div class="name">White</div>
+      <div class="hex">#FAFAFA</div>
+      <div class="role">Page background</div>
+    </div>
+  
+    <div class="swatch" style="background:#171717;color:#fff">
+      <div class="name">Black</div>
+      <div class="hex">#171717</div>
+      <div class="role">Dark background / footer</div>
+    </div>
+  
+    <div class="swatch" style="background:#0070F3;color:#fff">
+      <div class="name">Dark Blue</div>
+      <div class="hex">#0070F3</div>
+      <div class="role">Accent background</div>
+    </div>
+  
+    <div class="swatch" style="background:#4D4D4D;color:#fff">
+      <div class="name">Dark gray</div>
+      <div class="hex">#4D4D4D</div>
+      <div class="role">Primary text</div>
+    </div>
+  
+    <div class="swatch" style="background:#FFFFFF;color:#000">
+      <div class="name">White</div>
+      <div class="hex">#FFFFFF</div>
+      <div class="role">Light text (on dark)</div>
+    </div>
+  
+    <div class="swatch" style="background:#8F8F8F;color:#000">
+      <div class="name">Dark gray</div>
+      <div class="hex">#8F8F8F</div>
+      <div class="role">Secondary text</div>
+    </div>
+  
+    <div class="swatch" style="background:#EBEBEB;color:#000">
+      <div class="name">Light gray</div>
+      <div class="hex">#EBEBEB</div>
+      <div class="role">Divider / border</div>
+    </div>
+  
+    <div class="swatch" style="background:#00000014;color:#fff">
+      <div class="name">Black</div>
+      <div class="hex">#00000014</div>
+      <div class="role">Divider / border</div>
+    </div>
+  </div>
+
+<h2>Typography</h2>
+
+    <div class="type-sample">
+      <div class="display" style="font-family:'Geist',-apple-system,sans-serif">The quick brown fox</div>
+      <div class="body" style="font-family:'Geist',-apple-system,sans-serif">Body sample at 14px. The quick brown fox jumps over the lazy dog. 0123456789</div>
+    </div>
+    <h3>Primary font</h3>
+    <div class="tokens"><span class="token">Geist</span></div>
+    <h3>Secondary font</h3><div class="tokens"><span class="token">geistMonoFont</span></div>
+    <h3>Heading scale</h3><div class="tokens"><span class="token">24px</span><span class="token">32px</span><span class="token">48px</span></div>
+    <h3>Body scale</h3><div class="tokens"><span class="token">14px</span><span class="token">16px</span><span class="token">20px</span></div>
+    <h3>Weights</h3><div class="tokens"><span class="token">400</span><span class="token">500</span><span class="token">600</span></div>
+  
+
+<h2>Components</h2>
+
+    <div class="component">
+      <div class="label">Buttons</div>
+      <div class="props">Background: `rgb(255, 255, 255)`<br>Text color: `rgb(23, 23, 23)`<br>Corner radius: 6px<br>Padding: 0px 6px 0px 6px<br>Font: 14px, weight 500</div>
+    </div>
+  
+    <div class="component">
+      <div class="label">Cards</div>
+      <div class="props">Shadow: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`<br>Corner radius: 2px</div>
+    </div>
+  
+
+<h2>Layout tokens</h2>
+
+    <h3>Spacing scale</h3><div class="tokens"><span class="token">1px</span><span class="token">2px</span><span class="token">3px</span><span class="token">6px</span><span class="token">8px</span><span class="token">10px</span><span class="token">12px</span><span class="token">48px</span></div>
+    <h3>Border radii</h3><div class="tokens"><span class="token">2px</span><span class="token">4px</span><span class="token">6px</span><span class="token">100px</span><span class="token">100%</span><span class="token">9999px</span></div>
+  
+
+<h2>Guidelines</h2>
+
+    <div class="guidelines">
+      <div class="do-col"><h3>Do</h3><ul><li>Use 8px grid for all spacing</li><li>Use `#0070F3` for primary actions and CTAs</li><li>Stick to 3 font weights: 400, 500, 600</li><li>Use `Geist` as the primary typeface</li></ul></div>
+      <div class="dont-col"><h3>Don't</h3><ul><li>Don't introduce colors outside the palette above</li><li>Don't mix fonts beyond Geist and geistMonoFont</li><li>Don't use inline styles when the design system covers the pattern</li><li>Don't use border-radius values outside: 2px, 4px, 6px, 100px, 100%, 9999px</li></ul></div>
+    </div>
+  
+
+<footer class="site">
+<p>Generated 2026-06-03 from <a href="https://vercel.com" target="_blank" rel="noopener">https://vercel.com</a> using <code>npx brandmd https://vercel.com</code>.</p>
+<p>Generate one for your site: <code>npx brandmd https://yoursite.com</code></p>
+<p><a href="https://github.com/yuvrajangadsingh/brandmd">brandmd on GitHub</a> · <a href="./index.html">all snapshots</a></p>
+</footer>
+</div>
+</body>
+</html>

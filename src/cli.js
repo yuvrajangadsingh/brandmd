@@ -7,6 +7,7 @@ import { generateTailwind } from "./generate-tailwind.js";
 import { generateHTML } from "./generate-html.js";
 import { extractVision } from "./extract-vision.js";
 import { generateAgentPack } from "./generate-agent.js";
+import { diffDesigns } from "./diff.js";
 import { writeFileSync } from "fs";
 import { basename, dirname, isAbsolute, relative, resolve } from "path";
 import { createRequire } from "module";
@@ -15,6 +16,20 @@ const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
 
 const program = new Command();
+
+program
+  .command("diff <a> <b>")
+  .description("compare two DESIGN.md files, write the diff to a markdown file")
+  .option("--out <file>", "output path for the diff markdown", "BRAND_DIFF.md")
+  .action((a, b, opts) => {
+    try {
+      const result = diffDesigns(a, b, opts.out);
+      process.stderr.write(`Wrote ${opts.out} (${result.sharedColors} shared colors, ${result.aOnly} only in ${result.aName}, ${result.bOnly} only in ${result.bName})\n`);
+    } catch (err) {
+      console.error(`Error: ${err.message}`);
+      process.exit(1);
+    }
+  });
 
 program
   .name("brandmd")

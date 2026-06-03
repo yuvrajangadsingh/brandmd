@@ -2,6 +2,19 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.11.0] - 2026-06-03
+
+### Added
+
+- **Gallery at `/docs`**: 5-brand snapshot showroom (Stripe, Vercel, Linear, Anthropic, Mintlify) generated from existing `examples/` extractions. Enable GitHub Pages from the `/docs` folder to publish at `https://yuvrajangadsingh.github.io/brandmd/`. Each brand page shows color swatches, typography sample, components, layout tokens, and do/don't guidelines. Build with `node scripts/build-gallery.js`. Registry at `gallery/brands.yml`.
+- **`brandmd diff <a> <b> --out BRAND_DIFF.md`**: compares two `DESIGN.md` files and writes a markdown diff. Sections: shared and unique color palette, typography table, spacing & radii table, per-component property diff, and a "what to copy / what to avoid" synthesis. Local files only in v0.11; URL input deferred to a future release.
+- **`src/parse-design.js`**: shared DESIGN.md parser used by both the gallery builder and the diff command. Surfaces tokens for color, typography (primary/secondary font, by-role, scales, weights), components (props per component), layout (spacing scale, radii), and guidelines.
+- Example diff committed at `examples/diff-stripe-vs-vercel.md` showing the output format.
+
+### Why
+
+The gallery + diff are the "visible proof strangers can link to" pieces. Output (DESIGN.md) was previously a single-file artifact you had to extract yourself before evaluating brandmd. With the gallery, anyone can scan 5 well-known brand snapshots in 30 seconds without installing anything. With diff, brandmd starts answering comparative questions ("how is my brand different from Vercel") that a one-shot extraction couldn't.
+
 ## [0.10.0] - 2026-06-01
 
 ### Changed

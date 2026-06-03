@@ -1,4 +1,6 @@
 .github/
 test/
 scripts/
+docs/
+gallery/
 .gitignore

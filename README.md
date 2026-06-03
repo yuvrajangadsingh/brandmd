@@ -150,7 +150,22 @@ brandmd https://github.com --html
 
 # Raw tokens as JSON
 brandmd https://stripe.com --json
+
+# Compare two extractions
+brandmd diff examples/stripe.md examples/vercel.md --out BRAND_DIFF.md
 ```
+
+## Gallery
+
+[See 5 real DESIGN.md snapshots in the browser](https://yuvrajangadsingh.github.io/brandmd/) (Stripe, Vercel, Linear, Anthropic, Mintlify), or scan the [`examples/`](./examples) folder for 30+ more. Each snapshot is generated from a single public page visit and is observed, not canonical.
+
+## Diff
+
+```bash
+brandmd diff examples/stripe.md examples/vercel.md --out BRAND_DIFF.md
+```
+
+Compares two `DESIGN.md` files and writes a markdown diff: shared and unique colors, typography table, spacing and radii table, per-component property diff, and a "what to copy / what to avoid" synthesis. Local files only in v0.11. See [`examples/diff-stripe-vs-vercel.md`](./examples/diff-stripe-vs-vercel.md) for the output format.
 
 ## Output formats
 
