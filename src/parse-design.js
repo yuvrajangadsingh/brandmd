@@ -1,6 +1,10 @@
 // Shared DESIGN.md parser used by gallery builder and diff command.
 // Parses the 6-section format produced by brandmd.
 
+function stripCodeMarks(s) {
+  return s.replace(/^`(.+)`$/, '$1').replace(/`([^`]+)`/g, '$1');
+}
+
 function parseDesign(md) {
   const out = {
     title: null,
@@ -63,14 +67,14 @@ function parseDesign(md) {
   const componentSection = md.split(/^## 4\. Component Stylings/m)[1];
   if (componentSection) {
     const beforeNext = componentSection.split(/^## \d/m)[0];
-    const componentRe = /^### (\w+)\s*$([\s\S]*?)(?=^###|\z)/gm;
+    const componentRe = /^### ([^\n]+?)\s*$([\s\S]*?)(?=^###|\z)/gm;
     for (const m of beforeNext.matchAll(componentRe)) {
       const name = m[1].trim();
       const body = m[2].trim();
       const props = {};
       for (const line of body.split('\n')) {
         const fieldMatch = line.match(/^- ([^:]+):\s+(.+)$/);
-        if (fieldMatch) props[fieldMatch[1].trim()] = fieldMatch[2].trim();
+        if (fieldMatch) props[fieldMatch[1].trim()] = stripCodeMarks(fieldMatch[2].trim());
       }
       out.components[name] = props;
     }

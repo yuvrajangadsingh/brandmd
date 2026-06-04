@@ -16,9 +16,9 @@ function colorBlock(label, items) {
   return `### ${label}\n\n${lines}\n`;
 }
 
-function tokenList(label, items) {
-  if (!items.length) return `### ${label}\n\n_none_\n`;
-  return `### ${label}\n\n${items.map(t => `\`${t}\``).join(' · ')}\n`;
+function tableCell(s) {
+  if (s == null || s === '') return '_unspecified_';
+  return String(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
 }
 
 function componentDiff(aComps, bComps, aName, bName) {
@@ -32,45 +32,72 @@ function componentDiff(aComps, bComps, aName, bName) {
     if (!bProps) { blocks.push(`### ${name}\n\n_only in ${aName}_:\n\`\`\`\n${Object.entries(aProps).map(([k,v]) => `${k}: ${v}`).join('\n')}\n\`\`\``); continue; }
     const rows = [];
     const keys = new Set([...Object.keys(aProps), ...Object.keys(bProps)]);
+    let diffCount = 0;
     for (const k of [...keys].sort()) {
-      const av = aProps[k] || '_unspecified_';
-      const bv = bProps[k] || '_unspecified_';
-      const same = av === bv ? '=' : '≠';
-      rows.push(`| ${k} | ${av} | ${bv} | ${same} |`);
+      const av = aProps[k];
+      const bv = bProps[k];
+      const same = av && bv && av === bv ? '=' : '≠';
+      if (same === '≠') diffCount++;
+      rows.push(`| ${tableCell(k)} | ${tableCell(av)} | ${tableCell(bv)} | ${same} |`);
     }
-    blocks.push(`### ${name}\n\n| property | ${aName} | ${bName} | |\n|---|---|---|---|\n${rows.join('\n')}`);
+    const summary = diffCount === 0
+      ? `\n\n_${aName} and ${bName} ${name.toLowerCase()} match across ${keys.size} properties._\n`
+      : `\n\n_${diffCount} of ${keys.size} properties differ between ${aName} and ${bName} ${name.toLowerCase()}._\n`;
+    blocks.push(`### ${name}\n\n| property | ${aName} | ${bName} | |\n|---|---|---|---|\n${rows.join('\n')}${summary}`);
   }
   return blocks.join('\n\n');
 }
 
 function whatToCopyAvoid(a, b, aName, bName) {
-  const aColors = setOf(a.colors.map(c => c.hex));
-  const bColors = setOf(b.colors.map(c => c.hex));
-  const shared = inter(aColors, bColors);
-  const aOnly = diff(aColors, bColors);
-  const bOnly = diff(bColors, aColors);
-
-  const fontMatch = a.typography.primaryFont && b.typography.primaryFont && a.typography.primaryFont === b.typography.primaryFont;
-
   const tips = [];
-  if (shared.length) tips.push(`**Shared color signal** (both use ${shared.length} of the same hex values): treat these as safe to use across either system.`);
-  if (fontMatch) tips.push(`**Same primary font** (\`${a.typography.primaryFont}\`): typography is interchangeable, less wedge for differentiation.`);
-  if (!fontMatch && a.typography.primaryFont && b.typography.primaryFont) tips.push(`**Different primary fonts** (${a.typography.primaryFont} vs ${b.typography.primaryFont}): typography is the strongest brand-divergence axis here.`);
-  if (aOnly.length >= 3) tips.push(`**${aName}-only accents** (${aOnly.length} hex values): use sparingly when borrowing from ${aName}, they carry the brand signature.`);
-  if (bOnly.length >= 3) tips.push(`**${bName}-only accents** (${bOnly.length} hex values): same, carry ${bName} brand signature.`);
-
   const avoid = [];
+
+  if (a.typography.primaryFont && b.typography.primaryFont) {
+    if (a.typography.primaryFont === b.typography.primaryFont) {
+      tips.push(`Both systems use \`${a.typography.primaryFont}\` as primary, typography is not where they diverge.`);
+    } else {
+      tips.push(`Primary fonts diverge (\`${a.typography.primaryFont}\` vs \`${b.typography.primaryFont}\`), typography is the cleanest brand-signature swap.`);
+    }
+  }
+
+  const aRoles = a.typography.byRole || {};
+  const bRoles = b.typography.byRole || {};
+  const roleKeys = [...new Set([...Object.keys(aRoles), ...Object.keys(bRoles)])];
+  for (const role of roleKeys) {
+    if (aRoles[role] && bRoles[role] && aRoles[role] !== bRoles[role]) {
+      tips.push(`${role} font differs: ${aName} uses \`${aRoles[role]}\`, ${bName} uses \`${bRoles[role]}\`.`);
+    }
+  }
+
   if (a.layout.spacingScale.length && b.layout.spacingScale.length) {
     const aSpacing = setOf(a.layout.spacingScale);
     const bSpacing = setOf(b.layout.spacingScale);
     const sharedSpacing = inter(aSpacing, bSpacing);
-    if (sharedSpacing.length === 0) avoid.push(`**Mixing spacing scales**: no shared values between the two. Pick one, do not blend.`);
-  }
-  if (Object.keys(a.components).length && Object.keys(b.components).length) {
-    avoid.push(`**Cross-borrowing component styling without context**: button radius and padding differ between systems and define brand feel.`);
+    if (sharedSpacing.length === 0) {
+      avoid.push(`Spacing scales do not overlap. Picking values from both will produce visual noise.`);
+    } else if (sharedSpacing.length < Math.min(aSpacing.size, bSpacing.size) / 2) {
+      avoid.push(`Only ${sharedSpacing.length} shared spacing values (${sharedSpacing.join(', ')}). Mixing the rest will look uneven.`);
+    }
   }
 
-  return `### What to copy\n\n${tips.length ? tips.map(t => `- ${t}`).join('\n') : '_no obvious shared signal_'}\n\n### What to avoid\n\n${avoid.length ? avoid.map(t => `- ${t}`).join('\n') : '_no obvious anti-pattern_'}`;
+  const aRadii = setOf(a.layout.radii);
+  const bRadii = setOf(b.layout.radii);
+  const sharedRadii = inter(aRadii, bRadii);
+  if (aRadii.size && bRadii.size && sharedRadii.length === 0) {
+    avoid.push(`Border radii do not overlap. Components borrowed across will feel out of family.`);
+  }
+
+  const buttonsA = a.components['Buttons'];
+  const buttonsB = b.components['Buttons'];
+  if (buttonsA && buttonsB) {
+    const radiusA = buttonsA['Corner radius'];
+    const radiusB = buttonsB['Corner radius'];
+    if (radiusA && radiusB && radiusA !== radiusB) {
+      tips.push(`Button radius gap: ${aName} uses \`${radiusA}\`, ${bName} uses \`${radiusB}\`. Buttons are where users feel the difference fastest.`);
+    }
+  }
+
+  return `### What to copy\n\n${tips.length ? tips.map(t => `- ${t}`).join('\n') : '_no useful copy signal_'}\n\n### What to avoid\n\n${avoid.length ? avoid.map(t => `- ${t}`).join('\n') : '_no obvious anti-pattern_'}`;
 }
 
 export function diffDesigns(aPath, bPath, outPath) {
@@ -92,19 +119,19 @@ export function diffDesigns(aPath, bPath, outPath) {
 
 | | ${aName} | ${bName} |
 |---|---|---|
-| Primary font | ${a.typography.primaryFont || '_unspecified_'} | ${b.typography.primaryFont || '_unspecified_'} |
-| Secondary font | ${a.typography.secondaryFont || '_unspecified_'} | ${b.typography.secondaryFont || '_unspecified_'} |
-| Heading scale | ${a.typography.headingScale.join(', ') || '_unspecified_'} | ${b.typography.headingScale.join(', ') || '_unspecified_'} |
-| Body scale | ${a.typography.bodyScale.join(', ') || '_unspecified_'} | ${b.typography.bodyScale.join(', ') || '_unspecified_'} |
-| Weights | ${a.typography.weights.join(', ') || '_unspecified_'} | ${b.typography.weights.join(', ') || '_unspecified_'} |
+| Primary font | ${tableCell(a.typography.primaryFont)} | ${tableCell(b.typography.primaryFont)} |
+| Secondary font | ${tableCell(a.typography.secondaryFont)} | ${tableCell(b.typography.secondaryFont)} |
+| Heading scale | ${tableCell(a.typography.headingScale.join(', '))} | ${tableCell(b.typography.headingScale.join(', '))} |
+| Body scale | ${tableCell(a.typography.bodyScale.join(', '))} | ${tableCell(b.typography.bodyScale.join(', '))} |
+| Weights | ${tableCell(a.typography.weights.join(', '))} | ${tableCell(b.typography.weights.join(', '))} |
 `;
 
   const spacingSection = `## Spacing & radii
 
 | | ${aName} | ${bName} |
 |---|---|---|
-| Spacing scale | ${a.layout.spacingScale.join(', ') || '_unspecified_'} | ${b.layout.spacingScale.join(', ') || '_unspecified_'} |
-| Border radii | ${a.layout.radii.join(', ') || '_unspecified_'} | ${b.layout.radii.join(', ') || '_unspecified_'} |
+| Spacing scale | ${tableCell(a.layout.spacingScale.join(', '))} | ${tableCell(b.layout.spacingScale.join(', '))} |
+| Border radii | ${tableCell(a.layout.radii.join(', '))} | ${tableCell(b.layout.radii.join(', '))} |
 `;
 
   const componentsSection = `## Components

@@ -37,6 +37,24 @@ function esc(s) {
   return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
 
+function stripBackticks(s) {
+  if (s == null) return s;
+  return String(s).replace(/^`(.+)`$/, '$1').replace(/`([^`]+)`/g, '$1');
+}
+
+function renderInlineCode(s) {
+  if (s == null) return '';
+  const parts = String(s).split('`');
+  return parts.map((part, i) => i % 2 === 0 ? esc(part) : `<code>${esc(part)}</code>`).join('');
+}
+
+function cssFontFamily(name) {
+  if (!name) return '-apple-system,BlinkMacSystemFont,sans-serif';
+  const safe = String(name).replace(/[^\w\s-]/g, '').trim();
+  if (!safe) return '-apple-system,BlinkMacSystemFont,sans-serif';
+  return `"${safe}",-apple-system,BlinkMacSystemFont,sans-serif`;
+}
+
 function textColor(hex) {
   const h = hex.replace('#', '');
   if (h.length < 6) return '#000';
@@ -85,6 +103,12 @@ const BASE_CSS = `
   .card .preview span{width:24px;height:24px;border-radius:4px;display:inline-block}
   footer.site{margin-top:64px;padding-top:24px;border-top:1px solid #30363d;color:#7d8590;font-size:13px}
   footer.site code{background:#161b22;padding:2px 6px;border-radius:4px;font-size:12px}
+  code{background:#161b22;padding:1px 5px;border-radius:3px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:0.9em;color:#c9d1d9}
+  .install{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:16px 20px;margin:16px 0;display:flex;align-items:center;gap:12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:#c9d1d9;overflow-x:auto}
+  .install:before{content:"$";color:#7d8590;flex-shrink:0}
+  .install code{background:transparent;padding:0;flex:1}
+  .raw-link{display:inline-block;margin-top:8px;font-size:13px}
+  .raw-link:before{content:"↓ ";color:#7d8590}
   @media (max-width:600px){.guidelines{grid-template-columns:1fr}}
 `;
 
@@ -98,10 +122,11 @@ function renderBrandPage(brand, design) {
     </div>
   `).join('');
 
+  const fontStack = cssFontFamily(design.typography.primaryFont);
   const typeSample = `
     <div class="type-sample">
-      <div class="display" style="font-family:'${esc(design.typography.primaryFont || 'inherit')}',-apple-system,sans-serif">The quick brown fox</div>
-      <div class="body" style="font-family:'${esc(design.typography.primaryFont || 'inherit')}',-apple-system,sans-serif">Body sample at 14px. The quick brown fox jumps over the lazy dog. 0123456789</div>
+      <div class="display" style="font-family:${fontStack}">The quick brown fox</div>
+      <div class="body" style="font-family:${fontStack}">Body sample at 14px. The quick brown fox jumps over the lazy dog. 0123456789</div>
     </div>
     <h3>Primary font</h3>
     <div class="tokens"><span class="token">${esc(design.typography.primaryFont || 'unspecified')}</span></div>
@@ -114,7 +139,7 @@ function renderBrandPage(brand, design) {
   const componentBlocks = Object.entries(design.components).map(([name, props]) => `
     <div class="component">
       <div class="label">${esc(name)}</div>
-      <div class="props">${Object.entries(props).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join('<br>')}</div>
+      <div class="props">${Object.entries(props).map(([k, v]) => `${esc(k)}: ${renderInlineCode(v)}`).join('<br>')}</div>
     </div>
   `).join('');
 
@@ -125,8 +150,8 @@ function renderBrandPage(brand, design) {
 
   const guidelines = `
     <div class="guidelines">
-      <div class="do-col"><h3>Do</h3><ul>${design.guidelines.dos.map(d => `<li>${esc(d)}</li>`).join('')}</ul></div>
-      <div class="dont-col"><h3>Don't</h3><ul>${design.guidelines.donts.map(d => `<li>${esc(d)}</li>`).join('')}</ul></div>
+      <div class="do-col"><h3>Do</h3><ul>${design.guidelines.dos.map(d => `<li>${renderInlineCode(d)}</li>`).join('')}</ul></div>
+      <div class="dont-col"><h3>Don't</h3><ul>${design.guidelines.donts.map(d => `<li>${renderInlineCode(d)}</li>`).join('')}</ul></div>
     </div>
   `;
 
@@ -146,6 +171,8 @@ function renderBrandPage(brand, design) {
   <h1>${esc(brand.name)}</h1>
   <p>Snapshot of <a href="${esc(brand.url)}" target="_blank" rel="noopener">${esc(brand.url)}</a>, extracted by brandmd. This is not the canonical ${esc(brand.name)} brand guideline.</p>
   <p class="meta">Category: ${esc(brand.category)} · Generated ${generated}</p>
+  <div class="install"><code>npx brandmd ${esc(brand.url)}</code></div>
+  <a class="raw-link" href="https://github.com/yuvrajangadsingh/brandmd/blob/main/examples/${esc(brand.slug)}.md" target="_blank" rel="noopener">view raw DESIGN.md on GitHub</a>
 </header>
 
 <h2>Color palette</h2>

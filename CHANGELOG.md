@@ -2,6 +2,23 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.11.1] - 2026-06-04
+
+### Fixed
+
+- **Gallery: backticks in `DESIGN.md` values no longer leak into rendered HTML.** Component prop values and guideline lines like `` `#FFFFFF` `` now render as proper inline code instead of raw backtick characters.
+- **Gallery: font names in inline CSS are now stripped of unsafe characters** before being used in `font-family` declarations. Scraped font names were previously passed through with only HTML-escaping, leaving room for CSS-side issues on weird extractions.
+- **Parser: component names can contain spaces and punctuation.** Previously matched `\w+`, so headings like "Navigation Items" or "Form Inputs" would be skipped silently. Also strips backticks from component property values.
+- **Parser: shared `stripCodeMarks()` helper** removes wrapping or inline backticks from extracted token values so downstream consumers (gallery, diff) get clean strings.
+- **Diff: dead `tokenList()` helper removed.**
+- **Diff: markdown table cells now escape pipe characters** and collapse newlines so long radius/spacing strings do not break tables.
+- **Diff: synthesis section is sharper.** Generic "shared color signal" lines are gone. Replaced with role-level typography diffs ("headings font differs"), button-radius gap with concrete numbers ("4px vs 6px"), and overlap-aware spacing/radii warnings.
+- **Gallery: each brand page now has the `npx brandmd <url>` command in a copyable code block** and a "view raw `DESIGN.md` on GitHub" link.
+
+### Infrastructure
+
+- **GitHub Pages: HTTPS enforcement enabled** for `https://yuvrajangadsingh.me/brandmd/`. Certificate state is "approved", `https_enforced` is true.
+
 ## [0.11.0] - 2026-06-03
 
 ### Added

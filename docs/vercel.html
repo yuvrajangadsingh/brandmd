@@ -44,6 +44,12 @@
   .card .preview span{width:24px;height:24px;border-radius:4px;display:inline-block}
   footer.site{margin-top:64px;padding-top:24px;border-top:1px solid #30363d;color:#7d8590;font-size:13px}
   footer.site code{background:#161b22;padding:2px 6px;border-radius:4px;font-size:12px}
+  code{background:#161b22;padding:1px 5px;border-radius:3px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:0.9em;color:#c9d1d9}
+  .install{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:16px 20px;margin:16px 0;display:flex;align-items:center;gap:12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;color:#c9d1d9;overflow-x:auto}
+  .install:before{content:"$";color:#7d8590;flex-shrink:0}
+  .install code{background:transparent;padding:0;flex:1}
+  .raw-link{display:inline-block;margin-top:8px;font-size:13px}
+  .raw-link:before{content:"↓ ";color:#7d8590}
   @media (max-width:600px){.guidelines{grid-template-columns:1fr}}
 </style>
 </head>
@@ -53,7 +59,9 @@
   <p style="margin:0 0 8px"><a href="./index.html">← brandmd gallery</a></p>
   <h1>Vercel</h1>
   <p>Snapshot of <a href="https://vercel.com" target="_blank" rel="noopener">https://vercel.com</a>, extracted by brandmd. This is not the canonical Vercel brand guideline.</p>
-  <p class="meta">Category: dev-platform · Generated 2026-06-03</p>
+  <p class="meta">Category: dev-platform · Generated 2026-06-04</p>
+  <div class="install"><code>npx brandmd https://vercel.com</code></div>
+  <a class="raw-link" href="https://github.com/yuvrajangadsingh/brandmd/blob/main/examples/vercel.md" target="_blank" rel="noopener">view raw DESIGN.md on GitHub</a>
 </header>
 
 <h2>Color palette</h2>
@@ -110,8 +118,8 @@
 <h2>Typography</h2>
 
     <div class="type-sample">
-      <div class="display" style="font-family:'Geist',-apple-system,sans-serif">The quick brown fox</div>
-      <div class="body" style="font-family:'Geist',-apple-system,sans-serif">Body sample at 14px. The quick brown fox jumps over the lazy dog. 0123456789</div>
+      <div class="display" style="font-family:"Geist",-apple-system,BlinkMacSystemFont,sans-serif">The quick brown fox</div>
+      <div class="body" style="font-family:"Geist",-apple-system,BlinkMacSystemFont,sans-serif">Body sample at 14px. The quick brown fox jumps over the lazy dog. 0123456789</div>
     </div>
     <h3>Primary font</h3>
     <div class="tokens"><span class="token">Geist</span></div>
@@ -125,12 +133,12 @@
 
     <div class="component">
       <div class="label">Buttons</div>
-      <div class="props">Background: `rgb(255, 255, 255)`<br>Text color: `rgb(23, 23, 23)`<br>Corner radius: 6px<br>Padding: 0px 6px 0px 6px<br>Font: 14px, weight 500</div>
+      <div class="props">Background: rgb(255, 255, 255)<br>Text color: rgb(23, 23, 23)<br>Corner radius: 6px<br>Padding: 0px 6px 0px 6px<br>Font: 14px, weight 500</div>
     </div>
   
     <div class="component">
       <div class="label">Cards</div>
-      <div class="props">Shadow: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`<br>Corner radius: 2px</div>
+      <div class="props">Shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px<br>Corner radius: 2px</div>
     </div>
   
 
@@ -143,13 +151,13 @@
 <h2>Guidelines</h2>
 
     <div class="guidelines">
-      <div class="do-col"><h3>Do</h3><ul><li>Use 8px grid for all spacing</li><li>Use `#0070F3` for primary actions and CTAs</li><li>Stick to 3 font weights: 400, 500, 600</li><li>Use `Geist` as the primary typeface</li></ul></div>
+      <div class="do-col"><h3>Do</h3><ul><li>Use 8px grid for all spacing</li><li>Use <code>#0070F3</code> for primary actions and CTAs</li><li>Stick to 3 font weights: 400, 500, 600</li><li>Use <code>Geist</code> as the primary typeface</li></ul></div>
       <div class="dont-col"><h3>Don't</h3><ul><li>Don't introduce colors outside the palette above</li><li>Don't mix fonts beyond Geist and geistMonoFont</li><li>Don't use inline styles when the design system covers the pattern</li><li>Don't use border-radius values outside: 2px, 4px, 6px, 100px, 100%, 9999px</li></ul></div>
     </div>
   
 
 <footer class="site">
-<p>Generated 2026-06-03 from <a href="https://vercel.com" target="_blank" rel="noopener">https://vercel.com</a> using <code>npx brandmd https://vercel.com</code>.</p>
+<p>Generated 2026-06-04 from <a href="https://vercel.com" target="_blank" rel="noopener">https://vercel.com</a> using <code>npx brandmd https://vercel.com</code>.</p>
 <p>Generate one for your site: <code>npx brandmd https://yoursite.com</code></p>
 <p><a href="https://github.com/yuvrajangadsingh/brandmd">brandmd on GitHub</a> · <a href="./index.html">all snapshots</a></p>
 </footer>

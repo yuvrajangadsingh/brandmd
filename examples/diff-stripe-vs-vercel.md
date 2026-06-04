@@ -53,11 +53,14 @@
 
 | property | Stripe | Vercel | |
 |---|---|---|---|
-| Background | _unspecified_ | `rgb(255, 255, 255)` | ≠ |
+| Background | _unspecified_ | rgb(255, 255, 255) | ≠ |
 | Corner radius | 4px | 6px | ≠ |
 | Font | 14px, weight 400 | 14px, weight 500 | ≠ |
 | Padding | 12px 0px 12px 0px | 0px 6px 0px 6px | ≠ |
-| Text color | `rgb(6, 27, 49)` | `rgb(23, 23, 23)` | ≠ |
+| Text color | rgb(6, 27, 49) | rgb(23, 23, 23) | ≠ |
+
+_5 of 5 properties differ between Stripe and Vercel buttons._
+
 
 ### Cards
 
@@ -65,18 +68,21 @@
 |---|---|---|---|
 | Corner radius | _unspecified_ | 2px | ≠ |
 | Padding | 0px 0px 0px 0px | _unspecified_ | ≠ |
-| Shadow | _unspecified_ | `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px` | ≠ |
+| Shadow | _unspecified_ | rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px | ≠ |
+
+_3 of 3 properties differ between Stripe and Vercel cards._
+
 
 ## Synthesis
 
 ### What to copy
 
-- **Shared color signal** (both use 1 of the same hex values): treat these as safe to use across either system.
-- **Different primary fonts** (sohne-var vs Geist): typography is the strongest brand-divergence axis here.
-- **Stripe-only accents** (6 hex values): use sparingly when borrowing from Stripe, they carry the brand signature.
-- **Vercel-only accents** (7 hex values): same, carry Vercel brand signature.
+- Primary fonts diverge (`sohne-var` vs `Geist`), typography is the cleanest brand-signature swap.
+- headings font differs: Stripe uses `sohne-var`, Vercel uses `Geist, geistMonoFont`.
+- body font differs: Stripe uses `sohne-var`, Vercel uses `Geist`.
+- Button radius gap: Stripe uses `4px`, Vercel uses `6px`. Buttons are where users feel the difference fastest.
 
 ### What to avoid
 
-- **Cross-borrowing component styling without context**: button radius and padding differ between systems and define brand feel.
+_no obvious anti-pattern_
 
