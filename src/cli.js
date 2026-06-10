@@ -207,7 +207,7 @@ program
       }
 
       if (process.stderr.isTTY) {
-        process.stderr.write('\n\u2605 If this saved you time, star the repo: https://github.com/yuvrajangadsingh/brandmd\n');
+        process.stderr.write('\n\u2605 If this saved you time, star the repo: https://github.com/yuvrajangadsingh/brandmd\n  More tools by the author: https://yuvrajangadsingh.com\n');
       }
     } catch (err) {
       console.error(`Error: ${err.message}`);

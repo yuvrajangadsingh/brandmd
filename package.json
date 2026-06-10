@@ -32,7 +32,8 @@
   "bugs": {
     "url": "https://github.com/yuvrajangadsingh/brandmd/issues"
   },
-  "author": "Yuvraj Angad Singh <yuvrajangad.s@gmail.com>",
+  "author": "Yuvraj Angad Singh <yuvrajangad.s@gmail.com> (https://yuvrajangadsingh.com)",
+  "funding": "https://github.com/sponsors/yuvrajangadsingh",
   "license": "MIT",
   "repository": {
     "type": "git",

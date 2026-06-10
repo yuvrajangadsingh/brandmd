@@ -261,6 +261,8 @@ Then tell your agent: "extract the design system from https://linear.app"
 
 If brandmd saved you time, consider [starring the repo](https://github.com/yuvrajangadsingh/brandmd).
 
+Built by [Yuvraj Angad Singh](https://yuvrajangadsingh.com). Also: [vibecheck](https://github.com/yuvrajangadsingh/vibecheck) (catch AI-generated code smells) and [vemb](https://github.com/yuvrajangadsingh/vemb) (embeddings from the command line). [Follow on GitHub](https://github.com/yuvrajangadsingh) for new dev-tool experiments.
+
 ## License
 
 [MIT](LICENSE)
