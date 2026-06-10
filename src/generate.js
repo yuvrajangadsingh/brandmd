@@ -22,7 +22,7 @@ export function generate(tokens) {
   // Section 1: Visual Theme & Atmosphere
   lines.push("## 1. Visual Theme & Atmosphere");
   lines.push("");
-  lines.push(`**Overall mood:** ${tokens.atmosphere}`);
+  lines.push(`**Visual character:** ${tokens.atmosphere}`);
   lines.push("");
 
   const density = tokens.spacing.length > 10 ? "Moderate" : "Compact";
@@ -32,9 +32,13 @@ export function generate(tokens) {
   lines.push("");
 
   if (tokens.radii.length > 0) {
-    const maxRadius = tokens.radii[tokens.radii.length - 1]?.val || "0px";
-    const style =
-      parseFloat(maxRadius) > 12
+    // Pill radii (9999px buttons) say nothing about the overall shape
+    // language; judge it from the largest non-pill radius instead.
+    const nonPill = tokens.radii.filter((r) => !r.pill && !r.val.includes("%"));
+    const maxRadius = nonPill.length ? nonPill[nonPill.length - 1].val : null;
+    const style = maxRadius === null
+      ? "Sharp edges with pill-shaped interactive elements"
+      : parseFloat(maxRadius) > 12
         ? "Rounded, friendly aesthetic with generous corner radii"
         : parseFloat(maxRadius) > 4
           ? "Subtle rounding on interactive elements"
@@ -57,8 +61,19 @@ export function generate(tokens) {
   lines.push("## 2. Color Palette & Roles");
   lines.push("");
 
-  for (const color of tokens.palette) {
-    lines.push(`- **${color.name}** (\`${color.hex}\`): ${color.role}`);
+  // Dominant and accent tokens get full bullets; incidental low-usage values
+  // collapse to one line so agents weight the palette the way the site does.
+  const mainColors = tokens.palette.filter((c) => c.tier !== "incidental");
+  const incidentalColors = tokens.palette.filter((c) => c.tier === "incidental");
+  for (const color of mainColors.length ? mainColors : tokens.palette) {
+    const tierTag = color.tier === "dominant" ? " (dominant)" : "";
+    lines.push(`- **${color.name}** (\`${color.hex}\`): ${color.role}${tierTag}`);
+  }
+  if (mainColors.length && incidentalColors.length) {
+    lines.push("");
+    lines.push(
+      `**Incidental (low usage, do not lead with these):** ${incidentalColors.map((c) => `\`${c.hex}\``).join(", ")}`
+    );
   }
   lines.push("");
 
@@ -227,7 +242,7 @@ export function generate(tokens) {
 
   if (tokens.radii.length > 0) {
     lines.push(
-      `**Border radii:** ${tokens.radii.map((r) => r.val).join(", ")}`
+      `**Border radii:** ${tokens.radii.map((r) => (r.pill ? `${r.val} (pill)` : r.val)).join(", ")}`
     );
     lines.push("");
   }
@@ -269,7 +284,7 @@ export function generate(tokens) {
   }
   lines.push("- Don't use inline styles when the design system covers the pattern");
   if (tokens.radii.length > 0) {
-    lines.push(`- Don't use border-radius values outside: ${tokens.radii.map((r) => r.val).join(", ")}`);
+    lines.push(`- Don't use border-radius values outside: ${tokens.radii.map((r) => (r.pill ? `${r.val} (pill)` : r.val)).join(", ")}`);
   }
   lines.push("");
 
@@ -277,7 +292,7 @@ export function generate(tokens) {
   if (tokens.dark) {
     lines.push("## 6. Dark Theme Overrides");
     lines.push("");
-    lines.push(`**Overall mood:** ${tokens.dark.atmosphere}`);
+    lines.push(`**Visual character:** ${tokens.dark.atmosphere}`);
     lines.push("");
     if (tokens.dark.palette.length > 0) {
       lines.push("**Colors:**");

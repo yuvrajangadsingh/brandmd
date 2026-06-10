@@ -23,7 +23,9 @@ function parseDesign(md) {
   const sourceMatch = md.match(/generated from \[([^\]]+)\]\(([^)]+)\)/i);
   if (sourceMatch) out.sourceUrl = sourceMatch[2];
 
-  const moodMatch = md.match(/\*\*Overall mood:\*\*\s+(.+)/);
+  // "Visual character" replaced "Overall mood" in v0.12; accept both so the
+  // gallery keeps parsing pre-v0.12 DESIGN.md files.
+  const moodMatch = md.match(/\*\*(?:Overall mood|Visual character):\*\*\s+(.+)/);
   if (moodMatch) out.theme.mood = moodMatch[1].trim();
   const densityMatch = md.match(/\*\*Density:\*\*\s+(.+)/);
   if (densityMatch) out.theme.density = densityMatch[1].trim();

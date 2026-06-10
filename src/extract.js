@@ -154,7 +154,12 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
         const bg = style.backgroundColor;
         if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
-          colors.background[bg] = (colors.background[bg] || 0) + 1;
+          // Count + capped area bonus. Element count alone lets a tinted
+          // overlay on dozens of tiny chips outrank the actual page
+          // background; a full-viewport element adds 25, a chip adds ~0.
+          const vp = (window.innerWidth * window.innerHeight) || 1;
+          const areaShare = Math.min((rect.width * rect.height) / vp, 1);
+          colors.background[bg] = (colors.background[bg] || 0) + 1 + areaShare * 25;
         }
 
         const color = style.color;

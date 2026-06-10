@@ -2,6 +2,22 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.12.0] - 2026-06-10
+
+Trust-repair release: five token-quality fixes found by extracting cognition.ai and comparing against the real page (#1-#5).
+
+### Changed
+
+- **`Overall mood` is now `Visual character`, and it is evidence-based** (#3). The old heuristic averaged luminance across the whole palette, so a dark footer could flip a cream editorial page to "Dark and moody". The new line is anchored to the dominant page background and cites its evidence: `Bright, high contrast; off-white background dominates with black text and vivid blue accents`. The parser accepts both labels, so pre-0.12 DESIGN.md files still work in the gallery and `diff`.
+- **Palette is tiered: dominant / accent / incidental** (#1). Backgrounds are now weighted by viewport area share, not just element count, so the page background outranks decorative chips. Saturated brand colors keep an accent floor even at low usage. Dominant tokens lead the palette section with a `(dominant)` tag; incidental values collapse to one "do not lead with these" line. `--json` carries the new `tier` field.
+- **Color naming moved to HSL-based heuristics** (#2). `#F7F6F5` is "Off-white" (was "Light Muted Orange"), `#2200FF` is "Vivid Blue" (was "Dark Blue"), `#0000000F` is "Near-transparent Black" (alpha was silently dropped). Tinted near-whites read as Cream/Off-white, high-saturation mid-tones read as Vivid, translucency is labeled. Green/cyan hue boundary corrected (`#00D66F` is Green, not Cyan).
+- **Translucent backgrounds get the role "Overlay / scrim"** instead of "Dark background / footer", and saturated backgrounds are "Accent background" even when their luminance is low.
+
+### Fixed
+
+- **Border radii no longer print in scientific notation** (#4). Computed pill radii like `3.35544e+07px` normalize to `9999px (pill)` in DESIGN.md while staying CSS-valid (`9999px`) in `--css` and `--tailwind` output. Sub-pixel radii round to 0.5px and merge. Shape language now ignores pill values, so a sharp-edged site with pill buttons reads "Sharp, geometric edges" instead of "Rounded, friendly".
+- **Type scale is clustered** (#5). Sub-pixel rendering noise like `11.05px` / `12.75px` merges into the nearest 0.5px step, so seven near-identical caption sizes collapse to the real scale.
+
 ## [0.11.1] - 2026-06-04
 
 ### Fixed
