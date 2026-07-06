@@ -19,6 +19,11 @@ export function generate(tokens) {
   }
   lines.push("");
 
+  if (tokens.blockLikely) {
+    lines.push("> ⚠️ **Likely a block / access-denied page.** The source returned a bot-protection or error page, not the real site, so the tokens below are probably meaningless. Re-run against a non-protected page (e.g. `/docs`, `/pricing`).");
+    lines.push("");
+  }
+
   // Section 1: Visual Theme & Atmosphere
   lines.push("## 1. Visual Theme & Atmosphere");
   lines.push("");
@@ -55,6 +60,22 @@ export function generate(tokens) {
   } else {
     lines.push("**Depth:** Flat design with minimal shadow usage.");
     lines.push("");
+  }
+
+  if (tokens.motion) {
+    const m = tokens.motion;
+    const surfaces = [];
+    if (m.webgl) surfaces.push("WebGL / 3D canvas");
+    else if (m.canvas) surfaces.push("canvas rendering");
+    if (m.lottie) surfaces.push("Lottie animations");
+    if (m.inlineRaf) surfaces.push("scripted animation via requestAnimationFrame");
+    if (surfaces.length > 0) {
+      lines.push(
+        `**Motion:** Animation surfaces detected (${surfaces.join(", ")}). ` +
+        `The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.`
+      );
+      lines.push("");
+    }
   }
 
   // Section 2: Color Palette & Roles

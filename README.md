@@ -65,6 +65,10 @@ That installs 5 brandmd-generated skills (Tailwind CSS, shadcn/ui, Vercel, Mintl
 <details>
 <summary>Release notes</summary>
 
+- **v0.13:** Detects block / access-denied pages (Akamai, PerimeterX, WAF 403s) and warns instead of emitting a garbage design system. Notes when a site uses motion (canvas, WebGL, Lottie, rAF).
+- **v0.12:** Trust-repair: evidence-based visual character, tiered palette, HSL color naming, no more scientific-notation radii, clustered type scale.
+- **v0.11:** `diff` subcommand and the hosted example gallery.
+- **v0.10:** Universal `.agents/` skills path.
 - **v0.9:** `--agent` flag writes Cursor rule + Claude Code skill alongside DESIGN.md. CI switched to npm Trusted Publishing.
 - **v0.8:** More accurate primary font detection across display, heading, body, and global text roles.
 - **v0.7:** Cloudflare-protected sites handled by waiting up to 20s for the JS challenge.

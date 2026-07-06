@@ -2,6 +2,19 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.13.0] - 2026-07-06
+
+Robustness release: stop trusting block pages, and flag motion.
+
+### Added
+
+- **Block-page detection** (#7). Bot-protection and access-denied pages (Akamai, PerimeterX, generic WAF 403s) return real-looking HTML that sailed past the Cloudflare-specific check and produced a confident garbage DESIGN.md (rolex.com yielded a design system titled "Access Denied"). brandmd now combines independent weak signals — block-y title, 401/403/429 status, sub-200-char body, palette collapsed to fallback fonts + ≤2 colors — and requires 2+ to fire, so minimal-but-real landing pages don't false-positive. When flagged, it prints a stderr warning and prepends a warning callout to DESIGN.md, but still exits 0. The heuristic is a pure exported function (`detectBlockLikely`) with test coverage.
+- **Motion detection** (#6). DESIGN.md now notes when the site has animation surfaces — canvas, WebGL, Lottie, or inline `requestAnimationFrame`. Detection is presence-only and honest about its limits: bundled event listeners inside minified JS are not enumerable from the DOM, so this catches animation surfaces, not every interaction handler. The section is omitted entirely when nothing is found. It does not describe the animations (that's deferred).
+
+### Changed
+
+- `npm test` now runs a real suite (`node --test`, zero new dependencies): a captured real extraction fed through `analyze()` → `generate()` locking in the v0.12 token-quality fixes, plus block and motion coverage. Previously a no-op.
+
 ## [0.12.0] - 2026-06-10
 
 Trust-repair release: five token-quality fixes found by extracting cognition.ai and comparing against the real page (#1-#5).

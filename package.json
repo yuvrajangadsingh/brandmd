@@ -1,13 +1,13 @@
 {
   "name": "brandmd",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Stop Claude Code/Cursor from guessing UI. Extract any website's design system into a Stitch-ready DESIGN.md.",
   "type": "module",
   "bin": {
     "brandmd": "./bin/brandmd.js"
   },
   "scripts": {
-    "test": "echo \"no tests yet\" && exit 0"
+    "test": "node --test"
   },
   "keywords": [
     "design-system",

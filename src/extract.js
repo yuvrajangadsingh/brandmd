@@ -41,6 +41,29 @@ async function isCloudflareChallenge(page) {
 }
 
 /**
+ * Decide whether an extraction is really a bot-block / access-denied page
+ * (Akamai, PerimeterX, generic WAF 403s) rather than the real site. These
+ * return real-looking HTML that sails past the Cloudflare-specific check and
+ * yields a confident garbage DESIGN.md.
+ *
+ * Combines independent weak signals and requires 2+ to fire, so genuinely
+ * minimal landing pages don't false-positive. Pure function, no browser —
+ * exported for testing.
+ */
+export function detectBlockLikely({ title = "", httpStatus = null, bodyTextLength = null, colors = {}, fonts = {} } = {}) {
+  const blockTitle = /access denied|forbidden|^403\b|attention required|pardon our interruption|are you (a )?human|captcha|request blocked|not authorized/i.test(title);
+  const httpBlocked = httpStatus != null && [401, 403, 429].includes(httpStatus);
+  const bodyThin = bodyTextLength != null && bodyTextLength < 200;
+  const bgCount = Object.keys(colors?.background || {}).length;
+  const fontNames = Object.keys(fonts || {});
+  const fallbackFontsOnly =
+    fontNames.length > 0 &&
+    fontNames.every((f) => /^\s*("?)(times( new roman)?|arial|helvetica|system-ui|sans-serif|serif|-apple-system|blinkmacsystemfont)\1\s*$/i.test(f.split(",")[0]));
+  const barePage = bgCount <= 2 && fallbackFontsOnly;
+  return [blockTitle, httpBlocked, bodyThin, barePage].filter(Boolean).length >= 2;
+}
+
+/**
  * Extract styles from a single page using a shared browser instance.
  */
 async function extractPage(browser, url, colorScheme = "light", { vision = false, cfWaitMs = 20000 } = {}) {
@@ -51,7 +74,8 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
   try {
     const page = await context.newPage();
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+    const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+    const httpStatus = response ? response.status() : null;
     await page.waitForTimeout(2000);
 
     // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
@@ -325,10 +349,48 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         try { extractVarsFromRules(sheet.cssRules); } catch { /* cross-origin */ }
       }
 
-      return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, spacings, radii, shadows, cssVars, components };
+      // Motion presence — cheap, element/inline-script based only. Bundled
+      // event listeners (e.g. addEventListener("pointermove") inside minified
+      // JS) are NOT enumerable from the DOM, so this detects animation surfaces
+      // (canvas/webgl/lottie) and inline rAF, not every interaction handler.
+      let webgl = false;
+      const canvas = document.querySelector("canvas");
+      if (canvas) {
+        try {
+          webgl = !!(canvas.getContext("webgl2") || canvas.getContext("webgl") || canvas.getContext("experimental-webgl"));
+        } catch { /* context probe failed */ }
+      }
+      let inlineRaf = false;
+      for (const s of document.scripts) {
+        if (!s.src && s.textContent && /requestAnimationFrame/.test(s.textContent)) { inlineRaf = true; break; }
+      }
+      const motion = {
+        canvas: !!canvas,
+        webgl,
+        lottie: !!document.querySelector('[class*="lottie" i], lottie-player, dotlottie-player'),
+        inlineRaf,
+      };
+
+      const bodyTextLength = (document.body?.innerText || "").length;
+
+      return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, spacings, radii, shadows, cssVars, components, motion, bodyTextLength };
     });
 
     const title = await page.title();
+
+    const blockLikely = detectBlockLikely({
+      title,
+      httpStatus,
+      bodyTextLength: raw.bodyTextLength,
+      colors: raw.colors,
+      fonts: raw.fonts,
+    });
+    if (blockLikely) {
+      process.stderr.write(
+        `Warning: ${url} looks like a block / access-denied page (status ${httpStatus ?? "?"}, title "${title}"). ` +
+        `The generated design system is likely garbage. Try a non-protected page.\n`
+      );
+    }
 
     let visionData = null;
     if (vision) {
@@ -359,7 +421,8 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       };
     }
 
-    return { ...raw, title, url, vision: visionData };
+    // raw already carries `motion` and `bodyTextLength` from the evaluate.
+    return { ...raw, title, url, vision: visionData, blockLikely };
   } finally {
     await context.close();
   }
@@ -412,6 +475,15 @@ function mergeRaw(pages) {
     title: pages[0].title,
     url: pages[0].url,
     sources: pages.map((p) => p.url),
+    // If any source page tripped the block heuristic, surface it. Motion is a
+    // union — a feature present on any page counts as present for the brand.
+    blockLikely: pages.some((p) => p.blockLikely),
+    motion: {
+      canvas: pages.some((p) => p.motion?.canvas),
+      webgl: pages.some((p) => p.motion?.webgl),
+      lottie: pages.some((p) => p.motion?.lottie),
+      inlineRaf: pages.some((p) => p.motion?.inlineRaf),
+    },
   };
 
   // Merge components (concat all)

@@ -499,6 +499,8 @@ export function analyze(raw) {
   return {
     title: raw.title,
     url: raw.url,
+    blockLikely: raw.blockLikely || false,
+    motion: raw.motion || null,
     atmosphere,
     palette: dedupedPalette,
     typography: {
