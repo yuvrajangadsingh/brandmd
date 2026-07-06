@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1000px; height: 420px; }
+  body {
+    /* the cover IS #F7F6F5 — the exact cream the tool called "Light Muted Orange" */
+    background: #F7F6F5;
+    font-family: "Space Grotesk", sans-serif;
+    color: #16140f;
+    padding: 38px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kicker {
+    font: 600 14px "JetBrains Mono", monospace;
+    letter-spacing: 0.18em; text-transform: uppercase; color: #8a8275;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-weight: 700; font-size: 38px; line-height: 1.06; letter-spacing: -0.02em;
+    max-width: 880px;
+  }
+  h1 .q { color: #c0392b; }
+  .cols { display: flex; gap: 18px; margin-top: 26px; }
+  .col {
+    flex: 1; border-radius: 14px; padding: 18px 20px;
+    background: #ffffff; border: 1px solid #e6e2da;
+  }
+  .col.bad { border-left: 4px solid #c0392b; }
+  .col.good { border-left: 4px solid #1f9d57; }
+  .col h2 {
+    font: 700 12px "JetBrains Mono", monospace; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .col.bad h2 { color: #c0392b; }
+  .col.good h2 { color: #1f9d57; }
+  .row { display: flex; align-items: center; gap: 11px; margin-bottom: 11px; }
+  .swatch { width: 30px; height: 30px; border-radius: 7px; flex: none; border: 1px solid #00000018; }
+  .label { font: 500 15px "JetBrains Mono", monospace; line-height: 1.25; }
+  .hex { color: #8a8275; font-weight: 700; }
+  .strike { color: #c0392b; }
+  .fix { color: #1f9d57; }
+  .mood { margin-top: 14px; font: 500 14px "JetBrains Mono", monospace; }
+  .mood .bad-t { color: #c0392b; }
+  .mood .good-t { color: #1f9d57; }
+  .brand {
+    position: absolute; bottom: 30px; right: 44px;
+    font: 700 16px "JetBrains Mono", monospace; color: #16140f;
+  }
+  .brand b { color: #1f9d57; }
+</style>
+</head>
+<body>
+  <div class="kicker">brandmd · cognition.ai teardown</div>
+  <h1>my tool called this <span class="q">"dark and moody"</span> page.<br/>it is bright cream.</h1>
+
+  <div class="cols">
+    <div class="col bad">
+      <h2>v0.11 said</h2>
+      <div class="row">
+        <div class="swatch" style="background:#F7F6F5"></div>
+        <div class="label"><span class="hex">#F7F6F5</span> → <span class="strike">Light Muted Orange</span></div>
+      </div>
+      <div class="row">
+        <div class="swatch" style="background:#2200FF"></div>
+        <div class="label"><span class="hex">#2200FF</span> → <span class="strike">Dark Blue</span></div>
+      </div>
+      <div class="mood">mood: <span class="bad-t">Dark and moody</span></div>
+    </div>
+
+    <div class="col good">
+      <h2>v0.12 fixed</h2>
+      <div class="row">
+        <div class="swatch" style="background:#F7F6F5"></div>
+        <div class="label"><span class="hex">#F7F6F5</span> → <span class="fix">Off-white</span></div>
+      </div>
+      <div class="row">
+        <div class="swatch" style="background:#2200FF"></div>
+        <div class="label"><span class="hex">#2200FF</span> → <span class="fix">Vivid Blue</span></div>
+      </div>
+      <div class="mood">character: <span class="good-t">Bright, high contrast</span></div>
+    </div>
+  </div>
+
+  <div class="brand">brand<b>md</b></div>
+</body>
+</html>
