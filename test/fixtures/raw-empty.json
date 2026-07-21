@@ -1,0 +1,24 @@
+{
+  "colors": {
+    "background": {},
+    "text": {},
+    "border": {}
+  },
+  "fonts": {},
+  "fontsByRole": { "heading": {}, "body": {}, "button": {}, "display": {} },
+  "fontSizes": {},
+  "fontWeights": {},
+  "lineHeights": {},
+  "letterSpacings": {},
+  "spacings": {},
+  "radii": {},
+  "shadows": {},
+  "cssVars": {},
+  "components": { "buttons": [], "cards": [], "inputs": [] },
+  "motion": { "canvas": false, "webgl": false, "lottie": false, "inlineRaf": false },
+  "bodyTextLength": 0,
+  "title": null,
+  "url": "https://empty.test/",
+  "vision": null,
+  "blockLikely": false
+}

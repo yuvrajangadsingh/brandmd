@@ -1,7 +1,7 @@
 {
   "name": "brandmd",
-  "version": "0.13.0",
-  "description": "Stop Claude Code/Cursor from guessing UI. Extract any website's design system into a Stitch-ready DESIGN.md.",
+  "version": "0.14.0",
+  "description": "Stop Claude Code/Cursor from guessing UI. Extract any website's design system into a spec-valid DESIGN.md that passes the official @google/design.md linter.",
   "type": "module",
   "bin": {
     "brandmd": "./bin/brandmd.js"
@@ -15,6 +15,7 @@
     "design-tokens",
     "design-token-extractor",
     "design-md",
+    "design-md-spec",
     "css-variables",
     "tailwind-v4",
     "brand-guide",

@@ -1,13 +1,19 @@
 # brandmd
 
-[![npm version](https://img.shields.io/npm/v/brandmd)](https://www.npmjs.com/package/brandmd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/brandmd)](https://www.npmjs.com/package/brandmd) [![DESIGN.md lint: clean](https://img.shields.io/badge/%40google%2Fdesign.md_lint-0_errors_%2F_0_warnings-brightgreen)](https://github.com/google-labs-code/design.md) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Stop Claude Code, Cursor, Gemini CLI, and Google Stitch from guessing your UI. brandmd extracts any website's design system into an LLM-readable `DESIGN.md`.
+Stop Claude Code, Cursor, and Gemini CLI from guessing your UI. brandmd extracts any website's design system into a **spec-valid `DESIGN.md`** that passes the official [`@google/design.md`](https://github.com/google-labs-code/design.md) linter.
 
-AI coding agents generate generic screens when they don't know your colors, fonts, spacing, components, and layout rules. Run one command, drop `DESIGN.md` in your project root, and your agent has brand context before it writes code. Default extraction runs locally with no API key.
+AI coding agents generate generic screens when they don't know your colors, fonts, spacing, components, and layout rules. Run one command, drop `DESIGN.md` in your project root, and your agent has brand context before it writes code. Output is the official DESIGN.md format: YAML frontmatter with machine-readable tokens plus canonical prose sections. Default extraction runs locally with no API key.
 
 ```bash
 npx brandmd https://stripe.com -o DESIGN.md
+```
+
+Every generated `DESIGN.md` validates clean:
+
+```bash
+npx @google/design.md lint DESIGN.md   # 0 errors, 0 warnings
 ```
 
 Pass multiple URLs to merge brand tokens across pages: `npx brandmd https://site.com https://site.com/pricing https://site.com/docs -o DESIGN.md`
@@ -34,23 +40,36 @@ Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [
   <img src="demo.gif" alt="brandmd extracting Stripe into DESIGN.md for Claude Code, Cursor, and Google Stitch" width="700">
 </p>
 
-```
-## 2. Color Palette & Roles
-- **--color-accents-1** (`#FAFAFA`): Page background
-- **--color-blue-600** (`#0075DE`): Accent background
-- **--color-gray-500** (`#78736F`): Secondary text
+```yaml
+---
+version: alpha
+name: Stripe
+colors:
+  primary: "#533afd"
+  background: "#ffffff"
+  on-background: "#0a2540"
+typography:
+  headline-lg:
+    fontFamily: sohne-var
+    fontSize: 48px
+    fontWeight: 600
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+---
 
-## 3. Typography Rules
+## Colors
+
+- **Indigo** (`#533afd`): Accent background (accent)
+- **White** (`#ffffff`): Page background (dominant)
+
+## Typography
+
 **Primary font:** sohne-var
-- Headings: 26px, 32px, 48px, 56px
-- Body / UI: 14px, 16px, 18px, 22px
-
-## 5. Layout Principles
-**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
-**Base unit:** 4px grid
 ```
 
-brandmd is for giving Claude Code, Cursor, Gemini CLI, Codex, and Google Stitch real design context. It extracts a live website's colors, typography, spacing, shadows, component patterns, and layout rules into `DESIGN.md`, so AI coding agents can build on-brand UI instead of generic screens.
+The YAML frontmatter is the machine-readable token layer; the prose sections carry the evidence-based rationale (tiered palette, confidence tags, observed component styles). brandmd gives Claude Code, Cursor, Gemini CLI, and Codex real design context: it extracts a live website's colors, typography, spacing, shadows, component patterns, and layout rules, so AI coding agents build on-brand UI instead of generic screens.
 
 ## Installable example skills repo
 
@@ -65,6 +84,7 @@ That installs 5 brandmd-generated skills (Tailwind CSS, shadcn/ui, Vercel, Mintl
 <details>
 <summary>Release notes</summary>
 
+- **v0.14:** Spec + truth release. Emits the official [DESIGN.md format](https://github.com/google-labs-code/design.md) (YAML frontmatter + canonical sections) that passes `@google/design.md lint` clean. Fail-closed refusals with a distinct exit code (`--allow-blocked` to override), atomic writes, gradient-stop parsing, honest CTA/button selection, shadow values in DESIGN.md, and a fixed generate/parse/diff round trip.
 - **v0.13:** Detects block / access-denied pages (Akamai, PerimeterX, WAF 403s) and warns instead of emitting a garbage design system. Notes when a site uses motion (canvas, WebGL, Lottie, rAF).
 - **v0.12:** Trust-repair: evidence-based visual character, tiered palette, HSL color naming, no more scientific-notation radii, clustered type scale.
 - **v0.11:** `diff` subcommand and the hosted example gallery.
@@ -105,9 +125,9 @@ Other output formats:
 
 ## Why
 
-Google Stitch introduced [DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview), a markdown file that encodes your design system in a format LLMs can read. Problem is, nobody wants to write one from scratch, and Stitch only generates them through its web UI.
+[DESIGN.md](https://github.com/google-labs-code/design.md) is an open spec (Apache 2.0) for encoding a design system in a format LLMs can read: YAML frontmatter with typed tokens plus canonical prose sections. There's an official `@google/design.md` CLI that lints, diffs, and exports it. Problem is, nobody wants to write one from scratch.
 
-brandmd does it from the terminal. Point it at any URL, get a DESIGN.md back. Drop it in your project root and your AI tools start generating on-brand UI.
+brandmd does it from the terminal. Point it at any URL, get a spec-valid DESIGN.md back that passes `@google/design.md lint` clean. Drop it in your project root and your AI tools start generating on-brand UI.
 
 ## Install
 
@@ -159,6 +179,18 @@ brandmd https://stripe.com --json
 brandmd diff examples/stripe.md examples/vercel.md --out BRAND_DIFF.md
 ```
 
+## Refusals and exit codes
+
+brandmd fails closed. If a page is a bot-block / access-denied page, a login / sign-in wall landing, or too thin to describe (no rendered text, empty palette), it refuses in **every** format and writes no artifact, so a bad capture can't silently overwrite a good `DESIGN.md`. A plain cross-origin redirect (say marketing -> app on another domain) doesn't refuse: it warns on stderr and is flagged in the output's provenance block, per page.
+
+| Exit code | Meaning |
+|---|---|
+| `0` | success |
+| `1` | operational or validation error (bad URL, bad flag, browser launch failure) |
+| `2` | refused: block page, insufficient evidence, or a login-wall landing |
+
+Pass `--allow-blocked` to force output anyway; the artifact carries a block marker in every format (Markdown callout, CSS/Tailwind comment header, HTML banner, JSON `blockLikely`). Writes are transactional (temp file + rename with rollback), including the `--agent` set and `brandmd diff`, so a partial failure never truncates an existing file. Atomicity is per process: concurrent brandmd runs against the same output directory are not coordinated, though collision-safe temp/backup names mean one run can never eat another's files.
+
 ## Gallery
 
 [See 5 real DESIGN.md snapshots in the browser](https://yuvrajangadsingh.github.io/brandmd/) (Stripe, Vercel, Linear, Anthropic, Mintlify), or scan the [`examples/`](./examples) folder for 30+ more. Each snapshot is generated from a single public page visit and is observed, not canonical.
@@ -175,7 +207,7 @@ Compares two `DESIGN.md` files and writes a markdown diff: shared and unique col
 
 ### DESIGN.md (default)
 
-Follows [Google Stitch's DESIGN.md spec](https://stitch.withgoogle.com/docs/design-md/overview) with 5 sections. Drop it in your project root and AI coding agents use it to generate on-brand UI.
+The official [DESIGN.md format](https://github.com/google-labs-code/design.md): YAML frontmatter (machine-readable `colors`, `typography`, `rounded`, `spacing`, `components` tokens) plus canonical sections (Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts). Validates clean under `@google/design.md lint`. Drop it in your project root and AI coding agents use it to generate on-brand UI.
 
 ### CSS custom properties (`--css`)
 

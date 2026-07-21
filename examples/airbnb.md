@@ -1,84 +1,150 @@
-# Design System: Airbnb | Holiday rentals, cabins, beach houses & more
+---
+version: alpha
+name: "Airbnb: Holiday Rentals, Cabins, Beach Houses, Unique Homes & Experiences"
+description: "Bright, high contrast"
+colors:
+  background: "#ffffff"
+  on-background: "#000000"
+  on-surface-variant: "#ff385c"
+  outline: "#dddddd"
+  primary: "#da1249"
+  on-primary: "#ffffff"
+  secondary: "#ff385c"
+  on-secondary: "#1a1a1a"
+typography:
+  headline-lg:
+    fontFamily: Airbnb Cereal
+    fontSize: 28px
+    fontWeight: 700
+    lineHeight: 1.43
+  body-md:
+    fontFamily: Airbnb Cereal
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.43
+  body-lg:
+    fontFamily: Airbnb Cereal
+    fontSize: 20px
+    fontWeight: 600
+    lineHeight: 1.2
+  label-sm:
+    fontFamily: Airbnb Cereal
+    fontSize: 12px
+    fontWeight: 500
+    lineHeight: 1.33
+rounded:
+  sm: 4px
+  md: 8px
+  lg: 20px
+  xl: 32px
+  2xl: 50px
+  3xl: 100px
+spacing:
+  base: 4px
+  xs: 2px
+  sm: 5px
+  md: 8px
+  lg: 10px
+  xl: 12px
+components:
+  button-secondary:
+    backgroundColor: transparent
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.xl}"
+    height: 71px
+---
 
 > This is a real `DESIGN.md` example generated from [https://airbnb.com](https://airbnb.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
-## 1. Visual Theme & Atmosphere
 
-**Overall mood:** Balanced and professional
 
-**Density:** Moderate. The layout uses a varied spacing scale.
+# Design System: Airbnb: Holiday Rentals, Cabins, Beach Houses, Unique Homes & Experiences
 
-**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+> Extracted from [https://airbnb.com](https://airbnb.com) by brandmd
 
-**Depth:** Uses 1 shadow style for layering and elevation.
+> ⚠️ **Provenance:** `https://airbnb.com` landed on a different origin (`https://www.airbnb.co.in/?locale=en`). These tokens may describe that page, not the URL you asked for.
 
-## 2. Color Palette & Roles
+## Overview
 
-- **White** (`#FFFFFF`): Page background
-- **Dark Red** (`#E00B41`): Accent background
-- **Black** (`#00000040`): Dark background / footer
-- **Black** (`#000000`): Primary text
-- **Dark gray** (`#6A6A6A`): Secondary text
-- **Red** (`#FF385C`): Secondary text
-- **Light gray** (`#DDDDDD`): Divider / border
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid red accents
 
-## 3. Typography Rules
+**Density:** spacious. The layout uses a varied spacing scale.
 
-**Primary font:** Airbnb Cereal VF
+**Motion:** Animation surfaces detected (scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+
+## Colors
+
+Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+- **Black** (`#000000`): Primary text (dominant)
+- **White** (`#ffffff`): Page background (dominant)
+- **Light gray** (`#dddddd`): Divider / border (dominant)
+- **Translucent Black** (`#00000040`): Overlay / scrim (accent)
+- **Vivid Red** (`#ff385c`): Secondary text (accent)
+- **Red** (`#da1249`): Accent background (accent)
+
+**Incidental (low usage, do not lead with these):** `#6c6c6c`
+
+## Typography
+
+**Primary font:** Airbnb Cereal
 
 **Fonts by role:**
-- Headings: Airbnb Cereal VF
-- Body: Airbnb Cereal VF
+- Headings: Airbnb Cereal
+- Body: Airbnb Cereal
 
 **Type scale:**
 - Headings: 28px
-- Body / UI: 14px, 16px
+- Body / UI: 14px, 16px, 20px
 - Captions / Small: 12px
 
-**Weights in use:** 400, 500, 700
+**Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 20.02px, 18px, 16px, 40.04px
+**Line heights:** 20px, 18px, 16px, 24px, 40px
 
-## 4. Component Stylings
+**Letter spacing:** -0.18px
 
-### Buttons
-- Text color: `rgb(34, 34, 34)`
-- Corner radius: 32px
-- Padding: 0px 0px 0px 0px
-- Font: 14px, weight 400
+## Layout
 
-### Cards
-- Shadow: `rgba(0, 0, 0, 0.02) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 8px 24px 0px`
-- Corner radius: 4px
+**Spacing scale:** 2px, 4px, 8px, 10px, 12px, 15px, 44px, 48px
 
-### Inputs
-- Border color: `#DDDDDD`
+## Elevation & Depth
 
-## 5. Layout Principles
+Uses 1 shadow style for layering and elevation:
 
-**Spacing scale:** 2px, 8px, 10px, 11px, 12px, 15px, 24px, 48px
+- Level 1: `rgba(0, 0, 0, 0.02) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 8px 24px 0px`
 
-**Base unit:** 8px grid (values are mostly multiples of 8).
+## Shapes
+
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
 **Border radii:** 4px, 8px, 20px, 32px, 50%, 50px, 100px
 
-## 6. Guidelines
+Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
-### Do
-- Use 8px grid for all spacing
-- Use `#E00B41` for primary actions and CTAs
-- Stick to 3 font weights: 400, 500, 700
-- Use `Airbnb Cereal VF` as the primary typeface
+## Components
 
-### Don't
-- Don't introduce colors outside the palette above
-- Don't mix fonts. Use Airbnb Cereal VF everywhere
-- Don't use inline styles when the design system covers the pattern
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above. _(low confidence: sampled from a sparse page)_
+
+### Buttons
+- Text color: `#222222`
+- Corner radius: 32px
+- Height: 71px
+- Padding: 0px 0px 0px 0px
+- Font: 14px, weight 400
+
+## Do's and Don'ts
+
+- Do use `#da1249` for primary actions and CTAs
+- Do stick to 4 font weights: 400, 500, 600, 700
+- Do use `Airbnb Cereal` as the primary typeface
+- Don't introduce colors outside the palette above _(low confidence: palette sampled from sparse evidence)_
+- Don't mix fonts; use Airbnb Cereal everywhere
 - Don't use border-radius values outside: 4px, 8px, 20px, 32px, 50%, 50px, 100px
 
 ---
 
-*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
+*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd) and validates against the official [@google/design.md](https://github.com/google-labs-code/design.md) linter. Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*

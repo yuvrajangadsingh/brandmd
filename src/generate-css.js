@@ -2,7 +2,13 @@
  * Generate CSS custom properties from analyzed tokens.
  */
 export function generateCSS(tokens) {
-  const lines = [":root {"];
+  const lines = [];
+  if (tokens.blockLikely) {
+    lines.push("/* WARNING: the source looked like a block / access-denied page, not the real site.");
+    lines.push("   These tokens are probably meaningless. Generated under --allow-blocked. */");
+    lines.push("");
+  }
+  lines.push(":root {");
 
   // Colors
   if (tokens.palette.length > 0) {
@@ -24,13 +30,15 @@ export function generateCSS(tokens) {
     lines.push("");
   }
 
-  // Typography
-  lines.push("  /* Typography */");
-  lines.push(`  --font-primary: "${tokens.typography.primary}";`);
-  if (tokens.typography.secondary) {
-    lines.push(`  --font-secondary: "${tokens.typography.secondary}";`);
+  // Typography (primary can be null when no font cleared min-support)
+  if (tokens.typography.primary || tokens.typography.secondary) {
+    lines.push("  /* Typography */");
+    if (tokens.typography.primary) lines.push(`  --font-primary: "${tokens.typography.primary}";`);
+    if (tokens.typography.secondary) {
+      lines.push(`  --font-secondary: "${tokens.typography.secondary}";`);
+    }
+    lines.push("");
   }
-  lines.push("");
 
   // Spacing
   if (tokens.spacing.length > 0) {

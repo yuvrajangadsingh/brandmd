@@ -33,6 +33,28 @@ function topByFreq(obj, n = 10) {
 }
 
 /**
+ * Merge variable-font duplicates: "Geist VF" folds into "Geist", "Inter Variable"
+ * into "Inter". The base (suffix-stripped) name wins and inherits the summed
+ * frequency, so the same family isn't reported twice.
+ */
+function dedupeFonts(map) {
+  const VF_SUFFIX = /\s+(VF|Variable)$/i;
+  const base = {};   // normalized-key -> chosen display name
+  const out = {};
+  for (const [name, freq] of Object.entries(map || {})) {
+    const stripped = name.replace(VF_SUFFIX, "").trim();
+    const key = stripped.toLowerCase();
+    if (!(key in base)) base[key] = stripped;
+    // Prefer the shorter (suffix-free) label as the canonical name.
+    if (stripped.length < base[key].length) base[key] = stripped;
+    out[key] = (out[key] || 0) + freq;
+  }
+  const result = {};
+  for (const [key, freq] of Object.entries(out)) result[base[key]] = freq;
+  return result;
+}
+
+/**
  * Cluster similar colors together. Returns deduplicated list.
  */
 function clusterColors(colorFreqPairs, threshold = 15) {
@@ -119,28 +141,61 @@ function semanticName(varName) {
 }
 
 /**
- * Analyze extracted component styles into representative tokens.
+ * Is a CSS color a real, opaque-enough solid fill (not transparent/near-clear)?
  */
-function analyzeComponents(components) {
-  const result = { buttons: null, cards: null, inputs: null };
+function isSolidFill(cssColor) {
+  try {
+    return chroma(cssColor).alpha() >= 0.5;
+  } catch {
+    return false;
+  }
+}
 
-  if (components?.buttons?.length > 0) {
-    const bgFreq = {};
-    for (const b of components.buttons) {
-      const hex = toHex(b.bg);
-      if (hex) bgFreq[hex] = (bgFreq[hex] || 0) + 1;
+/**
+ * Analyze extracted component styles into representative tokens.
+ *
+ * The primary button is the most *saturated solid* candidate (tie-broken by
+ * contrast against the page background), NOT the most frequent — most-frequent
+ * favors the transparent nav/icon buttons that swamp a real CTA. Transparent
+ * candidates become a separate "ghost / secondary" variant.
+ */
+function analyzeComponents(components, pageBgHex = null) {
+  const result = { buttons: null, ghostButton: null, cards: null, inputs: null };
+
+  const buttons = components?.buttons || [];
+  if (buttons.length > 0) {
+    const solids = buttons.filter((b) => isSolidFill(b.bg));
+    const ghosts = buttons.filter((b) => !isSolidFill(b.bg));
+
+    if (solids.length > 0) {
+      const score = (b) => {
+        try {
+          const c = chroma(toHex(b.bg));
+          const sat = c.hsl()[1] || 0;
+          const contrast = pageBgHex ? chroma.contrast(c, pageBgHex) : 1;
+          // Saturation leads (brand CTAs are chromatic); contrast breaks ties
+          // and rescues saturated-but-neutral CTAs (a black button on white).
+          return sat * 10 + Math.min(contrast, 21) / 21;
+        } catch {
+          return 0;
+        }
+      };
+      result.buttons = [...solids].sort((a, b) => score(b) - score(a))[0];
     }
-    const topBg = Object.entries(bgFreq).sort((a, b) => b[1] - a[1])[0];
-    result.buttons = components.buttons.find((b) => toHex(b.bg) === topBg?.[0]) || components.buttons[0];
+
+    // Ghost = the most common transparent variant (a real, repeated pattern).
+    if (ghosts.length > 0) {
+      const sig = (b) => `${toHex(b.color) || b.color}|${b.radius}`;
+      const freq = {};
+      for (const b of ghosts) freq[sig(b)] = (freq[sig(b)] || 0) + 1;
+      const topSig = Object.entries(freq).sort((a, b) => b[1] - a[1])[0]?.[0];
+      result.ghostButton = ghosts.find((b) => sig(b) === topSig) || ghosts[0];
+    }
   }
 
-  if (components?.cards?.length > 0) {
-    result.cards = components.cards[0];
-  }
-
-  if (components?.inputs?.length > 0) {
-    result.inputs = components.inputs[0];
-  }
+  // Omit empty component groups entirely (no invented card/input defaults).
+  if (components?.cards?.length > 0) result.cards = components.cards[0];
+  if (components?.inputs?.length > 0) result.inputs = components.inputs[0];
 
   return result;
 }
@@ -218,6 +273,81 @@ function pxToNum(px) {
 }
 
 /**
+ * Cluster a pixel value to the nearest 0.5px (sub-pixel rendering noise).
+ */
+function roundPx(v) {
+  return Math.round(v * 2) / 2;
+}
+
+/**
+ * Round merged (per-page normalized) frequencies to 2 decimals so raw float
+ * noise like 124.50520351080246 never leaks into --json or any output.
+ */
+function round2(v) {
+  return typeof v === "number" ? Math.round(v * 100) / 100 : v;
+}
+
+/**
+ * Score how "CTA-like" a color is: saturated and mid-light reads as a primary
+ * action color. Near-black/near-white or desaturated colors score <= 0.
+ */
+function vividness(hex) {
+  try {
+    const [, s, l] = chroma(hex).hsl();
+    const sat = s || 0;
+    const li = l || 0;
+    if (li <= 0.15 || li >= 0.9 || sat < 0.3) return -1;
+    return sat * (1 - Math.abs(li - 0.55));
+  } catch {
+    return -1;
+  }
+}
+
+/**
+ * Pick the brand's primary/CTA color. Evidence ranking per the plan:
+ *   1. explicit accent roles from the palette (Accent background > Link/accent
+ *      text > focus border), most vivid first — a bright brand blue beats a
+ *      dark navy sharing the role;
+ *   2. the representative non-transparent button background (a rendered button
+ *      is direct action evidence, even when it's a neutral black-on-white CTA);
+ *   3. the most vivid mid-tone chromatic palette color.
+ * NEVER a text-neutral role. Returns a palette-shaped entry or null.
+ */
+function pickPrimaryAccent(palette, solidButtonBg = null) {
+  const accentRoles = new Set(["Accent background", "Link / accent text", "Focus / active border"]);
+  const explicit = palette
+    .filter((c) => accentRoles.has(c.role))
+    .sort((a, b) => vividness(b.hex) - vividness(a.hex));
+  if (explicit.length && vividness(explicit[0].hex) > 0) return explicit[0];
+
+  if (solidButtonBg) {
+    const existing = palette.find((c) => c.hex === solidButtonBg);
+    return existing || {
+      hex: solidButtonBg,
+      name: describeColor(solidButtonBg),
+      varName: null,
+      role: "Button background",
+      freq: 1,
+      type: "component",
+      tier: "accent",
+    };
+  }
+
+  // Otherwise the most vivid mid-tone chromatic color that isn't body text.
+  let best = null;
+  let bestV = 0;
+  for (const c of palette) {
+    if (/text/i.test(c.role) && c.type === "text") continue;
+    const v = vividness(c.hex);
+    if (v > bestV) {
+      best = c;
+      bestV = v;
+    }
+  }
+  return best;
+}
+
+/**
  * Analyze raw extracted data into structured design tokens.
  */
 export function analyze(raw) {
@@ -238,33 +368,33 @@ export function analyze(raw) {
     ...bgColors.slice(0, 6).map((c, i) => {
       const varName = hexToVar[c.hex.toUpperCase()];
       return {
-        hex: c.hex.toUpperCase(),
+        hex: c.hex.toLowerCase(),
         name: varName ? semanticName(varName) : describeColor(c.hex),
         varName: varName || null,
         role: guessColorRole(c.hex, i, "background"),
-        freq: c.freq,
+        freq: round2(c.freq),
         type: "background",
       };
     }),
     ...textColors.slice(0, 4).map((c, i) => {
       const varName = hexToVar[c.hex.toUpperCase()];
       return {
-        hex: c.hex.toUpperCase(),
+        hex: c.hex.toLowerCase(),
         name: varName ? semanticName(varName) : describeColor(c.hex),
         varName: varName || null,
         role: guessColorRole(c.hex, i, "text"),
-        freq: c.freq,
+        freq: round2(c.freq),
         type: "text",
       };
     }),
     ...borderColors.slice(0, 2).map((c, i) => {
       const varName = hexToVar[c.hex.toUpperCase()];
       return {
-        hex: c.hex.toUpperCase(),
+        hex: c.hex.toLowerCase(),
         name: varName ? semanticName(varName) : describeColor(c.hex),
         varName: varName || null,
         role: guessColorRole(c.hex, i, "border"),
-        freq: c.freq,
+        freq: round2(c.freq),
         type: "border",
       };
     }),
@@ -302,14 +432,23 @@ export function analyze(raw) {
   const tierRank = { dominant: 0, accent: 1, incidental: 2 };
   dedupedPalette.sort((a, b) => tierRank[a.tier] - tierRank[b.tier] || b.freq - a.freq);
 
-  // Typography
-  const fontList = topByFreq(raw.fonts, 10);
+  // Typography. Merge "Geist" / "Geist VF" style duplicates (the variable-font
+  // build carries a suffix but is the same family) before ranking.
+  const fontsDeduped = dedupeFonts(raw.fonts);
+  const fontList = topByFreq(fontsDeduped, 10);
+
+  // Min-support: a font seen on a single element can never be Primary (the
+  // count-1 "Ishmeria" bug). Only enforced on single-page runs where counts are
+  // integers; multi-page merge already normalizes single-element noise away.
+  const isMerged = Array.isArray(raw.sources);
+  const fontSupport = (f) => fontsDeduped[f] || 0;
+  const hasSupport = (f) => isMerged || fontSupport(f) >= 2;
 
   // Per-element-role fonts. Frequency on h1-h6 vs paragraph tells AI tools
   // "use X for headings, Y for body" instead of a single global ranking that
   // gets dominated by whichever font happens to be on the most divs.
   const rawRoleFonts = (key, limit = 2) =>
-    topByFreq(raw.fontsByRole?.[key] || {}, limit).map(([f]) => f);
+    topByFreq(dedupeFonts(raw.fontsByRole?.[key] || {}), limit).map(([f]) => f);
   const rawHeading = rawRoleFonts("heading", 2);
   const rawBody = rawRoleFonts("body", 1);
   const rawButton = rawRoleFonts("button", 1);
@@ -349,20 +488,26 @@ export function analyze(raw) {
   // both can dominate counts on icon-heavy UIs and must not become Primary.
   const ICON_RE = /(^material (icons|symbols)|font awesome|^feather$|heroicons|phosphor|^tabler([\s-]?icons?)?$|^lucide$|simple line icons|bootstrap.?icons|ionicons|^remixicon$|fontello)/i;
   const isExcluded = (f) => !f || MONO_RE.test(f) || FALLBACK_RE.test(f) || ICON_RE.test(f);
-  const pickNonExcluded = (arr) => arr.find((f) => !isExcluded(f)) || null;
+  // Primary candidacy also requires minimum support (never a count-1 font).
+  const pickNonExcluded = (arr) => arr.find((f) => !isExcluded(f) && hasSupport(f)) || null;
 
   // Order matters: display (fontSize >= 40px, hero text) carries the brand
   // signal more reliably than h1-h6 count, because a site can have many small
   // h2/h3 in the utility font while the hero is the actual brand. See valura.ai:
   // heading-by-count = Inter (loses to body-dominated h2/h3), but display = Manrope.
+  // Min-support is a hard invariant: a count-1 font can NEVER be Primary, even
+  // when it is the only font on the page. When nothing clears the support bar,
+  // primary is null and the output says "(low confidence)" instead of inventing.
   const primaryFont =
     pickNonExcluded(rawDisplay) ||
     pickNonExcluded(rawHeading) ||
     pickNonExcluded(rawBody) ||
     pickNonExcluded(fontList.map(([f]) => f)) ||
-    // Everything was excluded (e.g. site only has Times). Fall back to top
-    // frequency so the field is never empty.
-    fontList[0]?.[0] || "system-ui";
+    // Everything was excluded by NAME (e.g. the site genuinely uses Times).
+    // A supported-but-excluded font is still real evidence; an unsupported
+    // (count-1) one is not, and stays out no matter what.
+    fontList.map(([f]) => f).find((f) => hasSupport(f)) ||
+    null;
 
   const allCandidates = [
     ...rawDisplay,
@@ -371,8 +516,8 @@ export function analyze(raw) {
     ...fontList.map(([f]) => f),
   ];
   const secondaryFont =
-    allCandidates.find((f) => f !== primaryFont && !isExcluded(f)) ||
-    allCandidates.find((f) => f !== primaryFont && MONO_RE.test(f)) ||
+    allCandidates.find((f) => f !== primaryFont && !isExcluded(f) && hasSupport(f)) ||
+    allCandidates.find((f) => f !== primaryFont && MONO_RE.test(f) && hasSupport(f)) ||
     null;
 
   const allDetected = fontList.map(([font, count]) => ({
@@ -382,28 +527,89 @@ export function analyze(raw) {
 
   // Cluster sizes to the nearest 0.5px before ranking. Sub-pixel rendering
   // produces noise like 11.05px / 12.75px that used to show up as seven
-  // near-identical "scale" entries.
+  // near-identical "scale" entries. Each clustered size is paired with its
+  // real dominant line-height and weight from the rendered-text samples.
+  const clusterLh = (lh) => {
+    if (/px$/.test(lh)) {
+      const p = pxToNum(lh);
+      return p > 0 ? `${roundPx(p)}px` : null; // drop 0px line-heights
+    }
+    return lh; // unitless multiplier (e.g. "1.5") or keyword — keep as-is
+  };
   const sizeFreq = {};
-  for (const [size, freq] of topByFreq(raw.fontSizes, 30)) {
+  const sizeMeta = {}; // clustered size key -> { lh: {}, wt: {} }
+  // Cluster across ALL sizes before truncating: a real hero size at freq 1 must
+  // not be dropped by 30 noisy near-16px values that each out-rank it (F-19).
+  for (const [size, freq] of Object.entries(raw.fontSizes || {})) {
     const px = pxToNum(size);
     if (px <= 0) continue;
-    const rounded = Math.round(px * 2) / 2;
-    const key = `${rounded}px`;
-    sizeFreq[key] = (sizeFreq[key] || 0) + freq;
+    sizeFreq[`${roundPx(px)}px`] = (sizeFreq[`${roundPx(px)}px`] || 0) + freq;
   }
+  for (const [size, s] of Object.entries(raw.typeSamples || {})) {
+    const px = pxToNum(size);
+    if (px <= 0) continue;
+    const key = `${roundPx(px)}px`;
+    const meta = sizeMeta[key] || (sizeMeta[key] = { lh: {}, wt: {} });
+    for (const [lh, c] of Object.entries(s.lineHeights || {})) {
+      const lk = clusterLh(lh);
+      if (lk) meta.lh[lk] = (meta.lh[lk] || 0) + c;
+    }
+    for (const [w, c] of Object.entries(s.weights || {})) meta.wt[w] = (meta.wt[w] || 0) + c;
+  }
+  const dominantKey = (obj) => Object.entries(obj || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
   const sizeList = topByFreq(sizeFreq, 12)
-    .map(([size, freq]) => ({ size, px: pxToNum(size), freq }))
+    .map(([size, freq]) => ({
+      size,
+      px: pxToNum(size),
+      freq: round2(freq),
+      lineHeight: sizeMeta[size] ? dominantKey(sizeMeta[size].lh) : null,
+      weight: sizeMeta[size] ? dominantKey(sizeMeta[size].wt) : null,
+    }))
     .sort((a, b) => a.px - b.px);
 
   const weightList = topByFreq(raw.fontWeights, 6)
-    .map(([w, freq]) => ({ weight: w, freq }))
+    .map(([w, freq]) => ({ weight: w, freq: round2(freq) }))
     .sort((a, b) => +a.weight - +b.weight);
 
-  // Spacing scale
-  const spacingList = topByFreq(raw.spacings, 20)
-    .map(([val, freq]) => ({ val, px: pxToNum(val), freq }))
-    .filter((s) => s.px > 0 && s.px <= 200)
+  // Spacing scale. Filter-then-cluster: validate units/arity across ALL
+  // candidates BEFORE truncating, so a run of negative/compound/oversize values
+  // can't crowd real steps out of a top-20 slice. Two-axis gaps ("4px 20px")
+  // are dropped from the scalar scale. Values cluster to 0.5px.
+  const spacingFreq = {};
+  for (const [val, freq] of Object.entries(raw.spacings || {})) {
+    const trimmed = String(val).trim();
+    if (/\s/.test(trimmed)) continue;   // compound / two-axis
+    if (!/px$/.test(trimmed)) continue; // px scalars only (no %, calc, keywords)
+    const px = pxToNum(trimmed);
+    if (!(px > 0 && px <= 200)) continue;
+    spacingFreq[`${roundPx(px)}px`] = (spacingFreq[`${roundPx(px)}px`] || 0) + freq;
+  }
+  const spacingList = topByFreq(spacingFreq, 12)
+    .map(([val, freq]) => ({ val, px: pxToNum(val), freq: round2(freq) }))
     .sort((a, b) => a.px - b.px);
+
+  // Base-grid claim, computed over the FULL weighted valid evidence — before
+  // any top-N truncation — so 100 off-grid values can't be silently discarded
+  // and then "80% of what's left" pass. Claimed only at >= 80% real coverage.
+  let spacingGrid = null;
+  {
+    const totalW = Object.values(spacingFreq).reduce((s, v) => s + v, 0);
+    if (totalW > 0) {
+      for (const base of [8, 4, 16]) {
+        let fit = 0;
+        for (const [k, f] of Object.entries(spacingFreq)) {
+          const px = parseFloat(k);
+          const mod = px % base;
+          if (mod < 0.5 || base - mod < 0.5) fit += f;
+        }
+        const coverage = fit / totalW;
+        if (coverage >= 0.8) {
+          spacingGrid = { base, coverage: Math.round(coverage * 100) / 100 };
+          break;
+        }
+      }
+    }
+  }
 
   // Radii. Computed border-radius for pill shapes comes back as huge values
   // ("3.35544e+07px"); normalize those to a CSS-valid 9999px with a pill flag
@@ -425,13 +631,13 @@ export function analyze(raw) {
     radiusFreq[key] = (radiusFreq[key] || 0) + freq;
   }
   const radiiList = topByFreq(radiusFreq, 8)
-    .map(([val, freq]) => ({ val, freq, pill: parseFloat(val) >= 999 }))
+    .map(([val, freq]) => ({ val, freq: round2(freq), pill: parseFloat(val) >= 999 }))
     .sort((a, b) => pxToNum(a.val) - pxToNum(b.val));
 
   // Shadows
   const shadowList = topByFreq(raw.shadows, 5).map(([val, freq]) => ({
     val,
-    freq,
+    freq: round2(freq),
   }));
 
   // Visual character: evidence-based, anchored to the dominant page background
@@ -470,8 +676,8 @@ export function analyze(raw) {
         try {
           const [, s, l] = chroma(c.hex).hsl();
           return (s || 0) > 0.5 && l > 0.15 && l < 0.85 &&
-            c.hex !== pageBg.hex.toUpperCase() &&
-            (!topText || c.hex !== topText.hex.toUpperCase());
+            c.hex !== pageBg.hex.toLowerCase() &&
+            (!topText || c.hex !== topText.hex.toLowerCase());
         } catch {
           return false;
         }
@@ -485,24 +691,68 @@ export function analyze(raw) {
     }
   }
 
-  // Line heights
-  const lineHeightList = topByFreq(raw.lineHeights || {}, 10)
-    .map(([val, freq]) => ({ val, freq }));
+  // Line heights, clustered to 0.5px with 0px dropped (0px line-height hides
+  // text; it's never a real scale value).
+  const lhFreq = {};
+  for (const [val, freq] of topByFreq(raw.lineHeights || {}, 20)) {
+    const lk = clusterLh(val);
+    if (lk) lhFreq[lk] = (lhFreq[lk] || 0) + freq;
+  }
+  const lineHeightList = topByFreq(lhFreq, 10).map(([val, freq]) => ({ val, freq: round2(freq) }));
 
   // Letter spacings
   const letterSpacingList = topByFreq(raw.letterSpacings || {}, 6)
-    .map(([val, freq]) => ({ val, freq }));
+    .map(([val, freq]) => ({ val, freq: round2(freq) }));
 
-  // Components
-  const components = analyzeComponents(raw.components);
+  // Components. Pass the page background so the primary-button pick can
+  // tie-break saturated-but-neutral CTAs (a black button on white) by contrast.
+  const pageBgHex = pageBg ? pageBg.hex : null;
+  const components = analyzeComponents(raw.components, pageBgHex);
+
+  // The brand's primary/CTA color: accent evidence, then the representative
+  // solid button background (unless it just matches the page background),
+  // never text ink.
+  let solidBtnBgHex = null;
+  if (components.buttons && isSolidFill(components.buttons.bg)) {
+    const h = toHex(components.buttons.bg);
+    if (h && h.toLowerCase() !== (pageBgHex || "").toLowerCase()) solidBtnBgHex = h.toLowerCase();
+  }
+  const primaryColor = pickPrimaryAccent(dedupedPalette, solidBtnBgHex);
+
+  // Truly no design signal at all (no colors, fonts, sizes, spacing, radii, or
+  // shadows) is not a design system. Flag it so generate refuses to fabricate
+  // ("Balanced and professional", "system-ui") instead of inventing one.
+  const insufficient =
+    dedupedPalette.length === 0 &&
+    Object.keys(fontsDeduped).length === 0 &&
+    sizeList.length === 0 &&
+    spacingList.length === 0 &&
+    radiiList.length === 0 &&
+    shadowList.length === 0;
+
+  // Per-domain observation weight, so generate can tag sparse sections with
+  // "(low confidence)" instead of turning absence into confident rules.
+  const sumVals = (obj) => Object.values(obj || {}).reduce((s, v) => s + v, 0);
+  const evidence = {
+    fontObs: round2(sumVals(fontsDeduped)),
+    colorObs: round2(sumVals(raw.colors?.background) + sumVals(raw.colors?.text)),
+    radiiObs: round2(sumVals(raw.radii)),
+    shadowObs: round2(sumVals(raw.shadows)),
+    bodyTextLength: raw.bodyTextLength ?? null,
+  };
 
   return {
     title: raw.title,
     url: raw.url,
+    finalUrl: raw.finalUrl || raw.url,
+    provenance: raw.provenance || null,
     blockLikely: raw.blockLikely || false,
+    insufficient,
+    evidence,
     motion: raw.motion || null,
     atmosphere,
     palette: dedupedPalette,
+    primaryColor,
     typography: {
       primary: primaryFont,
       secondary: secondaryFont,
@@ -517,6 +767,7 @@ export function analyze(raw) {
       letterSpacings: letterSpacingList,
     },
     spacing: spacingList,
+    spacingGrid,
     radii: radiiList,
     shadows: shadowList,
     components,

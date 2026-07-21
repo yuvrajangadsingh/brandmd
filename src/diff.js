@@ -4,6 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 import { parseDesign } from './parse-design.js';
+import { writeFileAtomic } from './atomic-write.js';
 
 function setOf(arr) { return new Set((arr || []).filter(Boolean)); }
 
@@ -162,6 +163,6 @@ ${componentsSection}
 ${tipsSection}
 `;
 
-  fs.writeFileSync(outPath, out);
+  writeFileAtomic(outPath, out);
   return { aName, bName, sharedColors: sharedColors.length, aOnly: aOnlyColors.length, bOnly: bOnlyColors.length };
 }

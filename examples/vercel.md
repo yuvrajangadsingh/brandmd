@@ -1,89 +1,165 @@
-# Design System: Vercel: Build and deploy the best web experiences with the AI Cloud
+---
+version: alpha
+name: "Agentic Infrastructure - Vercel"
+description: "Bright, high contrast"
+colors:
+  background: "#fafafa"
+  on-background: "#4d4d4d"
+  surface: "#00ff95"
+  on-surface-variant: "#8f8f8f"
+  outline: "#ebebeb"
+  outline-variant: "#00000014"
+  primary: "#ff1744"
+  on-primary: "#1a1a1a"
+  secondary: "#ffd000"
+  on-secondary: "#1a1a1a"
+typography:
+  display:
+    fontFamily: GeistSans
+    fontSize: 64px
+    fontWeight: 400
+    lineHeight: 1
+  headline-lg:
+    fontFamily: GeistSans
+    fontSize: 56px
+    fontWeight: 450
+    lineHeight: 1
+  headline-md:
+    fontFamily: GeistSans
+    fontSize: 30px
+    fontWeight: 400
+    lineHeight: 1.1
+  body-md:
+    fontFamily: GeistSans
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.43
+  body-lg:
+    fontFamily: GeistSans
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.5
+  label-sm:
+    fontFamily: GeistSans
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 1.33
+rounded:
+  sm: 2px
+  md: 6px
+  lg: 8px
+  full: 9999px
+spacing:
+  base: 2px
+  xs: 3px
+  sm: 4px
+  md: 5px
+  lg: 6px
+  xl: 8px
+components:
+  button-secondary:
+    backgroundColor: transparent
+    typography: "{typography.label-sm}"
+    rounded: 0px
+    height: 32px
+---
 
 > This is a real `DESIGN.md` example generated from [https://vercel.com](https://vercel.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
-## 1. Visual Theme & Atmosphere
 
-**Overall mood:** Balanced and professional
 
-**Density:** Moderate. The layout uses a varied spacing scale.
+# Design System: Agentic Infrastructure - Vercel
 
-**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+> Extracted from [https://vercel.com](https://vercel.com) by brandmd
 
-**Depth:** Uses 5 shadow styles for layering and elevation.
+## Overview
 
-## 2. Color Palette & Roles
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid yellow accents
 
-- **White** (`#FAFAFA`): Page background
-- **Black** (`#171717`): Dark background / footer
-- **Dark Blue** (`#0070F3`): Accent background
-- **Dark gray** (`#4D4D4D`): Primary text
-- **White** (`#FFFFFF`): Light text (on dark)
-- **Dark gray** (`#8F8F8F`): Secondary text
-- **Light gray** (`#EBEBEB`): Divider / border
-- **Black** (`#00000014`): Divider / border
+**Density:** spacious. The layout uses a varied spacing scale.
 
-## 3. Typography Rules
+**Motion:** Animation surfaces detected (scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
-**Primary font:** Geist
-**Secondary font:** geistMonoFont
+## Colors
+
+Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+- **Off-white** (`#ebebeb`): Divider / border (dominant)
+- **Dark gray** (`#4d4d4d`): Primary text (dominant)
+- **White** (`#fafafa`): Page background (dominant)
+- **Black** (`#171717`): Dark background / footer (accent)
+- **Vivid Yellow** (`#ffd000`): Accent background (accent)
+- **Vivid Green** (`#00ff95`): Surface / card background (accent)
+- **Vivid Red** (`#ff1744`): Accent background (accent)
+- **Vivid Purple** (`#9500ff`): Accent background (accent)
+
+**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#ffffff`, `#00000014`
+
+## Typography
+
+**Primary font:** GeistSans
+**Secondary font:** Geist Mono
 
 **Fonts by role:**
-- Headings: Geist, geistMonoFont
-- Body: Geist
+- Headings: GeistSans, Geist Mono
+- Body: GeistSans
 
 **Type scale:**
-- Headings: 24px, 32px, 48px
+- Headings: 24px, 30px, 56px, 64px
 - Body / UI: 14px, 16px, 20px
-- Captions / Small: 8px, 12px
+- Captions / Small: 8px, 11px, 12px, 13px
 
-**Weights in use:** 400, 500, 600
+**Weights in use:** 400, 450, 500, 600
 
-**Line heights:** 21px, 24px, 20px, 16px, 14px, 40px, 12px, 32px, 8px, 48px
+**Line heights:** 24px, 20px, 32px, 21px, 28px, 16px, 8px, 33px, 22.5px, 56px
 
-**Letter spacing:** -1.28px, -0.96px, -0.32px, -2.4px
+**Letter spacing:** -1.5px, 0.6px, -3.36px, 1px, -3.84px
 
-## 4. Component Stylings
+## Layout
+
+**Spacing scale:** 2px, 3px, 4px, 6px, 8px, 12px, 20px, 24px
+
+## Elevation & Depth
+
+Uses 5 shadow styles for layering and elevation:
+
+- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(235, 235, 235) 0px 0px 0px 1px`
+- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px`
+- Level 3: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 0px 0px`
+- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px`
+- Level 5: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`
+
+## Shapes
+
+**Shape language:** Subtle rounding on interactive elements.
+
+**Border radii:** 0px 0px 0px 1px, 0px 8px 8px 0px, 2px, 6px, 8px, 100%, 9999px (pill), 9999px 6px 6px 9999px (pill)
+
+Asymmetric / percentage radii observed (0px 0px 0px 1px, 0px 8px 8px 0px, 100%, 9999px 6px 6px 9999px); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+
+## Components
+
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `rgb(255, 255, 255)`
-- Text color: `rgb(23, 23, 23)`
-- Corner radius: 6px
-- Padding: 0px 6px 0px 6px
-- Font: 14px, weight 500
+- Text color: `#4d4d4d`
+- Corner radius: 0px
+- Height: 32px
+- Padding: 0px 0px 0px 0px
+- Font: 14px, weight 400
 
-### Cards
-- Shadow: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`
-- Corner radius: 2px
+## Do's and Don'ts
 
-### Inputs
-- Border color: `#EBEBEB`
-
-## 5. Layout Principles
-
-**Spacing scale:** 1px, 2px, 3px, 6px, 8px, 10px, 12px, 48px
-
-**Base unit:** 8px grid (values are mostly multiples of 8).
-
-**Border radii:** 2px, 4px, 6px, 100px, 100%, 9999px
-
-## 6. Guidelines
-
-### Do
-- Use 8px grid for all spacing
-- Use `#0070F3` for primary actions and CTAs
-- Stick to 3 font weights: 400, 500, 600
-- Use `Geist` as the primary typeface
-
-### Don't
+- Do use `#ff1744` for primary actions and CTAs
+- Do stick to 4 font weights: 400, 450, 500, 600
+- Do use `GeistSans` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond Geist and geistMonoFont
-- Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 2px, 4px, 6px, 100px, 100%, 9999px
+- Don't mix fonts beyond GeistSans and Geist Mono
+- Don't use border-radius values outside: 0px 0px 0px 1px, 0px 8px 8px 0px, 2px, 6px, 8px, 100%, 9999px (pill), 9999px 6px 6px 9999px (pill)
 
 ---
 
-*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
+*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd) and validates against the official [@google/design.md](https://github.com/google-labs-code/design.md) linter. Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*

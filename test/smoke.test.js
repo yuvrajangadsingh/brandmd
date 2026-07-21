@@ -22,10 +22,11 @@ test("analyze produces a well-formed token object", () => {
   assert.ok(t.spacing.length > 0, "spacing scale present");
 });
 
-test("generated DESIGN.md has all six sections and clean values", () => {
+test("generated DESIGN.md has the canonical spec sections and clean values", () => {
   const md = generate(analyze(rawVercel));
-  for (const n of [1, 2, 3, 4, 5, 6]) {
-    assert.match(md, new RegExp(`## ${n}\\. `), `section ${n} present`);
+  // v0.14 emits the official DESIGN.md section names, in canonical order.
+  for (const name of ["Overview", "Colors", "Typography", "Layout", "Elevation & Depth", "Shapes", "Components", "Do's and Don'ts"]) {
+    assert.match(md, new RegExp(`^## ${name.replace(/[.*+?^${}()|[\]\\&]/g, "\\$&")}\\s*$`, "m"), `section "${name}" present`);
   }
   // No scientific-notation numbers leaking into radii/spacing (the v0.12 bug)
   assert.doesNotMatch(md, /\d+e-\d+/i, "no scientific-notation values in output");

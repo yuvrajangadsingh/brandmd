@@ -2,7 +2,13 @@
  * Generate Tailwind v4 @theme CSS from analyzed tokens.
  */
 export function generateTailwind(tokens) {
-  const lines = ['@import "tailwindcss";', "", "@theme {"];
+  const lines = [];
+  if (tokens.blockLikely) {
+    lines.push("/* WARNING: the source looked like a block / access-denied page, not the real site.");
+    lines.push("   These tokens are probably meaningless. Generated under --allow-blocked. */");
+    lines.push("");
+  }
+  lines.push('@import "tailwindcss";', "", "@theme {");
 
   // Colors
   if (tokens.palette.length > 0) {
@@ -21,15 +27,17 @@ export function generateTailwind(tokens) {
     lines.push("");
   }
 
-  // Typography
-  const fb1 = isMono(tokens.typography.primary) ? "monospace" : "system-ui, sans-serif";
-  lines.push(`  --font-sans: "${tokens.typography.primary}", ${fb1};`);
+  // Typography (primary can be null when no font cleared min-support)
+  if (tokens.typography.primary) {
+    const fb1 = isMono(tokens.typography.primary) ? "monospace" : "system-ui, sans-serif";
+    lines.push(`  --font-sans: "${tokens.typography.primary}", ${fb1};`);
+  }
   if (tokens.typography.secondary) {
     const fb2 = isMono(tokens.typography.secondary) ? "monospace" : "system-ui, sans-serif";
     const secondaryKey = isMono(tokens.typography.secondary) ? "--font-mono" : "--font-secondary";
     lines.push(`  ${secondaryKey}: "${tokens.typography.secondary}", ${fb2};`);
   }
-  lines.push("");
+  if (tokens.typography.primary || tokens.typography.secondary) lines.push("");
 
   // Spacing
   if (tokens.spacing.length > 0) {

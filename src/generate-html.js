@@ -60,15 +60,17 @@ code{font-size:12px;color:#aaa;background:#1a1a1a;padding:2px 6px;border-radius:
 .font-specimen{background:#1a1a1a;padding:16px;border-radius:8px;margin-bottom:12px}
 .font-specimen p{color:#ccc;margin-top:8px}
 .space-item{display:flex;flex-direction:column;align-items:center;gap:4px}
-.space-box{background:#5E6AD2;border-radius:2px;min-width:4px;min-height:4px}
+.space-box{background:#5e6ad2;border-radius:2px;min-width:4px;min-height:4px}
 .radius-item{display:flex;flex-direction:column;align-items:center;gap:4px}
-.radius-box{width:60px;height:60px;background:transparent;border:2px solid #5E6AD2}
+.radius-box{width:60px;height:60px;background:transparent;border:2px solid #5e6ad2}
 .shadow-item{margin-bottom:12px}
 .shadow-box{width:200px;height:60px;background:#1a1a1a;border-radius:8px}
 .shadow-item code{display:block;margin-top:6px;max-width:400px;word-break:break-all}
 </style>
 </head>
 <body>
+  ${tokens.blockLikely ? `<!-- WARNING: the source looked like a block / access-denied page; these tokens are probably meaningless. Generated under --allow-blocked. -->
+  <div style="background:#7f1d1d;color:#fecaca;padding:12px 16px;border-radius:8px;margin-bottom:24px;font-size:14px"><strong>Warning:</strong> the source looked like a block / access-denied page, not the real site. These tokens are probably meaningless (generated under <code>--allow-blocked</code>).</div>` : ""}
   <h1>${siteName}</h1>
   <p class="sub">${esc(tokens.url)}</p>
 

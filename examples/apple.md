@@ -1,35 +1,115 @@
-# Design System: Apple
+---
+version: alpha
+name: "Apple"
+description: "Bright, high contrast"
+colors:
+  background: "#ffffff"
+  on-background: "#000000"
+  on-surface-variant: "#2997ff"
+  primary: "#0071e3"
+  on-primary: "#ffffff"
+  secondary: "#2997ff"
+  on-secondary: "#1a1a1a"
+typography:
+  display:
+    fontFamily: SF Pro Text
+    fontSize: 56px
+    fontWeight: 600
+    lineHeight: 1.07
+  headline-lg:
+    fontFamily: SF Pro Text
+    fontSize: 44px
+    fontWeight: 600
+    lineHeight: 1.1
+  headline-md:
+    fontFamily: SF Pro Text
+    fontSize: 40px
+    fontWeight: 600
+    lineHeight: 1.1
+  body-md:
+    fontFamily: SF Pro Text
+    fontSize: 17px
+    fontWeight: 400
+    lineHeight: 1.47
+  body-lg:
+    fontFamily: SF Pro Text
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.29
+  label-sm:
+    fontFamily: SF Pro Text
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 1.33
+rounded:
+  sm: 5px
+  md: 8px
+  lg: 11px
+  xl: 980px
+  full: 9999px
+spacing:
+  base: 11px
+  xs: 7px
+  sm: 8px
+  md: 9px
+  lg: 9.5px
+  xl: 10px
+components:
+  button-primary:
+    backgroundColor: "#0071e3"
+    textColor: "#ffffff"
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.xl}"
+    padding: 11px
+    height: 44px
+  button-secondary:
+    backgroundColor: transparent
+    typography: "{typography.label-sm}"
+    rounded: 0px
+    height: 18px
+  card:
+    rounded: 0px
+  input:
+    typography: "{typography.body-md}"
+    rounded: 0px
+    padding: 1px
+---
 
 > This is a real `DESIGN.md` example generated from [https://apple.com](https://apple.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
-## 1. Visual Theme & Atmosphere
 
-**Overall mood:** Balanced and professional
 
-**Density:** Moderate. The layout uses a varied spacing scale.
+# Design System: Apple
 
-**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+> Extracted from [https://apple.com](https://apple.com) by brandmd
 
-**Depth:** Uses 1 shadow style for layering and elevation.
+> ⚠️ **Provenance:** `https://apple.com` redirected to `https://www.apple.com/`. These tokens may describe that page, not the URL you asked for.
 
-## 2. Color Palette & Roles
+## Overview
 
-- **Black** (`#161617`): Dark background / footer
-- **White** (`#FFFFFF`): Page background
-- **Dark Blue** (`#0071E3`): Accent background
-- **Dark Muted Pink** (`#A4618D`): Secondary background
-- **Blue** (`#9FC6F4`): Accent background
-- **Dark Blue** (`#1246C4`): Dark background / footer
-- **Black** (`#000000`): Primary text
-- **White** (`#FFFFFFEB`): Light text (on dark)
-- **Blue** (`#2997FF`): Secondary text
-- **Dark gray** (`#86868B`): Secondary text
-- **White** (`#FFFFFF14`): Divider / border
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
-## 3. Typography Rules
+**Density:** spacious. The layout uses a varied spacing scale.
+
+## Colors
+
+Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+- **Black** (`#000000`): Primary text (dominant)
+- **White** (`#ffffff`): Page background (dominant)
+- **Black** (`#1d1d1f`): Dark background / footer (dominant)
+- **Vivid Blue** (`#2997ff`): Secondary text (accent)
+- **Vivid Blue** (`#0066cc`): Secondary text (accent)
+- **Vivid Blue** (`#0071e3`): Accent background (accent)
+- **Blue** (`#1246c4`): Accent background (accent)
+- **Light Blue** (`#9fc6f4`): Accent background (accent)
+
+**Incidental (low usage, do not lead with these):** `#56412b`
+
+## Typography
 
 **Primary font:** SF Pro Text
 **Secondary font:** SF Pro Display
@@ -45,48 +125,59 @@
 
 **Weights in use:** 300, 400, 600, 700
 
-**Line heights:** 16.0005px, 25px, 28px, 12px, 44px, 18.0008px, 20.0002px, 21.0012px, 18px, 60px
+**Line heights:** 16px, 25px, 28px, 12px, 44px, 18px, 20px, 21px, 60px, 32px
 
 **Letter spacing:** -0.12px, -0.374px, 0.216px, -0.224px, 0.231px, -0.28px
 
-## 4. Component Stylings
+## Layout
+
+**Spacing scale:** 7px, 8px, 9px, 9.5px, 11px, 15px, 21px, 22px
+
+## Elevation & Depth
+
+Uses 1 shadow style for layering and elevation:
+
+- Level 1: `rgba(0, 0, 0, 0.22) 3px 5px 30px 0px`
+
+## Shapes
+
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+
+**Border radii:** 5px, 8px, 11px, 50%, 980px, 9999px (pill)
+
+Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+
+## Components
+
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Text color: `rgba(255, 255, 255, 0.8)`
-- Padding: 0px 0px 0px 0px
-- Font: 18px, weight 300
+- Background: `#0071e3`
+- Text color: `#ffffff`
+- Corner radius: 980px
+- Height: 44px
+- Padding: 11px 21px 11px 21px
+- Font: 17px, weight 400
 
 ### Cards
-- Shadow: `rgba(0, 0, 0, 0.22) 3px 5px 30px 0px`
-- Corner radius: 5px
+- Corner radius: 0px
+- Padding: 0px 0px 0px 0px
 
 ### Inputs
-- Border: 0px none rgb(232, 232, 237)
+- Border: 0px none rgb(51, 51, 54)
+- Corner radius: 0px
 - Padding: 1px 34px 0px 34px
 - Font size: 24px
 
-## 5. Layout Principles
+## Do's and Don'ts
 
-**Spacing scale:** 7px, 8px, 9px, 9.6px, 11px, 15px, 21px, 22px
-
-**Base unit:** 8px grid (values are mostly multiples of 8).
-
-**Border radii:** 5px, 8px, 11px, 50%, 980px, 999px
-
-## 6. Guidelines
-
-### Do
-- Use 8px grid for all spacing
-- Use `#0071E3` for primary actions and CTAs
-- Stick to 4 font weights: 300, 400, 600, 700
-- Use `SF Pro Text` as the primary typeface
-
-### Don't
+- Do use `#0071e3` for primary actions and CTAs
+- Do stick to 4 font weights: 300, 400, 600, 700
+- Do use `SF Pro Text` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond SF Pro Text and SF Pro Display
-- Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 5px, 8px, 11px, 50%, 980px, 999px
+- Don't use border-radius values outside: 5px, 8px, 11px, 50%, 980px, 9999px (pill)
 
 ---
 
-*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
+*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd) and validates against the official [@google/design.md](https://github.com/google-labs-code/design.md) linter. Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*

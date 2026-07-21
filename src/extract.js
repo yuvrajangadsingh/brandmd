@@ -64,6 +64,56 @@ export function detectBlockLikely({ title = "", httpStatus = null, bodyTextLengt
 }
 
 /**
+ * Decide whether an extraction carries enough evidence to describe a design
+ * system at all. An empty / 204 / thin page yields no fonts and an empty
+ * palette; turning that into a confident "system-ui, balanced and professional"
+ * invented brand is the v0.13 bug. Pure function, exported for testing.
+ *
+ * Returns { ok: boolean, reasons: string[] }.
+ */
+export function assessEvidence({ colors = {}, fonts = {}, bodyTextLength = null, components = {} } = {}) {
+  const reasons = [];
+  const bgCount = Object.keys(colors?.background || {}).length;
+  const textCount = Object.keys(colors?.text || {}).length;
+  const fontCount = Object.keys(fonts || {}).length;
+  const btnCount = (components?.buttons || []).length;
+  if (bgCount + textCount === 0) reasons.push("no colors extracted (empty palette)");
+  if (fontCount === 0) reasons.push("no fonts extracted");
+  if (bodyTextLength != null && bodyTextLength < 30) reasons.push("no rendered text");
+  // A page with no rendered text is not a design system, no matter how many
+  // background colors it paints; painting two rectangles doesn't make a brand.
+  // Same for zero colors + zero fonts + zero components. Fail closed;
+  // --allow-blocked is the escape hatch.
+  const noText = bodyTextLength != null && bodyTextLength < 30;
+  const noSignal = bgCount + textCount === 0 && fontCount === 0 && btnCount === 0;
+  const ok = !noText && !noSignal;
+  return { ok, reasons };
+}
+
+// Common two-label public suffixes, so foo.co.uk and bar.co.uk are recognized
+// as different registrable domains. Not the full PSL — just the frequent ones;
+// unknown suffixes fall back to the last two labels.
+const TWO_LABEL_SUFFIXES = new Set([
+  "co.uk", "org.uk", "ac.uk", "gov.uk", "me.uk", "net.uk",
+  "com.au", "net.au", "org.au", "edu.au", "gov.au",
+  "co.jp", "ne.jp", "or.jp", "ac.jp", "go.jp",
+  "co.in", "net.in", "org.in", "ac.in", "gov.in",
+  "com.br", "net.br", "org.br",
+  "co.nz", "net.nz", "org.nz",
+  "co.za", "org.za", "com.mx", "com.ar", "com.sg", "com.hk", "com.tw",
+  "co.kr", "or.kr", "com.cn", "net.cn", "org.cn",
+]);
+
+/** Approximate eTLD+1: enough to tell foo.co.uk from bar.co.uk. */
+function registrableDomain(hostname) {
+  const labels = hostname.toLowerCase().split(".");
+  if (labels.length <= 2) return labels.join(".");
+  const lastTwo = labels.slice(-2).join(".");
+  if (TWO_LABEL_SUFFIXES.has(lastTwo)) return labels.slice(-3).join(".");
+  return lastTwo;
+}
+
+/**
  * Extract styles from a single page using a shared browser instance.
  */
 async function extractPage(browser, url, colorScheme = "light", { vision = false, cfWaitMs = 20000 } = {}) {
@@ -77,6 +127,10 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
     const httpStatus = response ? response.status() : null;
     await page.waitForTimeout(2000);
+    // Record where we actually landed. Playwright follows redirects silently,
+    // so the requested URL and the extracted origin can differ (login walls,
+    // marketing → app, cross-origin SSO). The caller flags this in provenance.
+    const finalUrl = page.url();
 
     // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
     // Most JS challenges clear in 5-10s; some take longer on first visit.
@@ -164,9 +218,25 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       const fontWeights = {};
       const lineHeights = {};
       const letterSpacings = {};
+      // Pair line-height + weight to each font size so the type scale can emit
+      // real typography tokens (fontSize + its actual lineHeight), instead of
+      // two disconnected frequency lists that never line up.
+      const typeSamples = {};
       const spacings = {};
       const radii = {};
       const shadows = {};
+
+      // Pull the color stops out of a CSS gradient (linear/radial/conic). Gradient
+      // buttons and hero surfaces read as transparent through backgroundColor
+      // alone, so their brand colors vanish. Grab rgb()/rgba()/hsl()/hex stops.
+      const gradientStops = (bgImage) => {
+        if (!bgImage || bgImage === "none" || !/gradient\(/i.test(bgImage)) return [];
+        const out = [];
+        const re = /(#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\))/g;
+        let m;
+        while ((m = re.exec(bgImage))) out.push(m[1]);
+        return out;
+      };
 
       const elements = document.querySelectorAll("html, body, body *");
 
@@ -176,14 +246,21 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
         const style = getComputedStyle(el);
 
+        const vp = (window.innerWidth * window.innerHeight) || 1;
+        const areaShare = Math.min((rect.width * rect.height) / vp, 1);
+
         const bg = style.backgroundColor;
         if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
           // Count + capped area bonus. Element count alone lets a tinted
           // overlay on dozens of tiny chips outrank the actual page
           // background; a full-viewport element adds 25, a chip adds ~0.
-          const vp = (window.innerWidth * window.innerHeight) || 1;
-          const areaShare = Math.min((rect.width * rect.height) / vp, 1);
           colors.background[bg] = (colors.background[bg] || 0) + 1 + areaShare * 25;
+        }
+
+        // Gradient stops count as background colors too, so gradient heroes/CTAs
+        // contribute their real brand colors instead of reading as transparent.
+        for (const stop of gradientStops(style.backgroundImage)) {
+          colors.background[stop] = (colors.background[stop] || 0) + 1 + areaShare * 10;
         }
 
         const color = style.color;
@@ -274,6 +351,16 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         const lh = style.lineHeight;
         if (lh && lh !== "normal") lineHeights[lh] = (lineHeights[lh] || 0) + 1;
 
+        // Only count a size/line-height/weight sample where text is actually
+        // rendered, so the paired scale reflects real type, not empty wrappers.
+        if (fontSize && (el.textContent || "").trim().length > 0) {
+          const key = fontSize;
+          const s = typeSamples[key] || (typeSamples[key] = { count: 0, lineHeights: {}, weights: {} });
+          s.count += 1;
+          if (lh && lh !== "normal" && lh !== "0px") s.lineHeights[lh] = (s.lineHeights[lh] || 0) + 1;
+          if (fontWeight) s.weights[fontWeight] = (s.weights[fontWeight] || 0) + 1;
+        }
+
         const ls = style.letterSpacing;
         if (ls && ls !== "normal" && ls !== "0px") letterSpacings[ls] = (letterSpacings[ls] || 0) + 1;
 
@@ -301,10 +388,20 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         const s = getComputedStyle(btn);
         const rect = btn.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) continue;
+        // A gradient button is transparent to backgroundColor. Fall back to the
+        // gradient stops so the CTA keeps a real fill instead of vanishing, and
+        // keep the raw computed background-image so the output can print the
+        // exact gradient instead of a lossy first-stop-only approximation.
+        const stops = gradientStops(s.backgroundImage);
+        const transparentBg = s.backgroundColor === "rgba(0, 0, 0, 0)" || s.backgroundColor === "transparent";
+        const bg = (transparentBg && stops.length) ? stops[0] : s.backgroundColor;
         components.buttons.push({
-          bg: s.backgroundColor, color: s.color, radius: s.borderRadius,
+          bg, color: s.color, radius: s.borderRadius,
           padding: `${s.paddingTop} ${s.paddingRight} ${s.paddingBottom} ${s.paddingLeft}`,
           fontSize: s.fontSize, fontWeight: s.fontWeight, border: s.border,
+          height: `${Math.round(rect.height)}px`,
+          gradient: stops.length ? stops.slice(0, 4) : null,
+          gradientRaw: stops.length ? s.backgroundImage.slice(0, 300) : null,
         });
       }
 
@@ -372,8 +469,15 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       };
 
       const bodyTextLength = (document.body?.innerText || "").length;
+      // Login-wall signal: a visible password field, or sign-in copy in the
+      // title/headings. Redirects to an SSO page get attributed to the wrong URL
+      // otherwise (see provenance flags in the caller).
+      const hasPasswordField = !!document.querySelector('input[type="password"]');
+      const loginCopy = /\b(sign in|log in|login|sign up|create account|authenticate)\b/i.test(
+        (document.title || "") + " " + (document.querySelector("h1")?.innerText || "")
+      );
 
-      return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, spacings, radii, shadows, cssVars, components, motion, bodyTextLength };
+      return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, typeSamples, spacings, radii, shadows, cssVars, components, motion, bodyTextLength, hasPasswordField, loginCopy };
     });
 
     const title = await page.title();
@@ -421,8 +525,24 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       };
     }
 
+    // Provenance: did we end up somewhere other than asked? Cross-origin or a
+    // login wall means the tokens describe a different page than the requested
+    // URL. Surface it so DESIGN.md doesn't misattribute the design system.
+    let crossOrigin = false;
+    let redirected = false;
+    try {
+      const from = new URL(url);
+      const to = new URL(finalUrl);
+      redirected = from.href !== to.href;
+      // Compare the registrable domain (approx eTLD+1) so a legit apex -> www or
+      // CDN redirect isn't flagged as cross-origin; only a real domain change is.
+      crossOrigin = registrableDomain(from.hostname) !== registrableDomain(to.hostname);
+    } catch { /* leave defaults */ }
+    const loginLike = !!(raw.hasPasswordField || raw.loginCopy);
+    const provenance = { requestedUrl: url, finalUrl, redirected, crossOrigin, loginLike };
+
     // raw already carries `motion` and `bodyTextLength` from the evaluate.
-    return { ...raw, title, url, vision: visionData, blockLikely };
+    return { ...raw, title, url, finalUrl, provenance, vision: visionData, blockLikely };
   } finally {
     await context.close();
   }
@@ -438,6 +558,41 @@ function mergeFreqMaps(maps) {
     const total = Object.values(map).reduce((s, v) => s + v, 0) || 1;
     for (const [key, count] of Object.entries(map)) {
       merged[key] = (merged[key] || 0) + count / total;
+    }
+  }
+  return merged;
+}
+
+/**
+ * Merge per-page provenance: top-level flags fire when ANY page redirected
+ * cross-origin or landed on a login wall; `pages` keeps the full detail.
+ */
+function mergeProvenance(pages) {
+  const per = pages.map((p) => p.provenance).filter(Boolean);
+  if (!per.length) return null;
+  return {
+    requestedUrl: per[0].requestedUrl,
+    finalUrl: per[0].finalUrl,
+    redirected: per.some((p) => p.redirected),
+    crossOrigin: per.some((p) => p.crossOrigin),
+    loginLike: per.some((p) => p.loginLike),
+    pages: per,
+  };
+}
+
+/**
+ * Merge paired type samples (fontSize -> {count, lineHeights, weights}) across
+ * pages. Per-page normalized so a long page can't swamp the scale.
+ */
+function mergeTypeSamples(maps) {
+  const merged = {};
+  for (const map of maps) {
+    const total = Object.values(map).reduce((s, v) => s + (v.count || 0), 0) || 1;
+    for (const [size, s] of Object.entries(map)) {
+      const dst = merged[size] || (merged[size] = { count: 0, lineHeights: {}, weights: {} });
+      dst.count += (s.count || 0) / total;
+      for (const [lh, c] of Object.entries(s.lineHeights || {})) dst.lineHeights[lh] = (dst.lineHeights[lh] || 0) + c / total;
+      for (const [w, c] of Object.entries(s.weights || {})) dst.weights[w] = (dst.weights[w] || 0) + c / total;
     }
   }
   return merged;
@@ -467,6 +622,7 @@ function mergeRaw(pages) {
     fontWeights: mergeFreqMaps(pages.map((p) => p.fontWeights)),
     lineHeights: mergeFreqMaps(pages.map((p) => p.lineHeights || {})),
     letterSpacings: mergeFreqMaps(pages.map((p) => p.letterSpacings || {})),
+    typeSamples: mergeTypeSamples(pages.map((p) => p.typeSamples || {})),
     spacings: mergeFreqMaps(pages.map((p) => p.spacings)),
     radii: mergeFreqMaps(pages.map((p) => p.radii)),
     shadows: mergeFreqMaps(pages.map((p) => p.shadows)),
@@ -474,6 +630,12 @@ function mergeRaw(pages) {
     components: { buttons: [], cards: [], inputs: [] },
     title: pages[0].title,
     url: pages[0].url,
+    finalUrl: pages[0].finalUrl,
+    // Provenance is kept for EVERY page: a docs page landing on SSO must not be
+    // silently merged just because the homepage landed fine. Top-level flags are
+    // "any page", per-page detail sits in `pages`.
+    provenance: mergeProvenance(pages),
+    bodyTextLength: pages.reduce((s, p) => s + (p.bodyTextLength || 0), 0),
     sources: pages.map((p) => p.url),
     // If any source page tripped the block heuristic, surface it. Motion is a
     // union — a feature present on any page counts as present for the brand.

@@ -1,29 +1,95 @@
-# Design System: Home \ Anthropic
+---
+version: alpha
+name: "Home \\ Anthropic"
+description: "Bright, high contrast"
+colors:
+  background: "#faf9f5"
+  on-background: "#000000"
+  on-surface-variant: "#87867f"
+  outline: "#b0aea5"
+  primary: "#faf9f5"
+  on-primary: "#1a1a1a"
+typography:
+  display:
+    fontFamily: Anthropic Sans
+    fontSize: 61px
+    fontWeight: 700
+    lineHeight: 1.1
+  headline-lg:
+    fontFamily: Anthropic Sans
+    fontSize: 24px
+    fontWeight: 600
+    lineHeight: 1.29
+  body-md:
+    fontFamily: Anthropic Sans
+    fontSize: 20px
+    fontWeight: 400
+    lineHeight: 1.4
+  body-lg:
+    fontFamily: Anthropic Sans
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.41
+  label-sm:
+    fontFamily: Anthropic Sans
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 1.42
+rounded:
+  sm: 8px
+  md: 16px
+  lg: 23px
+  xl: 24px
+spacing:
+  base: 8px
+  xs: 2px
+  sm: 4px
+  md: 12px
+  lg: 16px
+  xl: 22.5px
+components:
+  button-secondary:
+    backgroundColor: transparent
+    typography: "{typography.label-sm}"
+    rounded: 0px
+    padding: 22px
+    height: 69px
+---
 
 > This is a real `DESIGN.md` example generated from [https://anthropic.com](https://anthropic.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
-## 1. Visual Theme & Atmosphere
 
-**Overall mood:** Balanced and professional
 
-**Density:** Moderate. The layout uses a varied spacing scale.
+# Design System: Home \ Anthropic
 
-**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+> Extracted from [https://anthropic.com](https://anthropic.com) by brandmd
 
-**Depth:** Uses 1 shadow style for layering and elevation.
+> ⚠️ **Provenance:** `https://anthropic.com` redirected to `https://www.anthropic.com/`. These tokens may describe that page, not the URL you asked for.
 
-## 2. Color Palette & Roles
+## Overview
 
-- **Light Yellow** (`#FAF9F5`): Page background
-- **Black** (`#141413`): Dark background / footer
-- **Black** (`#000000`): Primary text
-- **Dark gray** (`#87867F`): Secondary text
-- **Muted Yellow** (`#B0AEA5`): Divider / border
+**Visual character:** Bright, high contrast; cream background dominates with black text
 
-## 3. Typography Rules
+**Density:** spacious. The layout uses a varied spacing scale.
+
+**Motion:** Animation surfaces detected (Lottie animations, scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+
+## Colors
+
+Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
+
+- **Black** (`#000000`): Primary text (dominant)
+- **Gray** (`#87867f`): Secondary text (dominant)
+- **Cream** (`#faf9f5`): Page background (dominant)
+- **Black** (`#141413`): Dark background / footer (dominant)
+- **Gray** (`#b0aea5`): Divider / border (accent)
+
+## Typography
 
 **Primary font:** Anthropic Sans
 **Secondary font:** Anthropic Serif
@@ -33,55 +99,56 @@
 - Body: Anthropic Sans
 - Buttons / nav: Anthropic Serif
 
-**All detected fonts:** Anthropic Sans (426), Anthropic Serif (266), Anthropic Mono (6)
+**All detected fonts:** Anthropic Sans (452), Anthropic Serif (383), Anthropic Mono (6)
 
 **Type scale:**
-- Headings: 24px, 60.8653px, 90.7755px
+- Headings: 24px, 61px
 - Body / UI: 14px, 15px, 16px, 18px, 20px
 - Captions / Small: 12px
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 16.8px, 22.4px, 28px, 16px, 66.9518px, 31.2px, 25.2px, 18.2px, 15px, 21px
+**Line heights:** 17px, 28px, 22.5px, 16px, 67px, 31px, 25px, 18px, 15px, 21px
 
 **Letter spacing:** -0.24px, -0.08px, -0.0375px
 
-## 4. Component Stylings
+## Layout
+
+**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 22.5px, 24px, 31.5px
+
+## Elevation & Depth
+
+Uses 1 shadow style for layering and elevation:
+
+- Level 1: `rgba(0, 0, 0, 0.01) 0px 2px 2px 0px, rgba(0, 0, 0, 0.02) 0px 4px 4px 0px, rgba(0, 0, 0, 0.04) 0px 16px 24px 0px`
+
+## Shapes
+
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+
+**Border radii:** 0px 0px 8px 8px, 0px 8px 8px 0px, 8px, 8px 0px 0px 8px, 16px, 23px, 24px
+
+Asymmetric / percentage radii observed (0px 0px 8px 8px, 0px 8px 8px 0px, 8px 0px 0px 8px); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+
+## Components
+
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Text color: `rgb(20, 20, 19)`
+- Text color: `#141413`
+- Corner radius: 0px
+- Height: 69px
 - Padding: 22.4px 12px 22.4px 12px
 - Font: 20px, weight 400
 
-### Cards
-- Shadow: `rgba(0, 0, 0, 0.01) 0px 2px 2px 0px, rgba(0, 0, 0, 0.02) 0px 4px 4px 0px, rgba(0, 0, 0, 0.04) 0px 16px 24px 0px`
-- Corner radius: 0px 0px 8px 8px
+## Do's and Don'ts
 
-### Inputs
-- Border color: `#B0AEA5`
-
-## 5. Layout Principles
-
-**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 22.4px, 24px, 31.4776px
-
-**Base unit:** 4px grid (values are mostly multiples of 4).
-
-**Border radii:** 0px 0px 8px 8px, 0px 8px 8px 0px, 8px, 8px 0px 0px 8px, 16px, 24px
-
-## 6. Guidelines
-
-### Do
-- Use 4px grid for all spacing
-- Use `#000000` for primary actions and CTAs
-- Stick to 4 font weights: 400, 500, 600, 700
-- Use `Anthropic Sans` as the primary typeface
-
-### Don't
+- Do stick to 4 font weights: 400, 500, 600, 700
+- Do use `Anthropic Sans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Anthropic Sans and Anthropic Serif
-- Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 0px 0px 8px 8px, 0px 8px 8px 0px, 8px, 8px 0px 0px 8px, 16px, 24px
+- Don't use border-radius values outside: 0px 0px 8px 8px, 0px 8px 8px 0px, 8px, 8px 0px 0px 8px, 16px, 23px, 24px
 
 ---
 
-*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
+*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd) and validates against the official [@google/design.md](https://github.com/google-labs-code/design.md) linter. Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*

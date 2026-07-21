@@ -1,5 +1,5 @@
-import { writeFileSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
+import { join } from "path";
+import { writeAllAtomic } from "./atomic-write.js";
 
 /**
  * Generate a Cursor rule + universal Agent Skill that point at DESIGN.md.
@@ -21,7 +21,7 @@ import { join, dirname } from "path";
  * @param {string} designMdPath - path to DESIGN.md relative to outputDir (default "DESIGN.md")
  * @returns {string[]} list of paths written
  */
-export function generateAgentPack(outputDir, designMdPath = "DESIGN.md") {
+export function planAgentPack(outputDir, designMdPath = "DESIGN.md") {
   const cursorRulePath = join(outputDir, ".cursor", "rules", "brand.mdc");
   const cursorRule = `---
 description: Brand and design-system context extracted by brandmd. Use these colors, typography, spacing, and component patterns when generating or modifying UI.
@@ -45,9 +45,6 @@ Follow the design system documented in @${designMdPath} before generating any UI
 
 Default to what's in @${designMdPath}. If a token isn't specified, derive it from the closest documented one. Don't fall back to generic Tailwind defaults.
 `;
-
-  mkdirSync(dirname(cursorRulePath), { recursive: true });
-  writeFileSync(cursorRulePath, cursorRule);
 
   const agentsSkillPath = join(outputDir, ".agents", "skills", "brand-style", "SKILL.md");
   const claudeSkillPath = join(outputDir, ".claude", "skills", "brand-style", "SKILL.md");
@@ -85,11 +82,20 @@ This project has a documented design system at @${designMdPath}. Read it before 
 AI coding agents generate generic UI when they don't have brand context. ${designMdPath} was extracted from the live brand by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Following it keeps generated UI on-brand and reduces review cycles.
 `;
 
-  mkdirSync(dirname(agentsSkillPath), { recursive: true });
-  writeFileSync(agentsSkillPath, skill);
+  return [
+    { path: cursorRulePath, content: cursorRule },
+    { path: agentsSkillPath, content: skill },
+    { path: claudeSkillPath, content: skill },
+  ];
+}
 
-  mkdirSync(dirname(claudeSkillPath), { recursive: true });
-  writeFileSync(claudeSkillPath, skill);
-
-  return [cursorRulePath, agentsSkillPath, claudeSkillPath];
+/**
+ * Write the agent pack transactionally (see atomic-write.js). Kept for callers
+ * that want the pack alone; the CLI stages the pack together with DESIGN.md so
+ * the whole set commits or none of it does.
+ */
+export function generateAgentPack(outputDir, designMdPath = "DESIGN.md") {
+  const files = planAgentPack(outputDir, designMdPath);
+  writeAllAtomic(files);
+  return files.map((f) => f.path);
 }

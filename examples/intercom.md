@@ -1,29 +1,104 @@
-# Design System: Intercom | The only helpdesk designed for the AI Agent era
+---
+version: alpha
+name: "Intercom | The only helpdesk designed for the AI Agent era"
+description: "Bright, high contrast"
+colors:
+  background: "#ffffff"
+  outline: "#dedbd6"
+  outline-variant: "#00000026"
+  primary: "#ff5600"
+  on-primary: "#1a1a1a"
+  secondary: "#0007cb"
+  on-secondary: "#ffffff"
+typography:
+  display:
+    fontFamily: Saans
+    fontSize: 80px
+    fontWeight: 400
+    lineHeight: 1
+  headline-lg:
+    fontFamily: Saans
+    fontSize: 54px
+    fontWeight: 400
+    lineHeight: 1
+  headline-md:
+    fontFamily: Saans
+    fontSize: 40px
+    fontWeight: 400
+    lineHeight: 1
+  body-md:
+    fontFamily: Saans
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.5
+  body-lg:
+    fontFamily: Saans
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.25
+  label-sm:
+    fontFamily: Saans
+    fontSize: 12px
+    fontWeight: 500
+    lineHeight: 1.29
+rounded:
+  sm: 4px
+  md: 6px
+spacing:
+  base: 16px
+  xs: 4px
+  sm: 8px
+  md: 12px
+  lg: 14px
+  xl: 20px
+components:
+  button-primary:
+    backgroundColor: "#faf9f6"
+    textColor: "#111111"
+    typography: "{typography.label-sm}"
+    rounded: 0px
+    padding: 16px
+    height: 58px
+  button-secondary:
+    backgroundColor: transparent
+    typography: "{typography.label-sm}"
+    rounded: 0px
+    height: 227px
+---
 
 > This is a real `DESIGN.md` example generated from [https://intercom.com](https://intercom.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
-## 1. Visual Theme & Atmosphere
 
-**Overall mood:** Balanced and professional
 
-**Density:** Moderate. The layout uses a varied spacing scale.
+# Design System: Intercom | The only helpdesk designed for the AI Agent era
 
-**Shape language:** Subtle rounding on interactive elements.
+> Extracted from [https://intercom.com](https://intercom.com) by brandmd
 
-**Depth:** Flat design with minimal shadow usage.
+> ⚠️ **Provenance:** `https://intercom.com` redirected to `https://www.intercom.com/`. These tokens may describe that page, not the URL you asked for.
 
-## 2. Color Palette & Roles
+## Overview
 
-- **White** (`#FFFFFF`): Page background
-- **Black** (`#000000`): Dark background / footer
-- **Dark Blue** (`#0007CB`): Dark background / footer
-- **Orange** (`#FF5600`): Accent background
-- **Light Muted Orange** (`#DEDBD6`): Divider / border
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
-## 3. Typography Rules
+**Density:** spacious. The layout uses a varied spacing scale.
+
+**Motion:** Animation surfaces detected (canvas rendering). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+
+## Colors
+
+Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+- **White** (`#ffffff`): Page background (dominant)
+- **Black** (`#000000`): Dark background / footer (dominant)
+- **Light gray** (`#dedbd6`): Divider / border (dominant)
+- **Near-transparent Black** (`#00000026`): Divider / border (dominant)
+- **Vivid Blue** (`#0007cb`): Accent background (accent)
+- **Vivid Orange** (`#ff5600`): Accent background (accent)
+
+## Typography
 
 **Primary font:** Saans
 **Secondary font:** SaansMono
@@ -32,54 +107,57 @@
 - Headings: Saans
 - Body: Saans
 
-**All detected fonts:** Saans (800), SaansMono (129), Serrif (34), MediumLL (19), Segoe UI Symbol (3)
+**All detected fonts:** Saans (819), SaansMono (130), Serrif (34), Segoe UI Symbol (3)
 
 **Type scale:**
-- Headings: 24px, 25.6px, 28px, 40px, 54px, 80px
+- Headings: 24px, 25.5px, 28px, 40px, 54px, 80px
 - Body / UI: 14px, 16px, 20px
 - Captions / Small: 12px
 
 **Weights in use:** 300, 400, 500
 
-**Line heights:** 24px, 19.6px, 17.5px, 22.4px, 15.008px, 54px, 28px, 15.6px, 40px, 20px
+**Line heights:** 24px, 19.5px, 17.5px, 22.5px, 15px, 54px, 28px, 15.5px, 40px, 12px
 
 **Letter spacing:** -0.16px, -0.096px, -0.2px, -1.6px, -0.96px, 1.2px
 
-## 4. Component Stylings
-
-### Buttons
-- Text color: `rgb(0, 0, 0)`
-- Padding: 8px 8px 8px 8px
-- Font: 14px, weight 400
-
-### Cards
-- Corner radius: 4px
-
-### Inputs
-- Border color: `#DEDBD6`
-
-## 5. Layout Principles
+## Layout
 
 **Spacing scale:** 4px, 8px, 12px, 14px, 16px, 24px, 32px, 48px
 
-**Base unit:** 4px grid (values are mostly multiples of 4).
+**Base unit:** 4px grid — 91% of all weighted spacing values are multiples of 4.
+
+## Elevation & Depth
+
+Flat design: hierarchy comes from color contrast and borders, not shadows.
+
+## Shapes
+
+**Shape language:** Subtle rounding on interactive elements.
 
 **Border radii:** 4px, 6px
 
-## 6. Guidelines
+## Components
 
-### Do
-- Use 4px grid for all spacing
-- Use `#FF5600` for primary actions and CTAs
-- Stick to 3 font weights: 300, 400, 500
-- Use `Saans` as the primary typeface
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
-### Don't
+### Buttons
+- Background: `#faf9f6`
+- Text color: `#111111`
+- Corner radius: 0px
+- Height: 58px
+- Padding: 16px 16px 16px 16px
+- Font: 16px, weight 400
+
+## Do's and Don'ts
+
+- Do use a 4px grid for spacing
+- Do use `#ff5600` for primary actions and CTAs
+- Do stick to 3 font weights: 300, 400, 500
+- Do use `Saans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Saans and SaansMono
-- Don't use inline styles when the design system covers the pattern
 - Don't use border-radius values outside: 4px, 6px
 
 ---
 
-*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
+*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd) and validates against the official [@google/design.md](https://github.com/google-labs-code/design.md) linter. Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*

@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["20", "22"]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      # The spec-conformance suite lints generated output with the official
+      # DESIGN.md linter via npx. Cache the npx download so the tests hit the
+      # cache (they run `npx --offline` first) and the only network use is this
+      # single install on a cache miss.
+      - name: Cache design.md linter (npx)
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm/_npx
+          key: designmd-npx-${{ runner.os }}-0.3.0
+
+      # Warm AND verify: this must fail the job if the linter can't be
+      # installed or can't lint (no `|| true` — a broken linter must never
+      # let the conformance gate skip; codex grade blocker 2).
+      - name: Warm and verify the design.md linter
+        run: |
+          printf -- '---\nname: Warmup\ncolors:\n  primary: "#111111"\n---\n\n## Overview\n\nWarm.\n' > "$RUNNER_TEMP/designmd-warm.md"
+          npx -y @google/design.md@0.3.0 lint --format json "$RUNNER_TEMP/designmd-warm.md"
+
+      - name: Run tests
+        env:
+          # Fail-closed linter gate: any would-be skip of the conformance test
+          # becomes a failure in CI (codex grade blocker 2).
+          BRANDMD_REQUIRE_LINT: "1"
+        run: npm test

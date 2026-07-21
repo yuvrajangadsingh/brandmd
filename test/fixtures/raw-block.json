@@ -1,0 +1,24 @@
+{
+  "colors": {
+    "background": { "rgb(255, 255, 255)": 2 },
+    "text": { "rgb(0, 0, 0)": 3 },
+    "border": {}
+  },
+  "fonts": { "Arial": 2 },
+  "fontsByRole": { "heading": {}, "body": { "Arial": 2 }, "button": {}, "display": {} },
+  "fontSizes": { "16px": 2 },
+  "fontWeights": { "400": 3 },
+  "lineHeights": { "20px": 3 },
+  "letterSpacings": {},
+  "spacings": {},
+  "radii": {},
+  "shadows": {},
+  "cssVars": {},
+  "components": { "buttons": [], "cards": [], "inputs": [] },
+  "motion": { "canvas": false, "webgl": false, "lottie": false, "inlineRaf": false },
+  "bodyTextLength": 90,
+  "title": "Access Denied",
+  "url": "https://denied.test/",
+  "vision": null,
+  "blockLikely": true
+}

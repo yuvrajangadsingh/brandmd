@@ -1,0 +1,27 @@
+{
+  "colors": {
+    "background": {
+      "rgb(255, 255, 255)": 1,
+      "rgb(240, 240, 240)": 1
+    },
+    "text": {},
+    "border": {}
+  },
+  "fonts": { "Inter": 1 },
+  "fontsByRole": { "heading": {}, "body": { "Inter": 1 }, "button": {}, "display": {} },
+  "fontSizes": { "16px": 1 },
+  "fontWeights": { "400": 1 },
+  "lineHeights": {},
+  "letterSpacings": {},
+  "spacings": {},
+  "radii": {},
+  "shadows": {},
+  "cssVars": {},
+  "components": { "buttons": [], "cards": [], "inputs": [] },
+  "motion": { "canvas": false, "webgl": false, "lottie": false, "inlineRaf": false },
+  "bodyTextLength": 0,
+  "title": "Thin",
+  "url": "https://thin.test/",
+  "vision": null,
+  "blockLikely": false
+}

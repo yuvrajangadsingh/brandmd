@@ -1,0 +1,73 @@
+{
+  "colors": {
+    "background": {
+      "rgb(255, 255, 255)": 500,
+      "rgb(245, 245, 245)": 60
+    },
+    "text": {
+      "rgb(17, 17, 17)": 300,
+      "rgb(255, 255, 255)": 12,
+      "rgb(102, 102, 102)": 40
+    },
+    "border": {
+      "rgb(230, 230, 230)": 80
+    }
+  },
+  "fonts": { "Inter": 260 },
+  "fontsByRole": {
+    "heading": { "Inter": 24 },
+    "body": { "Inter": 200 },
+    "button": { "Inter": 8 },
+    "display": { "Inter": 2 }
+  },
+  "fontSizes": { "16px": 180, "14px": 90, "32px": 14, "48px": 2 },
+  "fontWeights": { "400": 220, "600": 40 },
+  "lineHeights": { "24px": 180, "40px": 14 },
+  "letterSpacings": {},
+  "spacings": { "8px": 60, "16px": 40, "24px": 25, "32px": 12 },
+  "radii": { "3px": 20, "0px": 5 },
+  "shadows": {
+    "rgba(0, 0, 0, 0.08) 0px 1px 2px 0px": 6
+  },
+  "cssVars": {},
+  "components": {
+    "buttons": [
+      {
+        "bg": "rgb(255, 0, 0)",
+        "gradient": ["#ff0000", "#0000ff"],
+        "color": "rgb(255, 255, 255)",
+        "radius": "0px",
+        "padding": "12px 24px",
+        "fontSize": "16px",
+        "fontWeight": "600",
+        "border": "0px none rgb(0, 0, 0)"
+      },
+      {
+        "bg": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "radius": "0px",
+        "padding": "8px 16px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "border": "0px none rgb(230, 230, 230)"
+      },
+      {
+        "bg": "rgba(0, 0, 0, 0)",
+        "color": "rgb(102, 102, 102)",
+        "radius": "0px",
+        "padding": "8px 16px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "border": "0px none rgb(230, 230, 230)"
+      }
+    ],
+    "cards": [],
+    "inputs": []
+  },
+  "motion": { "canvas": false, "webgl": false, "lottie": false, "inlineRaf": false },
+  "bodyTextLength": 2400,
+  "title": "Gradient CTA Co",
+  "url": "https://gradient.test/",
+  "vision": null,
+  "blockLikely": false
+}

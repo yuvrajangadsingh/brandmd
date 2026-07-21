@@ -1,32 +1,104 @@
-# Design System: Figma: The Collaborative Interface Design Tool
+---
+version: alpha
+name: "Figma: The collaborative canvas for design, code, and AI"
+description: "Bright, high contrast"
+colors:
+  background: "#ffffff"
+  on-background: "#808080"
+  primary: "#00b6ff"
+  on-primary: "#1a1a1a"
+typography:
+  display:
+    fontFamily: figmaSans
+    fontSize: 88px
+    fontWeight: 400
+    lineHeight: 1
+  headline-lg:
+    fontFamily: figmaSans
+    fontSize: 56px
+    fontWeight: 400
+    lineHeight: 1
+  headline-md:
+    fontFamily: figmaSans
+    fontSize: 44px
+    fontWeight: 400
+    lineHeight: 1.1
+  body-md:
+    fontFamily: figmaSans
+    fontSize: 18px
+    fontWeight: 330
+    lineHeight: 1.39
+  body-lg:
+    fontFamily: figmaSans
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.44
+  label-sm:
+    fontFamily: figmaSans
+    fontSize: 12px
+    fontWeight: 400
+    lineHeight: 1
+rounded:
+  sm: 2px
+  md: 4px
+  lg: 8px
+  xl: 16px
+  2xl: 24px
+  full: 9999px
+spacing:
+  base: 8px
+  xs: 2px
+  sm: 4px
+  md: 6px
+  lg: 12px
+  xl: 16px
+components:
+  button-primary:
+    backgroundColor: "#000000"
+    textColor: "#ffffff"
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.lg}"
+    padding: 12px
+    height: 46px
+  button-secondary:
+    backgroundColor: transparent
+    typography: "{typography.label-sm}"
+    rounded: 0px
+    height: 25px
+  card:
+    rounded: 0px
+---
 
 > This is a real `DESIGN.md` example generated from [https://figma.com](https://figma.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
-## 1. Visual Theme & Atmosphere
 
-**Overall mood:** Balanced and professional
 
-**Density:** Moderate. The layout uses a varied spacing scale.
+# Design System: Figma: The collaborative canvas for design, code, and AI
 
-**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+> Extracted from [https://figma.com](https://figma.com) by brandmd
 
-**Depth:** Uses 4 shadow styles for layering and elevation.
+> ⚠️ **Provenance:** `https://figma.com` redirected to `https://www.figma.com/`. These tokens may describe that page, not the URL you asked for.
 
-## 2. Color Palette & Roles
+## Overview
 
-- **White** (`#FFFFFF`): Page background
-- **Black** (`#000000`): Dark background / footer
-- **Blue** (`#C4BAFF`): Accent background
-- **Dark Blue** (`#4D49FC`): Accent background
-- **Light Green** (`#E4FF97`): Page background
-- **Blue** (`#00B6FF`): Accent background
-- **Cyan** (`#33DFDF`): Link / accent text
-- **Yellow** (`#B98E01`): Secondary text
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid cyan accents
 
-## 3. Typography Rules
+**Density:** spacious. The layout uses a varied spacing scale.
+
+## Colors
+
+Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+- **White** (`#ffffff`): Page background (dominant)
+- **Black** (`#000000`): Dark background / footer (accent)
+- **Vivid Cyan** (`#00b6ff`): Accent background (accent)
+
+**Incidental (low usage, do not lead with these):** `#808080`
+
+## Typography
 
 **Primary font:** figmaSans
 **Secondary font:** figmaMono
@@ -36,50 +108,63 @@
 - Body: figmaSans
 
 **Type scale:**
-- Headings: 24px, 56px, 72px
-- Body / UI: 16px, 18px
-- Captions / Small: 0px, 12px
+- Headings: 30px, 44px, 56px, 88px
+- Body / UI: 14px, 16px, 18px
+- Captions / Small: 12px
 
-**Weights in use:** 320, 330, 340, 400, 480, 520
+**Weights in use:** 320, 330, 400
 
-**Line heights:** 25.2px, 23.2px, 0px, 32.4px, 20.8px, 61.6px, 72px, 23.4px, 12px, 18.4px
+**Line heights:** 25px, 23px, 18.5px, 20.5px, 22.5px, 48.5px, 36px, 21px, 12px, 88px
 
-**Letter spacing:** -0.12px, -0.14px, -0.09px, -0.24px, 0.48px, -0.84px
+**Letter spacing:** -0.12px, -0.14px, -0.66px, -1.25px, 0.48px, 0.6px
 
-## 4. Component Stylings
+## Layout
+
+**Spacing scale:** 2px, 8px, 12px, 16px, 20px, 24px, 40px, 80px
+
+**Base unit:** 4px grid — 85% of all weighted spacing values are multiples of 4.
+
+## Elevation & Depth
+
+Uses 2 shadow styles for layering and elevation:
+
+- Level 1: `oklch(0 0 none / 0.16) 0px 0px 0px 1px inset`
+- Level 2: `oklch(0 0 none / 0.16) 0px 1px 0px 0px`
+
+## Shapes
+
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+
+**Border radii:** 2px, 4px, 8px, 16px, 24px, 50%, 9999px (pill)
+
+Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+
+## Components
+
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Text color: `rgb(255, 255, 255)`
-- Padding: 0px 0px 0px 0px
-- Font: 18px, weight 330
+- Background: `#000000`
+- Text color: `#ffffff`
+- Corner radius: 8px
+- Height: 46px
+- Padding: 12px 22px 12px 22px
+- Font: 16px, weight 400
 
 ### Cards
-- Background: `rgba(0, 0, 0, 0.16)`
+- Corner radius: 0px
 - Padding: 0px 0px 0px 0px
 
-### Inputs
+## Do's and Don'ts
 
-## 5. Layout Principles
-
-**Spacing scale:** 2px, 6px, 8px, 12px, 16px, 24px, 60px, 120px
-
-**Base unit:** 8px grid (values are mostly multiples of 8).
-
-**Border radii:** 2px, 4px, 8px, 16px, 18px, 50%, 50px
-
-## 6. Guidelines
-
-### Do
-- Use 8px grid for all spacing
-- Use `#C4BAFF` for primary actions and CTAs
-- Use `figmaSans` as the primary typeface
-
-### Don't
+- Do use a 4px grid for spacing
+- Do use `#00b6ff` for primary actions and CTAs
+- Do stick to 3 font weights: 320, 330, 400
+- Do use `figmaSans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond figmaSans and figmaMono
-- Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 2px, 4px, 8px, 16px, 18px, 50%, 50px
+- Don't use border-radius values outside: 2px, 4px, 8px, 16px, 24px, 50%, 9999px (pill)
 
 ---
 
-*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
+*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd) and validates against the official [@google/design.md](https://github.com/google-labs-code/design.md) linter. Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*

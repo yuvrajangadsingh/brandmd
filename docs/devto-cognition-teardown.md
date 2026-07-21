@@ -1,6 +1,6 @@
 ---
 title: "5 heuristic bugs that made my design-token tool call a bright cream page \"dark and moody\""
-published: false
+published: true
 tags: ai, webdev, css, opensource
 ---
 

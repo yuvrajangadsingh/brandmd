@@ -2,6 +2,36 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.14.0] - 2026-07-20
+
+Spec + truth release: conform to the official DESIGN.md spec and stop the confident lies.
+
+### Added
+
+- **Official DESIGN.md format.** Output is now YAML frontmatter (machine-readable `colors`, `typography`, `rounded`, `spacing`, `components` tokens) plus canonical prose sections in canonical order (Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts), per [github.com/google-labs-code/design.md](https://github.com/google-labs-code/design.md). Every generated file passes `npx @google/design.md lint` with zero errors and zero warnings. Colors map to Material-style role tokens (`primary`, `background`, `on-surface`, `outline`, …); brandmd's tiered palette, evidence-based visual character, confidence tags, and observed component styles stay in the prose.
+- **Fail-closed refusals with an exit-code contract.** `0` = success, `1` = operational/validation error, `2` = refused. Block / access-denied pages, login / sign-in wall landings (on any page of a multi-URL run), and evidence-thin pages (no rendered text, empty palette) refuse in every format and write no artifact, so a bad capture can't overwrite a good `DESIGN.md`. `--allow-blocked` forces output; the forced artifact carries a block marker in every format (Markdown callout, CSS/Tailwind comment header, HTML banner, JSON `blockLikely`).
+- **Shadow values in DESIGN.md.** The Elevation & Depth section prints each shadow's real CSS value instead of only a count, so agents can reproduce elevation.
+- **Redirect / login provenance.** brandmd records the final URL after redirects for every page. Login-like landings refuse (see above); plain cross-origin redirects warn on stderr and are flagged in the output provenance, per page.
+- **`--debug`** prints raw error detail; browser-launch failures otherwise collapse to a one-line `npx playwright install chromium` remediation.
+
+### Changed
+
+- **CTA guideline names real action evidence, or nothing.** The "use X for primary actions" line ranks accent roles first, then the representative non-transparent button background, and excludes every text-neutral role, so it never sells the primary *text* color as the CTA color. Omitted when there's no action evidence.
+- **Representative button is the most-saturated solid** (tie-broken by contrast vs the page), not the most frequent, so a real CTA wins over the transparent nav buttons. Gradient buttons keep their full fill: the exact computed gradient prints in the Components prose, extra stops ride as `button-primary-gradient-stop-N` variant tokens in the YAML (the spec has no gradient sub-token), and every stop lands in `--json`. A ghost / secondary variant is emitted from the transparent cluster. Button prose always states the real radius, including a true `0px`.
+- **`colors.primary` is honest.** It's the brand accent when one was observed (Material semantics, matching the CTA guideline), otherwise the dominant background neutral with an explicit low-confidence note in the prose. Never the text ink, and no `button-primary` token is invented for a page with zero observed buttons.
+- **Honest tokens.** A count-1 font can never be Primary, even when it's the only font (the output says "low confidence" instead). Spacing is filtered before truncation, sizes cluster before truncation (a rare hero size survives a crowd of body sizes), line-heights pair with their font sizes, 0px line-heights are dropped, and the "Npx grid" claim is computed over the full weighted evidence before any truncation, at an 80% coverage bar. Sparse pages get per-section "low confidence" notes (typography, elevation, shapes, components, do's and don'ts) instead of confident rules derived from absence; Cards/Inputs sections are omitted entirely when no card or input elements were sampled.
+- **Transactional writes.** All artifacts commit via temp-file + rename with rollback: `-o`, the `--agent` set (DESIGN.md + all three wrappers commit together or not at all, previous versions restored on failure), and `brandmd diff`. Read-only targets, directories-at-target, broken symlinks, and duplicate target paths are refused up front; symlink targets are written through (the link survives, the referent updates); temp/backup names are collision-safe so nothing that brandmd didn't create is ever replaced or deleted. Atomicity is per process — concurrent runs against the same output directory are not coordinated.
+- Description and README lead with "spec-valid DESIGN.md (passes the official @google/design.md linter)" instead of "Stitch-ready".
+- **Every example regenerated on the v0.14 engine.** All 30 example `DESIGN.md` files and the gallery pages are fresh extractions that pass the official linter at 0 errors / 0 warnings (the old files predated v0.12 and still carried the bugs the changelog claimed were fixed). The `stitch.withgoogle.com` example is removed: the site renders no text for a headless browser, and v0.14 refuses to fabricate a design system from an empty page rather than shipping one.
+
+### Fixed
+
+- **`generate` → `parseDesign` → `diff` round-trips every emitted field.** The parser reads the YAML frontmatter as the source of truth — including the `components` tokens, so an edited machine value is diff-visible — plus the prose for the fields that aren't in it. The old `\z` regex (a literal `z` that truncated the last component), the "generated from" / "Extracted from" mismatch that nulled the source URL, and single-word-only role parsing are all fixed; multi-page source lists round-trip; CRLF files parse identically to LF; dark-theme colors stay out of the light palette.
+- Dark overrides are emitted under a uniquely-named section (no more duplicate `## 6`) as observed diffs in palette roles, the primary button background, and the shadow-style count. Full per-category dark diffs (typography, spacing, radii, shadow values) are v0.15.
+- Non-http(s) URL schemes are rejected instead of coerced (`ftp://x` no longer becomes `https://ftp://x`), filesystem-like arguments (`/tmp/x`) are errors instead of `https:///tmp/x`, and `--cf-wait-ms` must be a finite, non-negative integer.
+- Page titles are sanitized to a single line before they reach the YAML `name` scalar or the Markdown H1, so a hostile title with embedded newlines can't inject headings/guidelines or break the linter's quote parsing.
+- Duplicate variable-font families are merged ("Geist" / "Geist VF" → one), frequency values are rounded to 2 decimals in every output including `--json`, and hex casing is consistent (lowercase) across DESIGN.md, `--css`, `--tailwind`, `--html`, and `--json`.
+
 ## [0.13.0] - 2026-07-06
 
 Robustness release: stop trusting block pages, and flag motion.

@@ -1,90 +1,175 @@
-# Design System: PostHog – We make dev tools for product engineers
+---
+version: alpha
+name: "PostHog – We make your product self-driving"
+description: "Bright, high contrast"
+colors:
+  background: "#eeefe9"
+  on-background: "#374151"
+  on-surface-variant: "#65675e"
+  outline: "#d2d3cc"
+  outline-variant: "#b17816"
+  primary: "#d23401"
+  on-primary: "#ffffff"
+  secondary: "#53ffcb"
+  on-secondary: "#1a1a1a"
+typography:
+  display:
+    fontFamily: Open Runde
+    fontSize: 36px
+    fontWeight: 800
+    lineHeight: 1.11
+  headline-lg:
+    fontFamily: Open Runde
+    fontSize: 30px
+    fontWeight: 700
+    lineHeight: 1.33
+  headline-md:
+    fontFamily: Open Runde
+    fontSize: 24px
+    fontWeight: 700
+    lineHeight: 1.33
+  body-md:
+    fontFamily: Open Runde
+    fontSize: 18px
+    fontWeight: 500
+    lineHeight: 1.78
+  body-lg:
+    fontFamily: Open Runde
+    fontSize: 15px
+    fontWeight: 500
+    lineHeight: 1.77
+  label-sm:
+    fontFamily: Open Runde
+    fontSize: 13px
+    fontWeight: 500
+    lineHeight: 1.27
+rounded:
+  sm: 2px
+  md: 4px
+  lg: 6px
+  xl: 20px
+  full: 9999px
+spacing:
+  base: 8px
+  xs: 2px
+  sm: 4px
+  md: 6px
+  lg: 9.5px
+  xl: 10px
+components:
+  button-primary:
+    backgroundColor: "#cd8407"
+    textColor: "#23251d"
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.lg}"
+    height: 32px
+  button-secondary:
+    backgroundColor: transparent
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.md}"
+    padding: 2px
+    height: 28px
+  card:
+    rounded: 0px
+---
 
 > This is a real `DESIGN.md` example generated from [https://posthog.com](https://posthog.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
-## 1. Visual Theme & Atmosphere
 
-**Overall mood:** Dark and moody
 
-**Density:** Moderate. The layout uses a varied spacing scale.
+# Design System: PostHog – We make your product self-driving
 
-**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+> Extracted from [https://posthog.com](https://posthog.com) by brandmd
 
-**Depth:** Uses 2 shadow styles for layering and elevation.
+## Overview
 
-## 2. Color Palette & Roles
+**Visual character:** Bright, high contrast; cream background dominates with black text and green accents
 
-- **Light Orange** (`#E1D7C2`): Secondary background
-- **Orange** (`#CD8407`): Accent background
-- **Orange** (`#F54E00`): Accent background
-- **Blue** (`#2F80FA`): Accent background
-- **Green** (`#6AA84F`): Secondary background
-- **Dark Muted Green** (`#4D4F46`): Primary text
-- **Black** (`#000000`): Primary text
-- **Dark Muted Blue** (`#374151`): Primary text
-- **Medium gray** (`#9EA096`): Muted text
-- **Orange** (`#B17816`): Focus / active border
+**Density:** spacious. The layout uses a varied spacing scale.
 
-## 3. Typography Rules
+## Colors
 
-**Primary font:** IBM Plex Sans Variable
-**Secondary font:** SFMono-Regular
+Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+- **Muted Blue** (`#374151`): Primary text (dominant)
+- **Cream** (`#eeefe9`): Surface / card background (dominant)
+- **Light gray** (`#d2d3cc`): Divider / border (dominant)
+- **White** (`#ffffff`): Light text (on dark) (accent)
+- **Green** (`#53ffcb`): Surface / card background (accent)
+- **Cyan** (`#49bac5`): Accent background (accent)
+- **Vivid Red** (`#d23401`): Accent background (accent)
+- **Orange** (`#b17816`): Focus / active border (accent)
+- **Vivid Orange** (`#cd8407`): Accent background (accent)
+
+**Incidental (low usage, do not lead with these):** `#65675e`, `#000000`
+
+## Typography
+
+**Primary font:** Open Runde
 
 **Fonts by role:**
-- Headings: IBM Plex Sans Variable
-- Body: IBM Plex Sans Variable
+- Headings: Open Runde
+- Body: Open Runde
 
-**All detected fonts:** IBM Plex Sans Variable (796), SFMono-Regular (6), Source Code Pro (1)
+**All detected fonts:** Open Runde (1303), avenir next (1), SFMono-Regular (1), Source Code Pro (1)
 
 **Type scale:**
-- Headings: 24px
-- Body / UI: 14px, 15px, 16px, 18px, 20px
+- Headings: 24px, 30px, 36px
+- Body / UI: 14px, 15px, 16px, 17px, 18px, 20px
 - Captions / Small: 12px, 13px
 
 **Weights in use:** 400, 500, 600, 700, 800
 
-**Line heights:** 25.7143px, 24px, 20px, 22.5px, 17.875px, 21px, 16px, 16.25px, 32px, 13px
+**Line heights:** 26.5px, 32px, 24px, 20px, 27px, 16.5px, 21px, 13px, 19.5px, 40px
 
-**Letter spacing:** -0.6px
+**Letter spacing:** -0.6px, -0.75px, -0.9px
 
-## 4. Component Stylings
+## Layout
+
+**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
+
+## Elevation & Depth
+
+Uses 2 shadow styles for layering and elevation:
+
+- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`
+- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px`
+
+## Shapes
+
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
+
+**Border radii:** 0px 6px 0px 0px, 2px, 4px, 6px, 6px 0px 0px, 20px, 40%, 9999px (pill)
+
+Asymmetric / percentage radii observed (0px 6px 0px 0px, 6px 0px 0px, 40%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+
+## Components
+
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Text color: `rgb(77, 79, 70)`
+- Background: `#cd8407`
+- Text color: `#23251d`
+- Corner radius: 6px
+- Height: 32px
 - Padding: 0px 0px 0px 0px
 - Font: 16px, weight 400
 
 ### Cards
-- Shadow: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`
-- Corner radius: 0px 0px 6px 6px
+- Corner radius: 0px
+- Padding: 0px 0px 0px 0px
 
-### Inputs
-- Border color: `#B17816`
+## Do's and Don'ts
 
-## 5. Layout Principles
-
-**Spacing scale:** 2px, 4px, 4.28571px, 6px, 6.42857px, 8px, 12px, 16px
-
-**Base unit:** 4px grid (values are mostly multiples of 4).
-
-**Border radii:** 0px 0px 6px 6px, 2px, 4px, 5px, 6px, 6px 6px 0px 0px, 8px, 9999px
-
-## 6. Guidelines
-
-### Do
-- Use 4px grid for all spacing
-- Use `#CD8407` for primary actions and CTAs
-- Use `IBM Plex Sans Variable` as the primary typeface
-
-### Don't
+- Do use `#d23401` for primary actions and CTAs
+- Do use `Open Runde` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond IBM Plex Sans Variable and SFMono-Regular
-- Don't use inline styles when the design system covers the pattern
-- Don't use border-radius values outside: 0px 0px 6px 6px, 2px, 4px, 5px, 6px, 6px 6px 0px 0px, 8px, 9999px
+- Don't mix fonts; use Open Runde everywhere
+- Don't use border-radius values outside: 0px 6px 0px 0px, 2px, 4px, 6px, 6px 0px 0px, 20px, 40%, 9999px (pill)
 
 ---
 
-*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd). Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
+*This DESIGN.md was generated by [brandmd](https://github.com/yuvrajangadsingh/brandmd) and validates against the official [@google/design.md](https://github.com/google-labs-code/design.md) linter. Drop it into your project root and AI coding agents (Claude Code, Cursor, Gemini CLI) will use it to generate on-brand UI.*
