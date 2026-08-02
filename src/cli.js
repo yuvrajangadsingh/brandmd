@@ -1,3 +1,6 @@
+// vibecheck-disable no-console-pollution
+// This file IS the CLI's output surface: the console calls below are the
+// program printing its result, not debug logging left behind.
 import { Command } from "commander";
 import { extractFromUrls, detectBlockLikely, assessEvidence } from "./extract.js";
 import { analyze } from "./analyze.js";
@@ -46,6 +49,37 @@ function reportError(err, { debug } = {}) {
   }
 }
 
+
+/**
+ * Parse --viewport WxH. Pinning the viewport matters more than it looks: it
+ * decides which breakpoint renders, so an unpinned run can legitimately
+ * produce a different design system on a different machine.
+ */
+function parseViewport(v) {
+  if (!v) return null;
+  const m = /^(\d{2,5})x(\d{2,5})$/.exec(String(v).trim());
+  if (!m) throw new Error(`--viewport must look like 1440x900 (got "${v}")`);
+  return { width: Number(m[1]), height: Number(m[2]) };
+}
+
+/**
+ * Read capture flags from the subcommand OR the root program.
+ *
+ * commander gives a same-named option to the ROOT when it is declared on both
+ * the root and a subcommand, so `brandmd check <url> --viewport 1440x900`
+ * lands on the root and the subcommand sees undefined. Without this fallback
+ * the flag appears in `check --help` and silently does nothing.
+ */
+function captureFrom(opts) {
+  const root = typeof program !== "undefined" ? program.opts() : {};
+  const pick = (k) => (opts[k] !== undefined ? opts[k] : root[k]);
+  return {
+    viewport: parseViewport(pick("viewport")),
+    locale: pick("locale") || null,
+    reducedMotion: !!pick("reducedMotion"),
+  };
+}
+
 const program = new Command();
 
 program
@@ -71,9 +105,22 @@ program
   .option("--allow-blocked", "compare even if the page looks blocked (default: refuse, exit 2)")
   .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge", "20000")
   .option("--debug", "print raw error details instead of a one-line remediation")
+  .option("--viewport <WxH>", "pin the viewport, e.g. 1440x900 (default 1440x900)")
+  .option("--locale <tag>", "pin the browser locale, e.g. en-US")
+  .option("--reduced-motion", "request prefers-reduced-motion: reduce")
   .action(async (url, opts) => {
     if (!["major", "any", "none"].includes(opts.failOn)) {
       console.error(`Error: --fail-on must be major, any, or none (got "${opts.failOn}")`);
+      process.exit(EXIT_ERROR);
+    }
+    // Validate capture flags before any work. Doing it at the call site meant
+    // a bad --viewport was silently ignored whenever extraction was
+    // short-circuited, which is the worst of both worlds: no error, no effect.
+    let capture;
+    try {
+      capture = captureFrom(opts);
+    } catch (err) {
+      console.error(`Error: ${err.message}`);
       process.exit(EXIT_ERROR);
     }
     let baseline;
@@ -113,6 +160,7 @@ program
           dark: false,
           vision: false,
           cfWaitMs: Number(opts.cfWaitMs) || 20000,
+          capture,
         });
         light = res.light;
       }
@@ -184,6 +232,9 @@ program
   .option("--allow-blocked", "write an artifact even when the page looks like a block / access-denied page or has thin evidence (default: refuse with exit code 2)")
   .option("--debug", "print raw error details (e.g. full browser-launch output) instead of a one-line remediation")
   .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge to auto-resolve (default 20000)", "20000")
+  .option("--viewport <WxH>", "pin the viewport, e.g. 1440x900 (default 1440x900)")
+  .option("--locale <tag>", "pin the browser locale, e.g. en-US")
+  .option("--reduced-motion", "request prefers-reduced-motion: reduce")
   .action(async (urls, opts) => {
     // --- URL validation (F-22): reject non-HTTP(S) schemes and path-like
     // arguments; infer https:// only for genuinely host-like inputs. /tmp/x
@@ -276,7 +327,7 @@ program
       } else {
         const label = urls.length > 1 ? `${urls.length} pages` : urls[0];
         process.stderr.write(`Extracting from ${label}...\n`);
-        const res = await extractFromUrls(urls, { dark: opts.dark, vision: opts.vision, cfWaitMs });
+        const res = await extractFromUrls(urls, { dark: opts.dark, vision: opts.vision, cfWaitMs, capture: captureFrom(opts) });
         light = res.light;
         dark = res.dark;
       }

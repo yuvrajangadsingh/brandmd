@@ -116,10 +116,16 @@ function registrableDomain(hostname) {
 /**
  * Extract styles from a single page using a shared browser instance.
  */
-async function extractPage(browser, url, colorScheme = "light", { vision = false, cfWaitMs = 20000 } = {}) {
+async function extractPage(browser, url, colorScheme = "light", { vision = false, cfWaitMs = 20000, capture = {} } = {}) {
+  // Capture settings are explicit so a run is reproducible across machines.
+  // Viewport in particular changes which breakpoint renders, and therefore
+  // which tokens exist at all — two people checking the same URL on different
+  // defaults would otherwise disagree and blame the tool.
   const context = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
+    viewport: capture.viewport || { width: 1440, height: 900 },
     colorScheme,
+    ...(capture.locale ? { locale: capture.locale } : {}),
+    ...(capture.reducedMotion ? { reducedMotion: "reduce" } : {}),
   });
 
   try {
@@ -670,7 +676,7 @@ function mergeRaw(pages) {
 /**
  * Extract from one or more URLs with optional dark mode.
  */
-export async function extractFromUrls(urls, { dark = false, vision = false, cfWaitMs = 20000 } = {}) {
+export async function extractFromUrls(urls, { dark = false, vision = false, cfWaitMs = 20000, capture = {} } = {}) {
   const browser = await chromium.launch({ headless: true });
   try {
     // Light mode extraction. Only the first URL gets vision data — the screenshot
@@ -678,7 +684,7 @@ export async function extractFromUrls(urls, { dark = false, vision = false, cfWa
     const lightPages = [];
     for (let i = 0; i < urls.length; i++) {
       try {
-        lightPages.push(await extractPage(browser, urls[i], "light", { vision: vision && i === 0, cfWaitMs }));
+        lightPages.push(await extractPage(browser, urls[i], "light", { vision: vision && i === 0, cfWaitMs, capture }));
       } catch (err) {
         process.stderr.write(`Warning: failed to extract ${urls[i]}: ${err.message}\n`);
       }

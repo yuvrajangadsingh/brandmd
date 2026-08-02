@@ -183,6 +183,59 @@ function compareLayout(base, cur) {
 }
 
 /**
+ * Component drift is reported but ALWAYS minor, deliberately.
+ *
+ * Component extraction is the least trustworthy part of the pipeline: the
+ * representative button is picked by frequency, so a transparent nav button
+ * can win over the real CTA, and the stripe fixture currently reports a 676px
+ * tall "button-secondary". Failing builds on that would produce exactly the
+ * flaky gate people switch off. Reported at minor, so `--fail-on any` can opt
+ * in once extraction improves.
+ *
+ * Only the machine-token components (button-primary, card, ...) are compared,
+ * not the prose sections, and only fields that are reliably measured. Height
+ * and padding are excluded for the reason above.
+ */
+const COMPONENT_FIELDS = ["backgroundColor", "textColor", "rounded"];
+const isTokenComponent = (k) => /^[a-z][a-z0-9-]*$/.test(k);
+
+function compareComponents(base, cur) {
+  const out = [];
+  const b = base.components || {};
+  const c = cur.components || {};
+
+  for (const [name, props] of Object.entries(b)) {
+    if (!isTokenComponent(name) || !props || typeof props !== "object") continue;
+    const live = c[name];
+    if (!live || typeof live !== "object") {
+      out.push(
+        drift("minor", "component", `component "${name}" in spec but not on the page`, {
+          component: name,
+        })
+      );
+      continue;
+    }
+    for (const f of COMPONENT_FIELDS) {
+      const bv = props[f];
+      const cv = live[f];
+      if (!bv || !cv) continue;
+      const same = f === "rounded" ? norm(bv) === norm(cv) : hex(bv) === hex(cv);
+      if (!same) {
+        out.push(
+          drift("minor", "component", `${name}.${f}: ${bv} -> ${cv}`, {
+            component: name,
+            field: f,
+            baseline: bv,
+            current: cv,
+          })
+        );
+      }
+    }
+  }
+  return out;
+}
+
+/**
  * Theme is the tool's own interpretation rather than a measured value, so a
  * change here is reported but never fails a build on its own.
  */
@@ -218,6 +271,7 @@ export function compareDesigns(baseline, current) {
     ...compareTypography(baseline, current),
     ...compareColors(baseline, current),
     ...compareLayout(baseline, current),
+    ...compareComponents(baseline, current),
     ...compareTheme(baseline, current),
   ];
   drifts.sort(

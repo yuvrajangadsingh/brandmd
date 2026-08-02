@@ -322,3 +322,28 @@ test("check: a truncated baseline exits 1", () => {
   });
   assert.equal(r.status, 1);
 });
+
+// Capture flags are declared on BOTH the root program and `check`. commander
+// hands a same-named option to the ROOT in that situation, so without an
+// explicit fallback the flag renders in `check --help` and silently does
+// nothing. These lock the fallback.
+test("check: an invalid --viewport exits 1 before doing any work", () => {
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--viewport", "nonsense"], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 1);
+  assert.match(r.out, /--viewport must look like/);
+});
+
+test("check: a valid --viewport is accepted, not ignored", () => {
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--viewport", "1440x900"], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 3, "should still reach the comparison");
+});
+
+test("extract: an invalid --viewport exits 1", () => {
+  const r = runCLI(["https://example.com", "--viewport", "12"]);
+  assert.equal(r.status, 1);
+  assert.match(r.out, /--viewport must look like/);
+});

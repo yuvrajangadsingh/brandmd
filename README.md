@@ -223,6 +223,11 @@ Colours are compared **by role**, not as a set of hexes. One hex legitimately fi
 | `--report <file>` | write the drift as JSON for CI annotations |
 | `--fail-on <level>` | `major` (default), `any`, or `none` |
 | `--allow-blocked` | compare anyway if the page looks blocked |
+| `--viewport <WxH>` | pin the viewport (default `1440x900`) |
+| `--locale <tag>` | pin the browser locale |
+| `--reduced-motion` | request `prefers-reduced-motion: reduce` |
+
+Pin the viewport in CI. It decides which breakpoint renders, so an unpinned run can legitimately extract a different design system on a different machine and report drift that isn't there.
 
 A blocked page, an evidence-thin page, or a login-wall landing **refuses with exit 2 rather than reporting drift**. Diffing a Cloudflare challenge against a real spec would flag every token as changed, and a check that cries wolf is one people turn off. An empty or truncated `DESIGN.md` **exits 1**, because a gate that silently stops gating is worse than no gate.
 
@@ -230,7 +235,7 @@ A blocked page, an evidence-thin page, or a login-wall landing **refuses with ex
 
 Worth knowing before you rely on it:
 
-- **Components are not compared.** Button padding, radius and height, card styling and input states can drift without failing. Colour, type, spacing, radii and theme are covered; components are the next thing to land.
+- **Component drift is reported but never fails a build.** Background, text colour and radius are compared on the machine-token components; height and padding are not, because the representative button is picked by frequency and a transparent nav button can win over the real CTA. Opt in with `--fail-on any` once that improves.
 - **`secondaryFont` is unreliable.** The live side is round-tripped through the same generator and parser as a written `DESIGN.md`, which keeps both sides honestly comparable but drops fields the markdown does not carry cleanly. A secondary-font change can pass unnoticed.
 - **Majors can flip on sites that change between visits.** Colour clustering keeps the first representative it sees, so rotating hero imagery or A/B tests can repaint a role without anything really changing. On static marketing pages runs are byte-identical; on dynamic ones, re-run before believing a surprising major. Order-independent clustering is queued.
 

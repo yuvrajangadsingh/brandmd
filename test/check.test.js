@@ -146,3 +146,45 @@ test("#fff and #FFFFFF are the same colour", () => {
     "shorthand hex must not read as a repaint"
   );
 });
+
+// --- components (always minor, see the note in check.js) --------------------
+
+test("a repainted button is reported, but never fails the build alone", () => {
+  const live = clone(spec);
+  live.components["button-primary"].backgroundColor = "#FF0000";
+  const r = compareDesigns(spec, live);
+  const d = r.drifts.find((x) => x.kind === "component" && x.field === "backgroundColor");
+  assert.ok(d, "expected component drift");
+  assert.equal(d.severity, "minor", "component extraction is too noisy to fail a build");
+  assert.equal(exitCodeFor(r), 0);
+  assert.equal(exitCodeFor(r, "any"), EXIT_DRIFT, "--fail-on any can opt in");
+});
+
+test("a missing component is reported", () => {
+  const live = clone(spec);
+  delete live.components["button-primary"];
+  const r = compareDesigns(spec, live);
+  assert.ok(r.drifts.find((x) => x.kind === "component" && x.component === "button-primary"));
+});
+
+test("prose component sections are not compared, only machine tokens", () => {
+  const live = clone(spec);
+  if (live.components["Buttons"]) live.components["Buttons"]["Background"] = "#ABCDEF";
+  const r = compareDesigns(spec, live);
+  assert.equal(
+    r.drifts.filter((d) => d.component === "Buttons").length,
+    0,
+    "the prose mirror of the same data would double-report every change"
+  );
+});
+
+test("unreliable component fields (height, padding) are not compared", () => {
+  const live = clone(spec);
+  live.components["button-primary"].height = "999px";
+  const r = compareDesigns(spec, live);
+  assert.equal(
+    r.drifts.filter((d) => d.field === "height").length,
+    0,
+    "height is measured badly enough that comparing it would be noise"
+  );
+});
