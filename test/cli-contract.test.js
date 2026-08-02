@@ -223,3 +223,83 @@ test(`the CLI honors the ${RAW_SEAM_ENV} offline seam`, () => {
   );
   assert.ok(existsSync(outFile), "a valid capture must write DESIGN.md");
 });
+
+// --- `check` exit contract (v0.15) ------------------------------------------
+//
+// check adds a FOURTH exit code. 1 and 2 already mean "the tool failed" and
+// "the tool refused"; a CI job needs to tell those apart from "the design
+// actually changed", which is the only one a human should read a diff for.
+//   0 = matches spec, 1 = error, 2 = refused, 3 = drift
+const SPEC = join(here, "..", "examples", "stripe.md");
+const VERCEL_FIXTURE = join(here, "fixtures/raw-vercel.json");
+
+test("check: missing --against exits 1", () => {
+  const r = runCLI(["check", "https://example.com"]);
+  assert.equal(r.status, 1);
+});
+
+test("check: unreadable spec file exits 1", () => {
+  const r = runCLI(["check", "https://example.com", "--against", "/nonexistent/DESIGN.md"]);
+  assert.equal(r.status, 1);
+  assert.match(r.out, /could not read/i);
+});
+
+test("check: invalid --fail-on exits 1 without launching a browser", () => {
+  const r = runCLI(["check", "https://example.com", "--against", SPEC, "--fail-on", "sometimes"]);
+  assert.equal(r.status, 1);
+  assert.match(r.out, /--fail-on must be/i);
+});
+
+test("check: a block page refuses with exit 2, not drift", () => {
+  const r = runCLI(["check", "https://example.com", "--against", SPEC], {
+    rawFile: BLOCK_FIXTURE,
+  });
+  assert.equal(r.status, 2, "a blocked page must not be reported as total drift");
+  assert.match(r.out, /refus/i);
+});
+
+test("check: a thin page refuses with exit 2", () => {
+  const r = runCLI(["check", "https://example.com", "--against", SPEC], {
+    rawFile: THIN_FIXTURE,
+  });
+  assert.equal(r.status, 2);
+});
+
+test("check: a different site against the spec is drift (exit 3)", () => {
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 3, "drift gets its own code, distinct from 1 and 2");
+  assert.match(r.stdout, /Design drift:/);
+  assert.match(r.stdout, /major/);
+});
+
+test("check: --fail-on none reports drift but exits 0", () => {
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--fail-on", "none"], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 0);
+  assert.match(r.stdout, /Design drift:/, "still reports, just does not fail");
+});
+
+test("check: --report writes machine-readable drift", () => {
+  const dir = tmp();
+  const out = join(dir, "drift.json");
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--report", out], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 3);
+  assert.ok(existsSync(out), "expected a JSON report");
+  const report = JSON.parse(readFileSync(out, "utf-8"));
+  assert.ok(Array.isArray(report.drifts) && report.drifts.length > 0);
+  assert.ok(report.counts.major > 0);
+  assert.equal(report.spec, SPEC);
+});
+
+test("check: the offline seam skips live extraction", () => {
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.doesNotMatch(r.out, /Checking https:\/\/vercel\.com against/,
+    "must not announce a live run when the seam is set");
+});

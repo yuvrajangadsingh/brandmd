@@ -8,6 +8,8 @@ import { generateHTML } from "./generate-html.js";
 import { extractVision } from "./extract-vision.js";
 import { planAgentPack } from "./generate-agent.js";
 import { diffDesigns } from "./diff.js";
+import { parseDesign } from "./parse-design.js";
+import { compareDesigns, exitCodeFor, formatDrift } from "./check.js";
 import { writeAllAtomic, writeFileAtomic } from "./atomic-write.js";
 import { readFileSync } from "fs";
 import { basename, dirname, isAbsolute, relative, resolve } from "path";
@@ -23,6 +25,27 @@ const EXIT_OK = 0;
 const EXIT_ERROR = 1;
 const EXIT_REFUSED = 2;
 
+/**
+ * Browser-launch failures get a one-line remediation instead of Playwright's
+ * multi-line ASCII banner (F-27); the raw dump stays behind --debug. Shared so
+ * `check` and the extract path cannot drift apart on error handling.
+ */
+function reportError(err, { debug } = {}) {
+  const msg = err && err.message ? err.message : String(err);
+  if (
+    /Executable doesn't exist|playwright install|browserType\.launch|Failed to launch|Target page, context or browser has been closed/i.test(
+      msg
+    )
+  ) {
+    console.error(
+      "Error: could not launch the headless browser. Install it with: npx playwright install chromium"
+    );
+    if (debug) console.error(msg);
+  } else {
+    console.error(`Error: ${msg}`);
+  }
+}
+
 const program = new Command();
 
 program
@@ -37,6 +60,92 @@ program
       console.error(`Error: ${err.message}`);
       process.exit(EXIT_ERROR);
     }
+  });
+
+program
+  .command("check <url>")
+  .description("compare a live page against a committed DESIGN.md and fail on drift (exit 3)")
+  .requiredOption("--against <file>", "the committed DESIGN.md to check against")
+  .option("--report <file>", "also write the drift as JSON (for CI annotations)")
+  .option("--fail-on <level>", "major (default), any, or none", "major")
+  .option("--dark", "compare dark mode tokens")
+  .option("--allow-blocked", "compare even if the page looks blocked (default: refuse, exit 2)")
+  .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge", "20000")
+  .option("--debug", "print raw error details instead of a one-line remediation")
+  .action(async (url, opts) => {
+    if (!["major", "any", "none"].includes(opts.failOn)) {
+      console.error(`Error: --fail-on must be major, any, or none (got "${opts.failOn}")`);
+      process.exit(EXIT_ERROR);
+    }
+    let baseline;
+    try {
+      baseline = parseDesign(readFileSync(opts.against, "utf8"));
+    } catch (err) {
+      console.error(`Error: could not read ${opts.against}: ${err.message}`);
+      process.exit(EXIT_ERROR);
+    }
+
+    let light;
+    try {
+      // Same offline seam as the extract path, so the drift contract can be
+      // tested with no browser and no network.
+      const rawFile = process.env.BRANDMD_RAW_FILE;
+      if (rawFile) {
+        process.stderr.write(
+          `Note: BRANDMD_RAW_FILE is set; loading the raw capture at ${rawFile} instead of a live browser run.\n`
+        );
+        light = JSON.parse(readFileSync(rawFile, "utf-8"));
+      } else {
+        process.stderr.write(`Checking ${url} against ${opts.against}...\n`);
+        const res = await extractFromUrls([url], {
+          dark: opts.dark,
+          vision: false,
+          cfWaitMs: Number(opts.cfWaitMs) || 20000,
+        });
+        light = res.light;
+      }
+    } catch (err) {
+      reportError(err, { debug: opts.debug });
+      process.exit(EXIT_ERROR);
+    }
+
+    // Same fail-closed gate as extraction. Diffing a Cloudflare page against a
+    // real spec would report every token as drift, which is worse than no
+    // answer: it would train people to ignore the check.
+    const blocked =
+      !!light.blockLikely ||
+      detectBlockLikely({
+        title: light.title,
+        bodyTextLength: light.bodyTextLength,
+        colors: light.colors,
+        fonts: light.fonts,
+      });
+    const evidence = assessEvidence(light);
+    if (!opts.allowBlocked && (blocked || !evidence.ok)) {
+      const why = blocked
+        ? "the page looks like a block / access-denied page"
+        : `insufficient evidence (${evidence.reasons.join("; ")})`;
+      process.stderr.write(`Refusing to report drift: ${why}.\n`);
+      process.stderr.write("A blocked page would look like total drift. Pass --allow-blocked to override.\n");
+      process.exit(EXIT_REFUSED);
+    }
+
+    // Round-trip the live extraction through generate+parse so both sides are
+    // the same shape, and so check can never disagree with what a written
+    // DESIGN.md would have said.
+    const current = parseDesign(generate(analyze(light)));
+    const result = compareDesigns(baseline, current);
+
+    process.stdout.write(formatDrift(result, { url, specPath: opts.against }) + "\n");
+
+    if (opts.report) {
+      writeFileAtomic(
+        opts.report,
+        JSON.stringify({ url, spec: opts.against, ...result }, null, 2) + "\n"
+      );
+      process.stderr.write(`Wrote ${opts.report}\n`);
+    }
+    process.exit(exitCodeFor(result, opts.failOn));
   });
 
 program
@@ -251,15 +360,7 @@ program
         process.stderr.write('\n★ If this saved you time, star the repo: https://github.com/yuvrajangadsingh/brandmd\n  More tools by the author: https://yuvrajangadsingh.com\n');
       }
     } catch (err) {
-      const msg = err && err.message ? err.message : String(err);
-      // Classify browser-launch failures into a one-line remediation (F-27);
-      // the raw dump stays behind --debug.
-      if (/Executable doesn't exist|playwright install|browserType\.launch|Failed to launch|Target page, context or browser has been closed/i.test(msg)) {
-        console.error("Error: could not launch the headless browser. Install it with: npx playwright install chromium");
-        if (opts.debug) console.error(msg);
-      } else {
-        console.error(`Error: ${msg}`);
-      }
+      reportError(err, { debug: opts.debug });
       process.exit(EXIT_ERROR);
     }
 

@@ -188,12 +188,53 @@ brandmd fails closed. If a page is a bot-block / access-denied page, a login / s
 | `0` | success |
 | `1` | operational or validation error (bad URL, bad flag, browser launch failure) |
 | `2` | refused: block page, insufficient evidence, or a login-wall landing |
+| `3` | `brandmd check` only: the page drifted from the spec |
 
 Pass `--allow-blocked` to force output anyway; the artifact carries a block marker in every format (Markdown callout, CSS/Tailwind comment header, HTML banner, JSON `blockLikely`). Writes are transactional (temp file + rename with rollback), including the `--agent` set and `brandmd diff`, so a partial failure never truncates an existing file. Atomicity is per process: concurrent brandmd runs against the same output directory are not coordinated, though collision-safe temp/backup names mean one run can never eat another's files.
 
 ## Gallery
 
 [See 5 real DESIGN.md snapshots in the browser](https://yuvrajangadsingh.github.io/brandmd/) (Stripe, Vercel, Linear, Anthropic, Mintlify), or scan the [`examples/`](./examples) folder for 30+ more. Each snapshot is generated from a single public page visit and is observed, not canonical.
+
+## Check (drift detection in CI)
+
+`brandmd diff` compares two brands. `brandmd check` asks a different question: **has what we shipped drifted from the spec we agreed on?**
+
+```bash
+brandmd check https://staging.acme.com --against DESIGN.md
+```
+
+```
+Design drift: 2 major, 1 minor
+https://staging.acme.com vs DESIGN.md
+
+  major  color      role "secondary" repainted: #29227D -> #7F7DFC
+  major  color      role "on-secondary" repainted: #FFFFFF -> #1A1A1A
+  minor  theme      mood reads as "...vivid blue accents", spec says "...blue accents"
+```
+
+Colours are compared **by role**, not as a set of hexes. One hex legitimately fills several roles (`#FFFFFF` is often background *and* on-primary), so a set comparison silently misses the drift that matters: the hex behind `primary` changing while that hex still appears elsewhere.
+
+**What fails the build.** Losing or repainting a role, and a changed primary or secondary font, are `major`. New roles, extra spacing steps and reworded theme descriptions are `minor` and pass by default, because they are usually a new component landing rather than a regression. Theme wording is brandmd's own interpretation, so it never fails a build on its own.
+
+| Flag | |
+|---|---|
+| `--against <file>` | the committed `DESIGN.md` (required) |
+| `--report <file>` | write the drift as JSON for CI annotations |
+| `--fail-on <level>` | `major` (default), `any`, or `none` |
+| `--allow-blocked` | compare anyway if the page looks blocked |
+
+A blocked or evidence-thin page **refuses with exit 2 rather than reporting drift**. Diffing a Cloudflare challenge against a real spec would flag every token as changed, and a check that cries wolf is one people turn off.
+
+### In GitHub Actions
+
+```yaml
+- name: Check design drift
+  run: npx brandmd check "${{ steps.deploy.outputs.preview-url }}" \
+         --against DESIGN.md --report drift.json
+```
+
+Exit `3` fails the job on drift; `1` and `2` still mean the tool errored or refused, so a broken preview never reads as a design change. When drift is intentional, update `DESIGN.md` in the same PR and the check goes green.
 
 ## Diff
 
