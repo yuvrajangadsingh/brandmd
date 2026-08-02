@@ -224,7 +224,15 @@ Colours are compared **by role**, not as a set of hexes. One hex legitimately fi
 | `--fail-on <level>` | `major` (default), `any`, or `none` |
 | `--allow-blocked` | compare anyway if the page looks blocked |
 
-A blocked or evidence-thin page **refuses with exit 2 rather than reporting drift**. Diffing a Cloudflare challenge against a real spec would flag every token as changed, and a check that cries wolf is one people turn off.
+A blocked page, an evidence-thin page, or a login-wall landing **refuses with exit 2 rather than reporting drift**. Diffing a Cloudflare challenge against a real spec would flag every token as changed, and a check that cries wolf is one people turn off. An empty or truncated `DESIGN.md` **exits 1**, because a gate that silently stops gating is worse than no gate.
+
+### What check does not see
+
+Worth knowing before you rely on it:
+
+- **Components are not compared.** Button padding, radius and height, card styling and input states can drift without failing. Colour, type, spacing, radii and theme are covered; components are the next thing to land.
+- **`secondaryFont` is unreliable.** The live side is round-tripped through the same generator and parser as a written `DESIGN.md`, which keeps both sides honestly comparable but drops fields the markdown does not carry cleanly. A secondary-font change can pass unnoticed.
+- **Majors can flip on sites that change between visits.** Colour clustering keeps the first representative it sees, so rotating hero imagery or A/B tests can repaint a role without anything really changing. On static marketing pages runs are byte-identical; on dynamic ones, re-run before believing a surprising major. Order-independent clustering is queued.
 
 ### In GitHub Actions
 

@@ -9,7 +9,7 @@ import { extractVision } from "./extract-vision.js";
 import { planAgentPack } from "./generate-agent.js";
 import { diffDesigns } from "./diff.js";
 import { parseDesign } from "./parse-design.js";
-import { compareDesigns, exitCodeFor, formatDrift } from "./check.js";
+import { compareDesigns, exitCodeFor, formatDrift, validateBaseline } from "./check.js";
 import { writeAllAtomic, writeFileAtomic } from "./atomic-write.js";
 import { readFileSync } from "fs";
 import { basename, dirname, isAbsolute, relative, resolve } from "path";
@@ -68,7 +68,6 @@ program
   .requiredOption("--against <file>", "the committed DESIGN.md to check against")
   .option("--report <file>", "also write the drift as JSON (for CI annotations)")
   .option("--fail-on <level>", "major (default), any, or none", "major")
-  .option("--dark", "compare dark mode tokens")
   .option("--allow-blocked", "compare even if the page looks blocked (default: refuse, exit 2)")
   .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge", "20000")
   .option("--debug", "print raw error details instead of a one-line remediation")
@@ -82,6 +81,17 @@ program
       baseline = parseDesign(readFileSync(opts.against, "utf8"));
     } catch (err) {
       console.error(`Error: could not read ${opts.against}: ${err.message}`);
+      process.exit(EXIT_ERROR);
+    }
+    // An empty or truncated spec parses fine and yields nothing to compare, so
+    // every run would report "0 major" and pass. Fail closed instead: a gate
+    // that silently stops gating is worse than no gate.
+    const specOk = validateBaseline(baseline);
+    if (!specOk.ok) {
+      console.error(
+        `Error: ${opts.against} has nothing to check against (${specOk.reasons.join("; ")}).`
+      );
+      console.error("Regenerate it with: brandmd <url> --output " + opts.against);
       process.exit(EXIT_ERROR);
     }
 
@@ -98,7 +108,9 @@ program
       } else {
         process.stderr.write(`Checking ${url} against ${opts.against}...\n`);
         const res = await extractFromUrls([url], {
-          dark: opts.dark,
+          // No dark mode here: parseDesign has no dark token model, so there
+          // is nothing to compare a dark capture against yet.
+          dark: false,
           vision: false,
           cfWaitMs: Number(opts.cfWaitMs) || 20000,
         });
@@ -121,12 +133,20 @@ program
         fonts: light.fonts,
       });
     const evidence = assessEvidence(light);
-    if (!opts.allowBlocked && (blocked || !evidence.ok)) {
-      const why = blocked
-        ? "the page looks like a block / access-denied page"
-        : `insufficient evidence (${evidence.reasons.join("; ")})`;
+    // A login wall renders someone else's design system. The extract path
+    // already refuses on it; check must too, or an SSO page rich enough to
+    // pass the evidence gate gets reported as drift against your own brand.
+    const provPages = light.provenance
+      ? light.provenance.pages || [light.provenance]
+      : [];
+    const loginPages = provPages.filter((pg) => pg.loginLike);
+    if (!opts.allowBlocked && (blocked || !evidence.ok || loginPages.length)) {
+      let why;
+      if (blocked) why = "the page looks like a block / access-denied page";
+      else if (!evidence.ok) why = `insufficient evidence (${evidence.reasons.join("; ")})`;
+      else why = `the request landed on a login / sign-in wall (${loginPages.map((pg) => pg.finalUrl).join(", ")})`;
       process.stderr.write(`Refusing to report drift: ${why}.\n`);
-      process.stderr.write("A blocked page would look like total drift. Pass --allow-blocked to override.\n");
+      process.stderr.write("That would look like total drift against your spec. Pass --allow-blocked to override.\n");
       process.exit(EXIT_REFUSED);
     }
 

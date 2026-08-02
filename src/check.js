@@ -14,11 +14,30 @@
 
 const SEVERITY_ORDER = { major: 2, minor: 1 };
 
-/** Colours differing by less than this are treated as the same token. */
-const DEFAULT_COLOR_DELTA = 0;
-
 const norm = (s) => (typeof s === "string" ? s.trim().toLowerCase() : s);
-const hex = (s) => (typeof s === "string" ? s.trim().toUpperCase() : s);
+
+/** #fff and #FFFFFF are the same colour; compare them as such. */
+const hex = (s) => {
+  if (typeof s !== "string") return s;
+  const v = s.trim().toUpperCase();
+  const m = /^#([0-9A-F])([0-9A-F])([0-9A-F])$/.exec(v);
+  return m ? `#${m[1]}${m[1]}${m[2]}${m[2]}${m[3]}${m[3]}` : v;
+};
+
+/**
+ * A CI gate must never fail open. An empty or truncated DESIGN.md parses
+ * without throwing and yields no roles, which would make every run report
+ * "0 major" and exit 0 forever — the check would look healthy while
+ * protecting nothing. Callers refuse rather than compare.
+ */
+export function validateBaseline(design) {
+  const reasons = [];
+  const roles = (design?.colors || []).filter((c) => c.role || c.name).length;
+  const hasType = !!(design?.typography?.primaryFont);
+  if (!roles) reasons.push("no colour roles");
+  if (!hasType) reasons.push("no primary font");
+  return { ok: roles > 0 && hasType, reasons };
+}
 
 function drift(severity, kind, message, extra = {}) {
   return { severity, kind, message, ...extra };
@@ -244,4 +263,3 @@ export function formatDrift({ drifts, counts }, { url, specPath } = {}) {
   return lines.join("\n");
 }
 
-export { DEFAULT_COLOR_DELTA };

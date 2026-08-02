@@ -27,7 +27,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -302,4 +302,23 @@ test("check: the offline seam skips live extraction", () => {
   });
   assert.doesNotMatch(r.out, /Checking https:\/\/vercel\.com against/,
     "must not announce a live run when the seam is set");
+});
+
+test("check: an empty baseline exits 1 instead of passing green", () => {
+  const r = runCLI(["check", "https://vercel.com", "--against", "/dev/null"], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 1, "a gate must never fail open on a blank spec");
+  assert.match(r.out, /nothing to check against/i);
+});
+
+test("check: a truncated baseline exits 1", () => {
+  const dir = tmp();
+  const spec = join(dir, "DESIGN.md");
+  const full = readFileSync(SPEC, "utf-8").split("\n").slice(0, 5).join("\n");
+  writeFileSync(spec, full);
+  const r = runCLI(["check", "https://vercel.com", "--against", spec], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 1);
 });

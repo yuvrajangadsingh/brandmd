@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { parseDesign } from "../src/parse-design.js";
-import { compareDesigns, exitCodeFor, formatDrift, EXIT_DRIFT } from "../src/check.js";
+import { compareDesigns, exitCodeFor, formatDrift, EXIT_DRIFT, validateBaseline } from "../src/check.js";
 
 const spec = parseDesign(readFileSync("examples/stripe.md", "utf8"));
 
@@ -108,4 +108,41 @@ test("an empty extraction does not silently pass", () => {
   const r = compareDesigns(spec, live);
   assert.ok(r.counts.major > 0, "a blank page must not read as no drift");
   assert.equal(exitCodeFor(r), EXIT_DRIFT);
+});
+
+// --- v0.15.1: gates that keep this from failing OPEN ------------------------
+// Found by adversarial review of the shipped 0.15.0: an empty or truncated
+// DESIGN.md parsed cleanly, produced no roles to compare, reported "0 major"
+// and exited 0 forever. A gate that silently stops gating is the worst
+// outcome available, so these are the highest-value tests in the file.
+
+test("an empty baseline is rejected, not silently passed", () => {
+  const v = validateBaseline(parseDesign(""));
+  assert.equal(v.ok, false);
+  assert.ok(v.reasons.length > 0);
+});
+
+test("a truncated baseline (front matter only) is rejected", () => {
+  const truncated = readFileSync("examples/stripe.md", "utf8").split("\n").slice(0, 5).join("\n");
+  const v = validateBaseline(parseDesign(truncated));
+  assert.equal(v.ok, false, "a half-written spec must not be treated as a valid baseline");
+});
+
+test("a real baseline validates", () => {
+  assert.equal(validateBaseline(spec).ok, true);
+});
+
+test("#fff and #FFFFFF are the same colour", () => {
+  const live = clone(spec);
+  live.colors = live.colors.map((c) => ({
+    ...c,
+    // collapse to 3-digit form where it is lossless
+    hex: c.hex.replace(/^#(.)\1(.)\2(.)\3$/i, "#$1$2$3"),
+  }));
+  const r = compareDesigns(spec, live);
+  assert.equal(
+    r.drifts.filter((d) => d.kind === "color").length,
+    0,
+    "shorthand hex must not read as a repaint"
+  );
 });
