@@ -299,7 +299,7 @@ Raw extracted tokens for programmatic use.
 
 ## Multi-page extraction
 
-Pass multiple URLs to merge tokens from different pages into one DESIGN.md. Each page is normalized so long content pages don't dominate.
+Pass multiple URLs to merge tokens from different pages into one DESIGN.md. Each page contributes equally regardless of length: token frequencies are normalized per page, and components carry a per-page weight, so a docs page with fifty buttons can't outvote a homepage with three. What that decides is *on how many pages a pattern appears*, not how many times it appears anywhere, which is the right question to ask of a brand pattern.
 
 ```bash
 brandmd https://stripe.com https://stripe.com/pricing https://stripe.com/docs

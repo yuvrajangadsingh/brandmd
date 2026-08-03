@@ -184,10 +184,17 @@ function analyzeComponents(components, pageBgHex = null) {
     }
 
     // Ghost = the most common transparent variant (a real, repeated pattern).
+    // Counted by page weight, not raw occurrences: on a multi-page run a single
+    // long page would otherwise decide the brand's ghost button by sheer
+    // volume. Single-page runs have no weight and fall back to 1, so this is
+    // identical to counting there.
     if (ghosts.length > 0) {
       const sig = (b) => `${toHex(b.color) || b.color}|${b.radius}`;
       const freq = {};
-      for (const b of ghosts) freq[sig(b)] = (freq[sig(b)] || 0) + 1;
+      for (const b of ghosts) {
+        const w = typeof b._pageWeight === "number" ? b._pageWeight : 1;
+        freq[sig(b)] = (freq[sig(b)] || 0) + w;
+      }
       const topSig = Object.entries(freq).sort((a, b) => b[1] - a[1])[0]?.[0];
       result.ghostButton = ghosts.find((b) => sig(b) === topSig) || ghosts[0];
     }

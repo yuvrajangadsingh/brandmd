@@ -654,12 +654,19 @@ function mergeRaw(pages) {
     },
   };
 
-  // Merge components (concat all)
+  // Merge components. Every frequency map above is normalized count/total so
+  // a long page cannot dominate; components were concatenated raw, which let a
+  // docs page with 50 buttons outvote a homepage with 3 when a downstream
+  // picker counts occurrences. Tag each component with the reciprocal of its
+  // page's count so "how often" means "how often per page", not "how many".
   for (const page of pages) {
-    if (page.components) {
-      merged.components.buttons.push(...(page.components.buttons || []));
-      merged.components.cards.push(...(page.components.cards || []));
-      merged.components.inputs.push(...(page.components.inputs || []));
+    if (!page.components) continue;
+    for (const kind of ["buttons", "cards", "inputs"]) {
+      const list = page.components[kind] || [];
+      const weight = list.length ? 1 / list.length : 0;
+      for (const c of list) {
+        merged.components[kind].push({ ...c, _pageWeight: weight });
+      }
     }
   }
 
