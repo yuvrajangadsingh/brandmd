@@ -315,6 +315,9 @@ program
       process.exit(EXIT_ERROR);
     }
 
+    // A failed or missing vision step must not look like success: the CSS-only
+    // DESIGN.md is still written (the extraction was real), but the run exits 1.
+    let visionError = null;
     try {
       // --- Load the extraction. Offline test seam: BRANDMD_RAW_FILE injects a
       // raw capture and skips live extraction (no browser, no "Extracting"). ---
@@ -374,6 +377,10 @@ program
       if (light.sources) tokens.sources = light.sources;
       if (dark) tokens.dark = analyze(dark);
 
+      if (opts.vision && !light.vision) {
+        visionError = "no screenshot captured";
+        process.stderr.write("Error: --vision requested but no screenshot was captured. Writing DESIGN.md without the vision sections and exiting 1.\n");
+      }
       if (opts.vision && light.vision) {
         process.stderr.write("Calling Gemini vision API. Est. cost: free tier (~$0 if under quota)...\n");
         try {
@@ -389,7 +396,8 @@ program
             apiKey: visionApiKey,
           });
         } catch (err) {
-          process.stderr.write(`Warning: vision extraction failed (${err.message}). Continuing CSS-only.\n`);
+          visionError = err.message;
+          process.stderr.write(`Error: vision extraction failed (${err.message}). Writing DESIGN.md without the vision sections and exiting 1.\n`);
         }
       }
 
@@ -430,6 +438,8 @@ program
       if (process.stderr.isTTY) {
         process.stderr.write('\n★ If this saved you time, star the repo: https://github.com/yuvrajangadsingh/brandmd\n  More tools by the author: https://yuvrajangadsingh.com\n');
       }
+      // exitCode, not exit(): stdout may still be draining into a pipe.
+      if (visionError) process.exitCode = EXIT_ERROR;
     } catch (err) {
       reportError(err, { debug: opts.debug });
       process.exit(EXIT_ERROR);

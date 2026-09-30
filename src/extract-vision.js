@@ -84,11 +84,17 @@ Given a screenshot of a homepage and scraped page text, identify:
 
 Be specific. Avoid generic adjectives.`;
 
+// gemini-2.0-flash was shut down in 2026 and every call failed, and 2.5 is now
+// limited to prior users. Pin the model Google names for new projects;
+// BRANDMD_VISION_MODEL lets a user outlive the next retirement without a release. BRANDMD_GEMINI_BASE_URL is the offline test seam.
+const VISION_MODEL = process.env.BRANDMD_VISION_MODEL || "gemini-3.8-flash";
+
 export async function extractVision({ screenshotBase64, pageText, apiKey }) {
-  const ai = new GoogleGenAI({ apiKey });
+  const baseUrl = process.env.BRANDMD_GEMINI_BASE_URL;
+  const ai = new GoogleGenAI({ apiKey, ...(baseUrl ? { httpOptions: { baseUrl } } : {}) });
 
   const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
+    model: VISION_MODEL,
     contents: [
       {
         role: "user",
