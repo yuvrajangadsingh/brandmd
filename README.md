@@ -30,7 +30,7 @@ Combine with:
 
 - **`--agent`**: also writes `.cursor/rules/brand.mdc` and `SKILL.md` to both `.agents/skills/brand-style/` (the universal Agent Skills path used by [skills.sh](https://skills.sh) across 50+ agents) and `.claude/skills/brand-style/` (backward-compat for direct Claude Code users). No manual wiring. Picked up automatically by Claude Code, Cursor, Codex, Gemini CLI, Kiro CLI, and the rest of the skills.sh ecosystem. Schema-compatible with [Anthropic Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills), [google/skills](https://github.com/google/skills), and [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 - **`--dark`**: also extract dark mode tokens
-- **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)).
+- **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)). Uses `gemini-3.8-flash`; set `BRANDMD_VISION_MODEL` to pick another model. If the screenshot or the vision call fails the CSS-only `DESIGN.md` is still written and the run exits 1.
 
 Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
