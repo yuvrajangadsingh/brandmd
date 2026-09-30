@@ -503,7 +503,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     }
 
     let visionData = null;
-    if (vision) {
+    if (vision) try {
       // Full-page screenshot, not viewport, so below-the-fold illustrations
       // and photography (Stripe-style) are seen by the vision model.
       await page.evaluate(() => window.scrollTo(0, 0));
@@ -529,6 +529,9 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         screenshotBase64: screenshotBuf.toString("base64"),
         toneSnippets,
       };
+    } catch (err) {
+      // Keep the CSS capture; cli exits 1 for the missing vision block.
+      process.stderr.write(`Warning: screenshot failed for ${url} (${err.message}).\n`);
     }
 
     // Provenance: did we end up somewhere other than asked? Cross-origin or a
