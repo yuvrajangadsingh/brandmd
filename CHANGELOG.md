@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.17.0] - 2026-09-30
+
+### Fixed
+
+- **`--vision` called a retired model and hid the failure.** `gemini-2.0-flash` is gone, so every vision run warned and exited 0 with a `DESIGN.md` missing the vision sections. The call now pins `gemini-3.8-flash`, the model Google names for new projects (`BRANDMD_VISION_MODEL` overrides it). A failed screenshot or vision call still writes the CSS-only `DESIGN.md` but exits 1 and says why.
+
 ## [0.14.0] - 2026-07-20
 
 Spec + truth release: conform to the official DESIGN.md spec and stop the confident lies.
