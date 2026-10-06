@@ -12,6 +12,28 @@ import chroma from "chroma-js";
  * brandmd's extra value (tiered palette, evidence-based character, confidence
  * tags, dark overrides) lives inside the canonical structure as prose.
  */
+/**
+ * The rounded scale, shared by the DESIGN.md tokens, --css and --tailwind:
+ * uniform radii named by size, `full` only for a real pill. Asymmetric and
+ * percentage radii get no name; they stay in prose. DESIGN.md keeps the six
+ * smallest; --css and --tailwind pass Infinity and name the rest 4xl, 5xl.
+ */
+export function roundedScale(radii, max = 6) {
+  const rounded = {};
+  const uniformRadii = (radii || [])
+    .filter((r) => !r.val.includes(" ") && !r.val.includes("%"))
+    .map((r) => ({ ...r, px: parseFloat(r.val) }))
+    .filter((r) => isFinite(r.px));
+  const pills = uniformRadii.filter((r) => r.pill || r.px >= 999);
+  const nonPill = uniformRadii.filter((r) => !(r.pill || r.px >= 999)).sort((a, b) => a.px - b.px);
+  const roundedNames = ["sm", "md", "lg", "xl"];
+  nonPill.slice(0, max).forEach((r, i) => {
+    rounded[roundedNames[i] ?? `${i - 2}xl`] = `${r.px}px`;
+  });
+  if (pills.length) rounded.full = "9999px";
+  return rounded;
+}
+
 export function generate(tokens) {
   // Refuse to invent a design system from nothing (F-21). The CLI gates on this
   // earlier with a distinct exit code; this is the backstop for direct callers.
@@ -165,19 +187,7 @@ function buildModel(tokens) {
     }
   }
 
-  // --- Rounded scale (uniform radii only; asymmetric/% -> prose only) ------
-  const rounded = {};
-  const uniformRadii = (tokens.radii || [])
-    .filter((r) => !r.val.includes(" ") && !r.val.includes("%"))
-    .map((r) => ({ ...r, px: parseFloat(r.val) }))
-    .filter((r) => isFinite(r.px));
-  const pills = uniformRadii.filter((r) => r.pill || r.px >= 999);
-  const nonPill = uniformRadii.filter((r) => !(r.pill || r.px >= 999)).sort((a, b) => a.px - b.px);
-  const roundedNames = ["sm", "md", "lg", "xl", "2xl", "3xl"];
-  nonPill.slice(0, roundedNames.length).forEach((r, i) => {
-    rounded[roundedNames[i]] = `${r.px}px`;
-  });
-  if (pills.length) rounded.full = "9999px";
+  const rounded = roundedScale(tokens.radii);
 
   // --- Spacing scale (distinct values; base = most frequent) --------------
   const spacing = {};

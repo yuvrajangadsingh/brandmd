@@ -1,3 +1,5 @@
+import { roundedScale } from "./generate.js";
+
 /**
  * Generate Tailwind v4 @theme CSS from analyzed tokens.
  */
@@ -52,12 +54,8 @@ export function generateTailwind(tokens) {
   }
 
   // Radii
-  if (tokens.radii.length > 0) {
-    const names = ["sm", "md", "lg", "xl", "2xl", "3xl", "full"];
-    tokens.radii.forEach((r, i) => {
-      const suffix = names[i] || `${i + 1}`;
-      lines.push(`  --radius-${suffix}: ${r.val};`);
-    });
+  for (const [name, val] of Object.entries(roundedScale(tokens.radii, Infinity))) {
+    lines.push(`  --radius-${name}: ${val};`);
   }
 
   // Shadows
