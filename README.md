@@ -284,7 +284,7 @@ The official [DESIGN.md format](https://github.com/google-labs-code/design.md): 
 @theme {
   --color-primary: #0075DE;
   --font-sans: "Geist", system-ui, sans-serif;
-  --spacing-1: 4px;
+  /* Spacing observed: 4px, 8px, 16px, 24px. Not written as --spacing-* keys. */
   --radius-sm: 4px;
 }
 ```

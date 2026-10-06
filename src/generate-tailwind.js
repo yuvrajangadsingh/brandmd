@@ -41,15 +41,16 @@ export function generateTailwind(tokens) {
   }
   if (tokens.typography.primary || tokens.typography.secondary) lines.push("");
 
-  // Spacing
+  // Spacing is a note, not keys. Tailwind v4 reads --spacing-<n> as the value
+  // behind p-<n>, m-<n> and gap-<n>, so numbering the observed values
+  // (--spacing-4: 6px) would resize every utility on the scale.
   if (tokens.spacing.length > 0) {
     const top = [...tokens.spacing]
       .sort((a, b) => b.freq - a.freq)
       .slice(0, 8)
       .sort((a, b) => a.px - b.px);
-    top.forEach((s, i) => {
-      lines.push(`  --spacing-${i + 1}: ${s.val};`);
-    });
+    lines.push(`  /* Spacing observed: ${top.map((s) => s.val).join(", ")}.`);
+    lines.push("     Not written as --spacing-* keys: those replace the values behind p-4, gap-4 and the rest. */");
     lines.push("");
   }
 

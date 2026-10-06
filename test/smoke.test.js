@@ -111,3 +111,13 @@ test("--css and --tailwind name radii by size, like the rounded tokens", () => {
   assert.deepEqual(generateCSS(tokens).match(/--radius-[\w-]+: [^;]+/g), all);
   assert.match(generate(tokens), /^  3xl: 16px\n(?!  [45]xl)/m);
 });
+
+// --- --tailwind spacing ---
+// Tailwind v4 reads a --spacing-<n> key as the value behind p-<n>, m-<n> and
+// gap-<n>. Numbering the observed values wrote --spacing-4: 6px on this
+// capture, which turns p-4 into 6px.
+test("--tailwind writes no --spacing-* key", () => {
+  const css = generateTailwind(analyze(rawVercel));
+  assert.doesNotMatch(css, /^\s*--spacing[\w-]*\s*:/m);
+  assert.match(css, /Spacing observed: 2px, 3px, 4px, 6px, 8px, 12px, 20px, 24px\./);
+});
