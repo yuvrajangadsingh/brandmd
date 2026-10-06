@@ -197,6 +197,41 @@ test("F-04: CTA line names the accent background, never the primary text", () =>
   );
 });
 
+// --- Type levels follow size --------------------------------------------------
+// With no heading at 32px or more, the largest one was named headline-lg and the
+// second largest then overwrote it, so the biggest size never reached the tokens.
+// The second body size was always called body-lg, even when it was the smaller
+// of the two.
+test("type levels: the largest heading is kept and the names follow size", () => {
+  const levels = (fontSizes) => {
+    const md = generate(analyze(rawSkeleton({
+      fonts: { Inter: 500 },
+      fontsByRole: { heading: {}, body: { Inter: 480 }, button: {}, display: {} },
+      fontSizes,
+    })));
+    return [...md.matchAll(/^  ([a-z-]+):\n    fontFamily: .*\n    fontSize: (\d+)px/gm)].map((m) => [m[1], Number(m[2])]);
+  };
+  assert.deepEqual(levels({ "28px": 5, "24px": 8, "16px": 50, "14px": 20, "12px": 9 }), [
+    ["headline-lg", 28],
+    ["headline-md", 24],
+    ["body-md", 16],
+    ["body-sm", 14],
+    ["label-sm", 12],
+  ]);
+  // Two heading names for three sizes under 32px: the largest two get them.
+  // (This used to export 28 and 24 and leave 30 out.)
+  assert.deepEqual(levels({ "30px": 4, "28px": 5, "24px": 8, "16px": 50 }), [
+    ["headline-lg", 30],
+    ["headline-md", 28],
+    ["body-md", 16],
+  ]);
+  assert.deepEqual(levels({ "40px": 3, "18px": 20, "16px": 50 }), [
+    ["display", 40],
+    ["body-lg", 18],
+    ["body-md", 16],
+  ]);
+});
+
 // --- min-support: a count-1 font can never be Primary -----------------------
 
 test("min-support: a font used exactly once is never chosen as Primary", () => {

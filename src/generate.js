@@ -144,14 +144,19 @@ function buildModel(tokens) {
     const mid = desc.filter((s) => s.px >= 14 && s.px < 24).sort((a, b) => b.freq - a.freq);
     const small = desc.filter((s) => s.px < 14).sort((a, b) => b.freq - a.freq);
 
-    if (large[0]) addLevel(large[0].px >= 32 ? "display" : "headline-lg", large[0], primaryFont, 600);
-    if (large[1]) addLevel("headline-lg", large[1], primaryFont, 600);
-    if (large[2]) addLevel("headline-md", large[2], primaryFont, 600);
-    // body-md is the workhorse (most frequent mid size); body-lg the larger mid.
-    if (mid[0]) addLevel("body-md", mid[0], bodyFont, 400);
-    const bodyLg = mid.find((s) => !usedPx.has(s.px));
-    if (bodyLg) addLevel("body-lg", bodyLg, bodyFont, 400);
-    if (small[0]) addLevel("label-sm", small[0], bodyFont, 500);
+    // Only a heading of 32px or more is display. Below that the names start at
+    // headline-lg, so the largest size always gets a level of its own.
+    const headings = large[0]?.px >= 32 ? ["display", "headline-lg", "headline-md"] : ["headline-lg", "headline-md"];
+    headings.forEach((name, i) => addLevel(name, large[i], primaryFont, 600));
+    // body-md is the workhorse (most frequent mid size). The next most frequent
+    // one is body-lg when it is larger and body-sm when it is smaller, so a name
+    // never contradicts its size. Written largest first.
+    const [bodyMd, bodyAlt] = mid;
+    const altName = bodyAlt && (bodyAlt.px > bodyMd.px ? "body-lg" : "body-sm");
+    if (altName === "body-lg") addLevel(altName, bodyAlt, bodyFont, 400);
+    addLevel("body-md", bodyMd, bodyFont, 400);
+    if (altName === "body-sm") addLevel(altName, bodyAlt, bodyFont, 400);
+    addLevel("label-sm", small[0], bodyFont, 500);
 
     // At least one typography token when a real font exists (the linter warns
     // on colors-without-typography).
