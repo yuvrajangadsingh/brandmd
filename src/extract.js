@@ -1,4 +1,5 @@
 import { chromium } from "playwright";
+import { visibleShadows } from "./analyze.js";
 
 /**
  * Detect if the current page is a Cloudflare challenge / block.
@@ -610,7 +611,7 @@ function mergeTypeSamples(maps) {
 /**
  * Merge multiple raw extractions into one.
  */
-function mergeRaw(pages) {
+export function mergeRaw(pages) {
   if (pages.length === 0) throw new Error("No pages extracted successfully");
   if (pages.length === 1) return pages[0];
 
@@ -634,7 +635,9 @@ function mergeRaw(pages) {
     typeSamples: mergeTypeSamples(pages.map((p) => p.typeSamples || {})),
     spacings: mergeFreqMaps(pages.map((p) => p.spacings)),
     radii: mergeFreqMaps(pages.map((p) => p.radii)),
-    shadows: mergeFreqMaps(pages.map((p) => p.shadows)),
+    // Placeholders are folded out first, or a page padded with them hands its
+    // real shadows a sliver of that page's share.
+    shadows: mergeFreqMaps(pages.map((p) => visibleShadows(p.shadows))),
     cssVars: {},
     components: { buttons: [], cards: [], inputs: [] },
     title: pages[0].title,

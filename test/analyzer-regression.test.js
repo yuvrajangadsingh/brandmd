@@ -296,3 +296,45 @@ test("blocker 12: sparse capture tags Components and Do's and Don'ts low-confide
     );
   }
 });
+
+// --- Zero-alpha shadow layers -----------------------------------------------
+// Tailwind pads box-shadow with ring and offset placeholders, so a computed
+// value is mostly "rgba(0, 0, 0, 0) 0px 0px 0px 0px" layers that paint nothing.
+// They are not part of the shadow: values that differ only in padding are one
+// shadow, and a value with no painting layer is no shadow at all.
+test("zero-alpha shadow layers are dropped and what is left is merged", () => {
+  const pad = "rgba(0, 0, 0, 0) 0px 0px 0px 0px";
+  const real = "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px";
+  const tokens = analyze(rawSkeleton({
+    shadows: {
+      [`${pad}, ${pad}, ${real}`]: 2,
+      [`${pad}, ${real}`]: 3,
+      [`${pad}, ${pad}`]: 9,
+      "oklab(0.2 0 0 / 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px 5px 15px 0px": 1,
+    },
+    components: {
+      buttons: [],
+      cards: [{ bg: "rgb(255, 255, 255)", radius: "8px", shadow: `${pad}, ${real}`, padding: "16px 16px 16px 16px" }],
+      inputs: [],
+    },
+  }));
+  assert.deepEqual(tokens.shadows, [
+    { val: real, freq: 5 },
+    { val: "rgba(0, 0, 0, 0.08) 0px 5px 15px 0px", freq: 1 },
+  ]);
+  assert.equal(tokens.components.cards.shadow, real);
+  assert.doesNotMatch(generate(tokens), /rgba\(0, 0, 0, 0\) 0px/);
+
+  // Only a fourth argument is an alpha: an opaque three-argument rgba() paints.
+  const opaque = analyze(rawSkeleton({
+    shadows: { "rgba(255, 0, 0) 0px 1px 2px, RGBA(0, 0, 0, 0%) 0px 0px 0px 0px, hsla(0, 0%, 0%, 0 ) 0px 0px 0px 0px": 2 },
+  }));
+  assert.deepEqual(opaque.shadows, [{ val: "rgba(255, 0, 0) 0px 1px 2px", freq: 2 }]);
+
+  // A capture with nothing but placeholders has no shadows and no shadow evidence.
+  const flat = analyze(rawSkeleton({
+    shadows: { [`${pad}, ${pad}`]: 9, "rgb(0 0 0 / none) 0px 0px 0px 0px": 1, "transparent 0px 0px 0px 0px": 1 },
+  }));
+  assert.deepEqual(flat.shadows, []);
+  assert.equal(flat.evidence.shadowObs, 0);
+});

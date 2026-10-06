@@ -33,6 +33,33 @@ function topByFreq(obj, n = 10) {
 }
 
 /**
+ * Tailwind pads box-shadow with ring and offset placeholders, so a computed
+ * value is mostly "rgba(0, 0, 0, 0) 0px 0px 0px 0px" layers that paint nothing.
+ * Returns the layers that do paint, "" when none does.
+ */
+function visibleShadow(val) {
+  if (!val || val === "none") return "";
+  return val
+    .split(/,(?![^(]*\))/)
+    .map((layer) => layer.trim())
+    .filter((layer) => layer && !/\b(?:rgba|hsla)\((?:[^,)]*,){3}\s*0(?:\.0+)?%?\s*\)|\/\s*(?:0(?:\.0+)?%?|none)\s*\)|\btransparent\b/i.test(layer))
+    .join(", ");
+}
+
+/**
+ * A shadow frequency map keyed by painting layers: padding-only variants fold
+ * into one entry and a value that paints nothing is dropped.
+ */
+export function visibleShadows(freqMap) {
+  const out = {};
+  for (const [val, freq] of Object.entries(freqMap || {})) {
+    const key = visibleShadow(val);
+    if (key) out[key] = (out[key] || 0) + freq;
+  }
+  return out;
+}
+
+/**
  * Merge variable-font duplicates: "Geist VF" folds into "Geist", "Inter Variable"
  * into "Inter". The base (suffix-stripped) name wins and inherits the summed
  * frequency, so the same family isn't reported twice.
@@ -201,7 +228,9 @@ function analyzeComponents(components, pageBgHex = null) {
   }
 
   // Omit empty component groups entirely (no invented card/input defaults).
-  if (components?.cards?.length > 0) result.cards = components.cards[0];
+  if (components?.cards?.length > 0) {
+    result.cards = { ...components.cards[0], shadow: visibleShadow(components.cards[0].shadow) };
+  }
   if (components?.inputs?.length > 0) result.inputs = components.inputs[0];
 
   return result;
@@ -641,8 +670,9 @@ export function analyze(raw) {
     .map(([val, freq]) => ({ val, freq: round2(freq), pill: parseFloat(val) >= 999 }))
     .sort((a, b) => pxToNum(a.val) - pxToNum(b.val));
 
-  // Shadows
-  const shadowList = topByFreq(raw.shadows, 5).map(([val, freq]) => ({
+  // Shadows, keyed by their painting layers so padding-only variants fold into one.
+  const shadowFreq = visibleShadows(raw.shadows);
+  const shadowList = topByFreq(shadowFreq, 5).map(([val, freq]) => ({
     val,
     freq: round2(freq),
   }));
@@ -744,7 +774,7 @@ export function analyze(raw) {
     fontObs: round2(sumVals(fontsDeduped)),
     colorObs: round2(sumVals(raw.colors?.background) + sumVals(raw.colors?.text)),
     radiiObs: round2(sumVals(raw.radii)),
-    shadowObs: round2(sumVals(raw.shadows)),
+    shadowObs: round2(sumVals(shadowFreq)),
     bodyTextLength: raw.bodyTextLength ?? null,
   };
 

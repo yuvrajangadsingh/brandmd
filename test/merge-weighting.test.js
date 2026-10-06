@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { analyze } from "../src/analyze.js";
+import { mergeRaw } from "../src/extract.js";
 
 /**
  * A long page must not decide the brand's ghost button by sheer volume.
@@ -72,4 +73,17 @@ test("single-page runs are unchanged (no weights present)", () => {
   const only = [ghost("#111111", "8px"), ghost("#111111", "8px"), ghost("#222222", "0px")];
   const out = analyze(raw(only));
   assert.equal(out.components.ghostButton.color, "#111111", "plain counting still applies");
+});
+
+test("shadow placeholders do not eat a page's share of the merge", () => {
+  // Each page gets 1.0 to spread over its shadows. Counted before the
+  // placeholders were dropped, 90 of them left this page's one real shadow 0.1.
+  const pad = "rgba(0, 0, 0, 0) 0px 0px 0px 0px";
+  const soft = "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px";
+  const deep = "rgba(0, 0, 0, 0.2) 0px 4px 8px 0px";
+  const merged = mergeRaw([
+    { ...raw([]), shadows: { [pad]: 90, [`${pad}, ${soft}`]: 10 } },
+    { ...raw([]), shadows: { [deep]: 10 } },
+  ]);
+  assert.deepEqual(merged.shadows, { [soft]: 1, [deep]: 1 });
 });
