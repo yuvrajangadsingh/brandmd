@@ -28,6 +28,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { analyze } from "../src/analyze.js";
 import { generate } from "../src/generate.js";
+import { planAgentPack } from "../src/generate-agent.js";
 import { parseDesign } from "../src/parse-design.js";
 
 // Keep in lockstep with .github/workflows/ci.yml (cache key + warm step).
@@ -357,4 +358,19 @@ test("blocker 14: a title with embedded newlines/headings yields exactly one Do'
 test("blocker 14: hostile-title output still lints clean (no unclosed-quote warning)", (t) => {
   const { file } = writeDesign(rawHostileTitle);
   assertLintClean(t, file);
+});
+
+// ---------------------------------------------------------------------------
+// The --agent wrappers send an agent to sections by name
+// ---------------------------------------------------------------------------
+
+test("--agent pack names only sections DESIGN.md has", () => {
+  const headings = [...generate(analyze(rawVercel)).matchAll(/^## (.+)$/gm)].map((m) => m[1]);
+  for (const { path, content } of planAgentPack("out")) {
+    const named = [...content.matchAll(/\bthe ([A-Z][\w&' ]*?) section\b/g)].map((m) => m[1]);
+    assert.ok(named.length > 0, `${path} names no section, so this check holds nothing`);
+    for (const name of named) {
+      assert.ok(headings.includes(name), `${path} names a "${name}" section; DESIGN.md has ${headings.join(", ")}`);
+    }
+  }
 });

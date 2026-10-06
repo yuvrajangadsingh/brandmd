@@ -35,7 +35,7 @@ Follow the design system documented in @${designMdPath} before generating any UI
 
 ## Hard rules
 
-- Use the colors documented in the Color Palette section. Don't invent new shades.
+- Use the colors documented in the Colors section. Don't invent new shades.
 - Match the typography (font family, sizes, weights) exactly.
 - Honor the spacing scale and base grid unit. Don't use arbitrary pixel values.
 - Match the shape language (border radius, button shapes, shadow styles).
@@ -74,7 +74,7 @@ This project has a documented design system at @${designMdPath}. Read it before 
    - Match the typography exactly (font family, sizes, weights)
    - Honor the spacing scale (use documented px values, not arbitrary numbers)
    - Match shape language (border radius, shadow styles)
-   - For components, follow the patterns in the Component Stylings section
+   - For components, follow the patterns in the Components section
 3. If a token isn't specified, derive it from the closest documented one. Don't fall back to generic Tailwind defaults or random Material/Bootstrap-style values.
 
 ## Why this matters
