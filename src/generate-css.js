@@ -1,3 +1,5 @@
+import { roundedScale } from "./generate.js";
+
 /**
  * Generate CSS custom properties from analyzed tokens.
  */
@@ -54,13 +56,10 @@ export function generateCSS(tokens) {
   }
 
   // Radii
-  if (tokens.radii.length > 0) {
+  const rounded = Object.entries(roundedScale(tokens.radii, Infinity));
+  if (rounded.length > 0) {
     lines.push("  /* Radii */");
-    const names = ["sm", "md", "lg", "xl", "2xl", "3xl", "full"];
-    tokens.radii.forEach((r, i) => {
-      const suffix = names[i] || `${i + 1}`;
-      lines.push(`  --radius-${suffix}: ${r.val};`);
-    });
+    for (const [name, val] of rounded) lines.push(`  --radius-${name}: ${val};`);
     lines.push("");
   }
 

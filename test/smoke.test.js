@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { analyze } from "../src/analyze.js";
 import { generate } from "../src/generate.js";
+import { generateCSS } from "../src/generate-css.js";
+import { generateTailwind } from "../src/generate-tailwind.js";
 import { detectBlockLikely } from "../src/extract.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -86,4 +88,26 @@ test("generated DESIGN.md shows a block warning when flagged", () => {
   const blocked = { ...rawVercel, blockLikely: true };
   const md = generate(analyze(blocked));
   assert.match(md, /Likely a block/, "block warning rendered");
+});
+
+// --- --css and --tailwind radius names ---
+// Radii were named by position in the list, so on this capture --radius-sm was
+// "0px 0px 0px 1px" and --radius-full was "9999px 6px 6px 9999px". They now take
+// the same names as the DESIGN.md rounded tokens: uniform radii by size, full
+// for a real pill.
+test("--css and --tailwind name radii by size, like the rounded tokens", () => {
+  const tokens = analyze(rawVercel);
+  const want = ["--radius-sm: 2px", "--radius-md: 6px", "--radius-full: 9999px"];
+  assert.deepEqual(generateTailwind(tokens).match(/--radius-[\w-]+: [^;]+/g), want);
+  assert.deepEqual(generateCSS(tokens).match(/--radius-[\w-]+: [^;]+/g), want);
+  const rounded = generate(tokens).match(/^rounded:\n((?:  .+\n)+)/m)[1];
+  assert.equal(rounded, "  sm: 2px\n  md: 6px\n  full: 9999px\n");
+
+  // DESIGN.md stops at six names. --css and --tailwind used to write every
+  // radius, so they keep going rather than drop the two largest.
+  tokens.radii = [2, 4, 6, 8, 12, 16, 24, 32].map((px) => ({ val: `${px}px`, freq: 1 }));
+  const all = ["sm: 2px", "md: 4px", "lg: 6px", "xl: 8px", "2xl: 12px", "3xl: 16px", "4xl: 24px", "5xl: 32px"].map((r) => `--radius-${r}`);
+  assert.deepEqual(generateTailwind(tokens).match(/--radius-[\w-]+: [^;]+/g), all);
+  assert.deepEqual(generateCSS(tokens).match(/--radius-[\w-]+: [^;]+/g), all);
+  assert.match(generate(tokens), /^  3xl: 16px\n(?!  [45]xl)/m);
 });
