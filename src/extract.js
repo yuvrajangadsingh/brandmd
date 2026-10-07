@@ -189,16 +189,18 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       }
     });
 
-    // Scroll to trigger lazy content
+    // Scroll to trigger lazy content. `instant` overrides `scroll-behavior:
+    // smooth`, which otherwise animates each jump and leaves the page mid-scroll
+    // when the reads below run.
     await page.evaluate(async () => {
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
       const step = window.innerHeight;
       const max = document.body.scrollHeight;
       for (let y = 0; y < max; y += step) {
-        window.scrollTo(0, y);
+        window.scrollTo({ top: y, behavior: "instant" });
         await delay(200);
       }
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: "instant" });
       await delay(500);
     });
 
@@ -509,7 +511,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     if (vision) try {
       // Full-page screenshot, not viewport, so below-the-fold illustrations
       // and photography (Stripe-style) are seen by the vision model.
-      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
       await page.waitForTimeout(400);
       const screenshotBuf = await page.screenshot({ type: "png", fullPage: true });
 
