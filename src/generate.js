@@ -95,7 +95,13 @@ function buildModel(tokens) {
     if (hex && safeChroma(hex)) colors[name] = lc(chroma(hex).hex());
   };
 
-  const pageBg = byRole("Page background") || solid.find((c) => c.type === "background");
+  // The capture's page background wins; the luminance role is the fallback for
+  // captures that predate it (fixtures, old raw files).
+  const captured = tokens.pageBackground
+    ? solid.find((c) => c.hex === tokens.pageBackground) || { hex: tokens.pageBackground, synthesized: true }
+    : null;
+  const pageBg = captured || byRole("Page background") || solid.find((c) => c.type === "background");
+  const pageBgSynthesized = !!captured?.synthesized;
   const primaryText = byRole("Primary text") || solid.find((c) => c.type === "text");
   const surface = byRole("Surface / card background") || byRole("Secondary background");
   const secondaryText = byRole("Secondary text") || byRole("Muted text");
@@ -321,7 +327,7 @@ function buildModel(tokens) {
 
   const name = sanitizeLine(tokens.title) || hostOf(tokens.url);
   const description = sanitizeLine(shortDescription(tokens.atmosphere));
-  return { name, description, colors, typography, rounded, spacing, components, primaryFont, bodyFont, primaryNeutralFallback };
+  return { name, description, colors, typography, rounded, spacing, components, primaryFont, bodyFont, primaryNeutralFallback, pageBgSynthesized };
 }
 
 /**
@@ -549,6 +555,10 @@ function emitBody(tokens, model) {
   lines.push("");
   if (model.primaryNeutralFallback) {
     lines.push("_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._");
+    lines.push("");
+  }
+  if (model.pageBgSynthesized) {
+    lines.push(`_The page background \`${model.colors.background}\` is the surface that fills the viewport; it is not among the most frequent fills listed below._`);
     lines.push("");
   }
   for (const color of (mainColors.length ? mainColors : tokens.palette || [])) {
@@ -830,8 +840,14 @@ function motionText(m) {
 
 function darkDiffs(light, dark) {
   const out = [];
+  if (dark.pageBackground && dark.pageBackground !== light.pageBackground) {
+    out.push(light.pageBackground
+      ? `- Page background: \`${light.pageBackground}\` → \`${dark.pageBackground}\``
+      : `- Page background: \`${dark.pageBackground}\` (dark only)`);
+  }
   const lp = new Map((light.palette || []).map((c) => [c.role, lc(c.hex)]));
   for (const c of dark.palette || []) {
+    if (c.role === "Page background" && dark.pageBackground) continue; // the captured line above is the real one
     const lightHex = lp.get(c.role);
     if (!lightHex) out.push(`- ${c.role}: \`${lc(c.hex)}\` (dark only)`);
     else if (lightHex !== lc(c.hex)) out.push(`- ${c.role}: \`${lightHex}\` → \`${lc(c.hex)}\``);

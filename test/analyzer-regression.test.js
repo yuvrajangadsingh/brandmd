@@ -434,3 +434,51 @@ test("role tokens take solid colours only; translucent ones stay prose", () => {
   assert.match(divider, /^  outline: "#0000001a"$/m);
 });
 
+
+test("the captured page background beats the lightest and the most frequent fill", () => {
+  const colors = {
+    background: { "rgb(255, 255, 255)": 26, "rgb(191, 219, 254)": 30, "rgb(0, 0, 0)": 20 },
+    text: { "rgb(255, 255, 255)": 10 },
+    border: {},
+  };
+  const dark = analyze(rawSkeleton({ colors, pageBackground: { surface: "rgb(0, 0, 0)", canvas: "rgb(255, 255, 255)" } }));
+  assert.equal(dark.pageBackground, "#000000");
+  const md = generate(dark);
+  assert.match(md, /^  background: "#000000"$/m);
+  assert.match(md, /\*\*Visual character:\*\* Dark.*black background dominates/);
+
+  // No covering surface: the canvas is the page background, however many cards there are.
+  const canvas = generate(analyze(rawSkeleton({
+    colors: { background: { "rgb(30, 30, 30)": 40, "rgb(255, 255, 255)": 5 }, text: { "rgb(0, 0, 0)": 10 }, border: {} },
+    pageBackground: { surface: null, canvas: "rgb(255, 255, 255)" },
+  })));
+  assert.match(canvas, /^  background: "#ffffff"$/m);
+
+  // A surface that is not among the top fills is still the background, and the prose says so.
+  const synth = generate(analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50 }, text: { "rgb(0, 0, 0)": 10 }, border: {} },
+    pageBackground: { surface: "rgb(10, 20, 30)", canvas: null },
+  })));
+  assert.match(synth, /^  background: "#0a141e"$/m);
+  assert.match(synth, /surface that fills the viewport/);
+
+  // Nothing resolved: the old rule, and no note.
+  const none = generate(analyze(rawSkeleton({ colors, pageBackground: { surface: null, canvas: null } })));
+  const legacy = generate(analyze(rawSkeleton({ colors })));
+  assert.equal(none, legacy);
+  assert.equal("pageBackground" in analyze(rawSkeleton({ colors })), false, "captures without the field keep the legacy token shape");
+});
+
+test("dark mode overrides list the captured page background when it differs", () => {
+  const colors = { background: { "rgb(255, 255, 255)": 50 }, text: { "rgb(0, 0, 0)": 10 }, border: {} };
+  const light = analyze(rawSkeleton({ colors, pageBackground: { surface: "rgb(255, 255, 255)", canvas: null } }));
+  light.dark = analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50 }, text: { "rgb(255, 255, 255)": 10 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  }));
+  const dark = light.dark.palette.find((c) => c.hex.toLowerCase() === "#000000");
+  assert.ok(dark);
+  dark.role = "Page background"; // the luminance guess must not add a second line
+  const lines = generate(light).match(/^- Page background:.*$/gm);
+  assert.deepEqual(lines, ["- Page background: `#ffffff` → `#000000`"]);
+});
