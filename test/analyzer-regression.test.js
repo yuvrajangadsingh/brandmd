@@ -398,3 +398,14 @@ test("toHex keeps the alpha of a colour chroma cannot parse", () => {
   assert.ok(!tokens.palette.some((c) => c.hex.startsWith("#ff0000")), "an invisible red is not a border token");
   assert.match(generate(tokens), /^  outline: "#c8c8c8"$/m);
 });
+test("a translucent colour never absorbs the solid colour under it", () => {
+  // Insertion order puts the 10% scrim first; deltaE ignores alpha and used to
+  // fold the 100-use solid black into it, leaving no solid background at all.
+  const tokens = analyze(rawSkeleton({
+    colors: { background: { "rgba(0, 0, 0, 0.1)": 1, "rgb(0, 0, 0)": 100 }, text: { "rgb(255, 255, 255)": 50 }, border: {} },
+  }));
+  const black = tokens.palette.find((c) => c.hex === "#000000");
+  assert.ok(black && black.freq >= 100, "the solid black keeps its own entry and frequency");
+  assert.match(generate(tokens), /^  background: "#000000"$/m);
+});
+
