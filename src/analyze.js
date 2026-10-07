@@ -26,6 +26,30 @@ function toHex(cssColor) {
 }
 
 /**
+ * `hex` composited over `underHex`, as the screen shows it. chroma rounds a hex
+ * alpha byte to two decimals (#848484e0 reads as .88, not 224/255), which is
+ * enough to flip a 4.5:1 gate, so the byte is read here.
+ */
+export function flatten(hex, underHex) {
+  const m = /^#(?:[0-9a-f]{3}([0-9a-f])|[0-9a-f]{6}([0-9a-f]{2}))$/i.exec(hex);
+  const a = m ? parseInt(m[1] ? m[1] + m[1] : m[2], 16) / 255 : chroma(hex).alpha();
+  if (a >= 1 || !underHex) return chroma(hex).hex("rgb");
+  const [r, g, b] = chroma(hex).rgb();
+  const [R, G, B] = chroma(underHex).rgb();
+  return chroma(a * r + (1 - a) * R, a * g + (1 - a) * G, a * b + (1 - a) * B).hex();
+}
+
+/**
+ * WCAG contrast with alpha composited first: chroma.contrast ignores alpha, so
+ * 50% black on white would read 21:1 when the eye sees about 4:1. A translucent
+ * background is composited over `underHex` (the page) before the text goes on.
+ */
+export function contrastOn(fgHex, bgHex, underHex) {
+  const bg = flatten(bgHex, underHex);
+  return chroma.contrast(flatten(fgHex, bg), bg);
+}
+
+/**
  * Sort entries by frequency (descending), return top N.
  */
 function topByFreq(obj, n = 10) {
@@ -707,7 +731,47 @@ export function analyze(raw) {
     ? bgColors.find((c) => c.hex.toLowerCase() === pageBackground) || { hex: pageBackground, freq: 0 }
     : null;
   const pageBg = captured || bgColors.find((c) => isOpaque(c.hex)) || bgColors[0] || null;
-  const topText = textColors.find((c) => isOpaque(c.hex)) || textColors[0] || null;
+
+  // Text roles by contrast on the captured page background (captures that
+  // resolved one; older raw files and unresolved probes keep the luminance roles
+  // end to end). Candidates are the solid text colours before the palette dedup, which
+  // drops a text colour whose hex a fill already took (white text on a page of
+  // white cards). on-background is the most frequent one at 4.5:1 or better;
+  // with none, the token is omitted and the prose names the closest.
+  let textRoles;
+  if (pageBackground) {
+    const background = pageBackground;
+    // Exact colours, not clusters: a one-use 50% black must not absorb a
+    // hundred-use black and carry its frequency to the gate. The gate judges the
+    // same hex string the token emits. Ties break on the hex, so the pick is
+    // deterministic whatever order the capture listed them in.
+    const byHex = new Map();
+    for (const [color, freq] of Object.entries(raw.colors.text)) {
+      const hex = toHex(color)?.toLowerCase();
+      if (!hex || !isOpaque(hex)) continue;
+      byHex.set(hex, (byHex.get(hex) || 0) + freq);
+    }
+    const candidates = [...byHex]
+      .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
+      .map(([hex, freq]) => ({ hex, freq: round2(freq) }));
+    let onBackground = null;
+    let best = null;
+    for (const c of candidates) {
+      const ratio = contrastOn(c.hex, background);
+      if (!best || ratio > best.ratio) best = { hex: c.hex, ratio };
+      if (ratio >= 4.5) {
+        onBackground = c.hex;
+        break;
+      }
+    }
+    if (best) best.ratio = Math.floor(best.ratio * 100) / 100; // a rejected 4.498 must not read as the 4.5 the prose says it missed
+    textRoles = { background, onBackground, best, candidates };
+  }
+  // The character line describes the same pair the YAML carries: the resolved
+  // text, else the closest candidate the prose names.
+  const topText = textRoles
+    ? (textRoles.onBackground || textRoles.best ? { hex: textRoles.onBackground || textRoles.best.hex } : null)
+    : textColors.find((c) => isOpaque(c.hex)) || textColors[0] || null;
 
   let atmosphere = "Balanced and professional";
   if (pageBg) {
@@ -721,7 +785,7 @@ export function analyze(raw) {
 
       let contrastPart = "";
       if (topText) {
-        const ratio = chroma.contrast(pageBg.hex, topText.hex);
+        const ratio = textRoles ? contrastOn(topText.hex, pageBg.hex) : chroma.contrast(pageBg.hex, topText.hex);
         contrastPart =
           ratio >= 10 ? ", high contrast" :
           ratio >= 5 ? ", strong contrast" :
@@ -805,6 +869,7 @@ export function analyze(raw) {
     blockLikely: raw.blockLikely || false,
     insufficient,
     ...(pageBackground !== undefined ? { pageBackground } : {}),
+    ...(textRoles ? { textRoles } : {}),
     evidence,
     motion: raw.motion || null,
     atmosphere,
