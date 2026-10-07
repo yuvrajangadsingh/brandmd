@@ -2,6 +2,13 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.3] - 2026-10-08
+
+### Fixed
+
+- **Text roles come from contrast on the captured page background.** `on-background` was the first palette colour with the "Primary text" role, a role given by luminance, so a dark page got black text on a black background (github.com, spotify.com), and a text colour whose hex a fill already took was lost to the palette dedup (white text on a page of white cards). Captures that resolved the page background now pick `on-background` as the most frequent solid text colour at 4.5:1 or better, alpha composited first (50% black on white is about 4:1, not 21:1); with none the token is omitted and the Colors prose names the closest candidate and its ratio. `on-surface-variant` is the next text colour that reads on the background and on the surface. The character line uses the same pair, the Dark Mode Overrides list it, and the input component takes `on-background` only where it reads on the input's own surface, alpha composited. Captures without a page background keep the old roles. `brandmd check` against an older baseline reports a removed `on-background` as major drift where the old value never read; expected.
+- **Multi-page captures judge the text roles on the first page's text.** The merged text of every page stays palette evidence.
+
 ## [0.18.2] - 2026-10-08
 
 ### Fixed
