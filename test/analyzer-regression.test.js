@@ -409,3 +409,28 @@ test("a translucent colour never absorbs the solid colour under it", () => {
   assert.match(generate(tokens), /^  background: "#000000"$/m);
 });
 
+test("role tokens take solid colours only; translucent ones stay prose", () => {
+  const tokens = analyze(rawSkeleton({
+    colors: {
+      background: { "rgb(0, 0, 0)": 100, "rgba(34, 255, 153, 0.12)": 400 },
+      text: { "rgb(255, 255, 255)": 80 },
+      // A tinted red, not black: a translucent black still absorbs a dark grey at
+      // the cluster step (F-07, open), which is a different bug from this one.
+      border: { "rgba(255, 0, 0, 0.2)": 50, "rgb(38, 42, 45)": 10 },
+    },
+  }));
+  assert.notEqual(tokens.primaryColor?.hex, "#22ff991f", "a 12% scrim is not the accent");
+  const md = generate(tokens);
+  assert.match(md, /^  background: "#000000"$/m);
+  assert.match(md, /^  outline: "#262a2d"$/m);
+  assert.doesNotMatch(md, /^  (background|on-background|surface|on-surface-variant|primary|secondary): "#[0-9a-f]{6}[0-7][0-9a-f]"$/m, "no fill, text or accent token under 50% alpha");
+  assert.match(md, /`#22ff991f`\): Overlay \/ scrim/, "the scrim is still reported as what it is");
+  assert.match(md, /No explicit accent or action color was observed/);
+
+  // A translucent divider is how most sites draw one; it stays the outline.
+  const divider = generate(analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 100 }, text: { "rgb(0, 0, 0)": 50 }, border: { "rgba(0, 0, 0, 0.1)": 40 } },
+  })));
+  assert.match(divider, /^  outline: "#0000001a"$/m);
+});
+
