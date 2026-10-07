@@ -2,6 +2,13 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.17.1] - 2026-10-07
+
+### Fixed
+
+- **`--agent` wrappers pointed at sections that do not exist.** The Cursor rule sent the agent to a "Color Palette" section and the skill to "Component Stylings". `DESIGN.md` has called them Colors and Components since 0.14, and the wrappers now say so.
+- **Shadows carried layers that paint nothing.** Tailwind pads `box-shadow` with `rgba(0, 0, 0, 0) 0px 0px 0px 0px` ring and offset placeholders, and they were written into the Level lines, the card shadow, `--css` and `--tailwind`. Zero-alpha layers are dropped, shadows that then match count as one, and a multi-page run drops them before it merges pages. The Level order and `--shadow-sm`, `-md`, `-lg` can point at a different shadow than before.
+
 ## [0.17.0] - 2026-09-30
 
 ### Fixed
