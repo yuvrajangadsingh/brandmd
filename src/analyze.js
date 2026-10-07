@@ -10,11 +10,12 @@ function toHex(cssColor) {
   } catch {
     // Try parsing rgb/rgba manually
     const match = cssColor.match(
-      /rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\s*\)/i
+      /rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+)(%?))?\s*\)/i
     );
     if (match) {
       try {
-        return chroma(+match[1], +match[2], +match[3]).hex();
+        const alpha = match[4] === undefined ? 1 : +match[4] / (match[5] ? 100 : 1);
+        return chroma(+match[1], +match[2], +match[3]).alpha(alpha).hex();
       } catch {
         return null;
       }
@@ -90,6 +91,8 @@ function clusterColors(colorFreqPairs, threshold = 15) {
   for (const [color, freq] of colorFreqPairs) {
     const hex = toHex(color);
     if (!hex) continue;
+    // Alpha 0 paints nothing: layout plumbing, not palette evidence.
+    if (/^#[0-9a-f]{6}00$/i.test(hex)) continue;
 
     let merged = false;
     for (const cluster of clusters) {
@@ -329,6 +332,7 @@ function round2(v) {
  */
 function vividness(hex) {
   try {
+    if (chroma(hex).alpha() < 0.5) return -1; // a tint is not an action colour
     const [, s, l] = chroma(hex).hsl();
     const sat = s || 0;
     const li = l || 0;
