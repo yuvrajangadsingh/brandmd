@@ -5,10 +5,10 @@ description: "Dark, high contrast"
 colors:
   background: "#08090a"
   on-background: "#f7f8f8"
-  surface: "#e5e5e6"
-  on-surface-variant: "#62666d"
+  surface: "#0f1011"
+  on-surface-variant: "#8a8f98"
   outline: "#24282c"
-  primary: "#06b6d4"
+  primary: "#4ea7fc"
   on-primary: "#1a1a1a"
   secondary: "#f79ce0"
   on-secondary: "#1a1a1a"
@@ -33,30 +33,30 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: Inter
     fontSize: 14px
     fontWeight: 400
     lineHeight: 1.71
   label-sm:
     fontFamily: Inter
-    fontSize: 13.5px
+    fontSize: 12px
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.17
 rounded:
-  sm: 2px
-  md: 4px
-  lg: 6px
-  xl: 8px
+  sm: 4px
+  md: 6px
+  lg: 8px
+  xl: 9px
   2xl: 12px
   full: 9999px
 spacing:
   base: 8px
-  xs: 1px
-  sm: 2px
+  xs: 2px
+  sm: 3px
   md: 4px
-  lg: 5px
-  xl: 6px
+  lg: 6px
+  xl: 7px
 components:
   button-primary:
     backgroundColor: "#e5e5e6"
@@ -67,16 +67,16 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: "{rounded.sm}"
-    height: 20px
+    rounded: 0px
+    padding: 1px
+    height: 28px
   card:
     backgroundColor: "{colors.surface}"
-    rounded: 0px
+    rounded: "{rounded.xl}"
     padding: 12px
   input:
     typography: "{typography.body-md}"
-    rounded: "{rounded.lg}"
-    padding: 12px
+    rounded: 0px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://linear.app](https://linear.app) with `npx brandmd`.
@@ -103,14 +103,14 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#f7f8f8`): Light text (on dark) (dominant)
 - **Black** (`#08090a`): Dark background / footer (dominant)
 - **Light gray** (`#e5e5e6`): Surface / card background (dominant)
-- **Gray** (`#62666d`): Secondary text (accent)
 - **Gray** (`#8a8f98`): Secondary text (accent)
+- **Gray** (`#62666d`): Secondary text (accent)
 - **Light Pink** (`#f79ce0`): Link / accent text (accent)
 - **Near-transparent Vivid Green** (`#00ff051a`): Overlay / scrim (accent)
-- **Dark gray** (`#24282c`): Divider / border (accent)
-- **Blue** (`#5e6ad2`): Accent background (accent)
 - **Red** (`#eb5757`): Accent background (accent)
-- **Vivid Cyan** (`#06b6d4`): Accent background (accent)
+- **Vivid Blue** (`#4ea7fc`): Accent background (accent)
+- **Dark gray** (`#24282c`): Divider / border (accent)
+- **Green** (`#27a644`): Accent background (accent)
 
 ## Typography
 
@@ -126,31 +126,31 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body / UI: 14px, 15px, 16px, 18px
 - Captions / Small: 10px, 11px, 12px, 13px, 13.5px
 
-**Weights in use:** 300, 400, 510, 590
+**Weights in use:** 300, 400, 500, 510, 590
 
-**Line heights:** 24px, 17px, 19.5px, 15px, 21px, 32px, 18px, 29px, 48px, 64px
+**Line heights:** 24px, 14px, 19.5px, 16px, 17px, 20px, 29px, 32px, 21px, 48px
 
-**Letter spacing:** -0.13px, -0.165px, -0.182px, -0.15px, -0.12px, -1.056px
+**Letter spacing:** -0.13px, -0.165px, -0.15px, -0.182px, -0.039px, -0.06px
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 5px, 6px, 8px, 12px, 24px, 32px
+**Spacing scale:** 3px, 4px, 6px, 7px, 8px, 10px, 12px, 32px
 
 ## Elevation & Depth
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0.03) 0px 1.2px 0px 0px`
-- Level 2: `rgba(0, 0, 0, 0.4) 0px 2px 4px 0px`
-- Level 3: `rgba(0, 0, 0, 0.2) 0px 0px 12px 0px inset`
-- Level 4: `rgb(35, 37, 42) 0px 0px 0px 1px inset`
-- Level 5: `rgba(0, 0, 0, 0.2) 0px 0px 0px 1px`
+- Level 1: `rgba(0, 0, 0, 0.2) 0px 0px 0px 1px`
+- Level 2: `rgba(0, 0, 0, 0.2) 0px 0px 12px 0px inset`
+- Level 3: `rgba(0, 0, 0, 0.25) 0px 2px 32px 0px`
+- Level 4: `rgba(255, 255, 255, 0.08) 0px 0px 0px 0.5px inset`
+- Level 5: `rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset`
 
 ## Shapes
 
 **Shape language:** Subtle rounding on interactive elements.
 
-**Border radii:** 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 50%, 9999px (pill)
+**Border radii:** 4px, 6px, 8px, 9px, 12px, 12px 12px 0px 0px, 50%, 9999px (pill)
 
 Asymmetric / percentage radii observed (12px 12px 0px 0px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
@@ -167,24 +167,24 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Font: 16px, weight 510
 
 ### Cards
-- Corner radius: 0px
-- Padding: 12px 12px 0px 12px
+- Background: `#0f1011`
+- Corner radius: 9px
+- Shadow: `rgba(0, 0, 0, 0.2) 0px 0px 0px 1px`
+- Padding: 12px 16px 16px 16px
 
 ### Inputs
-- Background: `#ffffff05`
-- Border: 1px solid rgba(255, 255, 255, 0.08)
-- Corner radius: 6px
-- Padding: 12px 14px 12px 14px
-- Font size: 13.3333px
+- Border: 0px none rgba(0, 0, 0, 0)
+- Corner radius: 0px
+- Padding: 0px 32px 0px 63.8px
+- Font size: 14px
 
 ## Do's and Don'ts
 
-- Do use `#06b6d4` for primary actions and CTAs
-- Do stick to 4 font weights: 300, 400, 510, 590
+- Do use `#4ea7fc` for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and Berkeley Mono
-- Don't use border-radius values outside: 2px, 4px, 6px, 8px, 12px, 12px 12px 0px 0px, 50%, 9999px (pill)
+- Don't use border-radius values outside: 4px, 6px, 8px, 9px, 12px, 12px 12px 0px 0px, 50%, 9999px (pill)
 
 ---
 

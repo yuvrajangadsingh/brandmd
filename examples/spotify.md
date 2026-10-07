@@ -7,14 +7,13 @@ colors:
   on-background: "#000000"
   on-surface-variant: "#b3b3b3"
   outline: "#7c7c7c"
-  outline-variant: "#292929"
   primary: "#1ed760"
   on-primary: "#1a1a1a"
-  secondary: "#b01820"
+  secondary: "#bc5b2a"
   on-secondary: "#ffffff"
 typography:
   headline-lg:
-    fontFamily: SpotifyMixUI
+    fontFamily: SpotifyMixUITitle
     fontSize: 24px
     fontWeight: 700
     lineHeight: 1.25
@@ -23,7 +22,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: SpotifyMixUI
     fontSize: 14px
     fontWeight: 400
@@ -50,11 +49,11 @@ spacing:
   xl: 16px
 components:
   button-primary:
-    backgroundColor: "#292929"
+    backgroundColor: "#1f1f1f"
     textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    padding: 8px
-    height: 40px
+    padding: 12px
+    height: 48px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -65,8 +64,6 @@ components:
     rounded: "{rounded.lg}"
     padding: 12px
   input:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.on-background}"
     typography: "{typography.body-md}"
     rounded: 0px
 ---
@@ -97,38 +94,37 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Light gray** (`#b3b3b3`): Muted text (dominant)
 - **Black** (`#121212`): Dark background / footer (dominant)
 - **Gray** (`#7c7c7c`): Divider / border (dominant)
-- **Dark gray** (`#292929`): Divider / border (dominant)
 - **Black** (`#000000`): Primary text (accent)
 - **Green** (`#1ed760`): Accent background (accent)
 - **White** (`#ffffff`): Page background (accent)
-- **Dark gray** (`#535353`): Dark background / footer (accent)
-- **Red** (`#b01820`): Accent background (accent)
-- **Dark Red** (`#400808`): Dark background / footer (accent)
+- **Orange** (`#bc5b2a`): Accent background (accent)
 - **Vivid Blue** (`#0000ee`): Primary text (accent)
+
+**Incidental (low usage, do not lead with these):** `#782830`, `#535353`
 
 ## Typography
 
-**Primary font:** SpotifyMixUI
-**Secondary font:** SpotifyMixUITitle
+**Primary font:** SpotifyMixUITitle
+**Secondary font:** SpotifyMixUI
 
 **Fonts by role:**
-- Headings: SpotifyMixUI, SpotifyMixUITitle
+- Headings: SpotifyMixUITitle, SpotifyMixUI
 - Body: SpotifyMixUI
 
-**All detected fonts:** SpotifyMixUI (1397), SpotifyMixUITitle (9), Times (1)
+**All detected fonts:** SpotifyMixUI (1348), SpotifyMixUITitle (10), Times (1)
 
 **Type scale:**
 - Headings: 24px
 - Body / UI: 14px, 16px
-- Captions / Small: 10.5px, 12px, 13.5px
+- Captions / Small: 12px, 13.5px
 
-**Weights in use:** 400, 600, 700
+**Weights in use:** 400, 700
 
-**Line heights:** 14px, 24px
+**Line heights:** 24px
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 24px, 32px, 171.5px
+**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 20px, 24px, 171.5px
 
 **Base unit:** 4px grid — 83% of all weighted spacing values are multiples of 4.
 
@@ -153,11 +149,11 @@ Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#292929`
+- Background: `#1f1f1f`
 - Text color: `#ffffff`
 - Corner radius: 50%
-- Height: 40px
-- Padding: 8px 8px 8px 8px
+- Height: 48px
+- Padding: 12px 12px 12px 12px
 - Font: 16px, weight 400
 
 ### Cards
@@ -165,7 +161,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Padding: 12px 12px 12px 12px
 
 ### Inputs
-- Background: `#ffffff`
+- Background: `#3b3b3b`
 - Border: 1px solid rgb(193, 193, 193)
 - Corner radius: 0px
 - Padding: 0px 0px 0px 0px
@@ -175,10 +171,10 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 - Do use a 4px grid for spacing
 - Do use `#1ed760` for primary actions and CTAs
-- Do stick to 3 font weights: 400, 600, 700
-- Do use `SpotifyMixUI` as the primary typeface
+- Do stick to 2 font weights: 400, 700
+- Do use `SpotifyMixUITitle` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond SpotifyMixUI and SpotifyMixUITitle
+- Don't mix fonts beyond SpotifyMixUITitle and SpotifyMixUI
 - Don't use border-radius values outside: 2px, 4px, 6px, 8px, 10px, 50%, 500px, 9999px (pill)
 
 ---

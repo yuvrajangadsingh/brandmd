@@ -32,7 +32,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: Monaco
     fontSize: 14px
     fontWeight: 500
@@ -126,7 +126,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: Monaco
 - Buttons / nav: Rubik
 
-**All detected fonts:** Rubik (1245), Monaco (1128), IBM Plex Mono (57), Segoe UI (41), Dammit Sans (17)
+**All detected fonts:** Rubik (1249), Monaco (1128), IBM Plex Mono (57), Segoe UI (41), Dammit Sans (17)
 
 **Type scale:**
 - Headings: 24px, 27px, 30px, 60px, 88px
@@ -135,7 +135,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 24px, 32px, 18px, 14px, 66px, 34px, 16px, 21px, 30px, 20px
+**Line heights:** 24px, 32px, 18px, 14px, 66px, 16px, 34px, 21px, 30px, 20px
 
 **Letter spacing:** 0.2px, 0%
 
@@ -166,7 +166,7 @@ Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `linear-gradient(120deg, rgb(250, 127, 170), rgb(255, 150, 145), rgb(255, 178, 135) 50%, rgb(255, 255, 255) 55%, rgb(255, 255, 255) 100%)` (gradient; first stop `#fa7faa`)
+- Background: `linear-gradient(120deg, rgb(250, 127, 170) 0%, rgb(255, 150, 145) 25%, rgb(255, 178, 135) 50%, rgb(255, 255, 255) 55%, rgb(255, 255, 255) 100%)` (gradient; first stop `#fa7faa`)
 - Text color: `#1f1633`
 - Corner radius: 8px
 - Height: 40px

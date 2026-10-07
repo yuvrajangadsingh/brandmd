@@ -7,7 +7,7 @@ colors:
   on-background: "#000000"
   surface: "#5e5d59"
   on-surface-variant: "#87867f"
-  outline: "#d1cfc5"
+  outline: "#e8e6dc"
   outline-variant: "#30302e"
   primary: "#c6613f"
   on-primary: "#1a1a1a"
@@ -27,16 +27,16 @@ typography:
     fontSize: 30px
     fontWeight: 400
     lineHeight: 1.2
-  body-md:
-    fontFamily: anthropicSans
-    fontSize: 15px
-    fontWeight: 400
-    lineHeight: 1.5
   body-lg:
     fontFamily: anthropicSans
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.63
+  body-md:
+    fontFamily: anthropicSans
+    fontSize: 15px
+    fontWeight: 400
+    lineHeight: 1.5
   label-sm:
     fontFamily: anthropicSans
     fontSize: 12px
@@ -50,12 +50,12 @@ rounded:
   2xl: 16px
   3xl: 24px
 spacing:
-  base: 4px
-  xs: 6px
-  sm: 8px
-  md: 12px
-  lg: 16px
-  xl: 20px
+  base: 8px
+  xs: 4px
+  sm: 12px
+  md: 16px
+  lg: 20px
+  xl: 24px
 components:
   button-primary:
     backgroundColor: "#c6613f"
@@ -95,18 +95,16 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
-
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Black** (`#000000`): Primary text (dominant)
 - **Cream** (`#faf9f5`): Page background (dominant)
-- **Light gray** (`#d1cfc5`): Divider / border (dominant)
-- **Dark gray** (`#30302e`): Divider / border (dominant)
+- **Light Muted Yellow** (`#e8e6dc`): Divider / border (dominant)
 - **Gray** (`#87867f`): Secondary text (accent)
 - **Black** (`#141413`): Dark background / footer (accent)
+- **Dark gray** (`#30302e`): Divider / border (accent)
 - **Orange** (`#c6613f`): Accent background (accent)
 
 **Incidental (low usage, do not lead with these):** `#5e5d59`
@@ -120,7 +118,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: anthropicSans, anthropicSerif
 - Body: anthropicSans
 
-**All detected fonts:** anthropicSans (819), anthropicSerif (12), Segoe UI (1)
+**All detected fonts:** anthropicSans (897), anthropicSerif (12), Segoe UI (1)
 
 **Type scale:**
 - Headings: 24px, 30px, 52px, 72px
@@ -129,7 +127,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 330, 400, 500, 600, 700
 
-**Line heights:** 22.5px, 26px, 19px, 24px, 18px, 17.5px, 19.5px, 27px, 20px, 62.5px
+**Line heights:** 22.5px, 19px, 26px, 24px, 12px, 18px, 17.5px, 19.5px, 20px, 27px
 
 **Letter spacing:** 0.12px
 
@@ -137,15 +135,15 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Spacing scale:** 4px, 8px, 12px, 16px, 20px, 24px, 32px, 64px
 
-**Base unit:** 4px grid — 99% of all weighted spacing values are multiples of 4.
+**Base unit:** 4px grid — 100% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0.1) 0px 4px 16px 0px`
-- Level 2: `rgb(20, 20, 19) 0px 0px 0px 0px`
-- Level 3: `rgb(250, 249, 245) 0px 0px 0px 0px, rgb(209, 207, 197) 0px 0px 0px 1px`
+- Level 1: `rgb(250, 249, 245) 0px 0px 0px 0px, rgb(209, 207, 197) 0px 0px 0px 1px`
+- Level 2: `rgba(0, 0, 0, 0.1) 0px 4px 16px 0px`
+- Level 3: `rgb(20, 20, 19) 0px 0px 0px 0px`
 - Level 4: `rgba(0, 0, 0, 0.016) 0px 4px 24px 0px, rgba(0, 0, 0, 0.016) 0px 4px 32px 0px, rgba(0, 0, 0, 0.01) 0px 2px 64px 0px, rgba(0, 0, 0, 0.01) 0px 16px 32px 0px`
 - Level 5: `color(srgb 0.85098 0.466667 0.341177 / 0.1) 0px 4px 20px 0px`
 
@@ -167,7 +165,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Corner radius: 8px
 - Height: 28px
 - Padding: 4px 4px 4px 4px
-- Font: 12px, weight 400
+- Font: 12px, weight 500
 
 ### Cards
 - Corner radius: 0px

@@ -12,20 +12,25 @@ colors:
 typography:
   display:
     fontFamily: Anthropic Sans
+    fontSize: 68.5px
+    fontWeight: 400
+    lineHeight: 1.09
+  headline-lg:
+    fontFamily: Anthropic Sans
     fontSize: 61px
     fontWeight: 700
     lineHeight: 1.1
-  headline-lg:
+  headline-md:
     fontFamily: Anthropic Sans
     fontSize: 24px
     fontWeight: 600
     lineHeight: 1.29
-  body-md:
+  body-lg:
     fontFamily: Anthropic Sans
     fontSize: 20px
     fontWeight: 400
     lineHeight: 1.4
-  body-lg:
+  body-md:
     fontFamily: Anthropic Sans
     fontSize: 16px
     fontWeight: 400
@@ -99,16 +104,16 @@ _No explicit accent or action color was observed on this page. The machine token
 - Body: Anthropic Sans
 - Buttons / nav: Anthropic Serif
 
-**All detected fonts:** Anthropic Sans (452), Anthropic Serif (383), Anthropic Mono (6)
+**All detected fonts:** Anthropic Sans (484), Anthropic Serif (297), Anthropic Mono (9)
 
 **Type scale:**
-- Headings: 24px, 61px
-- Body / UI: 14px, 15px, 16px, 18px, 20px
+- Headings: 24px, 61px, 68.5px
+- Body / UI: 14px, 15px, 16px, 18px, 20px, 22.5px
 - Captions / Small: 12px
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 17px, 28px, 22.5px, 16px, 67px, 31px, 25px, 18px, 15px, 21px
+**Line heights:** 17px, 22.5px, 28px, 16px, 67px, 31px, 25px, 18px, 21px, 15px
 
 **Letter spacing:** -0.24px, -0.08px, -0.0375px
 

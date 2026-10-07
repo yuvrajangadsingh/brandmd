@@ -11,26 +11,31 @@ colors:
   primary: "#181818"
   on-primary: "#ffffff"
 typography:
+  display:
+    fontFamily: OpenAI Sans
+    fontSize: 80px
+    fontWeight: 600
+    lineHeight: 1
   headline-lg:
+    fontFamily: OpenAI Sans
+    fontSize: 30px
+    fontWeight: 600
+    lineHeight: 1.4
+  headline-md:
     fontFamily: OpenAI Sans
     fontSize: 26px
     fontWeight: 600
     lineHeight: 1.5
-  headline-md:
-    fontFamily: OpenAI Sans
-    fontSize: 24px
-    fontWeight: 600
-    lineHeight: 1.25
-  body-md:
-    fontFamily: OpenAI Sans
-    fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.43
   body-lg:
     fontFamily: OpenAI Sans
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
+  body-md:
+    fontFamily: OpenAI Sans
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.43
 rounded:
   sm: 6px
   md: 8px
@@ -39,12 +44,12 @@ rounded:
   2xl: 16px
   full: 9999px
 spacing:
-  base: 12px
+  base: 6px
   xs: 1px
   sm: 2px
   md: 4px
-  lg: 6px
-  xl: 8px
+  lg: 8px
+  xl: 10px
 components:
   button-primary:
     backgroundColor: "#181818"
@@ -55,8 +60,8 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.body-md}"
-    rounded: "{rounded.sm}"
-    height: 28px
+    rounded: "{rounded.md}"
+    height: 32px
   card:
     rounded: "{rounded.xl}"
     padding: 16px
@@ -96,7 +101,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Off-white** (`#ededed`): Divider / border (dominant)
 - **Gray** (`#5d5d5d`): Secondary text (accent)
 
-**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#181818`
+**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#00000000`
 
 ## Typography
 
@@ -108,14 +113,14 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: OpenAI Sans
 
 **Type scale:**
-- Headings: 24px, 26px, 30px
+- Headings: 24px, 26px, 30px, 80px
 - Body / UI: 14px, 16px, 18px
 
 **Weights in use:** 400, 500, 600
 
-**Line heights:** 20px, 24px, 14px, 29px, 39px, 42px
+**Line heights:** 20px, 24px, 14px, 80px, 29px, 39px, 42px
 
-**Letter spacing:** -0.14px, -0.16px, -0.18px, -0.52px, -0.6px
+**Letter spacing:** -0.16px, -0.14px, -1.6px, -0.18px, -0.52px, -0.6px
 
 ## Layout
 
@@ -125,8 +130,8 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 Uses 2 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 2px 4px -1px`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.45) 0px 16px 48px -18px`
+- Level 1: `oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 2px 4px -1px`
+- Level 2: `rgba(15, 23, 42, 0.45) 0px 16px 48px -18px`
 
 ## Shapes
 

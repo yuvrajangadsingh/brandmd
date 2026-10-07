@@ -31,7 +31,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.25
-  body-lg:
+  body-sm:
     fontFamily: sohne-var
     fontSize: 14px
     fontWeight: 400
@@ -60,7 +60,7 @@ components:
     textColor: "#ffffff"
     typography: "{typography.label-sm}"
     rounded: "{rounded.sm}"
-    padding: 16px
+    padding: 12px
     height: 40px
   button-secondary:
     backgroundColor: transparent
@@ -121,13 +121,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 300, 400, 500, 700
 
-**Line heights:** 16px, 14.5px, 20px, 22.5px, 24px, 14px, 11.5px, 9px, 15.5px, 29px
+**Line heights:** 16px, 14.5px, 20px, 22.5px, 14px, 24px, 11.5px, 9px, 15.5px, 29px
 
 **Letter spacing:** -0.3px, 0.1px, -0.42px, -0.33px, -0.26px, -0.22px
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
+**Spacing scale:** 4px, 6px, 8px, 10px, 12px, 16px, 24px, 32px
 
 ## Elevation & Depth
 
@@ -156,7 +156,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Text color: `#ffffff`
 - Corner radius: 4px
 - Height: 40px
-- Padding: 15.5px 20px 16.5px 20px
+- Padding: 11.5px 20px 12.5px 20px
 - Font: 14px, weight 400
 
 ### Cards

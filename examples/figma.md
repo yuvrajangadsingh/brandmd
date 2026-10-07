@@ -28,7 +28,7 @@ typography:
     fontSize: 18px
     fontWeight: 330
     lineHeight: 1.39
-  body-lg:
+  body-sm:
     fontFamily: figmaSans
     fontSize: 16px
     fontWeight: 400
@@ -46,20 +46,19 @@ rounded:
   2xl: 24px
   full: 9999px
 spacing:
-  base: 8px
+  base: 12px
   xs: 2px
   sm: 4px
   md: 6px
-  lg: 12px
+  lg: 8px
   xl: 16px
 components:
   button-primary:
     backgroundColor: "#000000"
     textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.lg}"
-    padding: 12px
-    height: 46px
+    rounded: "{rounded.full}"
+    height: 36px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -114,15 +113,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 320, 330, 400
 
-**Line heights:** 25px, 23px, 18.5px, 20.5px, 22.5px, 48.5px, 36px, 21px, 12px, 88px
+**Line heights:** 25px, 23px, 20.5px, 22.5px, 16px, 18.5px, 48.5px, 36px, 21px, 12px
 
 **Letter spacing:** -0.12px, -0.14px, -0.66px, -1.25px, 0.48px, 0.6px
 
 ## Layout
 
-**Spacing scale:** 2px, 8px, 12px, 16px, 20px, 24px, 40px, 80px
-
-**Base unit:** 4px grid — 85% of all weighted spacing values are multiples of 4.
+**Spacing scale:** 2px, 6px, 8px, 12px, 16px, 24px, 40px, 80px
 
 ## Elevation & Depth
 
@@ -146,10 +143,10 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ### Buttons
 - Background: `#000000`
 - Text color: `#ffffff`
-- Corner radius: 8px
-- Height: 46px
-- Padding: 12px 22px 12px 22px
-- Font: 16px, weight 400
+- Corner radius: 9999px
+- Height: 36px
+- Padding: 0px 0px 0px 0px
+- Font: 14px, weight 400
 
 ### Cards
 - Corner radius: 0px
@@ -157,7 +154,6 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use a 4px grid for spacing
 - Do use `#00b6ff` for primary actions and CTAs
 - Do stick to 3 font weights: 320, 330, 400
 - Do use `figmaSans` as the primary typeface

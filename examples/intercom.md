@@ -1,11 +1,12 @@
 ---
 version: alpha
-name: "Intercom | The only helpdesk designed for the AI Agent era"
+name: "Intercom | A complete system for human and AI customer service"
 description: "Bright, high contrast"
 colors:
   background: "#ffffff"
-  outline: "#dedbd6"
-  outline-variant: "#00000026"
+  on-background: "#000000"
+  outline: "#11111133"
+  outline-variant: "#d3cec6"
   primary: "#ff5600"
   on-primary: "#1a1a1a"
   secondary: "#0007cb"
@@ -23,7 +24,7 @@ typography:
     lineHeight: 1
   headline-md:
     fontFamily: Saans
-    fontSize: 40px
+    fontSize: 28px
     fontWeight: 400
     lineHeight: 1
   body-md:
@@ -31,7 +32,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: Saans
     fontSize: 14px
     fontWeight: 400
@@ -39,8 +40,8 @@ typography:
   label-sm:
     fontFamily: Saans
     fontSize: 12px
-    fontWeight: 500
-    lineHeight: 1.29
+    fontWeight: 400
+    lineHeight: 1
 rounded:
   sm: 4px
   md: 6px
@@ -63,7 +64,11 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: 0px
-    height: 227px
+    height: 224px
+  input:
+    typography: "{typography.body-md}"
+    rounded: 0px
+    padding: 8px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://intercom.com](https://intercom.com) with `npx brandmd`.
@@ -73,7 +78,7 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: Intercom | The only helpdesk designed for the AI Agent era
+# Design System: Intercom | A complete system for human and AI customer service
 
 > Extracted from [https://intercom.com](https://intercom.com) by brandmd
 
@@ -91,10 +96,11 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
+- **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Black** (`#000000`): Dark background / footer (dominant)
-- **Light gray** (`#dedbd6`): Divider / border (dominant)
-- **Near-transparent Black** (`#00000026`): Divider / border (dominant)
+- **Near-transparent Black** (`#11111133`): Divider / border (dominant)
+- **Light Muted Orange** (`#d3cec6`): Divider / border (dominant)
+- **Black** (`#111111`): Dark background / footer (accent)
 - **Vivid Blue** (`#0007cb`): Accent background (accent)
 - **Vivid Orange** (`#ff5600`): Accent background (accent)
 
@@ -107,22 +113,22 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Saans
 - Body: Saans
 
-**All detected fonts:** Saans (819), SaansMono (130), Serrif (34), Segoe UI Symbol (3)
+**All detected fonts:** Saans (761), SaansMono (34), Serrif (21), Segoe UI Symbol (5)
 
 **Type scale:**
-- Headings: 24px, 25.5px, 28px, 40px, 54px, 80px
-- Body / UI: 14px, 16px, 20px
+- Headings: 24px, 28px, 54px, 80px
+- Body / UI: 14px, 15px, 16px, 20px
 - Captions / Small: 12px
 
 **Weights in use:** 300, 400, 500
 
-**Line heights:** 24px, 19.5px, 17.5px, 22.5px, 15px, 54px, 28px, 15.5px, 40px, 12px
+**Line heights:** 24px, 17.5px, 19.5px, 15.5px, 12px, 22.5px, 28px, 54px, 20px, 80px
 
-**Letter spacing:** -0.16px, -0.096px, -0.2px, -1.6px, -0.96px, 1.2px
+**Letter spacing:** 0.6px, -0.16px, -0.96px, 1.2px, -0.2px, -1.6px
 
 ## Layout
 
-**Spacing scale:** 4px, 8px, 12px, 14px, 16px, 24px, 32px, 48px
+**Spacing scale:** 4px, 8px, 12px, 14px, 16px, 24px, 32px, 96px
 
 **Base unit:** 4px grid — 91% of all weighted spacing values are multiples of 4.
 
@@ -147,6 +153,12 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 58px
 - Padding: 16px 16px 16px 16px
 - Font: 16px, weight 400
+
+### Inputs
+- Border: 0px none rgb(17, 17, 17)
+- Corner radius: 0px
+- Padding: 8px 12px 8px 12px
+- Font size: 14px
 
 ## Do's and Don'ts
 

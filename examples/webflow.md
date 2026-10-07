@@ -5,14 +5,11 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000"
-  on-surface-variant: "#5a5a5a"
+  on-surface-variant: "#808080"
   outline: "#d8d8d8"
   outline-variant: "#080808"
   primary: "#146ef5"
   on-primary: "#ffffff"
-  secondary: "#6ca7ff"
-  on-secondary: "#1a1a1a"
-  surface: "#146ef5"
 typography:
   display:
     fontFamily: WF Visual Sans
@@ -34,25 +31,26 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.59
-  body-lg:
+  body-sm:
     fontFamily: WF Visual Sans
-    fontSize: 20px
+    fontSize: 14px
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.61
   label-sm:
     fontFamily: WF Visual Sans
-    fontSize: 12px
-    fontWeight: 400
-    lineHeight: 1.5
+    fontSize: 10px
+    fontWeight: 500
+    lineHeight: 1.3
 rounded:
   sm: 2px
   md: 4px
   lg: 8px
+  full: 9999px
 spacing:
   base: 16px
-  xs: 4px
-  sm: 6px
-  md: 6.5px
+  xs: 1px
+  sm: 4px
+  md: 6px
   lg: 8px
   xl: 12px
 components:
@@ -70,15 +68,13 @@ components:
     padding: 21px
     height: 67px
   card:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.md}"
-    padding: 12px
+    rounded: 0px
   input:
     backgroundColor: "{colors.background}"
     textColor: "{colors.on-background}"
     typography: "{typography.body-md}"
-    rounded: 6px
-    padding: 8px
+    rounded: "{rounded.md}"
+    padding: 24px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://webflow.com](https://webflow.com) with `npx brandmd`.
@@ -94,7 +90,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -106,56 +102,52 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Near-transparent Black** (`#00000000`): Overlay / scrim (dominant)
+- **Near-transparent Black** (`#08080833`): Overlay / scrim (dominant)
 - **Light gray** (`#d8d8d8`): Divider / border (dominant)
 - **Black** (`#080808`): Divider / border (dominant)
-- **Gray** (`#5a5a5a`): Secondary text (accent)
-- **Blue** (`#6ca7ff`): Link / accent text (accent)
+- **Gray** (`#808080`): Secondary text (accent)
 - **Vivid Blue** (`#146ef5`): Accent background (accent)
-- **Light Purple** (`#cab1ff`): Accent background (accent)
-
-**Incidental (low usage, do not lead with these):** `#464646`
 
 ## Typography
 
 **Primary font:** WF Visual Sans
-**Secondary font:** WFVisualSans-Mono
 
 **Fonts by role:**
 - Headings: WF Visual Sans
 - Body: WF Visual Sans
 
 **Type scale:**
-- Headings: 24px, 32px, 40px, 56px, 80px
-- Body / UI: 14px, 16px, 20px
-- Captions / Small: 10px, 12px, 13px
+- Headings: 32px, 40px, 56px, 80px
+- Body / UI: 14px, 14.5px, 16px, 20px
+- Captions / Small: 10px, 12px
 
 **Weights in use:** 400, 500, 550, 600
 
-**Line heights:** 25.5px, 18px, 24px, 16px, 19px, 30px, 28px, 22.5px, 38.5px, 58px
+**Line heights:** 25.5px, 24px, 22.5px, 16px, 19px, 28px, 30px, 38.5px, 23px, 48px
 
-**Letter spacing:** -0.16px, -0.159808px, 1px, 0.6px, -0.8px
+**Letter spacing:** -0.16px, -0.159808px, 1px, -0.8px, 0.6px
 
 ## Layout
 
-**Spacing scale:** 4px, 6px, 8px, 12px, 14.5px, 16px, 24px, 32px
+**Spacing scale:** 1px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
 
 ## Elevation & Depth
 
-Uses 4 shadow styles for layering and elevation:
+Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 84px 24px 0px, rgba(0, 0, 0, 0.01) 0px 54px 22px 0px, rgba(0, 0, 0, 0.04) 0px 30px 18px 0px, rgba(0, 0, 0, 0.08) 0px 13px 13px 0px, rgba(0, 0, 0, 0.09) 0px 3px 7px 0px`
-- Level 2: `rgba(0, 0, 0, 0) 0px 105px 30px 0px, rgba(0, 0, 0, 0.02) 0px 67px 27px 0px, rgba(0, 0, 0, 0.06) 0px 38px 23px 0px, rgba(0, 0, 0, 0.1) 0px 17px 17px 0px, rgba(0, 0, 0, 0.12) 0px 4px 9px 0px`
-- Level 3: `rgba(0, 0, 0, 0.01) 0px 148px 42px 0px, rgba(0, 0, 0, 0.04) 0px 95px 38px 0px, rgba(0, 0, 0, 0.15) 0px 53px 32px 0px, rgba(0, 0, 0, 0.26) 0px 24px 24px 0px, rgba(0, 0, 0, 0.29) 0px 6px 13px 0px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 100px inset`
+- Level 1: `rgba(0, 0, 0, 0.29) 0px 6px 13px 0px, rgba(0, 0, 0, 0.26) 0px 24px 24px 0px, rgba(0, 0, 0, 0.15) 0px 53px 32px 0px, rgba(0, 0, 0, 0.04) 0px 95px 38px 0px, rgba(0, 0, 0, 0.01) 0px 148px 42px 0px`
+- Level 2: `rgba(0, 0, 0, 0.02) 0px 39px 16px 0px, rgba(0, 0, 0, 0.06) 0px 22px 13px 0px, rgba(0, 0, 0, 0.12) 0px 2px 5px 0px, rgba(0, 0, 0, 0.1) 0px 10px 10px 0px`
+- Level 3: `rgba(8, 8, 8, 0.08) 0px 4px 4px 0px, rgba(8, 8, 8, 0.2) 0px 1px 2px 0px, rgba(255, 255, 255, 0.12) 0px 6px 12px 0px inset, rgba(255, 255, 255, 0.2) 0px 1px 1px 0px inset`
+- Level 4: `rgba(0, 0, 0, 0.12) 0px 9px 4px 0px, rgba(0, 0, 0, 0.1) 0px 17px 17px 0px, rgba(0, 0, 0, 0.06) 0px 38px 23px 0px, rgba(0, 0, 0, 0.02) 0px 67px 27px 0px`
+- Level 5: `rgb(128, 128, 128) 0px 0px 5px 0px`
 
 ## Shapes
 
 **Shape language:** Subtle rounding on interactive elements.
 
-**Border radii:** 0px 0px 8px 8px, 0px 2px 2px 0px, 0px 0px 4px 4px, 2px 2px 0px 0px, 2px, 4px, 8px, 50%
+**Border radii:** 0px 0px 8px 8px, 2px, 4px, 8px, 26%, 50%, 9999px (pill)
 
-Asymmetric / percentage radii observed (0px 0px 8px 8px, 0px 2px 2px 0px, 0px 0px 4px 4px, 2px 2px 0px 0px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (0px 0px 8px 8px, 26%, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
@@ -170,16 +162,15 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Font: 16px, weight 500
 
 ### Cards
-- Background: `#146ef5`
-- Corner radius: 4px
-- Padding: 12px 8px 12px 16px
+- Corner radius: 0px
+- Padding: 0px 0px 0px 0px
 
 ### Inputs
 - Background: `#ffffff`
-- Border: 1px solid rgb(209, 213, 219)
-- Corner radius: 6px
-- Padding: 8px 12px 8px 12px
-- Font size: 14px
+- Border: 1px solid rgb(216, 216, 216)
+- Corner radius: 4px
+- Padding: 24px 24px 24px 24px
+- Font size: 16px
 
 ## Do's and Don'ts
 
@@ -187,8 +178,8 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Do stick to 4 font weights: 400, 500, 550, 600
 - Do use `WF Visual Sans` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond WF Visual Sans and WFVisualSans-Mono
-- Don't use border-radius values outside: 0px 0px 8px 8px, 0px 2px 2px 0px, 0px 0px 4px 4px, 2px 2px 0px 0px, 2px, 4px, 8px, 50%
+- Don't mix fonts; use WF Visual Sans everywhere
+- Don't use border-radius values outside: 0px 0px 8px 8px, 2px, 4px, 8px, 26%, 50%, 9999px (pill)
 
 ---
 

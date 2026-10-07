@@ -23,7 +23,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: geistNumbers
     fontSize: 15px
     fontWeight: 400
@@ -93,8 +93,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Dark gray** (`#42434d`): Dark background / footer (accent)
 - **Near-transparent Vivid Cyan** (`#3ad4fd14`): Overlay / scrim (accent)
 - **Vivid Purple** (`#6c47ff`): Accent background (accent)
+- **Red** (`#e0876a`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#9394a1`, `#13131600`, `#7476860d`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#9394a1`, `#13131600`
 
 ## Typography
 
@@ -106,7 +107,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: geistNumbers
 - Buttons / nav: soehneMono
 
-**All detected fonts:** geistNumbers (1806), Segoe UI Symbol (795), Inter (169), soehneMono (53)
+**All detected fonts:** geistNumbers (1855), Segoe UI Symbol (794), Inter (169), soehneMono (55)
 
 **Type scale:**
 - Headings: 32px
@@ -127,11 +128,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.188081 0.0016512 -0.00579907 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 5px 15px 0px, rgba(25, 28, 33, 0.2) 0px 15px 35px -5px`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
-- Level 3: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.999994 0.0000455678 0.0000200868 / 0.05) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, lab(84.5189 -31.4667 -23.9754 / 0.08) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 5: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.249859 0.00254738 -0.00901626 / 0.1) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
+- Level 1: `oklab(0.188081 0.0016512 -0.00579907 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 5px 15px 0px, rgba(25, 28, 33, 0.2) 0px 15px 35px -5px`
+- Level 2: `rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
+- Level 3: `oklab(0.999994 0.0000455678 0.0000200868 / 0.05) 0px 0px 0px 1px inset`
+- Level 4: `lab(84.5189 -31.4667 -23.9754 / 0.08) 0px 0px 0px 1px inset`
+- Level 5: `oklab(0.249859 0.00254738 -0.00901626 / 0.1) 0px 0px 0px 1px inset`
 
 ## Shapes
 
