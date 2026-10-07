@@ -482,3 +482,159 @@ test("dark mode overrides list the captured page background when it differs", ()
   const lines = generate(light).match(/^- Page background:.*$/gm);
   assert.deepEqual(lines, ["- Page background: `#ffffff` → `#000000`"]);
 });
+
+test("text roles come from contrast on the captured background, not luminance", () => {
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50 }, text: { "rgb(0, 0, 0)": 100, "rgb(255, 255, 255)": 10 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  }));
+  assert.equal(t.textRoles.onBackground, "#ffffff");
+  const md = generate(t);
+  assert.match(md, /^  on-background: "#ffffff"$/m);
+  assert.match(md, /white text/);
+});
+
+test("a text colour whose hex a fill already took still becomes on-background", () => {
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50, "rgb(255, 255, 255)": 40 }, text: { "rgb(255, 255, 255)": 30 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  }));
+  assert.ok(!t.palette.some((c) => c.type === "text"), "the palette dedup dropped the white text");
+  assert.match(generate(t), /^  on-background: "#ffffff"$/m);
+});
+
+test("alpha is composited before contrast; nothing readable omits on-background and says so", () => {
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50 }, text: { "rgba(0, 0, 0, 0.5)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  }));
+  assert.equal(t.textRoles.onBackground, null);
+  const md = generate(t);
+  assert.doesNotMatch(md, /^  on-background:/m);
+  assert.doesNotMatch(md, /^  on-surface-variant:/m);
+  assert.match(md, /No text colour reads at 4\.5:1 on the page background `#ffffff`; the closest is `#00000080` at 4:1, so `on-background` is omitted/);
+});
+
+test("on-surface-variant must read on the background and on the surface", () => {
+  const t = analyze(rawSkeleton({
+    colors: {
+      background: { "rgb(255, 255, 255)": 50, "rgb(170, 170, 170)": 20 },
+      text: { "rgb(0, 0, 0)": 100, "rgb(118, 118, 118)": 50, "rgb(26, 26, 110)": 30 },
+      border: {},
+    },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  }));
+  const md = generate(t);
+  assert.match(md, /^  on-background: "#000000"$/m);
+  assert.match(md, /^  surface: "#aaaaaa"$/m);
+  assert.match(md, /^  on-surface-variant: "#1a1a6e"$/m, "#767676 reads on white (4.54:1) but not on the surface (1.96:1)");
+});
+
+test("the 4.5:1 gate uses the alpha byte the token carries, not chroma's rounded alpha", () => {
+  // rgba(132,132,132,.88) on black emits #848484e0: 224/255 composites to 4.49:1, .88 to 4.50:1
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50 }, text: { "rgba(132, 132, 132, 0.88)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  }));
+  assert.equal(t.textRoles.onBackground, null);
+  assert.match(generate(t), /the closest is `#848484e0` at 4\.49:1/);
+});
+
+test("on-surface-variant distinctness is judged on the composited colours", () => {
+  const white = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50 }, text: { "rgba(0, 0, 0, 0.6)": 100, "rgb(102, 102, 102)": 50 }, border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  }));
+  const w = generate(white);
+  assert.match(w, /^  on-background: "#00000099"$/m);
+  assert.doesNotMatch(w, /^  on-surface-variant:/m, "#666666 is the same grey as 60% black on white");
+  const black = analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50 }, text: { "rgb(255, 255, 255)": 100, "rgba(255, 255, 255, 0.6)": 50 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  }));
+  assert.match(generate(black), /^  on-surface-variant: "#ffffff99"$/m, "60% white on black is a distinct grey");
+});
+
+test("on-background is emitted with the alpha byte the gate checked", async () => {
+  // rgba(228,228,228,.514) on black is #e4e4e483 at 4.56:1; reparsed through chroma it comes out #e4e4e482 at 4.49:1
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50 }, text: { "rgba(228, 228, 228, 0.514)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  }));
+  assert.match(generate(t), /^  on-background: "#e4e4e483"$/m);
+  const { contrastOn } = await import("../src/analyze.js");
+  assert.equal(contrastOn("#000a", "#999999"), contrastOn("#000000aa", "#999999"), "a 4-digit hex carries the same alpha byte");
+});
+
+test("the omission prose never rounds a rejected ratio up to 4.5:1", () => {
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50 }, text: { "rgb(14, 135, 100)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  }));
+  assert.equal(t.textRoles.onBackground, null, "#0e8764 on white is 4.498:1");
+  assert.match(generate(t), /the closest is `#0e8764` at 4\.49:1/);
+});
+
+test("a translucent primary still excludes itself from secondary", () => {
+  // the palette byte (#ff000083) and a chroma reparse (#ff000082) must compare equal, or the primary displaces the blue
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50, "rgba(255, 0, 0, 0.514)": 40, "rgb(0, 0, 255)": 20 }, text: { "rgb(0, 0, 0)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  }));
+  const md = generate(t);
+  assert.match(md, /^  primary: "#ff000083"$/m);
+  assert.match(md, /^  secondary: "#0000ff"$/m);
+});
+
+test("captures without a page background keep the luminance text roles", () => {
+  // Black text on a near-black page: the luminance rule calls it Primary text and
+  // the new rule would pick white. Without the field the old output stands.
+  const colors = { background: { "rgb(20, 20, 20)": 50 }, text: { "rgb(0, 0, 0)": 100, "rgb(255, 255, 255)": 10 }, border: {} };
+  const legacy = analyze(rawSkeleton({ colors }));
+  assert.equal(legacy.textRoles, undefined);
+  assert.match(generate(legacy), /^  on-background: "#000000"$/m);
+  const captured = analyze(rawSkeleton({ colors, pageBackground: { surface: "rgb(20, 20, 20)", canvas: null } }));
+  assert.match(generate(captured), /^  on-background: "#ffffff"$/m);
+});
+
+test("a one-use translucent black does not absorb a hundred-use black on its way to the gate", () => {
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50 }, text: { "rgba(0, 0, 0, 0.5)": 1, "rgb(0, 0, 0)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  }));
+  assert.equal(t.textRoles.onBackground, "#000000");
+});
+
+test("equally frequent text candidates resolve the same whatever order the capture listed them", () => {
+  const pick = (text) => analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50 }, text, border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  })).textRoles.onBackground;
+  assert.equal(pick({ "rgb(153, 0, 0)": 10, "rgb(0, 0, 153)": 10 }), "#000099");
+  assert.equal(pick({ "rgb(0, 0, 153)": 10, "rgb(153, 0, 0)": 10 }), "#000099");
+});
+
+test("an input takes on-background only where it reads on the input's own surface", () => {
+  const md = generate(analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50, "rgb(102, 102, 102)": 10 }, text: { "rgb(17, 17, 17)": 100, "rgba(255, 255, 255, 0.5)": 50 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+    components: {
+      buttons: [],
+      cards: [{ bg: "rgb(102, 102, 102)", radius: "4px", padding: "16px 16px 16px 16px", shadow: "none" }],
+      inputs: [{ bg: "rgb(102, 102, 102)", radius: "4px", padding: "8px 8px 8px 8px" }],
+    },
+  })));
+  assert.match(md, /^  on-background: "#ffffff80"$/m);
+  assert.match(md, /^  surface: "#666666"$/m);
+  assert.match(md, /^  input:\n(?:    .*\n)*?    backgroundColor: "\{colors\.surface\}"$/m);
+  assert.doesNotMatch(md, /textColor: "\{colors\.on-background\}"/, "50% white over #666666 over black is 2.7:1");
+});
+
+test("dark mode overrides list the resolved text pair, not the luminance guesses", () => {
+  const colors = { background: { "rgb(255, 255, 255)": 50, "rgb(0, 0, 0)": 40 }, text: { "rgb(0, 0, 0)": 100, "rgb(255, 255, 255)": 60 }, border: {} };
+  const light = analyze(rawSkeleton({ colors, pageBackground: { surface: "rgb(255, 255, 255)", canvas: null } }));
+  light.dark = analyze(rawSkeleton({ colors, pageBackground: { surface: "rgb(0, 0, 0)", canvas: null } }));
+  const md = generate(light);
+  assert.match(md, /^- Text on background: `#000000` → `#ffffff`$/m);
+  assert.doesNotMatch(md, /^- (Primary text|Light text \(on dark\)|Secondary text|Muted text):/m);
+});

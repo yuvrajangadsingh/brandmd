@@ -1,4 +1,5 @@
 import chroma from "chroma-js";
+import { contrastOn, flatten } from "./analyze.js";
 
 /**
  * Generate a spec-valid DESIGN.md from analyzed tokens.
@@ -91,8 +92,10 @@ function buildModel(tokens) {
 
   // --- Colors -> Material-style role tokens -------------------------------
   const colors = {}; // token name -> hex (lowercase)
+  // an 8-digit hex keeps its alpha byte: chroma rounds it through two decimals and could emit a byte the 4.5:1 gate never saw
+  const tok = (hex) => (/^#[0-9a-f]{6}(?!ff)[0-9a-f]{2}$/i.test(hex) ? lc(hex) : lc(chroma(hex).hex()));
   const put = (name, hex) => {
-    if (hex && safeChroma(hex)) colors[name] = lc(chroma(hex).hex());
+    if (hex && safeChroma(hex)) colors[name] = tok(hex);
   };
 
   // The capture's page background wins; the luminance role is the fallback for
@@ -102,16 +105,22 @@ function buildModel(tokens) {
     : null;
   const pageBg = captured || byRole("Page background") || solid.find((c) => c.type === "background");
   const pageBgSynthesized = !!captured?.synthesized;
-  const primaryText = byRole("Primary text") || solid.find((c) => c.type === "text");
+  // Text roles resolved by contrast in analyze (captures that resolved the page
+  // background); the luminance roles are the fallback for the rest.
+  const tr = tokens.textRoles;
+  const primaryText = tr
+    ? (tr.onBackground ? { hex: tr.onBackground } : null)
+    : byRole("Primary text") || solid.find((c) => c.type === "text");
   const surface = byRole("Surface / card background") || byRole("Secondary background");
-  const secondaryText = byRole("Secondary text") || byRole("Muted text");
+  const secondaryText = tr ? null : byRole("Secondary text") || byRole("Muted text");
   const border = byRole("Divider / border", palette) || palette.find((c) => c.type === "border");
   const border2 = palette.filter((c) => c.type === "border")[1];
 
   put("background", pageBg?.hex);
   put("on-background", primaryText?.hex);
   if (surface && surface.hex !== pageBg?.hex) put("surface", surface.hex);
-  if (secondaryText && secondaryText.hex !== primaryText?.hex) put("on-surface-variant", secondaryText.hex);
+  if (tr) colors["on-surface-variant"] = null; // keeps the key's place; resolved once the card step has settled `surface`
+  else if (secondaryText && secondaryText.hex !== primaryText?.hex) put("on-surface-variant", secondaryText.hex);
   put("outline", border?.hex);
   if (border2 && border2.hex !== border?.hex) put("outline-variant", border2.hex);
 
@@ -137,7 +146,7 @@ function buildModel(tokens) {
 
   // A distinct secondary accent (a second saturated color), if the palette has one.
   const secondAccent = solid.find((c) => {
-    if (!safeChroma(c.hex) || lc(chroma(c.hex).hex()) === colors.primary) return false;
+    if (!safeChroma(c.hex) || tok(c.hex) === colors.primary) return false;
     const [, s, l] = chroma(c.hex).hsl();
     return (s || 0) > 0.4 && l > 0.2 && l < 0.85;
   });
@@ -306,6 +315,18 @@ function buildModel(tokens) {
     if (Object.keys(cc).length) components["card"] = cc;
   }
 
+  // on-surface-variant: the next text colour that reads on the background AND
+  // on the surface it will sit on. None is omitted, not invented.
+  if (tr) {
+    const reads = (hex) => contrastOn(hex, colors.background) >= 4.5
+      && (!colors.surface || contrastOn(hex, colors.surface, colors.background) >= 4.5);
+    // judged as the screen shows them: #00000099 and #666666 are the same grey on white
+    const distinct = (hex) => !tr.onBackground || chroma.deltaE(flatten(hex, colors.background), flatten(tr.onBackground, colors.background)) >= 15;
+    const second = tr.candidates.find((c) => distinct(c.hex) && reads(c.hex));
+    if (second) colors["on-surface-variant"] = second.hex;
+    else delete colors["on-surface-variant"];
+  }
+
   // input
   const input = tokens.components?.inputs;
   if (input) {
@@ -315,7 +336,8 @@ function buildModel(tokens) {
     else if (bgHex && colors.background === bgHex) ic.backgroundColor = "{colors.background}";
     if (colors["on-background"] && ic.backgroundColor) {
       const bg = ic.backgroundColor === "{colors.surface}" ? colors.surface : colors.background;
-      if (contrastOk(bg, colors["on-background"])) ic.textColor = "{colors.on-background}";
+      const reads = tr ? contrastOn(colors["on-background"], bg, colors.background) >= 4.5 : contrastOk(bg, colors["on-background"]);
+      if (reads) ic.textColor = "{colors.on-background}";
     }
     if (labelType) ic.typography = `{typography.body-md}`.replace("body-md", typography["body-md"] ? "body-md" : labelType);
     const rr = roundedVal(input.radius);
@@ -327,7 +349,8 @@ function buildModel(tokens) {
 
   const name = sanitizeLine(tokens.title) || hostOf(tokens.url);
   const description = sanitizeLine(shortDescription(tokens.atmosphere));
-  return { name, description, colors, typography, rounded, spacing, components, primaryFont, bodyFont, primaryNeutralFallback, pageBgSynthesized };
+  const onBackgroundOmitted = tr && !tr.onBackground ? { background: tr.background, best: tr.best } : null;
+  return { name, description, colors, typography, rounded, spacing, components, primaryFont, bodyFont, primaryNeutralFallback, pageBgSynthesized, onBackgroundOmitted };
 }
 
 /**
@@ -561,6 +584,13 @@ function emitBody(tokens, model) {
     lines.push(`_The page background \`${model.colors.background}\` is the surface that fills the viewport; it is not among the most frequent fills listed below._`);
     lines.push("");
   }
+  if (model.onBackgroundOmitted) {
+    const o = model.onBackgroundOmitted;
+    lines.push(o.best
+      ? `_No text colour reads at 4.5:1 on the page background \`${o.background}\`; the closest is \`${o.best.hex}\` at ${o.best.ratio}:1, so \`on-background\` is omitted rather than invented._`
+      : `_No solid text colour was observed, so \`on-background\` is omitted._`);
+    lines.push("");
+  }
   for (const color of (mainColors.length ? mainColors : tokens.palette || [])) {
     const tierTag = color.tier === "dominant" ? " (dominant)" : color.tier === "accent" ? " (accent)" : "";
     lines.push(`- **${describeName(color)}** (\`${lc(color.hex)}\`): ${color.role}${tierTag}`);
@@ -752,7 +782,7 @@ function emitBody(tokens, model) {
     lines.push("");
     lines.push(`**Visual character:** ${tokens.dark.atmosphere}`);
     lines.push("");
-    const diffs = darkDiffs(tokens, tokens.dark);
+    const diffs = darkDiffs(tokens, tokens.dark, model);
     if (diffs.length) {
       lines.push("Observed differences from the light theme:");
       lines.push("");
@@ -838,16 +868,30 @@ function motionText(m) {
   return `**Motion:** Animation surfaces detected (${surfaces.join(", ")}). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.`;
 }
 
-function darkDiffs(light, dark) {
+function darkDiffs(light, dark, lightModel) {
   const out = [];
   if (dark.pageBackground && dark.pageBackground !== light.pageBackground) {
     out.push(light.pageBackground
       ? `- Page background: \`${light.pageBackground}\` → \`${dark.pageBackground}\``
       : `- Page background: \`${dark.pageBackground}\` (dark only)`);
   }
+  // Resolved text roles are compared as the YAML would carry them; the
+  // luminance-guessed text roles in the palette are skipped when they exist.
+  if (dark.textRoles) {
+    const dm = buildModel(dark);
+    for (const [key, label, none] of [["on-background", "Text on background", "none reads at 4.5:1 in dark"], ["on-surface-variant", "Secondary text", "no distinct second colour reads at 4.5:1 in dark"]]) {
+      const l = lightModel.colors[key];
+      const d = dm.colors[key];
+      if (l === d) continue;
+      out.push(d
+        ? (l ? `- ${label}: \`${l}\` → \`${d}\`` : `- ${label}: \`${d}\` (dark only)`)
+        : `- ${label}: \`${l}\` → ${none}`);
+    }
+  }
   const lp = new Map((light.palette || []).map((c) => [c.role, lc(c.hex)]));
   for (const c of dark.palette || []) {
     if (c.role === "Page background" && dark.pageBackground) continue; // the captured line above is the real one
+    if (c.type === "text" && dark.textRoles) continue;
     const lightHex = lp.get(c.role);
     if (!lightHex) out.push(`- ${c.role}: \`${lc(c.hex)}\` (dark only)`);
     else if (lightHex !== lc(c.hex)) out.push(`- ${c.role}: \`${lightHex}\` → \`${lc(c.hex)}\``);
