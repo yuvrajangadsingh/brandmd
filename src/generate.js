@@ -82,8 +82,12 @@ function contrastOk(a, b) {
 const lc = (hex) => (hex ? String(hex).toLowerCase() : hex);
 
 function buildModel(tokens) {
+  // Fill, text and accent roles are solid colours; a 12% tint stays in the
+  // palette prose as the scrim it is. Outlines may be translucent (a 10% black
+  // divider is how most sites draw one), they only have to paint.
   const palette = tokens.palette || [];
-  const byRole = (r) => palette.find((c) => c.role === r);
+  const solid = palette.filter((c) => safeChroma(c.hex) && chroma(c.hex).alpha() >= 0.5);
+  const byRole = (r, from = solid) => from.find((c) => c.role === r);
 
   // --- Colors -> Material-style role tokens -------------------------------
   const colors = {}; // token name -> hex (lowercase)
@@ -91,11 +95,11 @@ function buildModel(tokens) {
     if (hex && safeChroma(hex)) colors[name] = lc(chroma(hex).hex());
   };
 
-  const pageBg = byRole("Page background") || palette.find((c) => c.type === "background");
-  const primaryText = byRole("Primary text") || palette.find((c) => c.type === "text");
+  const pageBg = byRole("Page background") || solid.find((c) => c.type === "background");
+  const primaryText = byRole("Primary text") || solid.find((c) => c.type === "text");
   const surface = byRole("Surface / card background") || byRole("Secondary background");
   const secondaryText = byRole("Secondary text") || byRole("Muted text");
-  const border = byRole("Divider / border") || palette.find((c) => c.type === "border");
+  const border = byRole("Divider / border", palette) || palette.find((c) => c.type === "border");
   const border2 = palette.filter((c) => c.type === "border")[1];
 
   put("background", pageBg?.hex);
@@ -126,8 +130,8 @@ function buildModel(tokens) {
   put("on-primary", onColor(colors.primary));
 
   // A distinct secondary accent (a second saturated color), if the palette has one.
-  const secondAccent = palette.find((c) => {
-    if (!safeChroma(c.hex) || lc(c.hex) === colors.primary) return false;
+  const secondAccent = solid.find((c) => {
+    if (!safeChroma(c.hex) || lc(chroma(c.hex).hex()) === colors.primary) return false;
     const [, s, l] = chroma(c.hex).hsl();
     return (s || 0) > 0.4 && l > 0.2 && l < 0.85;
   });
