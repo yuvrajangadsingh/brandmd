@@ -373,3 +373,28 @@ test("zero-alpha shadow layers are dropped and what is left is merged", () => {
   assert.deepEqual(flat.shadows, []);
   assert.equal(flat.evidence.shadowObs, 0);
 });
+
+test("colours that paint nothing never reach the palette", () => {
+  const tokens = analyze(rawSkeleton({
+    colors: {
+      background: { "rgb(0, 0, 0)": 100, "rgba(56, 189, 248, 0)": 400, "transparent": 30 },
+      text: { "rgb(255, 255, 255)": 80 },
+      border: { "rgba(19, 19, 22, 0)": 50, "rgb(38, 42, 45)": 10 },
+    },
+  }));
+  assert.ok(!tokens.palette.some((c) => /^#[0-9a-f]{6}00$/i.test(c.hex)), "no zero-alpha entry in the palette");
+  assert.notEqual(tokens.primaryColor?.hex, "#38bdf800");
+  const md = generate(tokens);
+  assert.doesNotMatch(md, /#[0-9a-f]{6}00\b/i);
+  assert.match(md, /^  outline: "#262a2d"$/m);
+  assert.doesNotMatch(md, /38bdf8/);
+});
+
+test("toHex keeps the alpha of a colour chroma cannot parse", () => {
+  // Four-argument rgb() goes through the manual fallback; it used to come back opaque.
+  const tokens = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 100 }, text: { "rgb(0, 0, 0)": 50 }, border: { "rgb(255, 0, 0, 0)": 80, "rgb(200, 200, 200)": 5 } },
+  }));
+  assert.ok(!tokens.palette.some((c) => c.hex.startsWith("#ff0000")), "an invisible red is not a border token");
+  assert.match(generate(tokens), /^  outline: "#c8c8c8"$/m);
+});
