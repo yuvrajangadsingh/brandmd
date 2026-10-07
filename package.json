@@ -1,6 +1,6 @@
 {
   "name": "brandmd",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "description": "Stop Claude Code/Cursor from guessing UI. Extract any website's design system into a spec-valid DESIGN.md that passes the official @google/design.md linter.",
   "type": "module",
   "bin": {
