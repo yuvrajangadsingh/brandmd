@@ -17,11 +17,16 @@ typography:
     fontSize: 28px
     fontWeight: 700
     lineHeight: 1.43
+  headline-md:
+    fontFamily: Airbnb Cereal
+    fontSize: 26px
+    fontWeight: 600
+    lineHeight: 1.15
   body-lg:
     fontFamily: Airbnb Cereal
-    fontSize: 22px
+    fontSize: 16px
     fontWeight: 500
-    lineHeight: 1.18
+    lineHeight: 1.38
   body-md:
     fontFamily: Airbnb Cereal
     fontSize: 14px
@@ -37,20 +42,27 @@ rounded:
   md: 8px
   lg: 12px
   xl: 32px
-  2xl: 100px
+  2xl: 50px
+  3xl: 100px
 spacing:
   base: 16px
   xs: 2px
   sm: 4px
-  md: 5px
-  lg: 6px
-  xl: 8px
+  md: 6px
+  lg: 8px
+  xl: 10px
 components:
   button-primary:
-    backgroundColor: "#f2f2f2"
-    textColor: "#222222"
+    backgroundColor: "#e61e4d"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    height: 40px
+    rounded: "{rounded.lg}"
+    padding: 14px
+    height: 48px
+  button-primary-gradient-stop-2:
+    backgroundColor: "#e31c5f"
+  button-primary-gradient-stop-3:
+    backgroundColor: "#d70466"
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -73,7 +85,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and vivid red accents
+**Visual character:** Bright, high contrast; white background dominates with black text and red accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -85,11 +97,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Dark gray** (`#222222`): Dark background / footer (dominant)
 - **Light gray** (`#dddddd`): Divider / border (dominant)
 - **Gray** (`#6c6c6c`): Secondary text (accent)
-- **Vivid Red** (`#ff385c`): Secondary text (accent)
+- **Dark gray** (`#222222`): Dark background / footer (accent)
+- **Translucent Black** (`#00000040`): Overlay / scrim (accent)
 - **Red** (`#da1249`): Accent background (accent)
+- **Vivid Red** (`#ff385c`): Secondary text (accent)
 
 ## Typography
 
@@ -100,54 +113,55 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: Airbnb Cereal
 
 **Type scale:**
-- Headings: 28px
+- Headings: 26px, 28px
 - Body / UI: 14px, 16px, 21px, 22px
 - Captions / Small: 12px
 
-**Weights in use:** 400, 500, 700
+**Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 20px, 18px, 16px, 40px, 26px, 30px
+**Line heights:** 20px, 18px, 16px, 22px, 30px, 40px, 26px
 
-**Letter spacing:** -0.44px
+**Letter spacing:** -0.44px, -0.52px
 
 ## Layout
 
-**Spacing scale:** 4px, 8px, 10px, 11px, 12px, 15px, 16px, 48px
+**Spacing scale:** 4px, 8px, 10px, 11px, 12px, 16px, 24px, 48px
 
 ## Elevation & Depth
 
-Uses 1 shadow style for layering and elevation:
+Uses 2 shadow styles for layering and elevation:
 
 - Level 1: `color(srgb 0 0 0 / 0.02) 0px 0px 0px 1px, color(srgb 0 0 0 / 0.1) 0px 8px 24px 0px`
+- Level 2: `rgba(0, 0, 0, 0.28) 0px 8px 28px 0px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 0px 1.5px 1.5px 0px, 1.5px 0px 0px 1.5px, 4px, 8px, 12px, 32px, 50%, 100px
+**Border radii:** 1.5px 0px 0px 1.5px, 4px, 8px, 12px, 32px, 50%, 50px, 100px
 
-Asymmetric / percentage radii observed (0px 1.5px 1.5px 0px, 1.5px 0px 0px 1.5px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (1.5px 0px 0px 1.5px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#f2f2f2`
-- Text color: `#222222`
-- Corner radius: 50%
-- Height: 40px
-- Padding: 0px 0px 0px 0px
-- Font: 14px, weight 400
+- Background: `linear-gradient(to right, rgb(230, 30, 77) 0%, rgb(227, 28, 95) 50%, rgb(215, 4, 102) 100%)` (gradient; first stop `#e61e4d`)
+- Text color: `#ffffff`
+- Corner radius: 12px
+- Height: 48px
+- Padding: 14px 24px 14px 24px
+- Font: 16px, weight 500
 
 ## Do's and Don'ts
 
 - Do use `#da1249` for primary actions and CTAs
-- Do stick to 3 font weights: 400, 500, 700
+- Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `Airbnb Cereal` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts; use Airbnb Cereal everywhere
-- Don't use border-radius values outside: 0px 1.5px 1.5px 0px, 1.5px 0px 0px 1.5px, 4px, 8px, 12px, 32px, 50%, 100px
+- Don't use border-radius values outside: 1.5px 0px 0px 1.5px, 4px, 8px, 12px, 32px, 50%, 50px, 100px
 
 ---
 

@@ -5,13 +5,12 @@ description: "Dark, soft contrast"
 colors:
   background: "#000000"
   on-background: "#0000ee"
-  surface: "#666666"
   on-surface-variant: "#999999"
   outline: "#ffffff0f"
-  primary: "#0099ff66"
+  primary: "#0099ff"
   on-primary: "#1a1a1a"
-  secondary: "#0099ff66"
-  on-secondary: "#1a1a1a"
+  secondary: "#0000ee"
+  on-secondary: "#ffffff"
 typography:
   display:
     fontFamily: GT Walsheim Medium
@@ -84,7 +83,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, soft contrast; black background dominates with black text and translucent vivid blue accents
+**Visual character:** Dark, soft contrast; black background dominates with black text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -95,16 +94,15 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Black** (`#000000`): Dark background / footer (dominant)
-- **Translucent Vivid Blue** (`#0099ff67`): Focus / active border (dominant)
 - **Near-transparent White** (`#ffffff0f`): Divider / border (dominant)
 - **Vivid Blue** (`#0000ee`): Primary text (accent)
-- **White** (`#ffffff`): Light text (on dark) (accent)
 - **Gray** (`#999999`): Muted text (accent)
 - **Near-transparent White** (`#ffffff1a`): Overlay / scrim (accent)
 - **Near-transparent Vivid Blue** (`#0099ff35`): Overlay / scrim (accent)
+- **Vivid Blue** (`#0099ff`): Accent background (accent)
 - **Near-transparent Vivid Green** (`#00bb881a`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#9999991a`, `#666666`
+**Incidental (low usage, do not lead with these):** `#ffffff`
 
 ## Typography
 
@@ -168,7 +166,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#0099ff67` for primary actions and CTAs
+- Do use `#0099ff` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `GT Walsheim Medium` as the primary typeface
 - Don't introduce colors outside the palette above

@@ -6,6 +6,8 @@ colors:
   background: "#ffffff"
   on-background: "#000000"
   on-surface-variant: "#2997ff"
+  outline: "#0000008f"
+  outline-variant: "#ffffff14"
   primary: "#0071e3"
   on-primary: "#ffffff"
   secondary: "#2997ff"
@@ -31,7 +33,7 @@ typography:
     fontSize: 17px
     fontWeight: 400
     lineHeight: 1.47
-  body-lg:
+  body-sm:
     fontFamily: SF Pro Text
     fontSize: 14px
     fontWeight: 400
@@ -39,7 +41,7 @@ typography:
   label-sm:
     fontFamily: SF Pro Text
     fontSize: 12px
-    fontWeight: 400
+    fontWeight: 600
     lineHeight: 1.33
 rounded:
   sm: 5px
@@ -49,11 +51,11 @@ rounded:
   full: 9999px
 spacing:
   base: 11px
-  xs: 7px
-  sm: 8px
-  md: 9px
-  lg: 9.5px
-  xl: 10px
+  xs: 4px
+  sm: 7px
+  md: 8px
+  lg: 9px
+  xl: 9.5px
 components:
   button-primary:
     backgroundColor: "#0071e3"
@@ -99,15 +101,18 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Black** (`#000000`): Primary text (dominant)
+- **White** (`#ffffffeb`): Light text (on dark) (dominant)
+- **Black** (`#161617`): Dark background / footer (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Black** (`#1d1d1f`): Dark background / footer (dominant)
+- **Translucent Black** (`#0000008f`): Divider / border (dominant)
+- **Near-transparent White** (`#ffffff14`): Divider / border (dominant)
 - **Vivid Blue** (`#2997ff`): Secondary text (accent)
-- **Vivid Blue** (`#0066cc`): Secondary text (accent)
+- **Translucent Black** (`#00000066`): Overlay / scrim (accent)
 - **Vivid Blue** (`#0071e3`): Accent background (accent)
-- **Blue** (`#1246c4`): Accent background (accent)
 - **Light Blue** (`#9fc6f4`): Accent background (accent)
+- **Dark Yellow** (`#524617`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#56412b`
+**Incidental (low usage, do not lead with these):** `#86868b`
 
 ## Typography
 
@@ -119,19 +124,19 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: SF Pro Text
 
 **Type scale:**
-- Headings: 24px, 28px, 34px, 40px, 44px, 56px
+- Headings: 24px, 25.5px, 28px, 34px, 40px, 44px, 56px
 - Body / UI: 14px, 17px, 18px, 21px
 - Captions / Small: 12px
 
 **Weights in use:** 300, 400, 600, 700
 
-**Line heights:** 16px, 25px, 28px, 12px, 44px, 18px, 20px, 21px, 60px, 32px
+**Line heights:** 16px, 25px, 28px, 12px, 44px, 18px, 20px, 21px, 32px, 37.5px
 
-**Letter spacing:** -0.12px, -0.374px, 0.216px, -0.224px, 0.231px, -0.28px
+**Letter spacing:** -0.12px, -0.374px, 0.216px, -0.224px, 0.231px, 0.196px
 
 ## Layout
 
-**Spacing scale:** 7px, 8px, 9px, 9.5px, 11px, 15px, 21px, 22px
+**Spacing scale:** 4px, 7px, 8px, 9px, 9.5px, 11px, 15px, 20px
 
 ## Elevation & Depth
 
@@ -164,7 +169,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Padding: 0px 0px 0px 0px
 
 ### Inputs
-- Border: 0px none rgb(51, 51, 54)
+- Border: 0px none rgb(232, 232, 237)
 - Corner radius: 0px
 - Padding: 1px 34px 0px 34px
 - Font size: 24px

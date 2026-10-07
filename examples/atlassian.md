@@ -117,7 +117,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Display / hero: Atlassian Mono
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (1653), Charlie Display (636), Atlassian Mono (27)
+**All detected fonts:** Charlie Text (1655), Charlie Display (636), Atlassian Mono (27)
 
 **Type scale:**
 - Headings: 24px, 40px, 48px, 64px, 96px

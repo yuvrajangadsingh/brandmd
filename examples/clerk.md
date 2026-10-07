@@ -3,7 +3,7 @@ version: alpha
 name: "Clerk | Authentication and User Management"
 description: "Bright, high contrast"
 colors:
-  background: "#f7f7f8"
+  background: "#ffffff"
   on-background: "#000000"
   on-surface-variant: "#5e5f6e"
   outline: "#d9d9de"

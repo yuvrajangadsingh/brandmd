@@ -3,18 +3,18 @@ version: alpha
 name: "Home \\ Anthropic"
 description: "Bright, high contrast"
 colors:
-  background: "#faf9f5"
+  background: "#f0eee6"
   on-background: "#000000"
   on-surface-variant: "#87867f"
-  outline: "#b0aea5"
-  primary: "#faf9f5"
+  outline: "#1414131a"
+  primary: "#f0eee6"
   on-primary: "#1a1a1a"
 typography:
   display:
     fontFamily: Anthropic Sans
-    fontSize: 68.5px
+    fontSize: 79.5px
     fontWeight: 400
-    lineHeight: 1.09
+    lineHeight: 1.16
   headline-lg:
     fontFamily: Anthropic Sans
     fontSize: 61px
@@ -80,7 +80,7 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (Lottie animations, scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (canvas rendering, Lottie animations, scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -88,11 +88,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 _No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
 
+_The page background `#f0eee6` is the surface that fills the viewport; it is not among the most frequent fills listed below._
+
 - **Black** (`#000000`): Primary text (dominant)
 - **Gray** (`#87867f`): Secondary text (dominant)
 - **Cream** (`#faf9f5`): Page background (dominant)
 - **Black** (`#141413`): Dark background / footer (dominant)
-- **Gray** (`#b0aea5`): Divider / border (accent)
+- **Near-transparent Black** (`#1414131a`): Divider / border (dominant)
 
 ## Typography
 
@@ -104,18 +106,18 @@ _No explicit accent or action color was observed on this page. The machine token
 - Body: Anthropic Sans
 - Buttons / nav: Anthropic Serif
 
-**All detected fonts:** Anthropic Sans (484), Anthropic Serif (297), Anthropic Mono (9)
+**All detected fonts:** Anthropic Sans (483), Anthropic Serif (309), Anthropic Mono (9)
 
 **Type scale:**
-- Headings: 24px, 61px, 68.5px
+- Headings: 24px, 61px, 79.5px
 - Body / UI: 14px, 15px, 16px, 18px, 20px, 22.5px
 - Captions / Small: 12px
 
-**Weights in use:** 400, 500, 600, 700
+**Weights in use:** 400, 465, 500, 600, 700
 
-**Line heights:** 17px, 22.5px, 28px, 16px, 67px, 31px, 25px, 18px, 21px, 15px
+**Line heights:** 17px, 22.5px, 28px, 16px, 67px, 92px, 31px, 25px, 18px, 21px
 
-**Letter spacing:** -0.24px, -0.08px, -0.0375px
+**Letter spacing:** -0.24px, -0.08px, -1.1958px, -0.0375px
 
 ## Layout
 
@@ -148,7 +150,6 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `Anthropic Sans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Anthropic Sans and Anthropic Serif

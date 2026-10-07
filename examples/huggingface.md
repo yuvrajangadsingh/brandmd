@@ -7,10 +7,10 @@ colors:
   on-background: "#000000"
   on-surface-variant: "#6a7282"
   outline: "#e5e7eb"
-  outline-variant: "#4a5565"
-  primary: "#ff6900"
+  outline-variant: "#ffffff0d"
+  primary: "#2b7fff"
   on-primary: "#1a1a1a"
-  secondary: "#155dfc26"
+  secondary: "#8e51ff"
   on-secondary: "#ffffff"
 typography:
   display:
@@ -94,7 +94,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and near-transparent vivid blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and purple accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -107,13 +107,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#ffffff`): Page background (dominant)
 - **Muted Blue** (`#99a1af`): Muted text (accent)
 - **Gray** (`#6a7282`): Secondary text (accent)
+- **Translucent White** (`#ffffff73`): Overlay / scrim (accent)
 - **Dark Blue** (`#101828`): Dark background / footer (accent)
-- **Near-transparent Vivid Blue** (`#155dfc26`): Overlay / scrim (accent)
+- **Purple** (`#8e51ff`): Accent background (accent)
 - **Vivid Orange** (`#ff6900`): Accent background (accent)
-- **Vivid Red** (`#fb2c36`): Accent background (accent)
-- **Vivid Green** (`#7ccf00`): Accent background (accent)
+- **Vivid Blue** (`#2b7fff`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#4a5565`
+**Incidental (low usage, do not lead with these):** `#ffffff0d`
 
 ## Typography
 
@@ -180,7 +180,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#ff6900` for primary actions and CTAs
+- Do use `#2b7fff` for primary actions and CTAs
 - Do stick to 3 font weights: 400, 600, 700
 - Do use `Source Sans Pro` as the primary typeface
 - Don't introduce colors outside the palette above

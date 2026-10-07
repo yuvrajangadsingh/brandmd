@@ -102,11 +102,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Near-transparent Black** (`#08080833`): Overlay / scrim (dominant)
 - **Light gray** (`#d8d8d8`): Divider / border (dominant)
 - **Black** (`#080808`): Divider / border (dominant)
 - **Gray** (`#808080`): Secondary text (accent)
+- **Translucent Black** (`#08080899`): Dark background / footer (accent)
 - **Vivid Blue** (`#146ef5`): Accent background (accent)
+- **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
+- **Near-transparent Black** (`#08080833`): Overlay / scrim (accent)
 
 ## Typography
 
