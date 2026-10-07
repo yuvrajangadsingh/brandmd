@@ -714,8 +714,10 @@ export function mergeRaw(pages) {
       text: mergeFreqMaps(pages.map((p) => p.colors.text)),
       border: mergeFreqMaps(pages.map((p) => p.colors.border)),
     },
-    // The first page that extracted is the one the tokens describe.
+    // The first page that extracted is the one the tokens describe; its text
+    // is the evidence for the text roles, the merged text is palette evidence.
     pageBackground: pages[0].pageBackground,
+    textOnPage: pages[0].colors.text,
     fonts: mergeFreqMaps(pages.map((p) => p.fonts)),
     fontsByRole: {
       heading: mergeFreqMaps(pages.map((p) => p.fontsByRole?.heading || {})),

@@ -22,6 +22,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { analyze } from "../src/analyze.js";
+import { mergeRaw } from "../src/extract.js";
 import { generate } from "../src/generate.js";
 
 // Minimal complete raw-capture skeleton (same shape as fixtures/raw-vercel.json).
@@ -595,6 +596,33 @@ test("captures without a page background keep the luminance text roles", () => {
   assert.match(generate(legacy), /^  on-background: "#000000"$/m);
   const captured = analyze(rawSkeleton({ colors, pageBackground: { surface: "rgb(20, 20, 20)", canvas: null } }));
   assert.match(generate(captured), /^  on-background: "#ffffff"$/m);
+});
+
+test("multi-page text evidence anchors to the page that gave the background", () => {
+  const dark = rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50 }, text: { "rgb(255, 255, 255)": 10 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  });
+  const light = rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 50 }, text: { "rgb(200, 200, 200)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  });
+  const merged = mergeRaw([dark, light]);
+  assert.deepEqual(merged.textOnPage, { "rgb(255, 255, 255)": 10 });
+  const md = generate(analyze(merged));
+  assert.match(md, /^  background: "#000000"$/m);
+  assert.match(md, /^  on-background: "#ffffff"$/m, "the light page's 100-use grey reads on black too, but it is not this page's text");
+  assert.equal("textOnPage" in mergeRaw([dark]), false, "a single page carries no separate text evidence");
+
+  // Nothing readable on the first page: the character line names its closest
+  // candidate, not the other page's text the YAML omits.
+  const unreadable = rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50 }, text: { "rgb(68, 0, 0)": 10 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  });
+  const md2 = generate(analyze(mergeRaw([unreadable, light])));
+  assert.doesNotMatch(md2, /^  on-background:/m);
+  assert.match(md2, /\*\*Visual character:\*\* Dark, soft contrast; black background dominates with dark red text/);
 });
 
 test("a one-use translucent black does not absorb a hundred-use black on its way to the gate", () => {
