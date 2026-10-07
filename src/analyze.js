@@ -97,6 +97,8 @@ function clusterColors(colorFreqPairs, threshold = 15) {
     let merged = false;
     for (const cluster of clusters) {
       try {
+        // deltaE ignores alpha; a 10% scrim must not absorb the solid colour under it.
+        if (isSolidFill(hex) !== isSolidFill(cluster.hex)) continue;
         if (chroma.deltaE(hex, cluster.hex) < threshold) {
           cluster.freq += freq;
           merged = true;
