@@ -2,6 +2,14 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.2] - 2026-10-08
+
+### Fixed
+
+- **`background` is the surface the viewport shows.** It was the first palette colour whose role was "Page background", a role given by luminance, so a dark page with a few white cards (sentry.io, shopify.com, resend.com, apple.com) was written up with a white background while the character line said black. The capture now records the surface covering at least 80% of the top-of-page viewport (later elements win; fixed and sticky elements and what is inside them are skipped, hidden ones too; a translucent cover is composited over what it covers; a cover inside an opacity group, with a background image or in a colour outside `rgb()`/`rgba()` leaves it unknown until an opaque element covers it) and the canvas as fallback (html's background when it paints one, else body's, at html's opacity over the white backing; an image or an unreadable colour leaves it unknown); the character line, the button tie-break, the `background` token and the Dark Mode Overrides list all use it. Captures without the field, such as the test fixtures and raw files from older versions, keep the old rule. `brandmd check` against a baseline written by an older version can report the background as major drift where that baseline carried the lightest colour rather than the page; `brandmd diff` compares colour sets, so a background that moved to a colour already in the file does not show. Known limits: z-index and transforms are ignored, iframes and shadow roots are not entered, and this describes the top of the page, not the whole site.
+- **`--dark` captures with the same `--viewport`, `--locale` and `--reduced-motion` as the light capture.** They were applied to the light pass only.
+- **The capture's scroll pass is instant.** Sites with `scroll-behavior: smooth` animated each `scrollTo`, so the reset to the top was still running when the colour reads and the page background probe ran; shopify.com was read at y=3474 and came back black. Seven of the 30 example sites were affected: claude.com, figma.com, github.com, notion.so, sentry.io, shopify.com, supabase.com.
+
 ## [0.18.1] - 2026-10-08
 
 ### Fixed
