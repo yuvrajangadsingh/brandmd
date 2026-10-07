@@ -4,7 +4,7 @@ name: "Application Performance Monitoring & Error Tracking Software | Sentry"
 description: "Dark, high contrast"
 colors:
   background: "#1f1633"
-  on-background: "#9ecbff"
+  on-background: "#ffffff"
   surface: "#c2ef4e"
   outline: "#584674"
   primary: "#f97583"

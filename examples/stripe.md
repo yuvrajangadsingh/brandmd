@@ -8,8 +8,8 @@ colors:
   on-surface-variant: "#64748d"
   primary: "#533afd"
   on-primary: "#ffffff"
-  secondary: "#7f7dfc"
-  on-secondary: "#1a1a1a"
+  secondary: "#29227d"
+  on-secondary: "#ffffff"
 typography:
   display:
     fontFamily: sohne-var
@@ -99,10 +99,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
 - **Muted Blue** (`#64748d`): Secondary text (accent)
-- **Dark Blue** (`#0d1738`): Dark background / footer (accent)
+- **Blue** (`#29227d`): Accent background (accent)
 - **Light Purple** (`#dac0ff`): Accent background (accent)
-- **Blue** (`#7f7dfc`): Accent background (accent)
 - **Vivid Blue** (`#533afd`): Accent background (accent)
+- **Blue** (`#7f7dfc`): Accent background (accent)
 - **Orange** (`#ffcf5e`): Accent background (accent)
 
 ## Typography

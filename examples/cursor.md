@@ -4,8 +4,8 @@ name: "AI Coding Agent for Building Ambitious Software | Cursor"
 description: "Bright, high contrast"
 colors:
   background: "#f7f7f4"
-  on-background: "#000000"
-  on-surface-variant: "#e7000b"
+  on-background: "#26251e"
+  on-surface-variant: "#14141499"
   outline: "#26251e33"
   primary: "#65afe0"
   on-primary: "#1a1a1a"
@@ -84,7 +84,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; cream background dominates with black text and blue accents
+**Visual character:** Bright, high contrast; cream background dominates with dark gray text and blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -115,7 +115,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: CursorGothic, Segoe UI
 - Body: CursorGothic
 
-**All detected fonts:** CursorGothic (1011), Segoe UI (470), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
+**All detected fonts:** CursorGothic (1011), Segoe UI (471), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
 
 **Type scale:**
 - Headings: 26px

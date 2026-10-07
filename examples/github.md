@@ -1,15 +1,16 @@
 ---
 version: alpha
-name: "GitHub · Change is constant. GitHub keeps you ahead. · GitHub"
+name: "GitHub · Change is constant. GitHub keeps you ahead. · GitHub · GitHub"
 description: "Dark, high contrast"
 colors:
-  background: "#ffffff"
-  on-background: "#000000"
+  background: "#0d1117"
+  on-background: "#ffffff"
   on-surface-variant: "#a4aea6"
-  outline: "#484f58"
+  outline: "#ffffff"
+  outline-variant: "#262c28"
   primary: "#1f6feb"
   on-primary: "#ffffff"
-  secondary: "#8dd6ff"
+  secondary: "#a2daff"
   on-secondary: "#1a1a1a"
 typography:
   display:
@@ -27,12 +28,12 @@ typography:
     fontSize: 40px
     fontWeight: 460
     lineHeight: 1.2
-  body-md:
+  body-lg:
     fontFamily: Mona Sans
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-md:
     fontFamily: Mona Sans
     fontSize: 14px
     fontWeight: 400
@@ -40,7 +41,7 @@ typography:
   label-sm:
     fontFamily: Mona Sans
     fontSize: 12px
-    fontWeight: 400
+    fontWeight: 500
     lineHeight: 1.5
 rounded:
   sm: 6px
@@ -49,10 +50,10 @@ rounded:
   xl: 24px
   2xl: 60px
 spacing:
-  base: 4px
+  base: 8px
   xs: 2px
   sm: 2.5px
-  md: 8px
+  md: 4px
   lg: 12px
   xl: 16px
 components:
@@ -71,7 +72,8 @@ components:
     height: 40px
   input:
     typography: "{typography.body-md}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.md}"
+    padding: 18px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://github.com](https://github.com) with `npx brandmd`.
@@ -81,13 +83,13 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: GitHub · Change is constant. GitHub keeps you ahead. · GitHub
+# Design System: GitHub · Change is constant. GitHub keeps you ahead. · GitHub · GitHub
 
 > Extracted from [https://github.com](https://github.com) by brandmd
 
 ## Overview
 
-**Visual character:** Dark, high contrast; dark muted blue background dominates with off-white text and light blue accents
+**Visual character:** Dark, high contrast; dark muted blue background dominates with white text and light blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -99,15 +101,17 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Off-white** (`#f0f6fc`): Light text (on dark) (dominant)
 - **Dark Muted Blue** (`#0d1117`): Dark background / footer (dominant)
-- **Black** (`#000000`): Primary text (accent)
-- **White** (`#ffffff`): Page background (accent)
-- **Light Blue** (`#8dd6ff`): Link / accent text (accent)
+- **White** (`#ffffff`): Divider / border (dominant)
+- **Dark gray** (`#262c28`): Divider / border (dominant)
 - **Gray** (`#a4aea6`): Muted text (accent)
-- **Near-transparent Blue** (`#2732e700`): Overlay / scrim (accent)
-- **Blue** (`#1f6feb`): Accent background (accent)
+- **Light Blue** (`#a2daff`): Link / accent text (accent)
+- **Near-transparent White** (`#ffffff1f`): Overlay / scrim (accent)
+- **Blue** (`#5049c2`): Accent background (accent)
 - **Light Purple** (`#e6b7fe`): Accent background (accent)
 - **Dark Blue** (`#000240`): Dark background / footer (accent)
-- **Dark gray** (`#484f58`): Divider / border (accent)
+- **Blue** (`#1f6feb`): Accent background (accent)
+
+**Incidental (low usage, do not lead with these):** `#24292fe6`
 
 ## Typography
 
@@ -121,25 +125,24 @@ Palette extracted from the live page. Token names below map to the machine-reada
 **Type scale:**
 - Headings: 24px, 40px, 48px, 64px
 - Body / UI: 14px, 16px, 18px, 22px
-- Captions / Small: 12px
+- Captions / Small: 11px, 12px
 
 **Weights in use:** 400, 425, 460, 480, 500, 600
 
-**Line heights:** 24px, 21px, 27px, 18px, 31px, 48px, 20px, 14px, 36px, 52px
+**Line heights:** 21px, 24px, 27px, 31px, 18px, 48px, 36px, 52px, 14px, 10px
 
-**Letter spacing:** 0.24px, 0.21px, 0.18px, 0.16px, 0.5px, -2.24px
+**Letter spacing:** 0.24px, 0.21px, 0.18px, 0.16px, -2.24px
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 20px, 24px, 32px
-
-**Base unit:** 4px grid — 85% of all weighted spacing values are multiples of 4.
+**Spacing scale:** 2px, 2.5px, 4px, 8px, 12px, 16px, 24px, 32px
 
 ## Elevation & Depth
 
-Uses 1 shadow style for layering and elevation:
+Uses 2 shadow styles for layering and elevation:
 
-- Level 1: `rgba(209, 217, 224, 0.25) 0px 0px 0px 1px, rgba(37, 41, 46, 0.04) 0px 6px 12px -3px, rgba(37, 41, 46, 0.12) 0px 6px 18px 0px`
+- Level 1: `rgb(61, 68, 77) 0px 0px 0px 1px, rgba(1, 4, 9, 0.4) 0px 6px 12px -3px, rgba(1, 4, 9, 0.4) 0px 6px 18px 0px`
+- Level 2: `rgb(25, 31, 27) 0px -1px 0px 0px inset`
 
 ## Shapes
 
@@ -159,17 +162,16 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Corner radius: 6px
 - Height: 48px
 - Padding: 6px 20px 6px 20px
-- Font: 16px, weight 400
+- Font: 14px, weight 400
 
 ### Inputs
-- Border: 0px none rgba(0, 0, 0, 0)
-- Corner radius: 6px
-- Padding: 0px 0px 0px 0px
-- Font size: 14px
+- Border: 0px none rgb(0, 0, 0)
+- Corner radius: 8px
+- Padding: 18px 12px 0px 18px
+- Font size: 16px
 
 ## Do's and Don'ts
 
-- Do use a 4px grid for spacing
 - Do use `#1f6feb` for primary actions and CTAs
 - Do use `Mona Sans` as the primary typeface
 - Don't introduce colors outside the palette above

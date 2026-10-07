@@ -1,11 +1,11 @@
 ---
 version: alpha
 name: "PostHog - your product’s context layer"
-description: "Bright, high contrast"
+description: "Bright, strong contrast"
 colors:
   background: "#eeefe9"
-  on-background: "#000000"
-  on-surface-variant: "#65675e"
+  on-background: "#374151"
+  on-surface-variant: "#111111"
   outline: "#d2d3cc"
   outline-variant: "#b17816"
   primary: "#cd8407"
@@ -77,7 +77,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; cream background dominates with black text and orange accents
+**Visual character:** Bright, strong contrast; cream background dominates with muted blue text and orange accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -107,7 +107,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: RoundHog
 - Body: RoundHog
 
-**All detected fonts:** RoundHog (1815), Source Code Pro (6), SFMono-Regular (4), avenir next (1)
+**All detected fonts:** RoundHog (1798), Source Code Pro (6), SFMono-Regular (4), avenir next (1)
 
 **Type scale:**
 - Headings: 24px
