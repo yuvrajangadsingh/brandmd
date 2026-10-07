@@ -7,11 +7,9 @@ colors:
   on-background: "#000000"
   on-surface-variant: "#5e5f6e"
   outline: "#d9d9de"
-  outline-variant: "#13131600"
-  primary: "#6c47ff"
+  outline-variant: "#00000033"
+  primary: "#212126"
   on-primary: "#ffffff"
-  secondary: "#3ad4fd14"
-  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: geistNumbers
@@ -25,9 +23,9 @@ typography:
     lineHeight: 1.5
   body-sm:
     fontFamily: geistNumbers
-    fontSize: 15px
+    fontSize: 14px
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.43
   label-sm:
     fontFamily: geistNumbers
     fontSize: 13px
@@ -39,15 +37,15 @@ rounded:
   lg: 8px
   xl: 10px
   2xl: 12px
-  3xl: 16px
+  3xl: 12.5px
   full: 9999px
 spacing:
   base: 8px
-  xs: 1px
-  sm: 2px
-  md: 4px
-  lg: 6px
-  xl: 10px
+  xs: 2px
+  sm: 4px
+  md: 6px
+  lg: 10px
+  xl: 12px
 components:
   button-primary:
     backgroundColor: "#212126"
@@ -89,13 +87,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#f7f7f8`): Page background (dominant)
 - **Gray** (`#5e5f6e`): Secondary text (accent)
-- **Near-transparent Black** (`#13131626`): Overlay / scrim (accent)
 - **Dark gray** (`#42434d`): Dark background / footer (accent)
+- **Black** (`#131316`): Dark background / footer (accent)
 - **Near-transparent Vivid Cyan** (`#3ad4fd14`): Overlay / scrim (accent)
-- **Vivid Purple** (`#6c47ff`): Accent background (accent)
-- **Red** (`#e0876a`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#9394a1`, `#13131600`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#9394a1`, `#00000033`, `#13131626`, `#ffffff33`
 
 ## Typography
 
@@ -105,20 +101,19 @@ Palette extracted from the live page. Token names below map to the machine-reada
 **Fonts by role:**
 - Headings: geistNumbers, Segoe UI Symbol
 - Body: geistNumbers
-- Buttons / nav: soehneMono
 
-**All detected fonts:** geistNumbers (1855), Segoe UI Symbol (794), Inter (169), soehneMono (55)
+**All detected fonts:** geistNumbers (1981), Segoe UI Symbol (1281), Inter (169), soehneMono (17)
 
 **Type scale:**
 - Headings: 32px
-- Body / UI: 14px, 15px, 16px, 17px, 18px
-- Captions / Small: 8px, 9px, 10px, 11px, 12px, 13px
+- Body / UI: 14px, 15px, 16px, 17px
+- Captions / Small: 8px, 9px, 10px, 10.5px, 11px, 12px, 13px
 
-**Weights in use:** 400, 450, 500, 600, 700
+**Weights in use:** 400, 450, 500, 510, 600, 700
 
-**Line heights:** 24px, 18px, 20px, 16px, 14px, 13px, 12px, 15px, 40px, 28px
+**Line heights:** 24px, 20px, 18px, 16px, 14px, 13px, 15px, 19.5px, 12px, 14.5px
 
-**Letter spacing:** -0.12px, 1.2px, -0.48px, 1px, 0.12px, -0.17px
+**Letter spacing:** -0.12px, -0.17px, -0.14px, -0.48px, 1px, -0.24px
 
 ## Layout
 
@@ -128,19 +123,17 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `oklab(0.188081 0.0016512 -0.00579907 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 5px 15px 0px, rgba(25, 28, 33, 0.2) 0px 15px 35px -5px`
+- Level 1: `rgba(19, 19, 22, 0.024) 0px 0px 0px 1px, rgba(19, 19, 22, 0.024) 0px 1px 1px -0.5px, rgba(19, 19, 22, 0.024) 0px 3px 3px -1.5px, rgba(19, 19, 22, 0.024) 0px 6px 6px -3px, rgba(19, 19, 22, 0.024) 0px 12px 12px -6px, rgba(19, 19, 22, 0.024) 0px 24px 24px -12px`
 - Level 2: `rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
 - Level 3: `oklab(0.999994 0.0000455678 0.0000200868 / 0.05) 0px 0px 0px 1px inset`
 - Level 4: `lab(84.5189 -31.4667 -23.9754 / 0.08) 0px 0px 0px 1px inset`
-- Level 5: `oklab(0.249859 0.00254738 -0.00901626 / 0.1) 0px 0px 0px 1px inset`
+- Level 5: `rgb(217, 217, 222) 0px 0px 0px 0.5px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.08) 0px 0px 2px 0px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 4px, 6px, 8px, 10px, 12px, 16px, 50%, 9999px (pill)
-
-Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+**Border radii:** 4px, 6px, 8px, 10px, 12px, 12.5px, 16px, 9999px (pill)
 
 ## Components
 
@@ -156,11 +149,11 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#6c47ff` for primary actions and CTAs
+- Do use `#212126` for primary actions and CTAs
 - Do use `geistNumbers` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond geistNumbers and Segoe UI Symbol
-- Don't use border-radius values outside: 4px, 6px, 8px, 10px, 12px, 16px, 50%, 9999px (pill)
+- Don't use border-radius values outside: 4px, 6px, 8px, 10px, 12px, 12.5px, 16px, 9999px (pill)
 
 ---
 
