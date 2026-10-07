@@ -58,9 +58,9 @@ function cssFontFamily(name) {
 function textColor(hex) {
   const h = hex.replace('#', '');
   if (h.length < 6) return '#000';
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
+  // A translucent swatch sits on the page background (#0d1117); judge the mix.
+  const a = h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1;
+  const [r, g, b] = [0x0d, 0x11, 0x17].map((page, i) => a * parseInt(h.slice(i * 2, i * 2 + 2), 16) + (1 - a) * page);
   return (r * 299 + g * 587 + b * 114) / 1000 > 140 ? '#000' : '#fff';
 }
 
