@@ -2,6 +2,14 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.0] - 2026-10-07
+
+### Changed
+
+- **Type levels are named by size.** With no heading at 32px or more, the largest heading was written over by the second largest and never reached the tokens. Headings now take `headline-lg` and `headline-md` from the top. The second body size is `body-lg` when it is larger than `body-md` and `body-sm` when it is smaller (it was always `body-lg`). `body-md` keeps its value.
+- **`--css` and `--tailwind` name radii by size.** They were named by position, which could make `--radius-sm` an asymmetric radius. Uniform radii are now `sm` to `3xl` by size, then `4xl` and `5xl`, with `full` only for a real pill, as in the `rounded` tokens. Asymmetric and percentage radii get no variable.
+- **`--tailwind` no longer writes `--spacing-N` keys.** Tailwind v4 reads `--spacing-4` as the value behind `p-4`, `m-4` and `gap-4`, so the numbered keys resized those utilities for anyone who pasted the block. The observed values are a comment now. Breaking if you used those variables.
+
 ## [0.17.1] - 2026-10-07
 
 ### Fixed
