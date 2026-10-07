@@ -32,7 +32,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: inter
     fontSize: 14px
     fontWeight: 400
@@ -105,8 +105,8 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Vivid Cyan** (`#00a6f4`): Link / accent text (accent)
 - **Near-transparent Vivid Cyan** (`#00bcff1a`): Overlay / scrim (accent)
 - **Vivid Purple** (`#5d0ec0`): Accent background (accent)
-- **Vivid Pink** (`#f6339a`): Accent background (accent)
 - **Orange** (`#7e2a0c`): Accent background (accent)
+- **Dark Red** (`#460809`): Accent background (accent)
 
 ## Typography
 
@@ -126,7 +126,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Line heights:** 24px, 28px, 20px, 40px, 16px, 48px, 96px, 36px
 
-**Letter spacing:** 1.2px, -2px, 1.4px, -4.8px
+**Letter spacing:** 1.2px, -2px, -4.8px
 
 ## Layout
 
@@ -138,11 +138,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.129999 -0.00404751 -0.027702 / 0.1) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.999994 0.0000455678 0.0000200868 / 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.129999 -0.00404751 -0.027702 / 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
-- Level 3: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.999994 0.0000455678 0.0000200868 / 0.05) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.999994 0.0000455678 0.0000200868 / 0.1) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 5: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
+- Level 1: `oklab(0.129999 -0.00404751 -0.027702 / 0.1) 0px 0px 0px 1px inset`
+- Level 2: `oklab(0.999994 0.0000455678 0.0000200868 / 0.2) 0px 0px 0px 1px inset, oklab(0.129999 -0.00404751 -0.027702 / 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
+- Level 3: `oklab(0.999994 0.0000455678 0.0000200868 / 0.05) 0px 0px 0px 1px inset`
+- Level 4: `oklab(0.999994 0.0000455678 0.0000200868 / 0.1) 0px 0px 0px 1px inset`
+- Level 5: `rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
 
 ## Shapes
 

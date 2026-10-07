@@ -14,32 +14,32 @@ colors:
   surface: "#02090a"
 typography:
   display:
-    fontFamily: NeueHaasGrotesk
+    fontFamily: Shopify-Inter
     fontSize: 96px
-    fontWeight: 400
-    lineHeight: 1
+    fontWeight: 300
+    lineHeight: 1.08
   headline-lg:
-    fontFamily: NeueHaasGrotesk
-    fontSize: 55px
+    fontFamily: Shopify-Inter
+    fontSize: 64px
     fontWeight: 330
-    lineHeight: 1.16
+    lineHeight: 1.08
   headline-md:
-    fontFamily: NeueHaasGrotesk
-    fontSize: 48px
+    fontFamily: Shopify-Inter
+    fontSize: 56px
     fontWeight: 330
-    lineHeight: 1.14
+    lineHeight: 1.08
   body-md:
-    fontFamily: NeueHaasGrotesk
+    fontFamily: Shopify-Inter
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
-    fontFamily: NeueHaasGrotesk
+  body-sm:
+    fontFamily: Shopify-Inter
     fontSize: 14px
     fontWeight: 420
     lineHeight: 1.43
   label-sm:
-    fontFamily: NeueHaasGrotesk
+    fontFamily: Shopify-Inter
     fontSize: 12px
     fontWeight: 420
     lineHeight: 1.21
@@ -52,11 +52,11 @@ rounded:
   full: 9999px
 spacing:
   base: 12px
-  xs: 4px
-  sm: 8px
-  md: 10px
-  lg: 13px
-  xl: 16px
+  xs: 2px
+  sm: 4px
+  md: 5px
+  lg: 8px
+  xl: 10px
 components:
   button-primary:
     backgroundColor: "#ffffff"
@@ -69,12 +69,16 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: "{rounded.full}"
-    padding: 8px
-    height: 44px
+    padding: 12px
+    height: 56px
   card:
     backgroundColor: "{colors.surface}"
     rounded: 0px
     padding: 72px
+  input:
+    typography: "{typography.body-md}"
+    rounded: "{rounded.lg}"
+    padding: 24px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://shopify.com](https://shopify.com) with `npx brandmd`.
@@ -104,36 +108,34 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Off-white** (`#e5e7eb`): Divider / border (dominant)
 - **Black** (`#000000`): Dark background / footer (dominant)
-- **Gray** (`#a1a1aa`): Muted text (accent)
 - **White** (`#ffffff`): Page background (accent)
-- **Dark Green** (`#0d3a2d`): Dark background / footer (accent)
+- **Gray** (`#a1a1aa`): Muted text (accent)
 - **Purple** (`#865cff`): Accent background (accent)
 - **Vivid Green** (`#36f4a4`): Link / accent text (accent)
+- **Dark Green** (`#0d3a2d`): Dark background / footer (accent)
 - **Dark Purple** (`#2c007f`): Accent background (accent)
 
 **Incidental (low usage, do not lead with these):** `#3f3f4b80`, `#1e2c31`
 
 ## Typography
 
-**Primary font:** NeueHaasGrotesk
-**Secondary font:** Inter-Variable
+**Primary font:** Shopify-Inter
+**Secondary font:** SFMono-Regular
 
 **Fonts by role:**
-- Headings: NeueHaasGrotesk, Inter-Variable
-- Body: NeueHaasGrotesk
-
-**All detected fonts:** NeueHaasGrotesk (629), Inter-Variable (418), SFMono-Regular (8)
+- Headings: Shopify-Inter
+- Body: Shopify-Inter
 
 **Type scale:**
-- Headings: 24px, 28px, 32px, 48px, 55px, 96px
+- Headings: 24px, 34px, 44px, 56px, 64px, 96px
 - Body / UI: 14px, 16px, 18px, 20px
 - Captions / Small: 12px, 13px
 
-**Weights in use:** 330, 360, 400, 420, 500, 550
+**Weights in use:** 300, 330, 400, 420, 450, 550
 
-**Line heights:** 24px, 20px, 96px, 28px, 22.5px, 21px, 64px, 18px, 14.5px, 54.5px
+**Line heights:** 24px, 20px, 103.5px, 19px, 25px, 28px, 26px, 18px, 14.5px, 31px
 
-**Letter spacing:** 0.72px, 0.28px, 0.3px, 0.32px, 0.42px, 2.4px
+**Letter spacing:** -1.92px, 0.72px, -1.68px, 0.28px, -0.44px, -0.24px
 
 ## Layout
 
@@ -143,11 +145,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 8px 8px 0px, rgba(0, 0, 0, 0.1) 0px 4px 4px 0px, rgba(0, 0, 0, 0.1) 0px 2px 2px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(255, 255, 255, 0.03) 0px 0.929px 0px 0px inset, rgba(0, 0, 0, 0.1) 0px 0px 0px 0.929px, rgba(0, 0, 0, 0.1) 0px 1.858px 1.858px 0px, rgba(0, 0, 0, 0.1) 0px 3.717px 3.717px 0px`
-- Level 3: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(255, 255, 255, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.3) 0px 1px 3px 0px, rgba(0, 0, 0, 0.2) 0px 5px 10px 0px`
-- Level 5: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(255, 255, 255, 0.05) 0px 1px 2px 0px, rgba(255, 255, 255, 0.04) 0px 1px 0px 0px inset`
+- Level 1: `rgba(255, 255, 255, 0.03) 0px 0.929px 0px 0px inset, rgba(0, 0, 0, 0.1) 0px 0px 0px 0.929px, rgba(0, 0, 0, 0.1) 0px 1.858px 1.858px 0px, rgba(0, 0, 0, 0.1) 0px 3.717px 3.717px 0px`
+- Level 2: `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`
+- Level 3: `rgba(255, 255, 255, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.3) 0px 1px 3px 0px, rgba(0, 0, 0, 0.2) 0px 5px 10px 0px`
+- Level 4: `rgba(0, 0, 0, 0.1) 0px 8px 8px 0px, rgba(0, 0, 0, 0.1) 0px 4px 4px 0px, rgba(0, 0, 0, 0.1) 0px 2px 2px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset`
+- Level 5: `rgba(255, 255, 255, 0.05) 0px 1px 2px 0px, rgba(255, 255, 255, 0.04) 0px 1px 0px 0px inset`
 
 ## Shapes
 
@@ -174,12 +176,18 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Corner radius: 0px
 - Padding: 72px 0px 0px 0px
 
+### Inputs
+- Border: 0px solid rgb(229, 231, 235)
+- Corner radius: 8px
+- Padding: 24px 16px 8px 16px
+- Font size: 16px
+
 ## Do's and Don'ts
 
 - Do use `#865cff` for primary actions and CTAs
-- Do use `NeueHaasGrotesk` as the primary typeface
+- Do use `Shopify-Inter` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond NeueHaasGrotesk and Inter-Variable
+- Don't mix fonts beyond Shopify-Inter and SFMono-Regular
 - Don't use border-radius values outside: 0px 0px 12px 12px, 4px, 5px, 8px, 12px, 20px 20px 0px 0px, 340px, 9999px (pill)
 
 ---

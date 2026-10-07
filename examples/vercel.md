@@ -26,37 +26,43 @@ typography:
     lineHeight: 1
   headline-md:
     fontFamily: GeistSans
-    fontSize: 30px
-    fontWeight: 400
-    lineHeight: 1.1
+    fontSize: 24px
+    fontWeight: 450
+    lineHeight: 1.33
   body-md:
-    fontFamily: GeistSans
-    fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.43
-  body-lg:
     fontFamily: GeistSans
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
+  body-sm:
+    fontFamily: GeistSans
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 1.43
   label-sm:
     fontFamily: GeistSans
     fontSize: 12px
     fontWeight: 400
     lineHeight: 1.33
 rounded:
-  sm: 2px
+  sm: 4px
   md: 6px
   lg: 8px
   full: 9999px
 spacing:
   base: 2px
-  xs: 3px
+  xs: 2.5px
   sm: 4px
   md: 5px
   lg: 6px
   xl: 8px
 components:
+  button-primary:
+    backgroundColor: "#ffffff"
+    textColor: "#171717"
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.full}"
+    height: 40px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -104,61 +110,62 @@ Palette extracted from the live page. Token names below map to the machine-reada
 **Secondary font:** Geist Mono
 
 **Fonts by role:**
-- Headings: GeistSans, Geist Mono
+- Headings: GeistSans
 - Body: GeistSans
 
 **Type scale:**
-- Headings: 24px, 30px, 56px, 64px
-- Body / UI: 14px, 16px, 20px
-- Captions / Small: 8px, 11px, 12px, 13px
+- Headings: 24px, 56px, 64px
+- Body / UI: 14px, 16px, 18px, 20px, 22px
+- Captions / Small: 11px, 12px
 
-**Weights in use:** 400, 450, 500, 600
+**Weights in use:** 400, 450, 500
 
-**Line heights:** 24px, 20px, 32px, 21px, 28px, 16px, 8px, 33px, 22.5px, 56px
+**Line heights:** 24px, 20px, 32px, 21px, 28px, 16px, 33px, 56px, 26.5px, 64px
 
-**Letter spacing:** -1.5px, 0.6px, -3.36px, 1px, -3.84px
+**Letter spacing:** -0.96px, -3.36px, 0.2px, -0.32px, -1.2px, -3.84px
 
 ## Layout
 
-**Spacing scale:** 2px, 3px, 4px, 6px, 8px, 12px, 20px, 24px
+**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 20px, 24px
 
 ## Elevation & Depth
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(235, 235, 235) 0px 0px 0px 1px`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px`
-- Level 3: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 0px 0px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px`
-- Level 5: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`
+- Level 1: `rgb(235, 235, 235) 0px 0px 0px 1px`
+- Level 2: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px`
+- Level 3: `rgb(235, 235, 235) 0px 0px 0px 1px inset`
+- Level 4: `rgba(0, 0, 0, 0.1) 0px 1px 0px 0px`
+- Level 5: `rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px`
 
 ## Shapes
 
 **Shape language:** Subtle rounding on interactive elements.
 
-**Border radii:** 0px 0px 0px 1px, 0px 8px 8px 0px, 2px, 6px, 8px, 100%, 9999px (pill), 9999px 6px 6px 9999px (pill)
+**Border radii:** 0px 0px 0px 1px, 0px 8px 8px 0px, 4px, 6px, 8px, 100%, 9999px (pill)
 
-Asymmetric / percentage radii observed (0px 0px 0px 1px, 0px 8px 8px 0px, 100%, 9999px 6px 6px 9999px); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (0px 0px 0px 1px, 0px 8px 8px 0px, 100%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Text color: `#4d4d4d`
-- Corner radius: 0px
-- Height: 32px
-- Padding: 0px 0px 0px 0px
-- Font: 14px, weight 400
+- Background: `#ffffff`
+- Text color: `#171717`
+- Corner radius: 3.35544e+07px
+- Height: 40px
+- Padding: 0px 8px 0px 4px
+- Font: 16px, weight 500
 
 ## Do's and Don'ts
 
 - Do use `#ff1744` for primary actions and CTAs
-- Do stick to 4 font weights: 400, 450, 500, 600
+- Do stick to 3 font weights: 400, 450, 500
 - Do use `GeistSans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond GeistSans and Geist Mono
-- Don't use border-radius values outside: 0px 0px 0px 1px, 0px 8px 8px 0px, 2px, 6px, 8px, 100%, 9999px (pill), 9999px 6px 6px 9999px (pill)
+- Don't use border-radius values outside: 0px 0px 0px 1px, 0px 8px 8px 0px, 4px, 6px, 8px, 100%, 9999px (pill)
 
 ---
 

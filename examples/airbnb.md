@@ -1,11 +1,11 @@
 ---
 version: alpha
-name: "Airbnb: Holiday Rentals, Cabins, Beach Houses, Unique Homes & Experiences"
+name: "Airbnb | Holiday rentals, cabins, beach houses & more"
 description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000"
-  on-surface-variant: "#ff385c"
+  on-surface-variant: "#6c6c6c"
   outline: "#dddddd"
   primary: "#da1249"
   on-primary: "#ffffff"
@@ -17,16 +17,16 @@ typography:
     fontSize: 28px
     fontWeight: 700
     lineHeight: 1.43
+  body-lg:
+    fontFamily: Airbnb Cereal
+    fontSize: 22px
+    fontWeight: 500
+    lineHeight: 1.18
   body-md:
     fontFamily: Airbnb Cereal
     fontSize: 14px
     fontWeight: 400
-    lineHeight: 1.43
-  body-lg:
-    fontFamily: Airbnb Cereal
-    fontSize: 20px
-    fontWeight: 600
-    lineHeight: 1.2
+    lineHeight: 1.29
   label-sm:
     fontFamily: Airbnb Cereal
     fontSize: 12px
@@ -35,23 +35,27 @@ typography:
 rounded:
   sm: 4px
   md: 8px
-  lg: 20px
+  lg: 12px
   xl: 32px
-  2xl: 50px
-  3xl: 100px
+  2xl: 100px
 spacing:
-  base: 4px
+  base: 16px
   xs: 2px
-  sm: 5px
-  md: 8px
-  lg: 10px
-  xl: 12px
+  sm: 4px
+  md: 5px
+  lg: 6px
+  xl: 8px
 components:
+  button-primary:
+    backgroundColor: "#f2f2f2"
+    textColor: "#222222"
+    typography: "{typography.label-sm}"
+    height: 40px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: "{rounded.xl}"
-    height: 71px
+    rounded: "{rounded.md}"
+    height: 18px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://airbnb.com](https://airbnb.com) with `npx brandmd`.
@@ -61,7 +65,7 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: Airbnb: Holiday Rentals, Cabins, Beach Houses, Unique Homes & Experiences
+# Design System: Airbnb | Holiday rentals, cabins, beach houses & more
 
 > Extracted from [https://airbnb.com](https://airbnb.com) by brandmd
 
@@ -73,7 +77,7 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (canvas rendering, scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -81,12 +85,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
+- **Dark gray** (`#222222`): Dark background / footer (dominant)
 - **Light gray** (`#dddddd`): Divider / border (dominant)
-- **Translucent Black** (`#00000040`): Overlay / scrim (accent)
+- **Gray** (`#6c6c6c`): Secondary text (accent)
 - **Vivid Red** (`#ff385c`): Secondary text (accent)
 - **Red** (`#da1249`): Accent background (accent)
-
-**Incidental (low usage, do not lead with these):** `#6c6c6c`
 
 ## Typography
 
@@ -98,52 +101,53 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Type scale:**
 - Headings: 28px
-- Body / UI: 14px, 16px, 20px
+- Body / UI: 14px, 16px, 21px, 22px
 - Captions / Small: 12px
 
-**Weights in use:** 400, 500, 600, 700
+**Weights in use:** 400, 500, 700
 
-**Line heights:** 20px, 18px, 16px, 24px, 40px
+**Line heights:** 20px, 18px, 16px, 40px, 26px, 30px
 
-**Letter spacing:** -0.18px
+**Letter spacing:** -0.44px
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 8px, 10px, 12px, 15px, 44px, 48px
+**Spacing scale:** 4px, 8px, 10px, 11px, 12px, 15px, 16px, 48px
 
 ## Elevation & Depth
 
 Uses 1 shadow style for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0.02) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 8px 24px 0px`
+- Level 1: `color(srgb 0 0 0 / 0.02) 0px 0px 0px 1px, color(srgb 0 0 0 / 0.1) 0px 8px 24px 0px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 4px, 8px, 20px, 32px, 50%, 50px, 100px
+**Border radii:** 0px 1.5px 1.5px 0px, 1.5px 0px 0px 1.5px, 4px, 8px, 12px, 32px, 50%, 100px
 
-Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (0px 1.5px 1.5px 0px, 1.5px 0px 0px 1.5px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
-Observed from the live DOM. Machine-readable component tokens are in the `components` block above. _(low confidence: sampled from a sparse page)_
+Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
+- Background: `#f2f2f2`
 - Text color: `#222222`
-- Corner radius: 32px
-- Height: 71px
+- Corner radius: 50%
+- Height: 40px
 - Padding: 0px 0px 0px 0px
 - Font: 14px, weight 400
 
 ## Do's and Don'ts
 
 - Do use `#da1249` for primary actions and CTAs
-- Do stick to 4 font weights: 400, 500, 600, 700
+- Do stick to 3 font weights: 400, 500, 700
 - Do use `Airbnb Cereal` as the primary typeface
-- Don't introduce colors outside the palette above _(low confidence: palette sampled from sparse evidence)_
+- Don't introduce colors outside the palette above
 - Don't mix fonts; use Airbnb Cereal everywhere
-- Don't use border-radius values outside: 4px, 8px, 20px, 32px, 50%, 50px, 100px
+- Don't use border-radius values outside: 0px 1.5px 1.5px 0px, 1.5px 0px 0px 1.5px, 4px, 8px, 12px, 32px, 50%, 100px
 
 ---
 

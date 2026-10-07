@@ -33,7 +33,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: Charlie Text
     fontSize: 15.5px
     fontWeight: 400
@@ -45,8 +45,8 @@ typography:
     lineHeight: 1.48
 rounded:
   sm: 6px
-  md: 12px
-  lg: 16px
+  md: 8px
+  lg: 12px
   xl: 41.5px
   2xl: 69px
   full: 9999px
@@ -103,9 +103,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Blue** (`#1868db`): Accent background (accent)
 - **Near-transparent Black** (`#00000012`): Overlay / scrim (accent)
 - **Dark Blue** (`#123263`): Accent background (accent)
+- **Green** (`#b3df72`): Accent background (accent)
 - **Off-white** (`#efffd6`): Page background (accent)
 - **Purple** (`#bf63f3`): Secondary text (accent)
-- **Green** (`#b3df72`): Accent background (accent)
 
 ## Typography
 
@@ -116,7 +116,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Charlie Display, Charlie Text
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (839), Charlie Display (30), Segoe UI (1)
+**All detected fonts:** Charlie Text (852), Charlie Display (30), Segoe UI (1)
 
 **Type scale:**
 - Headings: 25.5px, 26.5px, 32.5px, 44px, 63.5px
@@ -135,17 +135,17 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 6px 0px, rgba(0, 0, 0, 0.06) 0px 5px 18px 0px, rgba(0, 0, 0, 0.1) 0px 24px 83px 0px`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 4.45038px`
-- Level 3: `rgba(0, 0, 0, 0.04) 0px 2px 6px 0px, rgba(0, 0, 0, 0.06) 0px 5px 18px 0px, rgba(0, 0, 0, 0.1) 0px 24px 83px 0px`
-- Level 4: `rgba(0, 0, 0, 0.03) 0px 4px 6.4px 0px, rgba(0, 0, 0, 0.05) 0px 3px 9.6px 0px, rgba(0, 0, 0, 0.07) 0px 8px 32px 0px, rgba(0, 0, 0, 0.1) 0px 32px 96px 0px`
-- Level 5: `rgba(0, 0, 0, 0.25) 0px 15px 50px 0px`
+- Level 1: `rgba(0, 0, 0, 0.04) 0px 2px 6px 0px, rgba(0, 0, 0, 0.06) 0px 5px 18px 0px, rgba(0, 0, 0, 0.1) 0px 24px 83px 0px`
+- Level 2: `rgba(0, 0, 0, 0.03) 0px 4px 6.4px 0px, rgba(0, 0, 0, 0.05) 0px 3px 9.6px 0px, rgba(0, 0, 0, 0.07) 0px 8px 32px 0px, rgba(0, 0, 0, 0.1) 0px 32px 96px 0px`
+- Level 3: `rgba(0, 0, 0, 0.25) 0px 15px 50px 0px`
+- Level 4: `rgba(0, 0, 0, 0.25) 0px 3.24px 3.24px 0px`
+- Level 5: `rgba(255, 255, 255, 0.4) 0px 0px 0px 5px, rgba(0, 0, 0, 0.17) 0px 45.612px 86.879px 0px, rgba(0, 0, 0, 0.11) 0px 13.751px 26.192px 0px, rgba(0, 0, 0, 0.09) 0px 5.71104px 10.879px 0px, rgba(0, 0, 0, 0.06) 0px 2.06592px 3.93504px 0px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 6px, 12px, 16px, 41.5px, 41.5px 0px 0px 41.5px, 50%, 69px, 9999px (pill)
+**Border radii:** 6px, 8px, 12px, 41.5px, 41.5px 0px 0px 41.5px, 50%, 69px, 9999px (pill)
 
 Asymmetric / percentage radii observed (41.5px 0px 0px 41.5px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
@@ -168,7 +168,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Do use `Charlie Display` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Charlie Display and Charlie Text
-- Don't use border-radius values outside: 6px, 12px, 16px, 41.5px, 41.5px 0px 0px 41.5px, 50%, 69px, 9999px (pill)
+- Don't use border-radius values outside: 6px, 8px, 12px, 41.5px, 41.5px 0px 0px 41.5px, 50%, 69px, 9999px (pill)
 
 ---
 

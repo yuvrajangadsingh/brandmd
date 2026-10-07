@@ -8,7 +8,7 @@ colors:
   outline: "#dddee1"
   primary: "#c75300"
   on-primary: "#ffffff"
-  secondary: "#09326c"
+  secondary: "#4c6b1f"
   on-secondary: "#ffffff"
 typography:
   display:
@@ -23,15 +23,15 @@ typography:
     lineHeight: 1.19
   headline-md:
     fontFamily: Charlie Display
-    fontSize: 28px
-    fontWeight: 400
-    lineHeight: 1.43
+    fontSize: 48px
+    fontWeight: 500
+    lineHeight: 1.16
   body-md:
     fontFamily: Charlie Text
     fontSize: 16px
     fontWeight: 400
     lineHeight: 0.88
-  body-lg:
+  body-sm:
     fontFamily: Charlie Text
     fontSize: 14px
     fontWeight: 400
@@ -44,17 +44,17 @@ typography:
 rounded:
   sm: 3px
   md: 4px
-  lg: 10px
-  xl: 15px
-  2xl: 20px
+  lg: 15px
+  xl: 20px
+  2xl: 24px
   full: 9999px
 spacing:
-  base: 8px
+  base: 24px
   xs: 1px
   sm: 4px
   md: 6px
-  lg: 12px
-  xl: 16px
+  lg: 8px
+  xl: 10px
 components:
   button-primary:
     backgroundColor: "#101214"
@@ -88,7 +88,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with dark gray text and dark blue accents
+**Visual character:** Bright, high contrast; white background dominates with dark gray text and green accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -100,8 +100,8 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#ffffff`): Page background (dominant)
 - **Light gray** (`#dddee1`): Divider / border (dominant)
 - **Black** (`#101214`): Dark background / footer (accent)
-- **Dark Blue** (`#09326c`): Primary text (accent)
 - **Green** (`#4c6b1f`): Accent background (accent)
+- **Dark Blue** (`#09326c`): Primary text (accent)
 - **Blue** (`#1868db`): Accent background (accent)
 - **Vivid Orange** (`#c75300`): Accent background (accent)
 
@@ -117,36 +117,38 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Display / hero: Atlassian Mono
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (2539), Charlie Display (704), Atlassian Mono (12)
+**All detected fonts:** Charlie Text (1653), Charlie Display (636), Atlassian Mono (27)
 
 **Type scale:**
-- Headings: 24px, 28px, 64px, 96px
+- Headings: 24px, 40px, 48px, 64px, 96px
 - Body / UI: 14px, 16px, 18px, 20px
-- Captions / Small: 11.5px, 12px, 13px, 13.5px
+- Captions / Small: 11.5px, 12px, 13.5px
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 14px, 15.5px, 24px, 32px, 26px, 16px, 21.5px, 18px, 76px, 17.5px
+**Line heights:** 14px, 24px, 15.5px, 31px, 16px, 18px, 25px, 30px, 96px, 32.5px
 
-**Letter spacing:** 0.42px, 0.3px, 0.48px, -3px, 0.36px
+**Letter spacing:** 0.42px, -0.2px, -3px, 0.48px, -0.16px, 0.8px
 
 ## Layout
 
 **Spacing scale:** 4px, 6px, 8px, 12px, 16px, 24px, 32px, 40px
+
+**Base unit:** 4px grid — 81% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
 Uses 3 shadow styles for layering and elevation:
 
 - Level 1: `rgb(248, 248, 248) 0px 0px 0px 0px`
-- Level 2: `rgb(221, 222, 225) 0px 0px 1px 0px, rgba(0, 0, 0, 0.1) 0px 5px 20px -5px`
+- Level 2: `rgba(9, 30, 66, 0.15) 0px 8px 12px 0px, rgba(9, 30, 66, 0.31) 0px 0px 1px 0px`
 - Level 3: `rgb(128, 128, 128) 0px 0px 5px 0px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 3px, 4px, 8px 0px 0px 8px, 10px, 15px, 20px, 100%, 9999px (pill)
+**Border radii:** 3px, 4px, 8px 0px 0px 8px, 15px, 20px, 24px, 100%, 9999px (pill)
 
 Asymmetric / percentage radii observed (8px 0px 0px 8px, 100%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
@@ -174,12 +176,13 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
+- Do use a 4px grid for spacing
 - Do use `#c75300` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `Charlie Display` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Charlie Display and Charlie Text
-- Don't use border-radius values outside: 3px, 4px, 8px 0px 0px 8px, 10px, 15px, 20px, 100%, 9999px (pill)
+- Don't use border-radius values outside: 3px, 4px, 8px 0px 0px 8px, 15px, 20px, 24px, 100%, 9999px (pill)
 
 ---
 

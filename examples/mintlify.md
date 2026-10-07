@@ -1,6 +1,6 @@
 ---
 version: alpha
-name: "Mintlify - The Knowledge Platform Built for Agents"
+name: "Mintlify - The documentation platform for agents"
 description: "Bright, soft contrast"
 colors:
   background: "#ffffff"
@@ -8,7 +8,7 @@ colors:
   on-surface-variant: "#0c8c5e"
   outline: "#08090a12"
   outline-variant: "#f1f0ee"
-  primary: "#004cff"
+  primary: "#0052ff"
   on-primary: "#ffffff"
   secondary: "#0c8c5e"
   on-secondary: "#ffffff"
@@ -34,7 +34,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: paperMono
     fontSize: 14px
     fontWeight: 500
@@ -83,7 +83,7 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: Mintlify - The Knowledge Platform Built for Agents
+# Design System: Mintlify - The documentation platform for agents
 
 > Extracted from [https://mintlify.com](https://mintlify.com) by brandmd
 
@@ -91,7 +91,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, soft contrast; white background dominates with green text and vivid orange accents
+**Visual character:** Bright, soft contrast; white background dominates with green text and red accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -106,10 +106,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#ffffff`): Page background (dominant)
 - **Near-transparent Black** (`#08090a12`): Divider / border (dominant)
 - **Black** (`#08090a`): Dark background / footer (accent)
-- **Vivid Orange** (`#ef6333`): Accent background (accent)
+- **Red** (`#c44120`): Accent background (accent)
 - **Near-transparent Green** (`#1fa77a14`): Overlay / scrim (accent)
-- **Translucent Vivid Blue** (`#44aeff80`): Accent background (accent)
-- **Vivid Blue** (`#004cff`): Accent background (accent)
+- **Vivid Blue** (`#0052ff`): Accent background (accent)
+- **Vivid Cyan** (`#0077a6`): Accent background (accent)
 - **Off-white** (`#f1f0ee`): Divider / border (accent)
 
 **Incidental (low usage, do not lead with these):** `#717d79`
@@ -124,7 +124,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: paperMono
 - Buttons / nav: inter
 
-**All detected fonts:** inter (816), paperMono (779), arizonaFlare (2), Segoe UI Symbol (1)
+**All detected fonts:** inter (842), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
 
 **Type scale:**
 - Headings: 24px, 35px, 36px, 44px, 50px
@@ -145,7 +145,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 ## Elevation & Depth
 
-Flat design: hierarchy comes from color contrast and borders, not shadows.
+Uses 1 shadow style for layering and elevation:
+
+- Level 1: `oklab(0 0 0 / 0.02) 0px 0px 0px 1px inset`
 
 ## Shapes
 
@@ -175,7 +177,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#004cff` for primary actions and CTAs
+- Do use `#0052ff` for primary actions and CTAs
 - Do stick to 2 font weights: 400, 500
 - Do use `inter` as the primary typeface
 - Don't introduce colors outside the palette above
