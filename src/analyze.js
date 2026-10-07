@@ -5,6 +5,7 @@ import chroma from "chroma-js";
  * Returns null if unparseable.
  */
 function toHex(cssColor) {
+  if (!cssColor) return null;
   try {
     return chroma(cssColor).hex();
   } catch {
@@ -693,7 +694,19 @@ export function analyze(raw) {
       return false;
     }
   };
-  const pageBg = bgColors.find((c) => isOpaque(c.hex)) || bgColors[0] || null;
+  // The capture's own page background (the surface filling the viewport, else
+  // the canvas) beats any frequency or luminance guess. Undefined on captures
+  // made before it existed, which keep the frequency rule end to end.
+  let pageBackground;
+  if (raw.pageBackground !== undefined) {
+    const pb = raw.pageBackground || {};
+    const hex = toHex(pb.surface) || toHex(pb.canvas);
+    pageBackground = hex && isSolidFill(hex) ? hex.toLowerCase() : null;
+  }
+  const captured = pageBackground
+    ? bgColors.find((c) => c.hex.toLowerCase() === pageBackground) || { hex: pageBackground, freq: 0 }
+    : null;
+  const pageBg = captured || bgColors.find((c) => isOpaque(c.hex)) || bgColors[0] || null;
   const topText = textColors.find((c) => isOpaque(c.hex)) || textColors[0] || null;
 
   let atmosphere = "Balanced and professional";
@@ -791,6 +804,7 @@ export function analyze(raw) {
     provenance: raw.provenance || null,
     blockLikely: raw.blockLikely || false,
     insufficient,
+    ...(pageBackground !== undefined ? { pageBackground } : {}),
     evidence,
     motion: raw.motion || null,
     atmosphere,

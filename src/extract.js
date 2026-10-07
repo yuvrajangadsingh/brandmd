@@ -487,6 +487,8 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, typeSamples, spacings, radii, shadows, cssVars, components, motion, bodyTextLength, hasPasswordField, loginCopy };
     });
 
+    raw.pageBackground = await page.evaluate(probePageBackground);
+
     const title = await page.title();
 
     const blockLikely = detectBlockLikely({
@@ -609,6 +611,95 @@ function mergeTypeSamples(maps) {
 }
 
 /**
+ * What the viewport shows at the top of the page: the surface covering at least
+ * 80% of it, later elements in document order (painted on top) winning. A
+ * translucent cover is composited over what it covers; a cover inside an opacity
+ * group, with a background image, or in a colour this cannot parse leaves the
+ * surface unknown until a later opaque element covers it. The canvas is the
+ * fallback: html's background when html paints one, else body's (CSS propagates
+ * it), composited over the white backing; an image or an unreadable colour
+ * leaves it unknown.
+ * Runs inside page.evaluate, so it is self-contained.
+ * ponytail: rgb()/rgba() computed values only, z-index and transforms ignored,
+ * fixed and sticky elements and everything inside them skipped (an app shell that
+ * is a fixed wrapper falls back to the canvas), iframes and shadow roots not
+ * entered, the backing assumed white (color-scheme: dark pages without a
+ * background are not).
+ */
+export function probePageBackground() {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const vp = vw * vh || 1;
+  const parse = (c) => {
+    const m = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)$/.exec(c || "");
+    return m ? { r: +m[1], g: +m[2], b: +m[3], a: m[4] === undefined ? 1 : +m[4] } : null;
+  };
+  const rgb = (c) => `rgb(${Math.round(c.r)}, ${Math.round(c.g)}, ${Math.round(c.b)})`;
+  const over = (c, u) => ({ r: c.a * c.r + (1 - c.a) * u.r, g: c.a * c.g + (1 - c.a) * u.g, b: c.a * c.b + (1 - c.a) * u.b, a: 1 });
+  const WHITE = { r: 255, g: 255, b: 255, a: 1 };
+  // Opacity multiplies down the tree and a fixed or sticky ancestor takes its
+  // subtree out of the flow; memoised so nested wrappers cost one style read each.
+  const memo = new Map();
+  const styleOf = (el) => {
+    if (!el) return { opacity: 1, fixed: false };
+    let s = memo.get(el);
+    if (!s) {
+      const p = styleOf(el.parentElement);
+      const cs = getComputedStyle(el);
+      s = { cs, opacity: p.opacity * +cs.opacity, fixed: p.fixed || cs.position === "fixed" || cs.position === "sticky" };
+      memo.set(el, s);
+    }
+    return s;
+  };
+  // undefined: paints nothing; null: paints something this cannot read.
+  const canvasOf = (cs) => {
+    if (cs.backgroundImage && cs.backgroundImage !== "none") return null;
+    const c = parse(cs.backgroundColor);
+    return c ? (c.a > 0 ? c : undefined) : null;
+  };
+  // When html paints nothing, body's background moves to the canvas and the
+  // body box paints none; the root's opacity applies to the canvas as well.
+  const root = styleOf(document.documentElement);
+  let cv = canvasOf(root.cs);
+  const propagated = cv === undefined;
+  if (propagated) cv = canvasOf(styleOf(document.body).cs);
+  const canvas = cv ? rgb(over({ ...cv, a: cv.a * +root.cs.opacity }, WHITE)) : null;
+
+  let surface; // undefined: nothing covers yet; null: covered by something unknown
+  for (const el of document.querySelectorAll("body, body *")) {
+    const r = el.getBoundingClientRect();
+    const w = Math.min(r.right, vw) - Math.max(r.left, 0);
+    const h = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+    if (w <= 0 || h <= 0 || (w * h) / vp < 0.8) continue;
+    const { cs, opacity, fixed } = styleOf(el);
+    if (fixed || opacity === 0 || cs.visibility !== "visible" || (propagated && el === document.body)) continue;
+    if (cs.backgroundImage && cs.backgroundImage !== "none") {
+      surface = null;
+      continue;
+    }
+    const c = parse(cs.backgroundColor);
+    if (!c) {
+      surface = null; // a real cover in a colour space this does not read
+      continue;
+    }
+    if (c.a <= 0) continue;
+    if (opacity < 1) {
+      // ponytail: an opacity group composites its subtree as one layer, which a
+      // flat walk cannot follow; recurse per group if pages mid-fade matter.
+      surface = null;
+      continue;
+    }
+    if (c.a >= 1) {
+      surface = rgb(c);
+      continue;
+    }
+    const under = surface === undefined ? parse(canvas) : parse(surface);
+    surface = under ? rgb(over(c, under)) : null;
+  }
+  return { surface: surface ?? null, canvas };
+}
+
+/**
  * Merge multiple raw extractions into one.
  */
 export function mergeRaw(pages) {
@@ -621,6 +712,8 @@ export function mergeRaw(pages) {
       text: mergeFreqMaps(pages.map((p) => p.colors.text)),
       border: mergeFreqMaps(pages.map((p) => p.colors.border)),
     },
+    // The first page that extracted is the one the tokens describe.
+    pageBackground: pages[0].pageBackground,
     fonts: mergeFreqMaps(pages.map((p) => p.fonts)),
     fontsByRole: {
       heading: mergeFreqMaps(pages.map((p) => p.fontsByRole?.heading || {})),
