@@ -4,7 +4,7 @@ name: "Airbnb | Holiday rentals, cabins, beach houses & more"
 description: "Bright, high contrast"
 colors:
   background: "#ffffff"
-  on-background: "#000000"
+  on-background: "#222222"
   on-surface-variant: "#6c6c6c"
   outline: "#dddddd"
   primary: "#da1249"
@@ -85,7 +85,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and red accents
+**Visual character:** Bright, high contrast; white background dominates with dark gray text and red accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 

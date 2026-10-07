@@ -4,9 +4,9 @@ name: "Free screen recorder for Mac and PC | Loom"
 description: "Bright, high contrast"
 colors:
   background: "#ffffff"
-  on-background: "#000000"
+  on-background: "#292a2e"
   surface: "#f8eefe"
-  on-surface-variant: "#bf63f3"
+  on-surface-variant: "#1868db"
   outline: "#292a2e"
   primary: "#1868db"
   on-primary: "#ffffff"
@@ -88,7 +88,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
+**Visual character:** Bright, high contrast; white background dominates with dark gray text and blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 

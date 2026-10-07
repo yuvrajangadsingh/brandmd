@@ -122,7 +122,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: paperMono
 - Buttons / nav: inter
 
-**All detected fonts:** inter (844), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
+**All detected fonts:** inter (842), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
 
 **Type scale:**
 - Headings: 24px, 35px, 36px, 44px, 50px

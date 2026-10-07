@@ -4,7 +4,7 @@ name: "OpenAI API Platform Documentation"
 description: "Bright, high contrast"
 colors:
   background: "#ffffff"
-  on-background: "#000000e6"
+  on-background: "#282828"
   on-surface-variant: "#5d5d5d"
   outline: "#0d0d0d0d"
   outline-variant: "#ededed"
@@ -85,7 +85,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text
+**Visual character:** Bright, high contrast; white background dominates with dark gray text
 
 **Density:** spacious. The layout uses a varied spacing scale.
 

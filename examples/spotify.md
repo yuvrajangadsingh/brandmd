@@ -3,17 +3,17 @@ version: alpha
 name: "Spotify - Web Player: Music for everyone"
 description: "Dark, high contrast"
 colors:
-  background: "#ffffff"
-  on-background: "#000000"
-  on-surface-variant: "#b3b3b3"
-  outline: "#7c7c7c"
+  background: "#000000"
+  on-background: "#b3b3b3"
+  on-surface-variant: "#ffffff"
+  outline: "#292929"
   primary: "#1ed760"
   on-primary: "#1a1a1a"
-  secondary: "#bc5b2a"
+  secondary: "#782830"
   on-secondary: "#ffffff"
 typography:
   headline-lg:
-    fontFamily: SpotifyMixUITitle
+    fontFamily: SpotifyMixUI
     fontSize: 24px
     fontWeight: 700
     lineHeight: 1.25
@@ -49,11 +49,11 @@ spacing:
   xl: 16px
 components:
   button-primary:
-    backgroundColor: "#1f1f1f"
+    backgroundColor: "#292929"
     textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    padding: 12px
-    height: 48px
+    padding: 8px
+    height: 40px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -83,7 +83,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; black background dominates with white text and green accents
+**Visual character:** Dark, high contrast; black background dominates with light gray text and green accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -93,25 +93,22 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Light gray** (`#b3b3b3`): Muted text (dominant)
 - **Black** (`#121212`): Dark background / footer (dominant)
-- **Gray** (`#7c7c7c`): Divider / border (dominant)
+- **Dark gray** (`#292929`): Divider / border (dominant)
 - **Black** (`#000000`): Primary text (accent)
 - **Green** (`#1ed760`): Accent background (accent)
-- **White** (`#ffffff`): Page background (accent)
-- **Orange** (`#bc5b2a`): Accent background (accent)
-- **Vivid Blue** (`#0000ee`): Primary text (accent)
 
-**Incidental (low usage, do not lead with these):** `#782830`, `#535353`
+**Incidental (low usage, do not lead with these):** `#782830`, `#535353`, `#ffffff4d`, `#ffffff`, `#808080`
 
 ## Typography
 
-**Primary font:** SpotifyMixUITitle
-**Secondary font:** SpotifyMixUI
+**Primary font:** SpotifyMixUI
+**Secondary font:** SpotifyMixUITitle
 
 **Fonts by role:**
-- Headings: SpotifyMixUITitle, SpotifyMixUI
+- Headings: SpotifyMixUI, SpotifyMixUITitle
 - Body: SpotifyMixUI
 
-**All detected fonts:** SpotifyMixUI (1348), SpotifyMixUITitle (10), Times (1)
+**All detected fonts:** SpotifyMixUI (1439), SpotifyMixUITitle (10), Times (1)
 
 **Type scale:**
 - Headings: 24px
@@ -124,9 +121,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 20px, 24px, 171.5px
+**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 24px, 32px, 171.5px
 
-**Base unit:** 4px grid — 83% of all weighted spacing values are multiples of 4.
+**Base unit:** 4px grid — 85% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
@@ -149,11 +146,11 @@ Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#1f1f1f`
+- Background: `#292929`
 - Text color: `#ffffff`
 - Corner radius: 50%
-- Height: 48px
-- Padding: 12px 12px 12px 12px
+- Height: 40px
+- Padding: 8px 8px 8px 8px
 - Font: 16px, weight 400
 
 ### Cards
@@ -172,9 +169,9 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Do use a 4px grid for spacing
 - Do use `#1ed760` for primary actions and CTAs
 - Do stick to 2 font weights: 400, 700
-- Do use `SpotifyMixUITitle` as the primary typeface
+- Do use `SpotifyMixUI` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond SpotifyMixUITitle and SpotifyMixUI
+- Don't mix fonts beyond SpotifyMixUI and SpotifyMixUITitle
 - Don't use border-radius values outside: 2px, 4px, 6px, 8px, 10px, 50%, 500px, 9999px (pill)
 
 ---

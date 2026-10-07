@@ -6,7 +6,6 @@ colors:
   background: "#07080a"
   on-background: "#ffffff"
   surface: "#e6e6e6"
-  on-surface-variant: "#6a6b6c"
   outline: "#ffffff0f"
   primary: "#20235bb3"
   on-primary: "#ffffff"

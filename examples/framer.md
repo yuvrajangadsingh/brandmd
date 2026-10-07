@@ -1,10 +1,10 @@
 ---
 version: alpha
 name: "Framer: AI design agent"
-description: "Dark, soft contrast"
+description: "Dark, high contrast"
 colors:
   background: "#000000"
-  on-background: "#0000ee"
+  on-background: "#ffffff"
   on-surface-variant: "#999999"
   outline: "#ffffff0f"
   primary: "#0099ff"
@@ -83,7 +83,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, soft contrast; black background dominates with black text and vivid blue accents
+**Visual character:** Dark, high contrast; black background dominates with white text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
