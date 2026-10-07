@@ -746,7 +746,7 @@ export function analyze(raw) {
     // same hex string the token emits. Ties break on the hex, so the pick is
     // deterministic whatever order the capture listed them in.
     const byHex = new Map();
-    for (const [color, freq] of Object.entries(raw.colors.text)) {
+    for (const [color, freq] of Object.entries(raw.textOnPage || raw.colors.text)) {
       const hex = toHex(color)?.toLowerCase();
       if (!hex || !isOpaque(hex)) continue;
       byHex.set(hex, (byHex.get(hex) || 0) + freq);
