@@ -100,11 +100,10 @@ See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 ## Examples
 
-**[See all 31 DESIGN.md examples in the gallery →](examples/README.md)**
+**[See all 30 DESIGN.md examples in the gallery →](examples/README.md)**
 
 Flagship deep links (DESIGN.md):
 
-- [Stitch](examples/stitch.md)
 - [Stripe](examples/stripe.md)
 - [Linear](examples/linear.md)
 - [GitHub](examples/github.md)
@@ -194,7 +193,7 @@ Pass `--allow-blocked` to force output anyway; the artifact carries a block mark
 
 ## Gallery
 
-[See 5 real DESIGN.md snapshots in the browser](https://yuvrajangadsingh.github.io/brandmd/) (Stripe, Vercel, Linear, Anthropic, Mintlify), or scan the [`examples/`](./examples) folder for 30+ more. Each snapshot is generated from a single public page visit and is observed, not canonical.
+[See 5 real DESIGN.md snapshots in the browser](https://yuvrajangadsingh.github.io/brandmd/) (Stripe, Vercel, Linear, Anthropic, Mintlify), or scan the [`examples/`](./examples) folder for all 30. Each snapshot is generated from a single public page visit and is observed, not canonical.
 
 ## Check (drift detection in CI)
 
