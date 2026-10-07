@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.1] - 2026-10-08
+
+### Fixed
+
+- **Translucent colours never become fill, text or accent tokens.** A colour with alpha 0 (Tailwind's ring and gradient plumbing, `transparent` borders) was clustered like any other and could land in `primary`, `secondary` or an outline; a 12% tint could do the same through the positional fallbacks. Alpha-0 colours are dropped before clustering, a colour under 50% alpha never merges with a solid one (deltaE ignores alpha, so a 10% scrim seen first used to swallow the solid colour under it), and `background`, `surface`, the text roles, `primary` and `secondary` now come from the solid part of the palette (alpha 0.5 or more). Outlines may still be translucent: a 10% black divider is how most sites draw one. Translucent colours stay in the Colors prose as overlays, scrims and dividers. With no solid accent left, `primary` mirrors the background neutral with the existing low-confidence note. Known limits: `--css` and `--tailwind` variable names can shift where a transparent colour used to take a slot, and the legacy form `rgba(r, g, b, 12%)` still parses as opaque (chroma-js 3.2; browsers serialize computed colours with a decimal alpha, so live captures are not affected). `examples/` posthog and clerk regenerated.
+
 ## [0.18.0] - 2026-10-07
 
 ### Changed
