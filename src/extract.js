@@ -806,7 +806,7 @@ export async function extractFromUrls(urls, { dark = false, vision = false, cfWa
       const darkPages = [];
       for (const url of urls) {
         try {
-          darkPages.push(await extractPage(browser, url, "dark", { cfWaitMs }));
+          darkPages.push(await extractPage(browser, url, "dark", { cfWaitMs, capture }));
         } catch (err) {
           process.stderr.write(`Warning: failed dark extraction for ${url}: ${err.message}\n`);
         }
