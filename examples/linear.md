@@ -7,7 +7,7 @@ colors:
   on-background: "#f7f8f8"
   surface: "#0f1011"
   on-surface-variant: "#8a8f98"
-  outline: "#24282c"
+  outline: "#ffffff14"
   primary: "#4ea7fc"
   on-primary: "#1a1a1a"
   secondary: "#f79ce0"
@@ -102,15 +102,16 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **White** (`#f7f8f8`): Light text (on dark) (dominant)
 - **Black** (`#08090a`): Dark background / footer (dominant)
-- **Light gray** (`#e5e5e6`): Surface / card background (dominant)
+- **Near-transparent White** (`#ffffff05`): Overlay / scrim (dominant)
+- **Near-transparent White** (`#ffffff14`): Divider / border (dominant)
 - **Gray** (`#8a8f98`): Secondary text (accent)
 - **Gray** (`#62666d`): Secondary text (accent)
 - **Light Pink** (`#f79ce0`): Link / accent text (accent)
 - **Near-transparent Vivid Green** (`#00ff051a`): Overlay / scrim (accent)
-- **Red** (`#eb5757`): Accent background (accent)
 - **Vivid Blue** (`#4ea7fc`): Accent background (accent)
-- **Dark gray** (`#24282c`): Divider / border (accent)
-- **Green** (`#27a644`): Accent background (accent)
+- **Near-transparent Vivid Red** (`#f34e521a`): Overlay / scrim (accent)
+
+**Incidental (low usage, do not lead with these):** `#e5e5e6`
 
 ## Typography
 

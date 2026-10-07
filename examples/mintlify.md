@@ -7,7 +7,6 @@ colors:
   on-background: "#000000"
   on-surface-variant: "#0c8c5e"
   outline: "#08090a12"
-  outline-variant: "#f1f0ee"
   primary: "#0052ff"
   on-primary: "#ffffff"
   secondary: "#0c8c5e"
@@ -105,12 +104,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
 - **Near-transparent Black** (`#08090a12`): Divider / border (dominant)
-- **Black** (`#08090a`): Dark background / footer (accent)
+- **Near-transparent Black** (`#00000005`): Overlay / scrim (accent)
 - **Red** (`#c44120`): Accent background (accent)
-- **Near-transparent Green** (`#1fa77a14`): Overlay / scrim (accent)
 - **Vivid Blue** (`#0052ff`): Accent background (accent)
 - **Vivid Cyan** (`#0077a6`): Accent background (accent)
-- **Off-white** (`#f1f0ee`): Divider / border (accent)
+- **Near-transparent Green** (`#1fa77a14`): Overlay / scrim (accent)
 
 **Incidental (low usage, do not lead with these):** `#717d79`
 
@@ -124,7 +122,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: paperMono
 - Buttons / nav: inter
 
-**All detected fonts:** inter (842), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
+**All detected fonts:** inter (844), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
 
 **Type scale:**
 - Headings: 24px, 35px, 36px, 44px, 50px

@@ -3,15 +3,12 @@ version: alpha
 name: "Shopify: The All-in-One Commerce Platform for Businesses - Shopify"
 description: "Dark, high contrast"
 colors:
-  background: "#ffffff"
+  background: "#02090a"
   on-background: "#a1a1aa"
   outline: "#e5e7eb"
   outline-variant: "#1e2c31"
-  primary: "#865cff"
-  on-primary: "#ffffff"
-  secondary: "#36f4a4"
-  on-secondary: "#1a1a1a"
-  surface: "#02090a"
+  primary: "#36f4a4"
+  on-primary: "#1a1a1a"
 typography:
   display:
     fontFamily: Shopify-Inter
@@ -72,7 +69,7 @@ components:
     padding: 12px
     height: 56px
   card:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.background}"
     rounded: 0px
     padding: 72px
   input:
@@ -96,7 +93,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; black background dominates with white text and purple accents
+**Visual character:** Dark, high contrast; dark cyan background dominates with white text and vivid green accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -106,14 +103,16 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
+_The page background `#02090a` is the surface that fills the viewport; it is not among the most frequent fills listed below._
+
 - **Off-white** (`#e5e7eb`): Divider / border (dominant)
 - **Black** (`#000000`): Dark background / footer (dominant)
-- **White** (`#ffffff`): Page background (accent)
 - **Gray** (`#a1a1aa`): Muted text (accent)
-- **Purple** (`#865cff`): Accent background (accent)
+- **White** (`#ffffff`): Page background (accent)
+- **Near-transparent White** (`#ffffff0f`): Overlay / scrim (accent)
 - **Vivid Green** (`#36f4a4`): Link / accent text (accent)
+- **Translucent Vivid Blue** (`#1260ff59`): Overlay / scrim (accent)
 - **Dark Green** (`#0d3a2d`): Dark background / footer (accent)
-- **Dark Purple** (`#2c007f`): Accent background (accent)
 
 **Incidental (low usage, do not lead with these):** `#3f3f4b80`, `#1e2c31`
 
@@ -184,7 +183,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#865cff` for primary actions and CTAs
+- Do use `#36f4a4` for primary actions and CTAs
 - Do use `Shopify-Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Shopify-Inter and SFMono-Regular

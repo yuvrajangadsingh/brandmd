@@ -3,7 +3,7 @@ version: alpha
 name: "Free screen recorder for Mac and PC | Loom"
 description: "Bright, high contrast"
 colors:
-  background: "#efffd6"
+  background: "#ffffff"
   on-background: "#000000"
   surface: "#f8eefe"
   on-surface-variant: "#bf63f3"
@@ -88,7 +88,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; off-white background dominates with black text and blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -101,7 +101,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Dark gray** (`#292a2e`): Divider / border (dominant)
 - **White** (`#ffffff`): Light text (on dark) (accent)
 - **Blue** (`#1868db`): Accent background (accent)
-- **Near-transparent Black** (`#00000012`): Overlay / scrim (accent)
+- **Black** (`#101214`): Dark background / footer (accent)
 - **Dark Blue** (`#123263`): Accent background (accent)
 - **Green** (`#b3df72`): Accent background (accent)
 - **Off-white** (`#efffd6`): Page background (accent)

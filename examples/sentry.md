@@ -3,7 +3,7 @@ version: alpha
 name: "Application Performance Monitoring & Error Tracking Software | Sentry"
 description: "Dark, high contrast"
 colors:
-  background: "#ffffff"
+  background: "#1f1633"
   on-background: "#9ecbff"
   surface: "#c2ef4e"
   outline: "#584674"
@@ -112,9 +112,8 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Red** (`#f97583`): Link / accent text (accent)
 - **Light Purple** (`#b392f0`): Link / accent text (accent)
 - **Green** (`#c2ef4e`): Surface / card background (accent)
-- **Pink** (`#fa7faa`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#b44092`, `#ffffff`, `#6a5fc1`, `#584674`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#b44092`, `#6a5fc1`, `#ad6caa26`, `#584674`
 
 ## Typography
 

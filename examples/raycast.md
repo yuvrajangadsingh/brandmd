@@ -4,14 +4,12 @@ name: "Raycast - Your shortcut to everything"
 description: "Dark, high contrast"
 colors:
   background: "#07080a"
-  on-background: "#2f3031"
+  on-background: "#ffffff"
   surface: "#e6e6e6"
   on-surface-variant: "#6a6b6c"
   outline: "#ffffff0f"
-  primary: "#56c2ff"
-  on-primary: "#1a1a1a"
-  secondary: "#eca5a7"
-  on-secondary: "#1a1a1a"
+  primary: "#20235bb3"
+  on-primary: "#ffffff"
 typography:
   display:
     fontFamily: Inter
@@ -91,7 +89,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; dark muted blue background dominates with white text and blue accents
+**Visual character:** Dark, high contrast; dark muted blue background dominates with white text
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -101,15 +99,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **White** (`#ffffff`): Light text (on dark) (dominant)
 - **Dark Muted Blue** (`#07080a`): Dark background / footer (dominant)
-- **Off-white** (`#e6e6e6`): Surface / card background (dominant)
 - **Near-transparent White** (`#ffffff0f`): Divider / border (dominant)
+- **Near-transparent Off-white** (`#dee2ff14`): Overlay / scrim (accent)
 - **Gray** (`#6a6b6c`): Secondary text (accent)
-- **Dark gray** (`#2f3031`): Primary text (accent)
 - **Gray** (`#9c9c9d`): Muted text (accent)
-- **Blue** (`#56c2ff`): Accent background (accent)
-- **Light Red** (`#eca5a7`): Accent background (accent)
+- **Off-white** (`#e6e6e6`): Surface / card background (accent)
 
-**Incidental (low usage, do not lead with these):** `#20235bb3`, `#434345`
+**Incidental (low usage, do not lead with these):** `#ffffff66`, `#00000070`, `#434345`, `#20235bb3`
 
 ## Typography
 
@@ -179,7 +175,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#56c2ff` for primary actions and CTAs
+- Do use `#20235bb3` for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and SF Pro Text

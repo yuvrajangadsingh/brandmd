@@ -92,11 +92,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#ffffff`): Light text (on dark) (dominant)
 - **Dark Muted Purple** (`#13111c`): Dark background / footer (dominant)
 - **Dark gray** (`#545260`): Primary text (accent)
-- **Near-transparent White** (`#ffffff26`): Divider / border (accent)
 - **Near-transparent White** (`#ffffff33`): Overlay / scrim (accent)
 - **Dark Purple** (`#180d43`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#a1a0ab`, `#42946e`, `#313c3c`, `#428a7233`, `#553f83`
+**Incidental (low usage, do not lead with these):** `#ffffff26`, `#a1a0ab`, `#00000073`, `#42946e`, `#428a7233`, `#313c3c`
 
 ## Typography
 

@@ -5,6 +5,7 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#808080"
+  outline: "#ffffff29"
   primary: "#00b6ff"
   on-primary: "#1a1a1a"
 typography:
@@ -92,10 +93,11 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **White** (`#ffffff`): Page background (dominant)
+- **Near-transparent White** (`#ffffff29`): Divider / border (dominant)
 - **Black** (`#000000`): Dark background / footer (accent)
 - **Vivid Cyan** (`#00b6ff`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#808080`
+**Incidental (low usage, do not lead with these):** `#ffffff3d`, `#0000000a`, `#808080`
 
 ## Typography
 
