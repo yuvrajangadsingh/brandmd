@@ -82,6 +82,34 @@ function contrastOk(a, b) {
 
 const lc = (hex) => (hex ? String(hex).toLowerCase() : hex);
 
+// A solid background-color under a gradient image is the button's base fill.
+// The capture says whether it took `bg` from the first stop (bgFromGradient);
+// an older capture did that only when the colour was transparent, so there a
+// bg that differs from the first stop is a real base.
+// A gradient is known from its raw image or its stop count, not from the stops
+// the capture could read: an all-oklch gradient has none.
+const hasGradient = (b) => !!(b?.gradientRaw || b?.gradient?.length || b?.stopCount > 0);
+
+function baseFill(b) {
+  if (!hasGradient(b) || !safeChroma(b.bg)) return null;
+  if (b.bgFromGradient !== undefined) return b.bgFromGradient ? null : b.bg;
+  return b.gradient?.length && safeChroma(b.gradient[0]) && chroma(b.bg).hex() !== chroma(b.gradient[0]).hex() ? b.bg : null;
+}
+
+// The base is the colour a reader sees only when every overlay stop is
+// translucent; an opaque gradient is the visible fill. The capture keeps four
+// stops and records how many there were (stopCount); an older capture without
+// the count is read off its raw image with the capture's own colour regex,
+// and an absent or cut raw image (the capture keeps 300 chars) is unknown.
+// A list that is not provably complete cannot prove translucency.
+const colourCount = (s) => (s.match(/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|hwb|oklch|oklab|lab|lch|color)\(/g) || []).length;
+const translucentOverlay = (b) => {
+  const total = b.stopCount !== undefined ? b.stopCount
+    : (typeof b.gradientRaw === "string" && b.gradientRaw.length < 300 ? colourCount(b.gradientRaw) : Infinity);
+  const stops = b.gradient || [];
+  return stops.length === total && stops.every((s) => safeChroma(s) && chroma(s).alpha() < 1);
+};
+
 function buildModel(tokens) {
   // Fill, text and accent roles are solid colours; a 12% tint stays in the
   // palette prose as the scrim it is. Outlines may be translucent (a 10% black
@@ -274,10 +302,11 @@ function buildModel(tokens) {
     // variant component names are free-form — so the extra stops ride as
     // explicitly-named gradient-stop variants, and the prose prints the full
     // computed gradient.
-    if (solidBtn?.gradient?.length > 1) {
-      solidBtn.gradient.slice(1, 4).forEach((stop, i) => {
+    if (solidBtn?.gradient?.length > (baseFill(solidBtn) ? 0 : 1)) {
+      const first = baseFill(solidBtn) ? 0 : 1; // with a base every overlay stop is a variant
+      solidBtn.gradient.slice(first, 4).forEach((stop, i) => {
         const h = safeChroma(stop) ? lc(chroma(stop).hex()) : null;
-        if (h) components[`button-primary-gradient-stop-${i + 2}`] = { backgroundColor: h };
+        if (h) components[`button-primary-gradient-stop-${i + first + 1}`] = { backgroundColor: h };
       });
     }
   }
@@ -367,8 +396,10 @@ function emitComponentProse(lines, tokens) {
   // A gradient button keeps its full fill in prose: the raw computed
   // background-image when we captured it, else reconstructed from the stops.
   const bgLine = (b) => {
-    if (b.gradient?.length) {
+    if (hasGradient(b)) {
       const g = b.gradientRaw || `linear-gradient(${b.gradient.join(", ")})`;
+      const base = baseFill(b);
+      if (base) return `- Background: \`${hexish(base)}\` under \`${g}\``;
       return `- Background: \`${g}\` (gradient; first stop \`${hexish(b.gradient[0])}\`)`;
     }
     if (safeChroma(b.bg) && chroma(b.bg).alpha() >= 0.5) return `- Background: \`${hexish(b.bg)}\``;
@@ -761,7 +792,8 @@ function emitBody(tokens, model) {
   // (the analyzer skips it too), so the accent stands in there and when no
   // solid button was seen.
   const ctaBtn = model.components["button-primary"];
-  const ctaGradient = tokens.components?.buttons?.gradient?.length > 0; // one readable stop is still a gradient
+  const ctaRaw = tokens.components?.buttons;
+  const ctaGradient = hasGradient(ctaRaw) && !(baseFill(ctaRaw) && translucentOverlay(ctaRaw));
   if (ctaBtn?.backgroundColor && (ctaGradient || ctaBtn.backgroundColor !== model.colors.background)) {
     lines.push(ctaGradient
       ? "- Do use the `button-primary` gradient from Components for primary actions and CTAs"

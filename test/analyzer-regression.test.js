@@ -224,6 +224,76 @@ test("the CTA guideline names the observed primary button, the accent only witho
   assert.match(one, /button-primary.*gradient/, "one readable stop is still a gradient");
 });
 
+// --- A solid fill under a gradient overlay is the button's base ------------
+// supabase's CTA is a green background-color under a 1.6% white-to-black
+// gradient; the prose printed the overlay alone and a reader painted a near-
+// white button. The capture takes bg from the first stop only when the colour
+// is transparent, so a bg that differs from that stop is a real base.
+test("a solid fill under a gradient overlay is the base; the overlay stops ride as variants", () => {
+  const overlay = "linear-gradient(rgba(255, 255, 255, 0.016), rgba(0, 0, 0, 0.01))";
+  const md = generate(analyze(accentRaw([btn("oklch(0.525 0.12 157.5)", { gradient: ["rgba(255, 255, 255, 0.016)", "rgba(0, 0, 0, 0.01)"], gradientRaw: overlay })])));
+  assert.match(md, /^- Background: `#0e7e4e` under `linear-gradient\(rgba\(255, 255, 255, 0\.016\), rgba\(0, 0, 0, 0\.01\)\)`$/m);
+  assert.match(md, /button-primary-gradient-stop-1:\s+backgroundColor: "#ffffff04"/);
+  assert.match(md, /button-primary-gradient-stop-2:\s+backgroundColor: "#00000003"/);
+  assert.equal(ctaLine(md), "`#0e7e4e`", "the CTA guideline names the base");
+  // gradient-only (the capture took bg from the first stop) is unchanged
+  const only = generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { gradient: ["#ff0000", "#0000ff"], gradientRaw: "linear-gradient(#ff0000, #0000ff)" })])));
+  assert.match(only, /^- Background: `linear-gradient\(#ff0000, #0000ff\)` \(gradient; first stop `#ff0000`\)$/m);
+  assert.doesNotMatch(only, /gradient-stop-1/);
+  assert.match(ctaLine(only), /button-primary.*gradient/);
+});
+
+test("the CTA guideline points at the gradient when the overlay is opaque; a capture flag beats the first-stop comparison", () => {
+  // an opaque gradient over a black base is the visible fill
+  const opaque = generate(analyze(accentRaw([btn("rgb(0, 0, 0)", { gradient: ["#ff0000", "#0000ff"], gradientRaw: "linear-gradient(#ff0000, #0000ff)" })])));
+  assert.match(opaque, /^- Background: `#000000` under `linear-gradient\(#ff0000, #0000ff\)`$/m);
+  assert.match(ctaLine(opaque), /button-primary.*gradient/);
+  // a red base under a red-to-clear gradient: the capture says the colour was not substituted
+  const flagged = generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { bgFromGradient: false, gradient: ["#ff0000", "rgba(255, 0, 0, 0)"], gradientRaw: "linear-gradient(#ff0000, rgba(255, 0, 0, 0))" })])));
+  assert.match(flagged, /^- Background: `#ff0000` under `linear-gradient\(#ff0000, rgba\(255, 0, 0, 0\)\)`$/m);
+  assert.match(ctaLine(flagged), /button-primary.*gradient/, "an opaque stop makes the gradient the visible fill");
+  // the same shape with the colour substituted from the first stop is gradient-only
+  const sub = generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { bgFromGradient: true, gradient: ["#ff0000", "rgba(255, 0, 0, 0)"], gradientRaw: "linear-gradient(#ff0000, rgba(255, 0, 0, 0))" })])));
+  assert.match(sub, /\(gradient; first stop `#ff0000`\)/);
+  assert.doesNotMatch(sub, /gradient-stop-1/);
+});
+
+test("a truncated overlay stop list cannot prove translucency, so the CTA guideline points at the gradient", () => {
+  const four = ["rgba(255, 255, 255, 0.02)", "rgba(0, 0, 0, 0.02)", "rgba(255, 255, 255, 0.01)", "rgba(0, 0, 0, 0.01)"];
+  const raw = "linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02)), linear-gradient(rgba(255, 255, 255, 0.01), rgba(0, 0, 0, 0.01)), linear-gradient(#ff0000, #0000ff)";
+  const mk = (extra) => ctaLine(generate(analyze(accentRaw([btn("rgb(0, 128, 0)", { bgFromGradient: false, gradient: four, gradientRaw: raw, ...extra })]))));
+  assert.match(mk({ stopCount: 6 }), /button-primary.*gradient/, "six stops captured, four kept: the opaque ones are missing");
+  assert.equal(mk({ stopCount: 4 }), "`#008000`", "four stops, all kept and translucent");
+  assert.match(mk({}), /button-primary.*gradient/, "an older capture with exactly four stops may be truncated");
+});
+
+test("a gradient with one readable stop over a base still points at the gradient", () => {
+  const md = generate(analyze(accentRaw([btn("rgb(0, 128, 0)", { bgFromGradient: false, gradient: ["rgb(255, 0, 0)"], stopCount: 2, gradientRaw: "linear-gradient(rgb(255, 0, 0), oklch(0.5 0.2 260))" })])));
+  assert.match(md, /^- Background: `#008000` under `linear-gradient\(rgb\(255, 0, 0\), oklch\(0\.5 0\.2 260\)\)`$/m);
+  assert.match(md, /button-primary-gradient-stop-1:\s+backgroundColor: "#ff0000"/, "the readable stop still rides as a variant");
+  assert.match(ctaLine(md), /button-primary.*gradient/);
+});
+
+test("an older capture without stopCount derives completeness from the raw image", () => {
+  const two = ["rgba(255, 255, 255, 0.02)", "rgba(0, 0, 0, 0.02)"];
+  const mk = (raw) => ctaLine(generate(analyze(accentRaw([btn("rgb(0, 128, 0)", { bgFromGradient: false, gradient: two, gradientRaw: raw })]))));
+  assert.match(mk("linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02)), linear-gradient(oklch(0.6 0.2 30), oklch(0.5 0.2 260))"), /button-primary.*gradient/, "two oklch stops the reader skipped");
+  assert.equal(mk("linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02))"), "`#008000`", "the raw image holds exactly the read stops");
+  assert.match(mk(undefined), /button-primary.*gradient/, "no raw image: unknown");
+  assert.match(mk("linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02))".padEnd(300, " ")), /button-primary.*gradient/, "a raw image at the capture's 300-char cap may be cut");
+});
+
+test("a gradient with no readable stop is still a gradient, and a capture that never saw one is a solid", () => {
+  const raw = "linear-gradient(oklch(0.6 0.2 30), oklch(0.5 0.2 260))";
+  const md = generate(analyze(accentRaw([btn("rgb(0, 128, 0)", { bgFromGradient: false, gradient: [], stopCount: 2, gradientRaw: raw })])));
+  assert.match(md, /^- Background: `#008000` under `linear-gradient\(oklch\(0\.6 0\.2 30\), oklch\(0\.5 0\.2 260\)\)`$/m);
+  assert.match(ctaLine(md), /button-primary.*gradient/, "two opaque stops the reader could not parse hide the base");
+  assert.doesNotMatch(md, /gradient-stop-/);
+  const solid = generate(analyze(accentRaw([btn("rgb(0, 128, 0)")])));
+  assert.match(solid, /^- Background: `#008000`$/m);
+  assert.equal(ctaLine(solid), "`#008000`");
+});
+
 // --- Type levels follow size --------------------------------------------------
 // With no heading at 32px or more, the largest one was named headline-lg and the
 // second largest then overwrote it, so the biggest size never reached the tokens.
