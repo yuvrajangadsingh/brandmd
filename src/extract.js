@@ -619,15 +619,16 @@ function mergeTypeSamples(maps) {
  * group, with a background image, or in a colour this cannot parse leaves the
  * surface unknown until a later opaque element covers it. The canvas is the
  * fallback: html's background when html paints one, else body's (CSS propagates
- * it), composited over the white backing; an image or an unreadable colour
- * leaves it unknown.
+ * it), composited over the backing, the UA canvas colour for the root's used
+ * color-scheme (white in light, rgb(18, 18, 18) in Chromium's dark); a page that
+ * paints nothing shows the backing; an image or an unreadable colour leaves it
+ * unknown.
  * Runs inside page.evaluate, so it is self-contained.
  * ponytail: colours outside rgb()/rgba() are read as the sRGB pixel a canvas paints
  * (gamut-clamped), z-index and transforms ignored,
  * fixed and sticky elements and everything inside them skipped (an app shell that
  * is a fixed wrapper falls back to the canvas), iframes and shadow roots not
- * entered, the backing assumed white (color-scheme: dark pages without a
- * background are not).
+ * entered.
  */
 export function probePageBackground() {
   const vw = window.innerWidth;
@@ -670,7 +671,6 @@ export function probePageBackground() {
   };
   const rgb = (c) => `rgb(${Math.round(c.r)}, ${Math.round(c.g)}, ${Math.round(c.b)})`;
   const over = (c, u) => ({ r: c.a * c.r + (1 - c.a) * u.r, g: c.a * c.g + (1 - c.a) * u.g, b: c.a * c.b + (1 - c.a) * u.b, a: 1 });
-  const WHITE = { r: 255, g: 255, b: 255, a: 1 };
   // Opacity multiplies down the tree and a fixed or sticky ancestor takes its
   // subtree out of the flow; memoised so nested wrappers cost one style read each.
   const memo = new Map();
@@ -694,10 +694,39 @@ export function probePageBackground() {
   // When html paints nothing, body's background moves to the canvas and the
   // body box paints none; the root's opacity applies to the canvas as well.
   const root = styleOf(document.documentElement);
+  // The backing behind everything is the UA canvas for the root's used
+  // color-scheme: dark when the page lists dark and either lists no light or the
+  // capture prefers dark (tailwindcss.com paints no background at all; the white
+  // it shows is this). CSS decides; when it computes to normal the color-scheme
+  // meta does (Chromium keeps the root at normal and still paints the dark
+  // canvas). Nothing is added to the DOM, so page CSS and :has() rules cannot
+  // steer it; a page that replaces matchMedia reads as light.
+  // ponytail: rgb(18, 18, 18) is Chromium's dark canvas; the capture runs in Playwright's Chromium.
+  const prefersDark = () => { try { return matchMedia("(prefers-color-scheme: dark)").matches; } catch { return false; } };
+  // Like Chromium, the first meta whose content the CSS parser accepts as a
+  // color-scheme counts; CSS.supports is that parser (idents and CSS whitespace
+  // only, so var() cannot sneak through; a no-break space is an ident character,
+  // not a separator).
+  const ascii = (s) => s.replace(/[A-Z]/g, (ch) => ch.toLowerCase()); // CSS keywords fold ASCII only: dar\u212A (Kelvin sign) stays a custom ident
+  const metaScheme = () => {
+    const ident = "[\\w\\u00a0-\\uffff-]+";
+    const valid = new RegExp(`^${ident}([ \\t\\n\\r\\f]+${ident})*$`);
+    for (const m of document.querySelectorAll('meta[name="color-scheme" i]')) {
+      const v = (m.content || "").replace(/^[ \t\n\r\f]+|[ \t\n\r\f]+$/g, "");
+      let ok = false;
+      try { ok = valid.test(v) && CSS.supports("color-scheme", v); } catch { ok = false; }
+      if (ok) return ascii(v).split(/[ \t\n\r\f]+/).filter((w) => w !== "only").join(" ");
+    }
+    return "";
+  };
+  const declared = root.cs.colorScheme === "normal" ? metaScheme() : root.cs.colorScheme;
+  const schemes = ascii(declared).split(/[ \t\n\r\f]+/);
+  const dark = schemes.includes("dark") && (!schemes.includes("light") || prefersDark());
+  const backing = dark ? { r: 18, g: 18, b: 18, a: 1 } : { r: 255, g: 255, b: 255, a: 1 };
   let cv = canvasOf(root.cs);
   const propagated = cv === undefined;
   if (propagated) cv = canvasOf(styleOf(document.body).cs);
-  const canvas = cv ? rgb(over({ ...cv, a: cv.a * +root.cs.opacity }, WHITE)) : null;
+  const canvas = cv === null ? null : rgb(cv ? over({ ...cv, a: cv.a * +root.cs.opacity }, backing) : backing);
 
   let surface; // undefined: nothing covers yet; null: covered by something unknown
   for (const el of document.querySelectorAll("body, body *")) {
