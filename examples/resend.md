@@ -158,7 +158,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ### Buttons
 - Background: `linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)), conic-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)` (gradient; first stop `#000000`)
 - Text color: `#f0f0f0`
-- Corner radius: 3.35544e+07px
+- Corner radius: 9999px
 - Height: 32px
 - Padding: 5px 12px 5px 12px
 - Font: 14px, weight 400

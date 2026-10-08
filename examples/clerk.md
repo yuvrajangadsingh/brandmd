@@ -142,7 +142,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ### Buttons
 - Background: `#212126`
 - Text color: `#000000`
-- Corner radius: 3.35544e+07px
+- Corner radius: 9999px
 - Height: 40px
 - Padding: 0px 0px 0px 0px
 - Font: 16px, weight 400
