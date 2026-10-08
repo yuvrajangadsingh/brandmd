@@ -4,14 +4,13 @@ name: "Supabase | The Postgres Development Platform"
 description: "Bright, high contrast"
 colors:
   background: "#fdfdfd"
-  on-background: "#000000"
-  surface: "#696969"
-  on-surface-variant: "#a0a0a0"
-  outline: "#03030314"
-  outline-variant: "#16b674bf"
-  primary: "#16b674bf"
+  on-background: "#030303"
+  on-surface-variant: "#696969"
+  outline: "#03030315"
+  outline-variant: "#696969b3"
+  primary: "#fc1a58"
   on-primary: "#1a1a1a"
-  secondary: "#72e3ad"
+  secondary: "#fc541f"
   on-secondary: "#1a1a1a"
 typography:
   display:
@@ -29,7 +28,7 @@ typography:
     fontSize: 16px
     fontWeight: 450
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: Inter
     fontSize: 14px
     fontWeight: 450
@@ -40,11 +39,11 @@ typography:
     fontWeight: 500
     lineHeight: 1.69
 rounded:
-  sm: 4px
-  md: 6px
-  lg: 8px
-  xl: 11px
-  2xl: 12px
+  sm: 5.5px
+  md: 8px
+  lg: 9px
+  xl: 10.5px
+  2xl: 15px
   3xl: 16px
   full: 9999px
 spacing:
@@ -56,12 +55,16 @@ spacing:
   xl: 12px
 components:
   button-primary:
-    backgroundColor: "#72e3ad"
-    textColor: "#030303"
+    backgroundColor: "#0e7e4e"
+    textColor: "#fafcfb"
     typography: "{typography.label-sm}"
     rounded: "{rounded.md}"
     padding: 4px
     height: 26px
+  button-primary-gradient-stop-1:
+    backgroundColor: "#ffffff04"
+  button-primary-gradient-stop-2:
+    backgroundColor: "#00000003"
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -69,7 +72,6 @@ components:
     padding: 16px
     height: 60px
   card:
-    backgroundColor: "{colors.surface}"
     rounded: 0px
   input:
     typography: "{typography.body-md}"
@@ -90,7 +92,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and green accents
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid red accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -102,14 +104,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#fdfdfd`): Page background (dominant)
 - **Dark gray** (`#464646`): Primary text (accent)
-- **Near-transparent Black** (`#00000000`): Overlay / scrim (accent)
-- **Gray** (`#696969`): Secondary background (accent)
-- **Green** (`#72e3ad`): Accent background (accent)
-- **Green** (`#16b674bf`): Focus / active border (accent)
-- **Near-transparent Blue** (`#635bff0d`): Overlay / scrim (accent)
-- **Purple** (`#be93e4`): Accent background (accent)
+- **Translucent Gray** (`#6969694d`): Overlay / scrim (accent)
+- **Dark Blue** (`#0c0f24`): Dark background / footer (accent)
+- **Vivid Red** (`#fc1a58`): Accent background (accent)
+- **Vivid Red** (`#fc541f`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#a0a0a0`, `#ffffff`
+**Incidental (low usage, do not lead with these):** `#fafcfb`, `#a0a0a0`, `#00000003`, `#696969b3`
 
 ## Typography
 
@@ -120,7 +120,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Manrope
 - Body: Inter
 
-**All detected fonts:** Inter (4165), Source Code Pro (96), Manrope (42)
+**All detected fonts:** Inter (4179), Source Code Pro (96), Manrope (42)
 
 **Type scale:**
 - Headings: 34px, 46px
@@ -135,59 +135,58 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 ## Layout
 
-**Spacing scale:** 1px, 4px, 8px, 12px, 16px, 24px, 32px, 96px
+**Spacing scale:** 4px, 8px, 10px, 12px, 16px, 24px, 32px, 96px
 
-**Base unit:** 4px grid — 89% of all weighted spacing values are multiples of 4.
+**Base unit:** 4px grid — 87% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
-Uses 4 shadow styles for layering and elevation:
+Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(255, 255, 255, 0.12) 0px 0px 0px 1px inset`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.999994 0.0000455678 0.0000200868 / 0.3) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 3: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px`
+- Level 1: `rgba(0, 0, 0, 0.04) 0px 1px 3px 0px, rgba(0, 0, 0, 0.027) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.04) 0px -1px 0px 0px inset, rgba(0, 0, 0, 0.067) 0px 0px 0px 1px inset`
+- Level 2: `rgba(255, 255, 255, 0.12) 0px 0px 0px 1px inset`
+- Level 3: `oklab(0.999994 0.0000455678 0.0000200868 / 0.3) 0px 0px 0px 1px`
+- Level 4: `rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px`
+- Level 5: `rgba(0, 0, 0, 0.04) 0px 1px 3px 0px, rgba(0, 0, 0, 0.027) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.067) 0px 0px 0px 1px inset`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 4px, 6px, 8px, 8px 8px 0px 0px, 11px, 12px, 16px, 9999px (pill)
-
-Asymmetric / percentage radii observed (8px 8px 0px 0px); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+**Border radii:** 5.5px, 8px, 9px, 10.5px, 15px, 16px, 21.5px, 9999px (pill)
 
 ## Components
 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#72e3ad`
-- Text color: `#030303`
-- Corner radius: 6px
+- Background: `#0e7e4e` under `linear-gradient(rgba(255, 255, 255, 0.016), rgba(0, 0, 0, 0.01))`
+- Text color: `#fafcfb`
+- Corner radius: 8px
 - Height: 26px
 - Padding: 4px 10px 4px 10px
-- Font: 12px, weight 450
+- Font: 12px, weight 500
 
 ### Cards
 - Corner radius: 0px
 - Padding: 0px 0px 0px 0px
 
 ### Inputs
-- Background: `#03030307`
-- Border: 1px solid oklch(0.1 0 34 / 0.146418)
-- Corner radius: 6px
+- Background: `#00000004`
+- Border: 1px solid oklch(0.1 0 337.5 / 0.146418)
+- Corner radius: 8px
 - Padding: 8px 8px 8px 8px
 - Font size: 14px
 
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#16b674bf` for primary actions and CTAs
+- Do use `#0e7e4e` for primary actions and CTAs
 - Do stick to 3 font weights: 450, 500, 600
 - Do use `Manrope` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Manrope and Inter
-- Don't use border-radius values outside: 4px, 6px, 8px, 8px 8px 0px 0px, 11px, 12px, 16px, 9999px (pill)
+- Don't use border-radius values outside: 5.5px, 8px, 9px, 10.5px, 15px, 16px, 21.5px, 9999px (pill)
 
 ---
 

@@ -163,7 +163,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#1868db` for primary actions and CTAs
+- Do use `#e9f2fe` for primary actions and CTAs
 - Do stick to 3 font weights: 400, 500, 700
 - Do use `Charlie Display` as the primary typeface
 - Don't introduce colors outside the palette above

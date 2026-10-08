@@ -95,7 +95,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Near-transparent White** (`#ffffff33`): Overlay / scrim (accent)
 - **Dark Purple** (`#180d43`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff26`, `#a1a0ab`, `#00000073`, `#42946e`, `#428a7233`, `#313c3c`
+**Incidental (low usage, do not lead with these):** `#ffffff26`, `#a1a0ab`, `#13111c0b`, `#42946e`, `#428a7233`, `#313c3c`
 
 ## Typography
 
@@ -160,7 +160,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#180d43` for primary actions and CTAs
+- Do use `#291839` for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and IBM Plex Serif

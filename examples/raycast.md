@@ -115,7 +115,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Inter
 - Body: Inter
 
-**All detected fonts:** Inter (1997), SF Pro Text (522), SF Pro (37), GeistMono (31), JetBrains Mono (1)
+**All detected fonts:** Inter (1997), SF Pro Text (522), SF Pro (37), GeistMono (31), jetBrainsMono (1)
 
 **Type scale:**
 - Headings: 24px, 32px
@@ -174,7 +174,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#20235bb3` for primary actions and CTAs
+- Do use the `button-primary` gradient from Components for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and SF Pro Text

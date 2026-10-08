@@ -167,7 +167,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#ffb110` for primary actions and CTAs
+- Do use `#0075de` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `NotionInter` as the primary typeface
 - Don't introduce colors outside the palette above

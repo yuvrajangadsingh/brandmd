@@ -4,15 +4,12 @@ name: "Resend · Email for developers"
 description: "Dark, high contrast"
 colors:
   background: "#000000"
-  on-background: "#464a4d"
-  surface: "#8f8f8fab"
-  on-surface-variant: "#a1a4a5"
+  on-background: "#f0f0f0"
+  surface: "#43fea4ab"
   outline: "#ffffff0d"
   outline-variant: "#262a2d"
-  primary: "#cccccc"
+  primary: "#43fea4ab"
   on-primary: "#1a1a1a"
-  secondary: "#38bdf800"
-  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: aBCFavorit
@@ -34,7 +31,7 @@ typography:
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
-  body-lg:
+  body-sm:
     fontFamily: inter
     fontSize: 14px
     fontWeight: 400
@@ -61,11 +58,18 @@ spacing:
   xl: 8px
 components:
   button-primary:
-    backgroundColor: "#cccccc"
-    textColor: "#000000"
+    backgroundColor: "#000000"
+    textColor: "#f0f0f0"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.sm}"
-    height: 24px
+    rounded: "{rounded.full}"
+    padding: 5px
+    height: 32px
+  button-primary-gradient-stop-2:
+    backgroundColor: "#000000"
+  button-primary-gradient-stop-3:
+    backgroundColor: "#00000000"
+  button-primary-gradient-stop-4:
+    backgroundColor: "#00000000"
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -90,7 +94,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; black background dominates with white text and near-transparent vivid cyan accents
+**Visual character:** Dark, high contrast; black background dominates with off-white text and translucent vivid green accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -99,15 +103,12 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Black** (`#000000`): Dark background / footer (dominant)
-- **White** (`#ffffff`): Light text (on dark) (dominant)
 - **Gray** (`#a1a4a5`): Muted text (dominant)
 - **Near-transparent White** (`#ffffff0d`): Divider / border (dominant)
 - **Near-transparent White** (`#fdfdfd0d`): Overlay / scrim (accent)
-- **Dark gray** (`#464a4d`): Primary text (accent)
-- **Near-transparent Vivid Cyan** (`#38bdf800`): Overlay / scrim (accent)
-- **Near-transparent Green** (`#62ffb300`): Overlay / scrim (accent)
+- **Translucent Vivid Green** (`#43fea4ab`): Surface / card background (accent)
 
-**Incidental (low usage, do not lead with these):** `#50505026`, `#00000000`, `#8f8f8fab`, `#262a2d`
+**Incidental (low usage, do not lead with these):** `#464a4d`, `#70757e`, `#50505026`, `#ffffff`, `#8f8f8fab`, `#262a2d`
 
 ## Typography
 
@@ -118,7 +119,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: aBCFavorit, domaine
 - Body: inter
 
-**All detected fonts:** inter (1528), commitMono (730), aBCFavorit (30), Helvetica (22), Segoe UI (10), domaine (2)
+**All detected fonts:** inter (1383), commitMono (730), aBCFavorit (30), Helvetica (22), Segoe UI (3), domaine (2)
 
 **Type scale:**
 - Headings: 24px, 56px, 77px, 96px
@@ -127,7 +128,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 24px, 16px, 20px, 22.5px, 27px, 67px, 21px, 14px, 26px, 21.5px
+**Line heights:** 24px, 16px, 20px, 22.5px, 27px, 67px, 14px, 26px, 25px, 33.5px
 
 **Letter spacing:** -2.8px, 0.35px, -0.8px, -0.96px, -0.768px
 
@@ -139,10 +140,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 Uses 4 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(24, 25, 28, 0.88) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
+- Level 1: `rgba(24, 25, 28, 0.88) 0px 0px 0px 1px`
 - Level 2: `rgb(0, 0, 0) 0px 0px 0px 8px`
-- Level 3: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 255, 255) 0px 1px 1px 0px inset`
+- Level 3: `rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
+- Level 4: `rgb(255, 255, 255) 0px 1px 1px 0px inset`
 
 ## Shapes
 
@@ -155,11 +156,11 @@ Uses 4 shadow styles for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#cccccc`
-- Text color: `#000000`
-- Corner radius: 4px
-- Height: 24px
-- Padding: 0px 0px 0px 0px
+- Background: `linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)), conic-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)` (gradient; first stop `#000000`)
+- Text color: `#f0f0f0`
+- Corner radius: 3.35544e+07px
+- Height: 32px
+- Padding: 5px 12px 5px 12px
 - Font: 14px, weight 400
 
 ### Inputs
@@ -170,7 +171,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#cccccc` for primary actions and CTAs
+- Do use the `button-primary` gradient from Components for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `aBCFavorit` as the primary typeface
 - Don't introduce colors outside the palette above
