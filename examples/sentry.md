@@ -75,7 +75,7 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: 0px
-    height: 102px
+    height: 68px
   input:
     typography: "{typography.body-md}"
     rounded: "{rounded.sm}"
