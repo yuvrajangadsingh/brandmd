@@ -1,5 +1,6 @@
 // probePageBackground runs inside the page; these layouts pin what it reads.
-// Expected values are what Chromium serializes for computed colours.
+// Expected values are what Chromium serializes for computed colours and, for
+// oklch(), lab() and color(), the sRGB pixel its canvas paints, composited by the probe.
 // Skips when no Chromium is installed (CI installs none); runs where `npx
 // playwright install chromium` has been done.
 import { test } from "node:test";
@@ -44,9 +45,9 @@ const layouts = [
     expect: { surface: null, canvas: "rgb(255, 255, 255)" },
   },
   {
-    name: "a cover in a colour space this cannot read leaves the surface unresolved",
+    name: "a cover in a modern colour syntax is read through the canvas",
     html: '<body style="margin:0;background:#fff"><div style="min-height:100vh;background:#000"><div style="min-height:100vh;background:oklch(0.7 0.1 200)"></div></div></body>',
-    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+    expect: { surface: "rgb(64, 177, 183)", canvas: "rgb(255, 255, 255)" },
   },
   {
     name: "a translucent cover over an unknown surface stays unknown",
@@ -69,9 +70,9 @@ const layouts = [
     expect: { surface: null, canvas: "rgb(179, 179, 179)" },
   },
   {
-    name: "html in a colour space this cannot read leaves the canvas unknown",
+    name: "html in a modern colour syntax gives the canvas",
     html: '<head><style>html{background:oklch(0.7 0.1 200)}</style></head><body style="margin:0;height:100px;background:#000"></body>',
-    expect: { surface: null, canvas: null },
+    expect: { surface: null, canvas: "rgb(64, 177, 183)" },
   },
   {
     name: "html opacity applies to the canvas too",
@@ -97,6 +98,61 @@ const layouts = [
     name: "a visible child inside a hidden ancestor counts",
     html: '<body style="margin:0;background:#fff"><div style="visibility:hidden"><div style="min-height:100vh;background:#f00;visibility:visible"></div></div></body>',
     expect: { surface: "rgb(255, 0, 0)", canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "a translucent modern cover composites with its exact alpha, like rgba()",
+    html: '<body style="margin:0;background:#fff"><div style="min-height:100vh;background:oklch(0 0 0 / 0.3)"></div></body>',
+    expect: { surface: "rgb(179, 179, 179)", canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "the canvas is cleared between reads: opaque, then translucent, then alpha 0",
+    html: '<body style="margin:0;background:#fff"><div style="min-height:100vh;background:oklch(0.2 0.02 250)"><div style="min-height:100vh;background:oklch(0 0 0 / 0.3)"><div style="min-height:100vh;background:oklch(0 0 0 / 0)"></div></div></div></body>',
+    expect: { surface: "rgb(11, 16, 22)", canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "a nearly transparent modern html background still paints, so the body does not propagate",
+    html: '<head><style>html{background:oklch(0 0 0 / 0.001)}</style></head><body style="margin:0;height:100px;background:#000"></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "an alpha Chromium serialises in exponent notation still paints",
+    html: '<head><style>html{background:oklch(0 0 0 / 1e-7)}</style></head><body style="margin:0;height:100px;background:#000"></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "an alpha of none paints nothing, so the body propagates",
+    html: '<head><style>html{background:oklch(0 0 0 / none)}</style></head><body style="margin:0;height:100px;background:#222"></body>',
+    expect: { surface: null, canvas: "rgb(34, 34, 34)" },
+  },
+  {
+    name: "a transparent modern html background lets the body propagate",
+    html: '<head><style>html{background:oklch(0 0 0 / 0)}</style></head><body style="margin:0;height:100px;background:oklch(0.7 0.1 200)"></body>',
+    expect: { surface: null, canvas: "rgb(64, 177, 183)" },
+  },
+  {
+    name: "a translucent modern cover over an image stays unknown until an opaque modern cover",
+    html: '<body style="margin:0;background:#fff"><div style="min-height:100vh;background-image:linear-gradient(red, blue)"><div style="min-height:100vh;background:oklch(0 0 0 / 0.3)"><div style="min-height:100vh;background:lab(50 20 -30)"></div></div></div></body>',
+    expect: { surface: "rgb(133, 108, 170)", canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "color-mix and relative colours compute to color(srgb ...) and read through",
+    html: '<body style="margin:0;background:#fff"><div style="min-height:100vh;background:color-mix(in srgb, red, blue)"><div style="min-height:100vh;background:rgb(from #ff0000 r g b / 0.5)"></div></div></body>',
+    expect: { surface: "rgb(192, 0, 64)", canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "display-p3 is clamped to sRGB: a midtone converts, pure red clips",
+    html: '<body style="margin:0;background:color(display-p3 1 0 0)"><div style="min-height:100vh;background:color(display-p3 0.5 0.6 0.7)"></div></body>',
+    expect: { surface: "rgb(121, 154, 181)", canvas: "rgb(255, 0, 0)" },
+  },
+  {
+    name: "a canvas that returns no context leaves modern colours unknown and rgb() readable",
+    html: '<head><script>HTMLCanvasElement.prototype.getContext = () => null</script></head><body style="margin:0;background:#fff"><div style="min-height:100vh;background:oklch(0.7 0.1 200)"></div></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "a canvas that throws leaves modern colours unknown and rgb() readable",
+    html: '<head><script>HTMLCanvasElement.prototype.getContext = () => { throw new Error("no canvas") }</script></head><body style="margin:0;background:#fff"><div style="min-height:100vh;background:oklch(0.7 0.1 200)"></div></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
   },
 ];
 
