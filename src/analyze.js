@@ -226,10 +226,19 @@ export function buttonSized(b) {
  * favors the transparent nav/icon buttons that swamp a real CTA. Transparent
  * candidates become a separate "ghost / secondary" variant.
  */
+// Chromium clamps calc(infinity * 1px), Tailwind v4's rounded-full, to
+// 3.35544e+07px. A uniform radius past this is a pill either way, and 9999px
+// is the CSS-valid spelling the radii list uses. Compound and percentage
+// radii stay as observed: clamping one part of an asymmetric radius changes
+// the shape CSS draws.
+const PILL_PX = 999;
+const pillRadius = (r) => (typeof r === "string" && /^\S+px$/.test(r) && parseFloat(r) >= PILL_PX ? "9999px" : null);
+
 function analyzeComponents(components, pageBgHex = null) {
   const result = { buttons: null, ghostButton: null, cards: null, inputs: null };
 
-  const buttons = (components?.buttons || []).filter(buttonSized);
+  const pill = (c) => ({ ...c, radius: pillRadius(c.radius) ?? c.radius });
+  const buttons = (components?.buttons || []).filter(buttonSized).map(pill);
   if (buttons.length > 0) {
     const solids = buttons.filter((b) => isSolidFill(b.bg));
     const ghosts = buttons.filter((b) => !isSolidFill(b.bg));
@@ -269,9 +278,9 @@ function analyzeComponents(components, pageBgHex = null) {
 
   // Omit empty component groups entirely (no invented card/input defaults).
   if (components?.cards?.length > 0) {
-    result.cards = { ...components.cards[0], shadow: visibleShadow(components.cards[0].shadow) };
+    result.cards = { ...pill(components.cards[0]), shadow: visibleShadow(components.cards[0].shadow) };
   }
-  if (components?.inputs?.length > 0) result.inputs = components.inputs[0];
+  if (components?.inputs?.length > 0) result.inputs = pill(components.inputs[0]);
 
   return result;
 }
@@ -697,7 +706,7 @@ export function analyze(raw) {
     if (part.includes("%")) return part;
     const px = parseFloat(part);
     if (!isFinite(px) || px < 0) return null;
-    if (px >= 999) return "9999px";
+    if (px >= PILL_PX) return "9999px";
     return `${Math.round(px * 2) / 2}px`;
   };
   const radiusFreq = {};
@@ -708,7 +717,7 @@ export function analyze(raw) {
     radiusFreq[key] = (radiusFreq[key] || 0) + freq;
   }
   const radiiList = topByFreq(radiusFreq, 8)
-    .map(([val, freq]) => ({ val, freq: round2(freq), pill: parseFloat(val) >= 999 }))
+    .map(([val, freq]) => ({ val, freq: round2(freq), pill: parseFloat(val) >= PILL_PX }))
     .sort((a, b) => pxToNum(a.val) - pxToNum(b.val));
 
   // Shadows, keyed by their painting layers so padding-only variants fold into one.

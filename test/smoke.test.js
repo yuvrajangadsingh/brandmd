@@ -31,7 +31,7 @@ test("generated DESIGN.md has the canonical spec sections and clean values", () 
     assert.match(md, new RegExp(`^## ${name.replace(/[.*+?^${}()|[\]\\&]/g, "\\$&")}\\s*$`, "m"), `section "${name}" present`);
   }
   // No scientific-notation numbers leaking into radii/spacing (the v0.12 bug)
-  assert.doesNotMatch(md, /\d+e-\d+/i, "no scientific-notation values in output");
+  assert.doesNotMatch(md, /\d+e[+-]\d+/i, "no scientific-notation values in output");
   // Title rendered, not the hostname fallback
   assert.match(md, /# Design System: .*Vercel/);
 });

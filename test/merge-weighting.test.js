@@ -132,3 +132,32 @@ test("a rejected box does not dilute its page's vote in the merge", () => {
   ]);
   assert.equal(analyze(merged).components.ghostButton.color, "#222222", "two pages must beat one");
 });
+
+// Chromium clamps calc(infinity * 1px), Tailwind v4's rounded-full, to
+// 3.35544e+07px; clerk, huggingface, resend and vercel printed that as their
+// button radius while the page-level radii list already said 9999px.
+test("a clamped pill radius on a chosen component reads as 9999px", () => {
+  const out = analyze(raw([{ ...solid("rgb(99, 91, 255)", "40px"), radius: "3.35544e+07px" }]));
+  assert.equal(out.components.buttons.radius, "9999px");
+  const md = generate(out);
+  assert.match(md, /^- Corner radius: 9999px$/m);
+  assert.doesNotMatch(md, /e\+0\d/);
+});
+
+test("pill ghosts spelt two ways group together", () => {
+  // The 4px ghost comes first: on the raw strings every signature has one
+  // vote and document order picks it.
+  const out = analyze(raw([ghost("#111111", "4px"), ghost("#111111", "3.35544e+07px"), ghost("#111111", "9999px")]));
+  assert.equal(out.components.ghostButton.radius, "9999px");
+});
+
+test("only a uniform px radius is clamped; compound, percent and small radii stay as observed", () => {
+  const r = raw([{ ...solid("rgb(99, 91, 255)", "40px"), radius: "3.35544e+07px / 50%" }]);
+  r.components.cards = [{ bg: "rgb(255, 255, 255)", radius: "9999px 9999px 0px 0px", padding: "16px 16px 16px 16px", shadow: "none" }];
+  r.components.inputs = [{ bg: "rgb(255, 255, 255)", radius: "50%", padding: "8px 8px 8px 8px" }];
+  const out = analyze(r);
+  assert.equal(out.components.buttons.radius, "3.35544e+07px / 50%");
+  assert.equal(out.components.cards.radius, "9999px 9999px 0px 0px");
+  assert.equal(out.components.inputs.radius, "50%");
+  assert.equal(analyze(raw([solid("rgb(99, 91, 255)", "40px")])).components.buttons.radius, "8px");
+});
