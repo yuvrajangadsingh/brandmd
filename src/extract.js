@@ -402,6 +402,9 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         // keep the raw computed background-image so the output can print the
         // exact gradient instead of a lossy first-stop-only approximation.
         const stops = gradientStops(s.backgroundImage);
+        // Stops gradientStops() cannot read (oklch, lab, color()) still count,
+        // so a partially read gradient reads as incomplete downstream.
+        const stopTotal = /gradient\(/i.test(s.backgroundImage || "") ? (s.backgroundImage.match(/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|hwb|oklch|oklab|lab|lch|color)\(/g) || []).length : 0;
         const transparentBg = s.backgroundColor === "rgba(0, 0, 0, 0)" || s.backgroundColor === "transparent";
         const bg = (transparentBg && stops.length) ? stops[0] : s.backgroundColor;
         components.buttons.push({
@@ -409,8 +412,10 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
           padding: `${s.paddingTop} ${s.paddingRight} ${s.paddingBottom} ${s.paddingLeft}`,
           fontSize: s.fontSize, fontWeight: s.fontWeight, border: s.border,
           height: `${Math.round(rect.height)}px`,
-          gradient: stops.length ? stops.slice(0, 4) : null,
-          gradientRaw: stops.length ? s.backgroundImage.slice(0, 300) : null,
+          bgFromGradient: transparentBg && stops.length > 0, // bg above was taken from the first stop
+          gradient: stops.length ? stops.slice(0, 4) : (stopTotal ? [] : null), // [] = a gradient whose stops the reader cannot parse
+          stopCount: stopTotal, // every stop in the image, read or not; the four kept above may be a truncation
+          gradientRaw: stopTotal ? s.backgroundImage.slice(0, 300) : null,
         });
       }
 
