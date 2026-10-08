@@ -2,6 +2,13 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.6] - 2026-10-08
+
+### Fixed
+
+- **The CTA guideline names the observed primary button.** "Do use `X` for primary actions and CTAs" printed `colors.primary`, which the analyzer ranks from accent evidence (a link, accent or focus colour) before the rendered button, so on 21 of the 29 examples it named a colour no button on the page uses (cursor: blue, the button is orange; vercel: red, the button is white). The line now names `button-primary`'s background when a solid button was observed (alpha kept), points at the `button-primary` gradient for a gradient button, and falls back to the accent when no solid button was seen or the button is in the page's own colour. `colors.primary` is unchanged. 20 examples regenerated.
+- **A solid fill under a gradient overlay is the button's base.** A `background-color` under a gradient `background-image` (supabase's green CTA under a 1.6% white-to-black overlay) printed only the overlay in the Buttons prose and skipped the first overlay stop in the YAML. The prose now prints the base under the gradient, every overlay stop rides as a `button-primary-gradient-stop-N` variant, and the CTA guideline names the base. Gradient-only buttons are unchanged.
+
 ## [0.18.5] - 2026-10-08
 
 ### Fixed
