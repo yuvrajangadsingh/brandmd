@@ -20,9 +20,9 @@ const layouts = [
     expect: { surface: "rgb(0, 0, 0)", canvas: "rgb(255, 255, 255)" },
   },
   {
-    name: "transparent body with a painted app shell: the shell is the surface, no canvas",
+    name: "transparent body with a painted app shell: the shell is the surface, the backing the canvas",
     html: '<body style="margin:0"><div id="root" style="min-height:100vh;background:#222"></div></body>',
-    expect: { surface: "rgb(34, 34, 34)", canvas: null },
+    expect: { surface: "rgb(34, 34, 34)", canvas: "rgb(255, 255, 255)" },
   },
   {
     name: "a background-image hero leaves the surface unresolved",
@@ -154,6 +154,88 @@ const layouts = [
     html: '<head><script>HTMLCanvasElement.prototype.getContext = () => { throw new Error("no canvas") }</script></head><body style="margin:0;background:#fff"><div style="min-height:100vh;background:oklch(0.7 0.1 200)"></div></body>',
     expect: { surface: null, canvas: "rgb(255, 255, 255)" },
   },
+  {
+    name: "a page that paints nothing shows the backing: white in light",
+    html: '<body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "a page that paints nothing under color-scheme: dark shows the dark backing",
+    html: '<head><style>html{color-scheme:dark}</style></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(18, 18, 18)" },
+  },
+  {
+    name: "color-scheme: light dark follows the preference the capture emulates",
+    html: '<head><style>html{color-scheme:light dark}</style></head><body style="margin:0"><main style="height:100px"></main></body>',
+    dark: true,
+    expect: { surface: null, canvas: "rgb(18, 18, 18)" },
+  },
+  {
+    name: "a translucent cover over a page that paints nothing composites over the backing",
+    html: '<body style="margin:0"><div style="min-height:100vh;background:rgba(0,0,0,0.3)"></div></body>',
+    expect: { surface: "rgb(179, 179, 179)", canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "color-scheme: light under an emulated dark preference keeps the white backing",
+    html: '<head><style>html{color-scheme:light}</style></head><body style="margin:0"><main style="height:100px"></main></body>',
+    dark: true,
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "page CSS cannot steer the backing",
+    html: '<head><style>div{background:red!important}</style></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "a :has() rule on the body count sees the untouched tree",
+    html: '<head><style>html{color-scheme:light} html:has(>body:last-child){color-scheme:dark}</style></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(18, 18, 18)" },
+  },
+  {
+    name: "a color-scheme meta decides when CSS computes to normal",
+    html: '<head><meta name="color-scheme" content="dark"></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(18, 18, 18)" },
+  },
+  {
+    name: "a CSS color-scheme wins over the meta",
+    html: '<head><meta name="color-scheme" content="dark"><style>html{color-scheme:light}</style></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "a page that removes matchMedia still probes, as light",
+    html: '<head><script>window.matchMedia = undefined</script><style>html{color-scheme:light dark}</style></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "the first valid color-scheme meta counts, invalid ones are skipped",
+    html: '<head><meta name="color-scheme" content=""><meta name="color-scheme" content="only"><meta name="color-scheme" content="dark"></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(18, 18, 18)" },
+  },
+  {
+    name: "a lone invalid color-scheme meta does not count",
+    html: '<head><meta name="color-scheme" content="dark only only"></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "metas that fail the CSS parser (only normal, a number) are skipped for the valid one",
+    html: '<head><meta name="color-scheme" content="only normal"><meta name="color-scheme" content="42"><meta name="color-scheme" content="dark"></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(18, 18, 18)" },
+  },
+  {
+    name: "a comma-separated color-scheme meta is invalid, not dark",
+    html: '<head><meta name="color-scheme" content="light, dark"></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "a no-break space joins idents in CSS, so foo&nbsp;dark is one custom ident, not dark",
+    html: '<head><meta name="color-scheme" content="foo&nbsp;dark"></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
+  {
+    name: "CSS folds case in ASCII only, so dar\u212A (Kelvin sign) is a custom ident, not dark",
+    html: '<head><meta name="color-scheme" content="dar&#x212A;"></head><body style="margin:0"><main style="height:100px"></main></body>',
+    expect: { surface: null, canvas: "rgb(255, 255, 255)" },
+  },
 ];
 
 test("probePageBackground reads the surface the viewport shows", async (t) => {
@@ -166,7 +248,8 @@ test("probePageBackground reads the surface the viewport shows", async (t) => {
   }
   try {
     const page = await browser.newPage({ viewport: { width: 1200, height: 800 } });
-    for (const { name, html, expect } of layouts) {
+    for (const { name, html, expect, dark } of layouts) {
+      await page.emulateMedia({ colorScheme: dark ? "dark" : "light" });
       await page.setContent(`<!doctype html><html>${html}</html>`);
       assert.deepEqual(await page.evaluate(probePageBackground), expect, name);
     }
