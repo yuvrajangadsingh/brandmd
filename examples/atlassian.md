@@ -5,6 +5,7 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#292a2e"
+  on-surface-variant: "#1868db"
   outline: "#dddee1"
   primary: "#c75300"
   on-primary: "#ffffff"

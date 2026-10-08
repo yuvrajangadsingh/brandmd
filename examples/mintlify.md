@@ -1,11 +1,11 @@
 ---
 version: alpha
 name: "Mintlify - The documentation platform for agents"
-description: "Bright, soft contrast"
+description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000"
-  on-surface-variant: "#0c8c5e"
+  on-surface-variant: "#08090a99"
   outline: "#08090a12"
   primary: "#0052ff"
   on-primary: "#ffffff"
@@ -90,7 +90,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, soft contrast; white background dominates with green text and red accents
+**Visual character:** Bright, high contrast; white background dominates with black text and green accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
