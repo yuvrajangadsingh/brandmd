@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.5] - 2026-10-08
+
+### Fixed
+
+- **A button candidate has to be 16px to 100px tall.** The button selector also matched a 2x2 "expand image" control on docs.replit.com and 76x480 testimonial cards with `role="button"` on supabase.com; the first became the primary button on document order, the second on HSL saturation (rgb(0, 37, 51) scores 1.0), and three examples carried ghost buttons 102px to 676px tall. The gate runs in the picker and again before the multi-page merge weights, so a rejected box no longer dilutes its page's vote; a missing height (older captures) is kept. `examples/` intercom, replit, sentry and stripe regenerated.
+
 ## [0.18.4] - 2026-10-08
 
 ### Fixed
