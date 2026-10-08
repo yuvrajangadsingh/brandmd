@@ -4,12 +4,12 @@ name: "Tailwind CSS - Rapidly build modern websites without ever leaving your HT
 description: "Bright, high contrast"
 colors:
   background: "#ffffff"
-  on-background: "#000000"
-  on-surface-variant: "#90a1b9"
+  on-background: "#030712"
+  on-surface-variant: "#4a5565"
   outline: "#0000000d"
-  primary: "#00a6f4"
+  primary: "#00bcff"
   on-primary: "#1a1a1a"
-  secondary: "#00bcff1a"
+  secondary: "#00a6f4"
   on-secondary: "#1a1a1a"
 typography:
   display:
@@ -89,7 +89,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and vivid cyan accents
+**Visual character:** Bright, high contrast; white background dominates with dark blue text and vivid cyan accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -97,16 +97,15 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
-- **Near-transparent Dark Blue** (`#0307120d`): Overlay / scrim (dominant)
 - **White** (`#ffffff`): Page background (dominant)
+- **Near-transparent Dark Blue** (`#0307120d`): Overlay / scrim (dominant)
 - **Near-transparent Black** (`#0000000d`): Divider / border (dominant)
 - **Muted Blue** (`#90a1b9`): Muted text (accent)
+- **Near-transparent White** (`#ffffff33`): Overlay / scrim (accent)
 - **Vivid Cyan** (`#00a6f4`): Link / accent text (accent)
-- **Near-transparent Vivid Cyan** (`#00bcff1a`): Overlay / scrim (accent)
-- **Vivid Purple** (`#5d0ec0`): Accent background (accent)
-- **Orange** (`#7e2a0c`): Accent background (accent)
-- **Dark Red** (`#460809`): Accent background (accent)
+- **Black** (`#000000`): Dark background / footer (accent)
+- **Vivid Cyan** (`#00bcff`): Accent background (accent)
+- **Dark Blue** (`#052f4a`): Accent background (accent)
 
 ## Typography
 
@@ -173,7 +172,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#00a6f4` for primary actions and CTAs
+- Do use `#00bcff` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `inter` as the primary typeface
 - Don't introduce colors outside the palette above

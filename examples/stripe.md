@@ -5,7 +5,7 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000"
-  on-surface-variant: "#64748d"
+  on-surface-variant: "#533afd"
   primary: "#533afd"
   on-primary: "#ffffff"
   secondary: "#29227d"
