@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.7] - 2026-10-08
+
+### Fixed
+
+- **A clamped pill radius reads as 9999px.** Chromium computes `calc(infinity * 1px)` (Tailwind v4's `rounded-full`) as `3.35544e+07px`, and the Buttons, Cards and Inputs prose, `brandmd diff` and the ghost-button grouping used that raw string; clerk, huggingface, resend and vercel printed it as their button radius. A uniform radius at or past 999px on a chosen component now reads as `9999px`, the value the page-level radii list already uses; compound and percentage radii stay as observed. Four examples and the stripe-vs-vercel diff regenerated.
+
 ## [0.18.6] - 2026-10-08
 
 ### Fixed
