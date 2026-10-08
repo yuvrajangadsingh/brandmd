@@ -622,7 +622,8 @@ function mergeTypeSamples(maps) {
  * it), composited over the white backing; an image or an unreadable colour
  * leaves it unknown.
  * Runs inside page.evaluate, so it is self-contained.
- * ponytail: rgb()/rgba() computed values only, z-index and transforms ignored,
+ * ponytail: colours outside rgb()/rgba() are read as the sRGB pixel a canvas paints
+ * (gamut-clamped), z-index and transforms ignored,
  * fixed and sticky elements and everything inside them skipped (an app shell that
  * is a fixed wrapper falls back to the canvas), iframes and shadow roots not
  * entered, the backing assumed white (color-scheme: dark pages without a
@@ -632,9 +633,40 @@ export function probePageBackground() {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   const vp = vw * vh || 1;
+  // Chromium serialises oklch(), lab() and color() computed values in their own
+  // syntax; what the rgb()/rgba() regex misses is read back as the pixel a 1x1
+  // canvas paints (sRGB, gamut-clamped); the alpha comes from the colour string
+  // and the fill is made opaque first, so no premultiplied rounding. A canvas
+  // that fails leaves the colour unknown, as before.
+  let px;
+  const viaCanvas = (c) => {
+    try {
+      if (px === undefined) {
+        const cv = document.createElement("canvas");
+        cv.width = cv.height = 1;
+        px = cv.getContext("2d", { colorSpace: "srgb", alpha: true, willReadFrequently: true }) || null;
+      }
+      if (!px) return null;
+      const am = /\/\s*(none|[\d.]+(?:e[+-]?\d+)?)(%?)\s*\)$/i.exec(c);
+      if (c.includes("/") && !am) return null; // an alpha this cannot read is unknown, not opaque
+      const a = am ? (am[1].toLowerCase() === "none" ? 0 : +am[1] / (am[2] ? 100 : 1)) : 1;
+      if (!Number.isFinite(a)) return null;
+      px.fillStyle = "#010203"; // a computed colour never serialises as hex: unchanged means unparseable
+      px.fillStyle = am ? c.replace(am[0], ")") : c;
+      if (px.fillStyle === "#010203") return null;
+      px.clearRect(0, 0, 1, 1);
+      px.fillRect(0, 0, 1, 1);
+      const [r, g, b] = px.getImageData(0, 0, 1, 1).data;
+      return { r, g, b, a };
+    } catch {
+      px = null;
+      return null;
+    }
+  };
   const parse = (c) => {
     const m = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)$/.exec(c || "");
-    return m ? { r: +m[1], g: +m[2], b: +m[3], a: m[4] === undefined ? 1 : +m[4] } : null;
+    if (m) return { r: +m[1], g: +m[2], b: +m[3], a: m[4] === undefined ? 1 : +m[4] };
+    return c ? viaCanvas(c) : null;
   };
   const rgb = (c) => `rgb(${Math.round(c.r)}, ${Math.round(c.g)}, ${Math.round(c.b)})`;
   const over = (c, u) => ({ r: c.a * c.r + (1 - c.a) * u.r, g: c.a * c.g + (1 - c.a) * u.g, b: c.a * c.b + (1 - c.a) * u.b, a: 1 });
