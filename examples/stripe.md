@@ -65,8 +65,9 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: 0px
-    height: 676px
+    rounded: "{rounded.sm}"
+    padding: 11px
+    height: 40px
   card:
     rounded: 0px
 ---

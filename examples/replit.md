@@ -1,72 +1,81 @@
 ---
 version: alpha
-name: "Replit Docs"
-description: "Dark, strong contrast"
+name: "Welcome to Replit - Replit"
+description: "Bright, high contrast"
 colors:
-  background: "#1e1e1f"
-  on-background: "#57514f"
-  surface: "#77716f"
-  on-surface-variant: "#a6a09e"
-  outline: "#2d2725"
-  outline-variant: "#ffffff1a"
+  background: "#f6f6f4"
+  on-background: "#1d1d1d"
+  surface: "#f1f1ee"
+  on-surface-variant: "#5c5c5c"
+  outline: "#f5efee"
+  outline-variant: "#6d483a1f"
   primary: "#ff3c00"
   on-primary: "#1a1a1a"
+  secondary: "#ff9a78"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: ABC Diatype Plus
-    fontSize: 36px
+    fontSize: 56px
     fontWeight: 700
     lineHeight: 1.1
   headline-lg:
     fontFamily: ABC Diatype Plus
-    fontSize: 24px
+    fontSize: 40px
+    fontWeight: 700
+    lineHeight: 1
+  headline-md:
+    fontFamily: ABC Diatype Plus
+    fontSize: 27px
     fontWeight: 700
     lineHeight: 1
   body-md:
     fontFamily: ABC Diatype Plus
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.75
+  body-sm:
+    fontFamily: ABC Diatype Plus
     fontSize: 14px
     fontWeight: 400
     lineHeight: 1.43
-  body-lg:
-    fontFamily: ABC Diatype Plus
-    fontSize: 16px
-    fontWeight: 400
-    lineHeight: 1.5
   label-sm:
     fontFamily: ABC Diatype Plus
-    fontSize: 12px
+    fontSize: 13px
     fontWeight: 400
-    lineHeight: 1.33
+    lineHeight: 1.77
 rounded:
   sm: 6px
-  md: 8px
-  lg: 12px
-  xl: 16px
+  md: 9px
+  lg: 10px
+  xl: 11px
+  2xl: 12px
+  3xl: 13px
   full: 9999px
 spacing:
-  base: 6px
-  xs: 1px
-  sm: 2px
-  md: 4px
+  base: 12px
+  xs: 4px
+  sm: 6px
+  md: 7.5px
   lg: 8px
   xl: 9px
 components:
   button-primary:
-    backgroundColor: "#f26207"
-    textColor: "#1a1a1a"
+    backgroundColor: "#ffffff80"
+    textColor: "#57514f"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.md}"
+    rounded: "{rounded.2xl}"
     padding: 8px
-    height: 35px
+    height: 34px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: "{rounded.md}"
-    padding: 8px
-    height: 35px
+    rounded: "{rounded.full}"
+    height: 36px
   card:
-    backgroundColor: "{colors.background}"
-    rounded: "{rounded.xl}"
+    backgroundColor: "{colors.surface}"
+    rounded: 16px
+    padding: 52px
   input:
     typography: "{typography.body-md}"
     rounded: 0px
@@ -80,15 +89,15 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: Replit Docs
+# Design System: Welcome to Replit - Replit
 
 > Extracted from [https://docs.replit.com](https://docs.replit.com) by brandmd
 
-> ⚠️ **Provenance:** `https://docs.replit.com` redirected to `https://docs.replit.com/build/welcome`. These tokens may describe that page, not the URL you asked for.
+> ⚠️ **Provenance:** `https://docs.replit.com` redirected to `https://docs.replit.com/welcome`. These tokens may describe that page, not the URL you asked for.
 
 ## Overview
 
-**Visual character:** Dark, strong contrast; black background dominates with gray text and vivid red accents
+**Visual character:** Bright, high contrast; off-white background dominates with black text and vivid red accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -98,15 +107,17 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Dark gray** (`#2d2725`): Divider / border (dominant)
-- **Gray** (`#a6a09e`): Muted text (dominant)
-- **Black** (`#1e1e1f`): Dark background / footer (dominant)
-- **White** (`#ffffff`): Light text (on dark) (accent)
-- **Gray** (`#77716f`): Secondary background (accent)
+- **Off-white** (`#f5efee`): Divider / border (dominant)
+- **Off-white** (`#f6f6f4`): Page background (dominant)
+- **Black** (`#000000`): Primary text (dominant)
+- **Gray** (`#77716f`): Secondary text (dominant)
+- **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
+- **Gray** (`#a6a09e`): Muted text (accent)
+- **Muted Orange** (`#bca39a`): Secondary background (accent)
 - **Vivid Red** (`#ff3c00`): Accent background (accent)
-- **Near-transparent White** (`#ffffff08`): Overlay / scrim (accent)
+- **Orange** (`#ff9a78`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff1a`, `#57514f`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#6d483a1f`, `#191818`
 
 ## Typography
 
@@ -116,60 +127,56 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: ABC Diatype Plus
 - Body: ABC Diatype Plus
 
-**All detected fonts:** ABC Diatype Plus (610), Inter (1), paperMono (1)
-
 **Type scale:**
-- Headings: 24px, 36px
-- Body / UI: 14px, 16px, 18px
-- Captions / Small: 12px
+- Headings: 25px, 27px, 40px, 56px
+- Body / UI: 14px, 15px, 16px, 17px, 19px
+- Captions / Small: 11px, 12px, 13px
 
-**Weights in use:** 400, 500, 600, 700
+**Weights in use:** 400, 600, 650, 700
 
-**Line heights:** 20px, 24px, 28px, 16px, 17px, 39.5px, 23.5px, 21px, 18px
+**Line heights:** 28px, 24px, 20px, 19px, 40px, 23px, 61.5px, 17.5px, 18px, 27px
 
-**Letter spacing:** -0.48px, -0.32px, -1.08px
+**Letter spacing:** -0.8px, -0.3px, -1.68px, -0.54px, -0.875px
 
 ## Layout
 
-**Spacing scale:** 4px, 6px, 8px, 10px, 12px, 16px, 20px, 24px
+**Spacing scale:** 4px, 6px, 8px, 10px, 12px, 14px, 16px, 18px
 
 ## Elevation & Depth
 
-Uses 4 shadow styles for layering and elevation:
+Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Level 2: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.376839 0.00693397 0.00568405 / 0.25) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px`
-- Level 3: `rgba(255, 255, 255, 0.5) 0px 0px 1px 0px`
-- Level 4: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.440044 0.00665669 0.00545922 / 0.3) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
+- Level 1: `rgba(74, 18, 0, 0.18) 0px 12px 24px 0px`
+- Level 2: `rgba(90, 54, 39, 0.08) 0px 16px 30px 0px`
+- Level 3: `oklab(0.710195 0.00588661 0.00483012 / 0.3) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px`
+- Level 4: `rgba(89, 50, 34, 0.08) 0px 20px 40px 0px`
+- Level 5: `rgba(44, 16, 8, 0.16) 0px 10px 20px 0px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 0px 12px 12px 0px, 6px, 8px, 12px, 12px 0px 0px 12px, 16px, 50%, 9999px (pill)
-
-Asymmetric / percentage radii observed (0px 12px 12px 0px, 12px 0px 0px 12px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+**Border radii:** 6px, 9px, 10px, 11px, 12px, 13px, 14px, 9999px (pill)
 
 ## Components
 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#f26207`
-- Text color: `#ffffff`
-- Corner radius: 8px
-- Height: 35px
-- Padding: 8px 16px 8px 16px
-- Font: 14px, weight 500
+- Background: `#ffffff80`
+- Text color: `#57514f`
+- Corner radius: 12px
+- Height: 34px
+- Padding: 8px 14px 8px 14px
+- Font: 16px, weight 400
 
 ### Cards
-- Background: `#1e1e1f`
+- Background: `#f1f1ee`
 - Corner radius: 16px
-- Shadow: `rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`
-- Padding: 0px 0px 0px 0px
+- Padding: 52px 52px 52px 52px
 
 ### Inputs
-- Border: 0px solid rgb(45, 39, 37)
+- Border: 0px solid rgb(245, 239, 238)
 - Corner radius: 0px
 - Padding: 10px 40px 10px 14px
 - Font size: 14px
@@ -177,11 +184,11 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use `#ff3c00` for primary actions and CTAs
-- Do stick to 4 font weights: 400, 500, 600, 700
+- Do stick to 4 font weights: 400, 600, 650, 700
 - Do use `ABC Diatype Plus` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts; use ABC Diatype Plus everywhere
-- Don't use border-radius values outside: 0px 12px 12px 0px, 6px, 8px, 12px, 12px 0px 0px 12px, 16px, 50%, 9999px (pill)
+- Don't use border-radius values outside: 6px, 9px, 10px, 11px, 12px, 13px, 14px, 9999px (pill)
 
 ---
 
