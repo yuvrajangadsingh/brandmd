@@ -2,6 +2,13 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.18.4] - 2026-10-08
+
+### Fixed
+
+- **A page that paints no background gets the browser's canvas colour as its background.** tailwindcss.com, stripe.com, atlassian.com and mintlify.com paint nothing on `html`, `body` or any wrapper; the white the viewport shows is the browser's own backing. The probe read that as "unknown", so those captures had no page background and their text roles were luminance guesses (tailwindcss.com's `on-background` had drifted to #90a1b9 at 2.63:1 on white). The backing is now the browser's canvas for the root's used `color-scheme`, resolved from the CSS `color-scheme` (the `color-scheme` meta when CSS says `normal`) without touching the DOM: white in light, `rgb(18, 18, 18)` in Chromium's dark, so a `--dark` capture of a `color-scheme: dark` page without a background gets its dark backing. A translucent cover over nothing composites over the backing; an image or an unreadable colour still leaves the canvas unknown. `examples/` atlassian, mintlify, stripe and tailwindcss regenerated with text roles by contrast.
+- **The page background probe reads `oklch()`, `lab()`, `color()` and `color-mix()` backgrounds.** Chromium serialises those computed values in their own syntax and the probe only parsed `rgb()`/`rgba()`. Anything else is now read back as the pixel a 1x1 canvas paints: sRGB, gamut-clamped (display-p3 red clips to `rgb(255, 0, 0)`), the alpha from the colour string with the fill made opaque first, so a translucent oklch composites exactly like `rgba()` (that path is unchanged). A missing or failing canvas leaves the colour unknown, as before.
+
 ## [0.18.3] - 2026-10-08
 
 ### Fixed
