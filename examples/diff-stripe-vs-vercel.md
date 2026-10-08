@@ -14,7 +14,7 @@ _none_
 
 - `#FFFFFF` — background (background)
 - `#000000` — on-background (on-background)
-- `#64748D` — on-surface-variant (on-surface-variant)
+- `#533AFD` — on-surface-variant (on-surface-variant)
 - `#533AFD` — primary (primary)
 - `#FFFFFF` — on-primary (on-primary)
 - `#29227D` — secondary (secondary)
@@ -23,9 +23,9 @@ _none_
 ### Only in Agentic Infrastructure (10)
 
 - `#FAFAFA` — background (background)
-- `#4D4D4D` — on-background (on-background)
+- `#171717` — on-background (on-background)
 - `#00FF95` — surface (surface)
-- `#8F8F8F` — on-surface-variant (on-surface-variant)
+- `#4D4D4D` — on-surface-variant (on-surface-variant)
 - `#EBEBEB` — outline (outline)
 - `#00000014` — outline-variant (outline-variant)
 - `#FF1744` — primary (primary)
@@ -58,7 +58,7 @@ _none_
 | property | Stripe | Agentic Infrastructure | |
 |---|---|---|---|
 | Background | #533afd | #ffffff | ≠ |
-| Corner radius | 4px | 3.35544e+07px | ≠ |
+| Corner radius | 4px | 9999px | ≠ |
 | Font | 14px, weight 400 | 16px, weight 500 | ≠ |
 | Height | 40px | 40px | = |
 | Padding | 11.5px 20px 12.5px 20px | 0px 8px 0px 4px | ≠ |
@@ -94,11 +94,12 @@ _4 of 6 properties differ between Stripe and Agentic Infrastructure button-prima
 | property | Stripe | Agentic Infrastructure | |
 |---|---|---|---|
 | backgroundColor | transparent | transparent | = |
-| height | 676px | 32px | ≠ |
-| rounded | 0px | 0px | = |
+| height | 40px | 32px | ≠ |
+| padding | 11px | _unspecified_ | ≠ |
+| rounded | {rounded.sm} | 0px | ≠ |
 | typography | {typography.label-sm} | {typography.label-sm} | = |
 
-_1 of 4 properties differ between Stripe and Agentic Infrastructure button-secondary._
+_3 of 5 properties differ between Stripe and Agentic Infrastructure button-secondary._
 
 
 ### card
@@ -121,7 +122,7 @@ rounded: 0px
 - label-sm font differs: Stripe uses `sohne-var`, Agentic Infrastructure uses `GeistSans`.
 - headings font differs: Stripe uses `sohne-var`, Agentic Infrastructure uses `GeistSans`.
 - body font differs: Stripe uses `sohne-var`, Agentic Infrastructure uses `GeistSans`.
-- Button radius gap: Stripe uses `4px`, Agentic Infrastructure uses `3.35544e+07px`. Buttons are where users feel the difference fastest.
+- Button radius gap: Stripe uses `4px`, Agentic Infrastructure uses `9999px`. Buttons are where users feel the difference fastest.
 
 ### What to avoid
 
