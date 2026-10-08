@@ -172,7 +172,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#00bcff` for primary actions and CTAs
+- Do use `#f6339a` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `inter` as the primary typeface
 - Don't introduce colors outside the palette above

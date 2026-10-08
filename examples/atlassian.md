@@ -118,7 +118,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Display / hero: Atlassian Mono
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (1655), Charlie Display (636), Atlassian Mono (27)
+**All detected fonts:** Charlie Text (1653), Charlie Display (636), Atlassian Mono (27)
 
 **Type scale:**
 - Headings: 24px, 40px, 48px, 64px, 96px
@@ -178,7 +178,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#c75300` for primary actions and CTAs
+- Do use `#101214` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `Charlie Display` as the primary typeface
 - Don't introduce colors outside the palette above

@@ -184,7 +184,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#36f4a4` for primary actions and CTAs
+- Do use `#ffffff` for primary actions and CTAs
 - Do use `Shopify-Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Shopify-Inter and SFMono-Regular

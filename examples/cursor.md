@@ -115,7 +115,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: CursorGothic, Segoe UI
 - Body: CursorGothic
 
-**All detected fonts:** CursorGothic (1011), Segoe UI (471), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
+**All detected fonts:** CursorGothic (1011), Segoe UI (470), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
 
 **Type scale:**
 - Headings: 26px
@@ -176,7 +176,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#65afe0` for primary actions and CTAs
+- Do use `#c08532` for primary actions and CTAs
 - Do use `CursorGothic` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond CursorGothic and Segoe UI

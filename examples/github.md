@@ -172,7 +172,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#1f6feb` for primary actions and CTAs
+- Do use `#08872b` for primary actions and CTAs
 - Do use `Mona Sans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Mona Sans and Mona Sans Mono

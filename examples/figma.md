@@ -157,7 +157,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#00b6ff` for primary actions and CTAs
+- Do use `#000000` for primary actions and CTAs
 - Do stick to 3 font weights: 320, 330, 400
 - Do use `figmaSans` as the primary typeface
 - Don't introduce colors outside the palette above
