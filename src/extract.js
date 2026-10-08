@@ -1,5 +1,5 @@
 import { chromium } from "playwright";
-import { visibleShadows } from "./analyze.js";
+import { buttonSized, visibleShadows } from "./analyze.js";
 
 /**
  * Detect if the current page is a Cloudflare challenge / block.
@@ -826,7 +826,7 @@ export function mergeRaw(pages) {
   for (const page of pages) {
     if (!page.components) continue;
     for (const kind of ["buttons", "cards", "inputs"]) {
-      const list = page.components[kind] || [];
+      const list = kind === "buttons" ? (page.components.buttons || []).filter(buttonSized) : page.components[kind] || [];
       const weight = list.length ? 1 / list.length : 0;
       for (const c of list) {
         merged.components[kind].push({ ...c, _pageWeight: weight });

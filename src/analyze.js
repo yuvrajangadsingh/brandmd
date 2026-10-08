@@ -209,6 +209,16 @@ function isSolidFill(cssColor) {
 }
 
 /**
+ * A button candidate is a box a hand can hit: 16px to 100px tall. The selector
+ * also matches a 2px "expand image" control and 480px testimonial cards with
+ * role=button. A missing height (older captures) is unknown and kept.
+ */
+export function buttonSized(b) {
+  const h = parseFloat(b?.height);
+  return Number.isNaN(h) || (h >= 16 && h <= 100);
+}
+
+/**
  * Analyze extracted component styles into representative tokens.
  *
  * The primary button is the most *saturated solid* candidate (tie-broken by
@@ -219,7 +229,7 @@ function isSolidFill(cssColor) {
 function analyzeComponents(components, pageBgHex = null) {
   const result = { buttons: null, ghostButton: null, cards: null, inputs: null };
 
-  const buttons = components?.buttons || [];
+  const buttons = (components?.buttons || []).filter(buttonSized);
   if (buttons.length > 0) {
     const solids = buttons.filter((b) => isSolidFill(b.bg));
     const ghosts = buttons.filter((b) => !isSolidFill(b.bg));

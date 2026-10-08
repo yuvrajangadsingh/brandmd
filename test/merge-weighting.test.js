@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { analyze } from "../src/analyze.js";
 import { mergeRaw } from "../src/extract.js";
+import { generate } from "../src/generate.js";
 
 /**
  * A long page must not decide the brand's ghost button by sheer volume.
@@ -86,4 +87,48 @@ test("shadow placeholders do not eat a page's share of the merge", () => {
     { ...raw([]), shadows: { [deep]: 10 } },
   ]);
   assert.deepEqual(merged.shadows, { [soft]: 1, [deep]: 1 });
+});
+
+// --- A button candidate is a box a hand can hit: 16px to 100px tall. ---------
+// The selector also matches a 2px "expand image" control (docs.replit.com) and
+// 76x480 testimonial cards with role=button (supabase.com); both became the
+// primary button, the first by document order, the second on HSL saturation.
+const solid = (bg, height, color = "rgb(255, 255, 255)") => ({
+  bg, color, radius: "8px", padding: "8px 16px 8px 16px", fontSize: "14px", fontWeight: "500",
+  ...(height === undefined ? {} : { height }),
+});
+
+test("a 2px box never becomes the primary button (docs.replit.com)", () => {
+  const out = analyze(raw([
+    solid("rgba(255, 255, 255, 0.55)", "2px", "rgb(23, 23, 23)"),
+    solid("rgba(255, 255, 255, 0.5)", "34px", "rgb(87, 81, 79)"),
+  ]));
+  assert.equal(out.components.buttons.height, "34px");
+});
+
+test("a 480px card with role=button never beats a 38px CTA (supabase.com)", () => {
+  const out = analyze(raw([solid("rgb(0, 37, 51)", "480px", "rgb(3, 3, 3)"), solid("rgb(62, 207, 142)", "38px")]));
+  assert.equal(out.components.buttons.height, "38px");
+});
+
+test("the gate is inclusive at 16px and 100px, and a missing height is kept", () => {
+  for (const [h, kept] of [["15px", false], ["16px", true], ["100px", true], ["101px", false], [undefined, true]]) {
+    const out = analyze(raw([solid("rgb(255, 0, 0)", h)]));
+    assert.equal(out.components.buttons !== null, kept, `height ${h}`);
+  }
+});
+
+test("when every candidate is rejected the DESIGN.md has no button at all", () => {
+  const md = generate(analyze(raw([solid("rgb(255, 0, 0)", "2px"), { ...ghost("#111111", "8px"), height: "480px" }])));
+  assert.doesNotMatch(md, /button-primary|button-secondary|### Buttons/);
+});
+
+test("a rejected box does not dilute its page's vote in the merge", () => {
+  const card = { ...ghost("#999999", "0px"), height: "480px" };
+  const merged = mergeRaw([
+    raw([ghost("#111111", "8px")]),
+    raw([ghost("#222222", "0px"), card, card, card]),
+    raw([ghost("#222222", "0px"), card, card, card]),
+  ]);
+  assert.equal(analyze(merged).components.ghostButton.color, "#222222", "two pages must beat one");
 });
