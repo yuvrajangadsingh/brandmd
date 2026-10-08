@@ -198,6 +198,32 @@ test("F-04: CTA line names the accent background, never the primary text", () =>
   );
 });
 
+// --- The CTA guideline names the observed primary button -------------------
+// pickPrimaryAccent ranks a link, accent or focus colour above the rendered
+// button, so 21 of 29 examples told an agent to paint CTAs in a colour no
+// button on the page used.
+const ctaLine = (md) => md.match(/^- Do use (.*) for primary actions and CTAs$/m)?.[1] ?? null;
+const accentRaw = (buttons) => rawSkeleton({
+  colors: { background: { "rgb(255, 255, 255)": 1000, "rgb(99, 91, 255)": 50 }, text: { "rgb(17, 17, 17)": 500 }, border: {} },
+  fonts: { Inter: 100 },
+  fontsByRole: { heading: {}, body: { Inter: 100 }, button: {}, display: {} },
+  components: { buttons, cards: [], inputs: [] },
+});
+const btn = (bg, extra = {}) => ({ bg, color: "rgb(255, 255, 255)", radius: "8px", padding: "8px 16px 8px 16px", fontSize: "14px", fontWeight: "500", height: "40px", ...extra });
+
+test("the CTA guideline names the observed primary button, the accent only without one", () => {
+  assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(192, 133, 50)")])))), "`#c08532`", "chromatic button");
+  assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(17, 17, 17)")])))), "`#111111`", "neutral button");
+  assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgba(0, 0, 0, 0.5)")])))), "`#00000080`", "a translucent button keeps its alpha");
+  assert.equal(ctaLine(generate(analyze(accentRaw([])))), "`#635bff`", "no button: the accent");
+  assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(255, 255, 255)")])))), "`#635bff`", "a button in the page's own colour is not action evidence");
+  const g = ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { gradient: ["#ff0000", "#0000ff"], gradientRaw: "linear-gradient(#ff0000, #0000ff)" })]))));
+  assert.match(g, /button-primary.*gradient/, "gradient button: the treatment, not its first stop");
+  assert.doesNotMatch(g, /#ff0000/);
+  const one = ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { gradient: ["#ff0000"], gradientRaw: "linear-gradient(#ff0000, oklch(0.5 0.2 260))" })]))));
+  assert.match(one, /button-primary.*gradient/, "one readable stop is still a gradient");
+});
+
 // --- Type levels follow size --------------------------------------------------
 // With no heading at 32px or more, the largest one was named headline-lg and the
 // second largest then overwrote it, so the biggest size never reached the tokens.

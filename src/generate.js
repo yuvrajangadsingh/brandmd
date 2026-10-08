@@ -755,7 +755,18 @@ function emitBody(tokens, model) {
   lines.push("## Do's and Don'ts");
   lines.push("");
   if (tokens.spacingGrid) lines.push(`- Do use a ${tokens.spacingGrid.base}px grid for spacing`);
-  if (tokens.primaryColor?.hex) {
+  // The CTA colour is the rendered button's, not the accent evidence that
+  // picks colors.primary: a link or focus colour is not what the site paints
+  // its buttons with. A button in the page's own colour is no action evidence
+  // (the analyzer skips it too), so the accent stands in there and when no
+  // solid button was seen.
+  const ctaBtn = model.components["button-primary"];
+  const ctaGradient = tokens.components?.buttons?.gradient?.length > 0; // one readable stop is still a gradient
+  if (ctaBtn?.backgroundColor && (ctaGradient || ctaBtn.backgroundColor !== model.colors.background)) {
+    lines.push(ctaGradient
+      ? "- Do use the `button-primary` gradient from Components for primary actions and CTAs"
+      : `- Do use \`${ctaBtn.backgroundColor}\` for primary actions and CTAs`);
+  } else if (tokens.primaryColor?.hex) {
     lines.push(`- Do use \`${lc(tokens.primaryColor.hex)}\` for primary actions and CTAs`);
   }
   const enoughFontEvidence = (tokens.evidence?.fontObs ?? Infinity) >= 10;
