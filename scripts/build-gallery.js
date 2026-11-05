@@ -12,6 +12,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 
+const GA_TAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-0SXZRXRB0D"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0SXZRXRB0D');</script>`;
+const ANALYTICS_NOTE = '<p>This page counts visits with Google Analytics.</p>';
+
 function parseBrandsYml(text) {
   const brands = [];
   let current = null;
@@ -163,6 +167,7 @@ function renderBrandPage(brand, design) {
 <title>${esc(brand.name)} brand snapshot — brandmd</title>
 <meta name="description" content="${esc(brand.name)} design system snapshot extracted by brandmd from ${esc(brand.url)}">
 <style>${BASE_CSS}</style>
+${GA_TAG}
 </head>
 <body>
 <div class="container">
@@ -194,6 +199,7 @@ ${guidelines}
 <p>Generated ${generated} from <a href="${esc(brand.url)}" target="_blank" rel="noopener">${esc(brand.url)}</a> using <code>npx brandmd ${esc(brand.url)}</code>.</p>
 <p>Generate one for your site: <code>npx brandmd https://yoursite.com</code></p>
 <p><a href="https://github.com/yuvrajangadsingh/brandmd">brandmd on GitHub</a> · <a href="./index.html">all snapshots</a></p>
+${ANALYTICS_NOTE}
 </footer>
 </div>
 </body>
@@ -223,6 +229,7 @@ function renderIndex(brands, designs) {
 <title>brandmd gallery — brand design system snapshots</title>
 <meta name="description" content="Snapshots of public brand design systems extracted by brandmd. Use as references for AI coding agents.">
 <style>${BASE_CSS}</style>
+${GA_TAG}
 </head>
 <body>
 <div class="container">
@@ -237,6 +244,7 @@ function renderIndex(brands, designs) {
 <p>Generate one for your site: <code>npx brandmd https://yoursite.com</code></p>
 <p>Each snapshot is generated from a single public page visit. Not affiliated with any of the brands shown. Treat as observed, not canonical.</p>
 <p><a href="https://github.com/yuvrajangadsingh/brandmd">brandmd on GitHub</a> · <a href="https://www.npmjs.com/package/brandmd">npm</a></p>
+${ANALYTICS_NOTE}
 </footer>
 </div>
 </body>
