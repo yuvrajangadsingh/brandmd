@@ -21,6 +21,8 @@
     "brand-guide",
     "claude-code",
     "cursor",
+    "mcp",
+    "mcp-server",
     "gemini-cli",
     "google-stitch",
     "stitch",
