@@ -32,6 +32,20 @@ Combine with:
 - **`--dark`**: also extract dark mode tokens
 - **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)). Uses `gemini-3.8-flash`; set `BRANDMD_VISION_MODEL` to pick another model. If the screenshot or the vision call fails the CSS-only `DESIGN.md` is still written and the run exits 1.
 
+Or let your agent run it. `brandmd mcp` is an MCP server with one tool, `extract_design_md`, so Claude Code, Cursor, or any MCP client can pull a site's DESIGN.md in the middle of a task ("make this page look like linear.app"):
+
+```bash
+claude mcp add brandmd -- npx -y brandmd mcp
+```
+
+For Cursor, Claude Desktop, and other clients that read an `mcpServers` config:
+
+```json
+{ "mcpServers": { "brandmd": { "command": "npx", "args": ["-y", "brandmd", "mcp"] } } }
+```
+
+The tool takes one or more pages of a site (`urls`) and an optional `dark` flag, and refuses block pages and login walls the same way the CLI does.
+
 Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
 Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md) · [+20 more in the gallery](examples/README.md)

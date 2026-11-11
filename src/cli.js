@@ -14,6 +14,7 @@ import { diffDesigns } from "./diff.js";
 import { parseDesign } from "./parse-design.js";
 import { compareDesigns, exitCodeFor, formatDrift, validateBaseline } from "./check.js";
 import { writeAllAtomic, writeFileAtomic } from "./atomic-write.js";
+import { serve } from "./mcp.js";
 import { readFileSync } from "fs";
 import { basename, dirname, isAbsolute, relative, resolve } from "path";
 import { createRequire } from "module";
@@ -95,6 +96,11 @@ program
       process.exit(EXIT_ERROR);
     }
   });
+
+program
+  .command("mcp")
+  .description("run as an MCP server over stdio, so Claude Code, Cursor and other agents can call brandmd")
+  .action(() => serve(pkg.version));
 
 program
   .command("check <url>")
