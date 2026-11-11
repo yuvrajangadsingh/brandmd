@@ -31,6 +31,7 @@ import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { createRequire } from "node:module";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const BIN = join(here, "..", "bin", "brandmd.js");
@@ -346,4 +347,13 @@ test("extract: an invalid --viewport exits 1", () => {
   const r = runCLI(["https://example.com", "--viewport", "12"]);
   assert.equal(r.status, 1);
   assert.match(r.out, /--viewport must look like/);
+});
+
+test("a missing browser names the install command for the Playwright brandmd resolved", () => {
+  // An unversioned npx playwright can be a different release whose Chromium
+  // build is not the one this Playwright launches.
+  const { version } = createRequire(import.meta.url)("playwright/package.json");
+  const r = runCLI(["https://example.com"]);
+  assert.equal(r.status, 1);
+  assert.ok(r.stderr.includes(`Install it with: npx playwright@${version} install chromium`), r.stderr);
 });
