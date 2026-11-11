@@ -44,7 +44,7 @@ For Cursor, Claude Desktop, and other clients that read an `mcpServers` config:
 { "mcpServers": { "brandmd": { "command": "npx", "args": ["-y", "brandmd", "mcp"] } } }
 ```
 
-The tool takes one or more pages of a site (`urls`) and an optional `dark` flag, and refuses block pages and login walls the same way the CLI does.
+The tool takes one or more pages of a site (`urls`) and an optional `dark` flag, and refuses block pages and login walls the same way the CLI does. It renders pages in Playwright's headless Chromium; if that browser is missing, the call fails with the command that installs it.
 
 Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
@@ -145,7 +145,8 @@ brandmd does it from the terminal. Point it at any URL, get a spec-valid DESIGN.
 ## Install
 
 ```bash
-# Run directly (no install)
+# Run directly (no install). On a machine without Playwright's headless
+# Chromium it stops and prints the command that installs it.
 npx brandmd https://linear.app
 
 # Install globally
