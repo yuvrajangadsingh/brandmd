@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.19.1] - 2026-11-12
+
+### Fixed
+
+- **The browser install hint names the Playwright version brandmd uses.** On a machine without Playwright's Chromium, a brandmd run exits, and a `brandmd mcp` extraction call fails (the server keeps running), with "could not launch the headless browser" and an install command. That command was `npx playwright install chromium`, which can run a different Playwright than brandmd's own (a project-local one, or a newer one npx downloads), so the install succeeded and brandmd still failed. It is now `npx playwright@<version> install chromium` with the version brandmd resolved. The README's Install and MCP sections say a run without the browser stops and prints that command.
+
 ## [0.19.0] - 2026-11-11
 
 ### Added
