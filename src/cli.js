@@ -42,7 +42,9 @@ function reportError(err, { debug } = {}) {
     )
   ) {
     console.error(
-      "Error: could not launch the headless browser. Install it with: npx playwright install chromium"
+      "Error: could not launch the headless browser. Install it with: npx playwright@" +
+        require("playwright/package.json").version +
+        " install chromium"
     );
     if (debug) console.error(msg);
   } else {
