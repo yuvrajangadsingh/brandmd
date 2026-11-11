@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [0.19.0] - 2026-11-11
+
+### Added
+
+- **`brandmd mcp` runs brandmd as an MCP server, so an agent can pull a site's DESIGN.md in the middle of a task.** It serves one tool over stdio, `extract_design_md`, which takes `urls` (one or more pages of the same site) and an optional `dark`, and returns the DESIGN.md the CLI would print, with any warnings as a second text block. Each call runs the CLI, so its URL checks and its refusals of block pages, login walls and near-empty pages come back as tool errors carrying the CLI's own message. A URL is passed through unchanged; one that starts with a dash or is a bare word other than `localhost` is refused, so no input can become a flag or a subcommand. When the client disconnects or stops the server, running extractions and their browsers stop too. Setup is `claude mcp add brandmd -- npx -y brandmd mcp` for Claude Code, or an `mcpServers` entry for Cursor and Claude Desktop (README). No new dependency.
+
 ## [0.18.7] - 2026-10-08
 
 ### Fixed
