@@ -55,12 +55,9 @@ function parseViewport(v) {
 }
 
 /**
- * Read capture flags from the subcommand OR the root program.
- *
- * commander gives a same-named option to the ROOT when it is declared on both
- * the root and a subcommand, so `brandmd check <url> --viewport 1440x900`
- * lands on the root and the subcommand sees undefined. Without this fallback
- * the flag appears in `check --help` and silently does nothing.
+ * Read capture flags from the subcommand OR the root program. Options after
+ * `check` reach check (positional options, below); this fallback keeps
+ * `brandmd --viewport 1440x900 check <url>` working too.
  */
 function captureFrom(opts) {
   const root = typeof program !== "undefined" ? program.opts() : {};
@@ -72,7 +69,11 @@ function captureFrom(opts) {
   };
 }
 
-const program = new Command();
+// Positional: an option after a subcommand belongs to it. Without this,
+// commander hands an option declared on both the root and `check` to the
+// root, so `check <url> --allow-blocked` was ignored and `--cf-wait-ms 5`
+// left check on its 20000 default.
+const program = new Command().enablePositionalOptions();
 
 program
   .command("diff <a> <b>")
@@ -162,7 +163,7 @@ program
         light = res.light;
       }
     } catch (err) {
-      // --debug is declared on the root too, so commander hands it to the root.
+      // `brandmd --debug check <url>` puts it on the root.
       reportError(err, { debug: opts.debug || program.opts().debug });
       process.exit(EXIT_ERROR);
     }
