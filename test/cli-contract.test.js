@@ -234,6 +234,15 @@ test(`the CLI honors the ${RAW_SEAM_ENV} offline seam`, () => {
 const SPEC = join(here, "..", "examples", "stripe.md");
 const VERCEL_FIXTURE = join(here, "fixtures/raw-vercel.json");
 
+test("--dark that yields no dark capture exits 1 and still writes the light output", () => {
+  // The offline seam carries no dark capture, which is the state a run is in
+  // when every dark page failed to extract.
+  const r = runCLI(["https://vercel.com", "--dark"], { rawFile: VERCEL_FIXTURE });
+  assert.equal(r.status, 1, r.out);
+  assert.match(r.stderr, /--dark requested but no dark page was extracted/);
+  assert.match(r.stdout, /^---\n/, "the light DESIGN.md is still written");
+});
+
 test("check: missing --against exits 1", () => {
   const r = runCLI(["check", "https://example.com"]);
   assert.equal(r.status, 1);

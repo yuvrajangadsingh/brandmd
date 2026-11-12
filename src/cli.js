@@ -91,6 +91,34 @@ function parseCfWait(v) {
 }
 
 /**
+ * The fail-closed gate (F-11/F-13/F-21), one place for every capture: light
+ * and dark, extraction and check. A block page, an evidence-thin page or a
+ * login-wall landing on ANY page refuses the whole run. Returns why (null when
+ * the capture is fine) and whether it was a block page, which marks a forced
+ * artifact.
+ */
+function refusal(raw) {
+  const pages = raw.provenance ? raw.provenance.pages || [raw.provenance] : [];
+  const blocked = !!raw.blockLikely || detectBlockLikely({
+    title: raw.title,
+    bodyTextLength: raw.bodyTextLength,
+    colors: raw.colors,
+    fonts: raw.fonts,
+  });
+  if (blocked) {
+    const where = pages.filter((pg) => pg.blockLikely).map((pg) => pg.finalUrl);
+    return { blocked, why: `${where.length ? where.join(", ") : `"${raw.url}"`} looks like a block / access-denied page` };
+  }
+  const evidence = assessEvidence(raw);
+  if (!evidence.ok) return { blocked, why: `insufficient evidence (${evidence.reasons.join("; ")})` };
+  const login = pages.filter((pg) => pg.loginLike);
+  if (login.length) {
+    return { blocked, why: `the request landed on a login / sign-in wall (${login.map((pg) => pg.finalUrl).join(", ")})` };
+  }
+  return { blocked, why: null };
+}
+
+/**
  * Read capture flags from the subcommand OR the root program. Options after
  * `check` reach check (positional options, below); this fallback keeps
  * `brandmd --viewport 1440x900 check <url>` working too.
@@ -209,32 +237,15 @@ program
 
     // Same fail-closed gate as extraction. Diffing a Cloudflare page against a
     // real spec would report every token as drift, which is worse than no
-    // answer: it would train people to ignore the check.
-    const blocked =
-      !!light.blockLikely ||
-      detectBlockLikely({
-        title: light.title,
-        bodyTextLength: light.bodyTextLength,
-        colors: light.colors,
-        fonts: light.fonts,
-      });
-    const evidence = assessEvidence(light);
-    // A login wall renders someone else's design system. The extract path
-    // already refuses on it; check must too, or an SSO page rich enough to
-    // pass the evidence gate gets reported as drift against your own brand.
-    const provPages = light.provenance
-      ? light.provenance.pages || [light.provenance]
-      : [];
-    const loginPages = provPages.filter((pg) => pg.loginLike);
-    if (!opts.allowBlocked && (blocked || !evidence.ok || loginPages.length)) {
-      let why;
-      if (blocked) why = "the page looks like a block / access-denied page";
-      else if (!evidence.ok) why = `insufficient evidence (${evidence.reasons.join("; ")})`;
-      else why = `the request landed on a login / sign-in wall (${loginPages.map((pg) => pg.finalUrl).join(", ")})`;
+    // answer: it would train people to ignore the check. A login wall renders
+    // someone else's design system, so it refuses too.
+    const { why } = refusal(light);
+    if (why && !opts.allowBlocked) {
       process.stderr.write(`Refusing to report drift: ${why}.\n`);
       process.stderr.write("That would look like total drift against your spec. Pass --allow-blocked to override.\n");
       process.exit(EXIT_REFUSED);
     }
+    if (why) process.stderr.write(`Warning: comparing a refused source (--allow-blocked): ${why}.\n`);
 
     // Round-trip the live extraction through generate+parse so both sides are
     // the same shape, and so check can never disagree with what a written
@@ -351,35 +362,22 @@ program
 
       // --- Fail-closed gate (F-11/F-13/F-21): a block page, a login/redirect
       // landing, or an evidence-thin page refuses in EVERY format with a
-      // distinct exit code, unless --allow-blocked overrides. ---
-      const blocked = !!light.blockLikely || detectBlockLikely({
-        title: light.title,
-        bodyTextLength: light.bodyTextLength,
-        colors: light.colors,
-        fonts: light.fonts,
-      });
-      const evidence = assessEvidence(light);
-      const prov = light.provenance;
-      const provPages = prov ? (prov.pages || [prov]) : [];
-      const loginPages = provPages.filter((pg) => pg.loginLike);
-      const crossPages = provPages.filter((pg) => pg.crossOrigin && !pg.loginLike);
-
-      // Refuse (exit 2): block pages, evidence-thin pages, and login/sign-in
-      // wall landings on ANY page. A login wall means the extracted tokens
-      // describe an identity provider, not the brand. --allow-blocked overrides.
-      if (!opts.allowBlocked && (blocked || !evidence.ok || loginPages.length)) {
-        let why;
-        if (blocked) why = `"${urls[0]}" looks like a block / access-denied page`;
-        else if (!evidence.ok) why = `insufficient evidence (${evidence.reasons.join("; ")})`;
-        else why = `the request landed on a login / sign-in wall (${loginPages.map((pg) => pg.finalUrl).join(", ")})`;
+      // distinct exit code, unless --allow-blocked overrides. The dark capture
+      // goes through the same gate; it used to be analyzed unchecked. ---
+      const lightGate = refusal(light);
+      const darkGate = dark ? refusal(dark) : { blocked: false, why: null };
+      const why = [lightGate.why, darkGate.why && `the dark capture: ${darkGate.why}`].filter(Boolean).join("; ");
+      if (why && !opts.allowBlocked) {
         process.stderr.write(`Refusing to write an artifact: ${why}.\n`);
         process.stderr.write("Re-run against a real, non-protected page, or pass --allow-blocked to force output.\n");
         process.exit(EXIT_REFUSED);
       }
-      if (opts.allowBlocked && (blocked || loginPages.length || !evidence.ok)) {
-        if (blocked) light.blockLikely = true;
+      if (why) {
+        if (lightGate.blocked || darkGate.blocked) light.blockLikely = true;
         process.stderr.write("Warning: forcing output from a refused source (--allow-blocked).\n");
       }
+      const prov = light.provenance;
+      const crossPages = (prov ? prov.pages || [prov] : []).filter((pg) => pg.crossOrigin && !pg.loginLike);
       // Plain cross-origin redirects warn with provenance but don't refuse (a
       // legit apex->www or CDN redirect is normal); every page is checked.
       for (const pg of crossPages) {
@@ -390,6 +388,12 @@ program
       const tokens = analyze(light);
       if (light.sources) tokens.sources = light.sources;
       if (dark) tokens.dark = analyze(dark);
+      // Like a failed vision step: the light-only output is still written,
+      // but asking for dark and getting none must not exit 0.
+      if (opts.dark && !dark) {
+        process.stderr.write("Error: --dark requested but no dark page was extracted. Writing the output without the dark section and exiting 1.\n");
+        process.exitCode = EXIT_ERROR;
+      }
 
       if (opts.vision && !light.vision) {
         visionError = "no screenshot captured";

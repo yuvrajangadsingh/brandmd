@@ -18,6 +18,10 @@ const BODY = `<body style="margin:0;background:#0b1020;color:#e6e9f2;font-family
 const PAGES = {
   // A Cloudflare marker that never goes away, on an otherwise real page.
   "/challenge": `<!doctype html><title>Just a moment...</title>${BODY}<div id="cf-challenge-running"></div>`,
+  "/ok": `<!doctype html><title>Acme</title>${BODY}`,
+  // Fine in light; under prefers-color-scheme: dark the page renders nothing.
+  "/dark-empty": `<!doctype html><title>Acme</title>${BODY}
+<script>if (matchMedia("(prefers-color-scheme: dark)").matches) document.body.replaceChildren();</script>`,
 };
 
 let base;
@@ -74,4 +78,19 @@ test("a Cloudflare challenge that never clears is refused (exit 2), in extractio
   r = await run(t, ["check", url, "--against", SPEC, "--cf-wait-ms", "0"]);
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /Refusing to report drift/);
+});
+
+test("a multi-page run names the page that was blocked, not the first one", { timeout: 120000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  const r = await run(t, [`${base}/ok`, `${base}/challenge`, "--cf-wait-ms", "0"]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /Refusing to write an artifact: \S+\/challenge looks like a block/);
+});
+
+test("a dark capture that fails the gate refuses the run", { timeout: 120000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  const r = await run(t, [`${base}/dark-empty`, "--dark"]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /Refusing to write an artifact: the dark capture: insufficient evidence/);
+  assert.equal(r.stdout, "");
 });
