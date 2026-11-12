@@ -402,6 +402,18 @@ test("check: --allow-blocked after the URL reaches check", () => {
   assert.equal(r.status, 0, `the override was dropped:\n${r.out}`);
 });
 
+test("check: --allow-blocked and --cf-wait-ms before check reach it too", () => {
+  let r = runCLI(["--allow-blocked", "check", "https://example.com", "--against", SPEC, "--fail-on", "none"], {
+    rawFile: BLOCK_FIXTURE,
+  });
+  assert.equal(r.status, 0, `the override was dropped:\n${r.out}`);
+  r = runCLI(["--cf-wait-ms", "nope", "check", "https://vercel.com", "--against", SPEC, "--fail-on", "none"], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 1, r.out);
+  assert.match(r.out, /--cf-wait-ms must be an integer/);
+});
+
 test("check: a valid --viewport is accepted, not ignored", () => {
   const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--viewport", "1440x900"], {
     rawFile: VERCEL_FIXTURE,

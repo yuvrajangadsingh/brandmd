@@ -81,8 +81,13 @@ function normalizeUrl(u) {
   return normalized;
 }
 
-/** --cf-wait-ms must be an integer from 0 to 600000 (F-22); 0 means no wait. */
+/**
+ * --cf-wait-ms must be an integer from 0 to 600000 (F-22); 0 means no wait.
+ * The 20000 default lives here, not on the option: a commander default on
+ * `check` would hide a value given before the subcommand (see flag()).
+ */
 function parseCfWait(v) {
+  if (v === undefined) return 20000;
   const ms = Number(v);
   if (!Number.isInteger(ms) || ms < 0 || ms > 600000) {
     throw new Error(`--cf-wait-ms must be an integer between 0 and 600000 (got "${v}").`);
@@ -123,17 +128,20 @@ function refusal(raw) {
 }
 
 /**
- * Read capture flags from the subcommand OR the root program. Options after
- * `check` reach check (positional options, below); this fallback keeps
- * `brandmd --viewport 1440x900 check <url>` working too.
+ * Read a flag from the subcommand OR the root program. Options after `check`
+ * reach check (positional options, below); this fallback keeps
+ * `brandmd --allow-blocked check <url>` and `brandmd --viewport 1440x900
+ * check <url>` working too.
  */
+function flag(opts, k) {
+  return opts[k] !== undefined ? opts[k] : program.opts()[k];
+}
+
 function captureFrom(opts) {
-  const root = typeof program !== "undefined" ? program.opts() : {};
-  const pick = (k) => (opts[k] !== undefined ? opts[k] : root[k]);
   return {
-    viewport: parseViewport(pick("viewport")),
-    locale: pick("locale") || null,
-    reducedMotion: !!pick("reducedMotion"),
+    viewport: parseViewport(flag(opts, "viewport")),
+    locale: flag(opts, "locale") || null,
+    reducedMotion: !!flag(opts, "reducedMotion"),
   };
 }
 
@@ -169,7 +177,7 @@ program
   .option("--report <file>", "also write the drift as JSON (for CI annotations)")
   .option("--fail-on <level>", "major (default), any, or none", "major")
   .option("--allow-blocked", "compare even if the page looks blocked (default: refuse, exit 2)")
-  .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge", "20000")
+  .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge (default 20000)")
   .option("--debug", "print raw error details instead of a one-line remediation")
   .option("--viewport <WxH>", "pin the viewport, e.g. 1440x900 (default 1440x900)")
   .option("--locale <tag>", "pin the browser locale, e.g. en-US")
@@ -186,7 +194,7 @@ program
     let capture, cfWaitMs;
     try {
       url = normalizeUrl(url);
-      cfWaitMs = parseCfWait(opts.cfWaitMs);
+      cfWaitMs = parseCfWait(flag(opts, "cfWaitMs"));
       capture = captureFrom(opts);
     } catch (err) {
       console.error(`Error: ${err.message}`);
@@ -234,8 +242,7 @@ program
         light = res.light;
       }
     } catch (err) {
-      // `brandmd --debug check <url>` puts it on the root.
-      reportError(err, { debug: opts.debug || program.opts().debug });
+      reportError(err, { debug: flag(opts, "debug") });
       process.exit(EXIT_ERROR);
     }
 
@@ -244,7 +251,7 @@ program
     // answer: it would train people to ignore the check. A login wall renders
     // someone else's design system, so it refuses too.
     const { why } = refusal(light);
-    if (why && !opts.allowBlocked) {
+    if (why && !flag(opts, "allowBlocked")) {
       process.stderr.write(`Refusing to report drift: ${why}.\n`);
       process.stderr.write("That would look like total drift against your spec. Pass --allow-blocked to override.\n");
       process.exit(EXIT_REFUSED);
@@ -258,7 +265,7 @@ program
     try {
       result = compareDesigns(baseline, parseDesign(generate(analyze(light))));
     } catch (err) {
-      reportError(err, { debug: opts.debug || program.opts().debug });
+      reportError(err, { debug: flag(opts, "debug") });
       process.exit(EXIT_ERROR);
     }
 
@@ -296,7 +303,7 @@ program
   .option("--agent", "also write .cursor/rules/brand.mdc and SKILL.md to both .agents/skills/brand-style/ (universal Agent Skills path) and .claude/skills/brand-style/ (backward-compat) alongside DESIGN.md so Claude Code, Cursor, Codex, Gemini CLI, Kiro CLI, and 50+ other agents pick up the brand context automatically")
   .option("--allow-blocked", "write an artifact even when the page looks like a block / access-denied page or has thin evidence (default: refuse with exit code 2)")
   .option("--debug", "print raw error details (e.g. full browser-launch output) instead of a one-line remediation")
-  .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge to auto-resolve (default 20000)", "20000")
+  .option("--cf-wait-ms <ms>", "max ms to wait for a Cloudflare challenge to auto-resolve (default 20000)")
   .option("--viewport <WxH>", "pin the viewport, e.g. 1440x900 (default 1440x900)")
   .option("--locale <tag>", "pin the browser locale, e.g. en-US")
   .option("--reduced-motion", "request prefers-reduced-motion: reduce")
