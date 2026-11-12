@@ -105,6 +105,10 @@ const TWO_LABEL_SUFFIXES = new Set([
   "co.kr", "or.kr", "com.cn", "net.cn", "org.cn",
 ]);
 
+// An auth page's URL: /login, /sign-in, /users/sign_in, /signup,
+// /sessions/new, /sso, auth.example.com, accounts.example.com, #/login.
+const AUTH_URL = /(^|[^a-z])(log[-_]?in|sign[-_]?in|sign[-_]?on|sign[-_]?up|register|o?auth|sso|sessions?|accounts?)([^a-z]|$)/i;
+
 /** Approximate eTLD+1: enough to tell foo.co.uk from bar.co.uk. */
 function registrableDomain(hostname) {
   const labels = hostname.toLowerCase().split(".");
@@ -470,10 +474,18 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       };
 
       const bodyTextLength = (document.body?.innerText || "").length;
-      // Login-wall signal: a visible password field, or sign-in copy in the
-      // title/headings. Redirects to an SSO page get attributed to the wrong URL
-      // otherwise (see provenance flags in the caller).
-      const hasPasswordField = !!document.querySelector('input[type="password"]');
+      // Login-wall signal: a password field on screen when the page loads
+      // (rendered, and inside the first viewport: a sign-up modal hidden in the
+      // DOM or a drawer parked off-canvas is not a wall), or sign-in copy in
+      // the title/h1, which the caller weighs against the URL. Redirects to an
+      // SSO page get attributed to the wrong URL otherwise (see provenance
+      // flags in the caller).
+      const hasPasswordField = [...document.querySelectorAll('input[type="password"]')].some((el) => {
+        const r = el.getBoundingClientRect();
+        return el.checkVisibility({ opacityProperty: true, visibilityProperty: true }) &&
+          r.width > 0 && r.height > 0 && r.right > 0 && r.bottom > 0 &&
+          r.left < innerWidth && r.top < innerHeight;
+      });
       const loginCopy = /\b(sign in|log in|login|sign up|create account|authenticate)\b/i.test(
         (document.title || "") + " " + (document.querySelector("h1")?.innerText || "")
       );
@@ -541,6 +553,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     // URL. Surface it so DESIGN.md doesn't misattribute the design system.
     let crossOrigin = false;
     let redirected = false;
+    let authLanding = false;
     try {
       const from = new URL(url);
       const to = new URL(finalUrl);
@@ -548,8 +561,14 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       // Compare the registrable domain (approx eTLD+1) so a legit apex -> www or
       // CDN redirect isn't flagged as cross-origin; only a real domain change is.
       crossOrigin = registrableDomain(from.hostname) !== registrableDomain(to.hostname);
+      // Sign-in copy alone is a normal page ("Sign up free" in a hero h1). It
+      // counts on an auth URL (a /login path, an auth. host, a #/login route)
+      // or after a redirect to another host (SSO), not after a trailing-slash
+      // or locale redirect, and not on the www. twin of the requested host.
+      const bare = (h) => h.replace(/^www\./, "");
+      authLanding = bare(from.hostname) !== bare(to.hostname) || AUTH_URL.test(to.hostname + to.pathname + to.hash);
     } catch { /* leave defaults */ }
-    const loginLike = !!(raw.hasPasswordField || raw.loginCopy);
+    const loginLike = !!(raw.hasPasswordField || (raw.loginCopy && authLanding));
     const provenance = { requestedUrl: url, finalUrl, redirected, crossOrigin, loginLike, blockLikely };
 
     // raw already carries `motion` and `bodyTextLength` from the evaluate.

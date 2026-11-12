@@ -22,12 +22,34 @@ const PAGES = {
   // Fine in light; under prefers-color-scheme: dark the page renders nothing.
   "/dark-empty": `<!doctype html><title>Acme</title>${BODY}
 <script>if (matchMedia("(prefers-color-scheme: dark)").matches) document.body.replaceChildren();</script>`,
+  // Login evidence: what a wall looks like, and what a normal page carries.
+  "/hidden-password": `<!doctype html><title>Acme</title>${BODY}
+<div style="display:none"><form><input type="password"></form></div>`,
+  "/offscreen-password": `<!doctype html><title>Acme</title>${BODY}
+<div style="position:fixed;top:0;left:100vw;width:300px"><form><input type="password"></form></div>`,
+  "/landing": `<!doctype html><title>Sign up free | Acme</title>${BODY}`,
+  "/canonical": { redirect: "/canonical/" },
+  "/canonical/": `<!doctype html><title>Sign up free | Acme</title>${BODY}`,
+  "/app": { redirect: "/signin" },
+  "/signin": `<!doctype html><title>Sign in | Acme</title>${BODY}`,
+  "/login": `<!doctype html><title>Log in | Acme</title>${BODY}`,
+  "/users/sign_in": `<!doctype html><title>Sign in | Acme</title>${BODY}`,
+  // A single-page app that routes itself to #/login.
+  "/spa": `<!doctype html><title>Sign in | Acme</title>${BODY}<script>location.hash = "#/login";</script>`,
+  // The same server under another host name, like a redirect to an SSO host.
+  "/sso": { redirect: () => `${base.replace("127.0.0.1", "localhost")}/welcome` },
+  "/welcome": `<!doctype html><title>Sign in | Acme</title>${BODY}`,
+  "/visible-password": `<!doctype html><title>Acme</title>${BODY}<form><input type="password"></form>`,
 };
 
 let base;
 const server = createServer((req, res) => {
   const page = PAGES[req.url];
   if (page === undefined) return (res.statusCode = 404), res.end();
+  if (page.redirect) {
+    const location = typeof page.redirect === "function" ? page.redirect() : page.redirect;
+    return res.writeHead(302, { location }), res.end();
+  }
   res.setHeader("content-type", "text/html");
   res.end(page);
 });
@@ -93,4 +115,27 @@ test("a dark capture that fails the gate refuses the run", { timeout: 120000 }, 
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /Refusing to write an artifact: the dark capture: insufficient evidence/);
   assert.equal(r.stdout, "");
+});
+
+test("login walls need on-screen or auth-URL evidence", { timeout: 240000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  const wrong = [];
+  for (const [path, status] of [
+    ["/hidden-password", 0], // a password input nobody can see
+    ["/offscreen-password", 0], // one parked past the right edge
+    ["/landing", 0], // sign-up copy on the page that was asked for
+    ["/canonical", 0], // the same, behind a trailing-slash redirect
+    ["/app", 2], // sent to a sign-in page
+    ["/login", 2], // asked for a sign-in page with no password field yet
+    ["/users/sign_in", 2], // the same, Rails-style
+    ["/spa", 2], // a hash route to #/login
+    [`${base.replace("127.0.0.1", "auth.localhost")}/welcome`, 2], // an auth. host, asked for directly
+    ["/sso", 2], // sent to another host that says sign in
+    ["/visible-password", 2], // a password field on screen
+  ]) {
+    const r = await run(t, [path.startsWith("http") ? path : `${base}${path}`]);
+    if (r.status !== status) wrong.push(`${path}: exit ${r.status}, want ${status}\n${r.stderr}`);
+    else if (status && !/login \/ sign-in wall/.test(r.stderr)) wrong.push(`${path}: refused for another reason\n${r.stderr}`);
+  }
+  assert.deepEqual(wrong, []);
 });
