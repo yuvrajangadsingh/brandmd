@@ -43,7 +43,7 @@
     "url": "git+https://github.com/yuvrajangadsingh/brandmd.git"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "@google/genai": "^1.0.0",
