@@ -19,6 +19,8 @@ const PAGES = {
   // A Cloudflare marker that never goes away, on an otherwise real page.
   "/challenge": `<!doctype html><title>Just a moment...</title>${BODY}<div id="cf-challenge-running"></div>`,
   "/ok": `<!doctype html><title>Acme</title>${BODY}`,
+  // Real type and colour, almost no text: thin, but not a block page.
+  "/thin": `<!doctype html><title>Acme</title><body style="background:#0b1020;color:#e6e9f2;font-family:Georgia,serif"><div style="background:#1e293b">Soon.</div>`,
   // Fine in light; under prefers-color-scheme: dark the page renders nothing.
   "/dark-empty": `<!doctype html><title>Acme</title>${BODY}
 <script>if (matchMedia("(prefers-color-scheme: dark)").matches) document.body.replaceChildren();</script>`,
@@ -107,6 +109,14 @@ test("a multi-page run names the page that was blocked, not the first one", { ti
   const r = await run(t, [`${base}/ok`, `${base}/challenge`, "--cf-wait-ms", "0"]);
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /Refusing to write an artifact: \S+\/challenge looks like a block/);
+});
+
+test("a thin page refuses a multi-page run even when another page is rich", { timeout: 120000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  const r = await run(t, [`${base}/ok`, `${base}/thin`]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /Refusing to write an artifact: insufficient evidence \(\S+\/thin: /);
+  assert.equal(r.stdout, "");
 });
 
 test("a dark capture that fails the gate refuses the run", { timeout: 120000 }, async (t) => {

@@ -109,6 +109,10 @@ function refusal(raw) {
     const where = pages.filter((pg) => pg.blockLikely).map((pg) => pg.finalUrl);
     return { blocked, why: `${where.length ? where.join(", ") : `"${raw.url}"`} looks like a block / access-denied page` };
   }
+  const thin = pages.filter((pg) => pg.thin);
+  if (thin.length) {
+    return { blocked, why: `insufficient evidence (${thin.map((pg) => `${pg.finalUrl}: ${pg.thin}`).join("; ")})` };
+  }
   const evidence = assessEvidence(raw);
   if (!evidence.ok) return { blocked, why: `insufficient evidence (${evidence.reasons.join("; ")})` };
   const login = pages.filter((pg) => pg.loginLike);
