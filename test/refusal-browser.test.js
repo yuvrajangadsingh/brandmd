@@ -97,7 +97,7 @@ test("a Cloudflare challenge that never clears is refused (exit 2), in extractio
 
   r = await run(t, [url, "--cf-wait-ms", "0", "--allow-blocked"]);
   assert.equal(r.status, 0, r.stderr);
-  assert.match(r.stdout, /Likely a block/, "the forced artifact carries the block marker");
+  assert.match(r.stdout, /Refused source, written under `--allow-blocked`/, "the forced artifact carries the marker");
 
   r = await run(t, ["check", url, "--against", SPEC, "--cf-wait-ms", "0"]);
   assert.equal(r.status, 2, r.stderr);

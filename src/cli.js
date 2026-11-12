@@ -377,7 +377,9 @@ program
         process.exit(EXIT_REFUSED);
       }
       if (why) {
-        if (lightGate.blocked || darkGate.blocked) light.blockLikely = true;
+        // Any forced refusal marks the artifact, not only a block page: a
+        // login wall or a thin page is no truer once it is saved to disk.
+        light.blockLikely = true;
         process.stderr.write("Warning: forcing output from a refused source (--allow-blocked).\n");
       }
       const prov = light.provenance;

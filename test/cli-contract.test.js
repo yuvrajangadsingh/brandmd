@@ -176,6 +176,26 @@ for (const [flag, outName] of [
   });
 }
 
+// Every forced refusal is marked, not only a block page: a thin page (or a
+// login wall) written under --allow-blocked is no truer once it is on disk.
+for (const [flag, outName] of [
+  [null, "DESIGN.md"],
+  ["--css", "theme.css"],
+  ["--tailwind", "theme.css"],
+  ["--html", "brand-guide.html"],
+]) {
+  test(`--allow-blocked ${flag || "(markdown)"} on a thin page carries the marker too`, () => {
+    const dir = tmp();
+    const outFile = join(dir, outName);
+    const r = runCLI(["https://thin.test", ...(flag ? [flag] : []), "--allow-blocked", "-o", outFile], {
+      cwd: dir,
+      rawFile: THIN_FIXTURE,
+    });
+    assert.equal(r.status, 0, r.out);
+    assert.match(readFileSync(outFile, "utf-8"), BLOCK_MARKER_RE);
+  });
+}
+
 // --- Empty / insufficient-evidence refusal (F-21) ---------------------------
 
 test("F-21: an empty page refuses with exit 2 and writes no artifact", () => {

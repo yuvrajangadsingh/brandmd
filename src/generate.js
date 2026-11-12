@@ -581,7 +581,7 @@ function emitBody(tokens, model) {
   }
 
   if (tokens.blockLikely) {
-    lines.push("> ⚠️ **Likely a block / access-denied page.** The source returned a bot-protection or error page, not the real site, so the tokens below are probably meaningless. Re-run against a non-protected page (e.g. `/docs`, `/pricing`).");
+    lines.push("> ⚠️ **Refused source, written under `--allow-blocked`.** brandmd refused this capture (a block / access-denied page, a login / sign-in wall, or too little to describe), so the tokens below probably do not describe the real site. Re-run against a public, non-protected page (e.g. `/docs`, `/pricing`).");
     lines.push("");
   }
 
