@@ -11,6 +11,7 @@ test("stopCount counts the stops the capture cannot read", async (t) => {
     const b = await chromium.launch({ headless: true });
     await b.close();
   } catch (err) {
+    if (process.env.BRANDMD_REQUIRE_BROWSER) throw err;
     t.skip(`chromium not available: ${err.message.split("\n")[0]}`);
     return;
   }
