@@ -146,7 +146,9 @@ brandmd does it from the terminal. Point it at any URL, get a spec-valid DESIGN.
 
 ```bash
 # Run directly (no install). On a machine without Playwright's headless
-# Chromium it stops and prints the command that installs it.
+# Chromium it stops and prints the command that installs it. A bare Linux
+# box (CI, Docker) can also lack the system libraries Chromium needs; then
+# it prints the install-deps command for those instead.
 npx brandmd https://linear.app
 
 # Install globally

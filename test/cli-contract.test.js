@@ -357,3 +357,50 @@ test("a missing browser names the install command for the Playwright brandmd res
   assert.equal(r.status, 1);
   assert.ok(r.stderr.includes(`Install it with: npx playwright@${version} install chromium`), r.stderr);
 });
+
+// Playwright 1.65's own texts, copied from playwright-core/lib/coreBundle.js
+// (validateDependenciesLinux, executablePathOrDie, the launch exit path).
+// The API wraps each as "browserType.launch: <message>".
+test("launch errors name the fix for each way the browser can fail", async () => {
+  const { launchErrorLine } = await import("../src/launch-error.js");
+  // Playwright's wrapInASCIIBox(text, 1).
+  const box = (text) => {
+    const lines = text.split("\n");
+    const w = Math.max(...lines.map((l) => l.length));
+    return ["╔" + "═".repeat(w + 2) + "╗", ...lines.map((l) => "║ " + l.padEnd(w) + " ║"), "╚" + "═".repeat(w + 2) + "╝"].join("\n");
+  };
+  const missingLibs = "browserType.launch: \n" + box([
+    "Host system is missing dependencies to run browsers.",
+    "Please install them with the following command:",
+    "",
+    "    sudo npx playwright install-deps",
+    "",
+    "Alternatively, use apt:",
+    "    sudo apt-get install libnss3\\\n        libasound2t64",
+    "",
+    "<3 Playwright Team",
+  ].join("\n"));
+  const missingBrowser = "browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1200/chrome-headless-shell-linux64/chrome-headless-shell\n" + box([
+    "Looks like Playwright was just installed or updated.",
+    "Please run the following command to download new browsers:",
+    "",
+    "    npx playwright install",
+    "",
+    "<3 Playwright Team",
+  ].join("\n"));
+  const windowsLibs = "browserType.launch: Host system is missing dependencies!\n\nSome of the Universal C Runtime files cannot be found on the system. You can fix\nthat by installing Microsoft Visual C++ Redistributable for Visual Studio from:\nhttps://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads\n\nFull list of missing libraries:\n    vcruntime140.dll\n";
+  const loaderMissing = "browserType.launch: Failed to launch the browser process.\nBrowser logs:\n<launching> /x/chrome-headless-shell --headless\n<launched> pid=4242\n[pid=4242][err] /x/chrome-headless-shell: error while loading shared libraries: libnss3.so: cannot open shared object file: No such file or directory";
+  const crashed = "browserType.launch: Failed to launch the browser process.\nBrowser logs:\n<launching> /x/chrome-headless-shell --headless\n<launched> pid=4242";
+
+  const libs = launchErrorLine(missingLibs, "1.65.0");
+  assert.ok(libs.includes("npx playwright@1.65.0 install-deps chromium"), libs);
+  assert.doesNotMatch(libs, /install chromium/, "missing libraries must not send the user to reinstall Chromium");
+  assert.ok(launchErrorLine(loaderMissing, "1.65.0").includes("install-deps chromium"), "a skipped dependency check still ends in install-deps");
+  assert.ok(launchErrorLine(missingBrowser, "1.65.0").includes("npx playwright@1.65.0 install chromium"));
+  const crash = launchErrorLine(crashed, "1.65.0");
+  assert.ok(crash.includes("Failed to launch the browser process.") && crash.includes("--debug"), crash);
+  assert.doesNotMatch(crash, /install/);
+  // null: the caller prints Playwright's own Windows instructions in full.
+  assert.equal(launchErrorLine(windowsLibs, "1.65.0"), null);
+  assert.equal(launchErrorLine("page.goto: net::ERR_NAME_NOT_RESOLVED at https://nope.invalid/", "1.65.0"), null);
+});
