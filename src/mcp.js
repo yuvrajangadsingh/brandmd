@@ -28,23 +28,47 @@ const TOOL = {
   },
 };
 
+// A call still running after this answers with a tool error and its CLI run
+// is stopped, so a slow or endless site can't hold the client forever.
+const timeout = Number(process.env.BRANDMD_MCP_TIMEOUT);
+const TIMEOUT_S = timeout > 0 && timeout <= 86400 ? timeout : 180;
+
 const children = new Set();
 const rpcError = (code, message) => Object.assign(new Error(message), { code });
 const text = (t) => ({ type: "text", text: t });
 const toolError = (t) => ({ isError: true, content: [text(t)] });
 
+// SIGTERM makes Playwright close the browser. That close has no time limit,
+// and a second SIGTERM makes Playwright SIGKILL the browser's own process
+// group instead; a CLI still there after that is killed. On Windows kill()
+// ends the CLI at once, so Playwright gets no chance to close the browser
+// (untested). The child stays in `children` until it has exited.
+function halt(child) {
+  child.kill("SIGTERM");
+  setTimeout(() => child.kill("SIGTERM"), 5000).unref();
+  setTimeout(() => child.kill("SIGKILL"), 10000).unref();
+}
+
 function runCli(args) {
   return new Promise((done) => {
     const child = spawn(process.execPath, [BIN, ...args], { stdio: ["ignore", "pipe", "pipe"] });
     children.add(child);
+    const timer = setTimeout(() => (halt(child), done({ timedOut: true })), TIMEOUT_S * 1000);
     let out = "";
     let err = "";
     // setEncoding decodes across chunk boundaries; `+= buffer` would split
     // a multibyte character that lands on one.
     child.stdout.setEncoding("utf8").on("data", (d) => (out += d));
     child.stderr.setEncoding("utf8").on("data", (d) => (err += d));
-    child.on("error", (e) => (children.delete(child), done({ code: 1, out, err: `${err}${e.message}` })));
-    child.on("close", (code) => (children.delete(child), done({ code, out, err })));
+    child.on("error", (e) => {
+      if (child.pid === undefined) {
+        // It never started, so no close will follow.
+        clearTimeout(timer);
+        children.delete(child);
+      }
+      done({ code: 1, out, err: `${err}${e.message}` });
+    });
+    child.on("close", (code) => (clearTimeout(timer), children.delete(child), done({ code, out, err })));
   });
 }
 
@@ -60,7 +84,8 @@ async function extract(args) {
   // anyway (not host-like), except localhost.
   const bad = urls.find((u) => u.startsWith("-") || (/^[a-z][a-z0-9-]*$/i.test(u) && u.toLowerCase() !== "localhost"));
   if (bad) return toolError(`"${bad}" is not a URL. Pass a page like https://example.com or example.com.`);
-  const { code, out, err } = await runCli([...(dark ? ["--dark"] : []), ...urls]);
+  const { code, out, err, timedOut } = await runCli([...(dark ? ["--dark"] : []), ...urls]);
+  if (timedOut) return toolError(`brandmd stopped after ${TIMEOUT_S}s without finishing. Try fewer pages, or leave out dark.`);
   if (code !== 0) return toolError(err.trim() || `brandmd exited with code ${code}`);
   const warnings = err.split("\n").filter((l) => /^Warning:/.test(l));
   return { content: [text(out), ...(warnings.length ? [text(warnings.join("\n"))] : [])] };
@@ -109,17 +134,22 @@ async function respond(msg, version) {
 export function serve(version) {
   const send = (body) => process.stdout.write(`${JSON.stringify(body)}\n`);
   // However the client goes away (stdin closed, stdout broken, a signal), no
-  // CLI run, and no browser under it, outlives the server.
+  // CLI run, and no browser under it, outlives the server: each run is halted
+  // like a cancelled one, and the server exits once all have exited (within
+  // about 10 s, when the last SIGKILL lands).
+  let stopping = false;
   const stop = () => {
-    for (const child of children) child.kill("SIGTERM");
-    process.exit(0);
+    if (stopping) return;
+    stopping = true;
+    for (const child of children) halt(child);
+    setInterval(() => children.size || process.exit(0), 100);
   };
   for (const sig of ["SIGTERM", "SIGINT"]) process.on(sig, stop);
   process.stdout.on("error", stop);
   const input = createInterface({ input: process.stdin });
   input.on("close", stop);
   input.on("line", async (line) => {
-    if (!line.trim()) return;
+    if (stopping || !line.trim()) return; // shutting down: start nothing new
     let msg;
     try {
       msg = JSON.parse(line);
