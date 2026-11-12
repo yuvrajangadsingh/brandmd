@@ -239,19 +239,31 @@ program
     // Round-trip the live extraction through generate+parse so both sides are
     // the same shape, and so check can never disagree with what a written
     // DESIGN.md would have said.
-    const current = parseDesign(generate(analyze(light)));
-    const result = compareDesigns(baseline, current);
+    let result;
+    try {
+      result = compareDesigns(baseline, parseDesign(generate(analyze(light))));
+    } catch (err) {
+      reportError(err, { debug: opts.debug || program.opts().debug });
+      process.exit(EXIT_ERROR);
+    }
 
-    process.stdout.write(formatDrift(result, { url, specPath: opts.against }) + "\n");
-
+    // The JSON report is written first, so a failed write exits 1 with nothing
+    // on stdout instead of a drift report followed by a crash.
     if (opts.report) {
-      writeFileAtomic(
-        opts.report,
-        JSON.stringify({ url, spec: opts.against, ...result }, null, 2) + "\n"
-      );
+      try {
+        writeFileAtomic(
+          opts.report,
+          JSON.stringify({ url, spec: opts.against, ...result }, null, 2) + "\n"
+        );
+      } catch (err) {
+        console.error(`Error: could not write ${opts.report}: ${err.message}`);
+        process.exit(EXIT_ERROR);
+      }
       process.stderr.write(`Wrote ${opts.report}\n`);
     }
-    process.exit(exitCodeFor(result, opts.failOn));
+    process.stdout.write(formatDrift(result, { url, specPath: opts.against }) + "\n");
+    // exitCode, not exit(): stdout may still be draining into a pipe.
+    process.exitCode = exitCodeFor(result, opts.failOn);
   });
 
 program
