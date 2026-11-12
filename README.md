@@ -260,7 +260,7 @@ Worth knowing before you rely on it:
 
 - **Component drift is reported but never fails a build.** Background, text colour and radius are compared on the machine-token components; height and padding are not, because the representative button is picked by frequency and a transparent nav button can win over the real CTA. Opt in with `--fail-on any` once that improves.
 - **`secondaryFont` is unreliable.** The live side is round-tripped through the same generator and parser as a written `DESIGN.md`, which keeps both sides honestly comparable but drops fields the markdown does not carry cleanly. A secondary-font change can pass unnoticed.
-- **Majors can flip on sites that change between visits.** Colour clustering keeps the first representative it sees, so rotating hero imagery or A/B tests can repaint a role without anything really changing. On static marketing pages runs are byte-identical; on dynamic ones, re-run before believing a surprising major. Order-independent clustering is queued.
+- **Majors can flip on sites that change between visits.** Each colour cluster is led by its most-used colour, so the order a page lists its colours in no longer changes the palette or the text roles, but rotating hero imagery or an A/B test that changes how often a colour is used can still repaint a role. On static marketing pages runs are byte-identical; on dynamic ones, re-run before believing a surprising major.
 
 ### In GitHub Actions
 
