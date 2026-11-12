@@ -84,10 +84,10 @@ test("detectBlockLikely does not flag a minimal-but-real landing page", () => {
   );
 });
 
-test("generated DESIGN.md shows a block warning when flagged", () => {
+test("generated DESIGN.md shows a refused-source warning when flagged", () => {
   const blocked = { ...rawVercel, blockLikely: true };
   const md = generate(analyze(blocked));
-  assert.match(md, /Likely a block/, "block warning rendered");
+  assert.match(md, /Refused source, written under `--allow-blocked`/, "warning rendered");
 });
 
 // --- --css and --tailwind radius names ---

@@ -6,8 +6,8 @@ import { roundedScale } from "./generate.js";
 export function generateTailwind(tokens) {
   const lines = [];
   if (tokens.blockLikely) {
-    lines.push("/* WARNING: the source looked like a block / access-denied page, not the real site.");
-    lines.push("   These tokens are probably meaningless. Generated under --allow-blocked. */");
+    lines.push("/* WARNING: brandmd refused this source (a block / access-denied page, a login wall, or too little to describe)");
+    lines.push("   and wrote it anyway under --allow-blocked. These tokens probably do not describe the real site. */");
     lines.push("");
   }
   lines.push('@import "tailwindcss";', "", "@theme {");

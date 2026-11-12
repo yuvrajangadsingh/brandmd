@@ -69,8 +69,8 @@ code{font-size:12px;color:#aaa;background:#1a1a1a;padding:2px 6px;border-radius:
 </style>
 </head>
 <body>
-  ${tokens.blockLikely ? `<!-- WARNING: the source looked like a block / access-denied page; these tokens are probably meaningless. Generated under --allow-blocked. -->
-  <div style="background:#7f1d1d;color:#fecaca;padding:12px 16px;border-radius:8px;margin-bottom:24px;font-size:14px"><strong>Warning:</strong> the source looked like a block / access-denied page, not the real site. These tokens are probably meaningless (generated under <code>--allow-blocked</code>).</div>` : ""}
+  ${tokens.blockLikely ? `<!-- WARNING: brandmd refused this source (a block / access-denied page, a login wall, or too little to describe) and wrote it anyway under --allow-blocked; these tokens probably do not describe the real site. -->
+  <div style="background:#7f1d1d;color:#fecaca;padding:12px 16px;border-radius:8px;margin-bottom:24px;font-size:14px"><strong>Warning:</strong> brandmd refused this source (a block / access-denied page, a login wall, or too little to describe) and wrote it anyway under <code>--allow-blocked</code>. These tokens probably do not describe the real site.</div>` : ""}
   <h1>${siteName}</h1>
   <p class="sub">${esc(tokens.url)}</p>
 
