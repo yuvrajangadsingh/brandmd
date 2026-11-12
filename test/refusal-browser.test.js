@@ -19,6 +19,21 @@ const PAGES = {
   // A Cloudflare marker that never goes away, on an otherwise real page.
   "/challenge": `<!doctype html><title>Just a moment...</title>${BODY}<div id="cf-challenge-running"></div>`,
   "/ok": `<!doctype html><title>Acme</title>${BODY}`,
+  // An app that routes itself to sign-in 3 s in: after the CLI's 2 s settle,
+  // while it scrolls the 20 screens.
+  "/routes-late": `<!doctype html><title>Acme</title>${BODY}<div style="height:2000vh"></div>
+<script>setTimeout(() => {
+  history.replaceState(null, "", "/signin");
+  document.title = "Sign in | Acme";
+}, 3000);</script>`,
+  // A challenge that clears after 4 s onto a sign-in route (pushState, so the
+  // page and its context survive; the CLI's own settle wait is 2 s).
+  "/cf-clears": `<!doctype html><title>Just a moment...</title>${BODY}<div id="cf-challenge-running"></div>
+<script>setTimeout(() => {
+  history.replaceState(null, "", "/signin");
+  document.title = "Sign in | Acme";
+  document.querySelector("[id^=cf-chall]").remove(); // the full id here would be a marker too
+}, 4000);</script>`,
   "/narrow": `<!doctype html><title>Acme</title>${BODY}
 <script>if (innerWidth < 800) document.body.replaceChildren();</script>`,
   // Real type and colour, almost no text: thin, but not a block page.
@@ -110,6 +125,32 @@ test("a Cloudflare challenge that never clears is refused (exit 2), in extractio
   r = await run(t, ["--cf-wait-ms", "0", "check", url, "--against", SPEC]);
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /after 0ms/);
+});
+
+test("the challenge wait is the one given, and the page it clears onto is what gets judged", { timeout: 180000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  const url = `${base}/cf-clears`;
+  // Waiting long enough: the challenge clears onto a sign-in page.
+  let r = await run(t, [url, "--cf-wait-ms", "10000"]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /login \/ sign-in wall \(\S+\/signin\)/);
+  // Not waiting, wherever the flag sits: still a challenge, so a block page.
+  // A wait that ignored the flag (or fell back to 20000) would clear instead.
+  for (const args of [
+    ["check", url, "--against", SPEC, "--cf-wait-ms", "0"],
+    ["--cf-wait-ms", "0", "check", url, "--against", SPEC],
+  ]) {
+    r = await run(t, args);
+    assert.equal(r.status, 2, r.stderr);
+    assert.match(r.stderr, /looks like a block/, args.join(" "));
+  }
+});
+
+test("an app that routes to sign-in while the page scrolls is judged where it landed", { timeout: 120000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  const r = await run(t, [`${base}/routes-late`]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /login \/ sign-in wall \(\S+\/signin\)/);
 });
 
 test("check renders at the --viewport it is given", { timeout: 120000 }, async (t) => {
