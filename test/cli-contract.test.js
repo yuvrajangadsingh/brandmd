@@ -336,6 +336,22 @@ test("check: an invalid --viewport exits 1 before doing any work", () => {
   assert.match(r.out, /--viewport must look like/);
 });
 
+test("check: a non-HTTP(S) URL is rejected like extraction rejects it", () => {
+  const r = runCLI(["check", "ftp://example.com", "--against", SPEC, "--fail-on", "none"], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 1, r.out);
+  assert.match(r.out, /unsupported URL scheme/);
+});
+
+test("check: an invalid --cf-wait-ms is rejected like extraction rejects it", () => {
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--cf-wait-ms", "nope", "--fail-on", "none"], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 1, r.out);
+  assert.match(r.out, /--cf-wait-ms must be an integer/);
+});
+
 test("check: --allow-blocked after the URL reaches check", () => {
   const r = runCLI(["check", "https://example.com", "--against", SPEC, "--allow-blocked", "--fail-on", "none"], {
     rawFile: BLOCK_FIXTURE,
