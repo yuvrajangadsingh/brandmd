@@ -18,6 +18,8 @@ jobs:
       # contents: write is for the GitHub Release below, nothing else writes to the repo.
       contents: write
       id-token: write
+      # actions: read lets the CI check below list workflow runs.
+      actions: read
     steps:
       - uses: actions/checkout@v6
 
@@ -39,6 +41,18 @@ jobs:
       - run: npm install -g npm@latest
 
       - run: npm ci
+
+      # Publish only what CI tested, under the version the tag names.
+      - name: Tag matches package.json
+        run: test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+
+      - name: CI passed on this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # push runs on main only: a pull_request run tests a merge commit, not this one
+          n=$(gh run list --workflow ci.yml --commit "$GITHUB_SHA" --event push --branch main --status success --json databaseId --jq length)
+          [ "$n" -gt 0 ] || { echo "no successful CI run for $GITHUB_SHA; wait for it, then re-run this job"; exit 1; }
 
       # Authenticates via npm Trusted Publishing (OIDC) — no long-lived NPM_TOKEN needed.
       # Configure once at https://www.npmjs.com/package/brandmd/access (Trusted Publishers section).
