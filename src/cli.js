@@ -55,6 +55,42 @@ function parseViewport(v) {
 }
 
 /**
+ * URL validation (F-22), shared by extraction and `check`: reject non-HTTP(S)
+ * schemes and path-like arguments; infer https:// only for genuinely
+ * host-like inputs. /tmp/x must be an error, never https:///tmp/x.
+ */
+function normalizeUrl(u) {
+  // "localhost:3000" is host:port, not a scheme; everything else with a
+  // scheme prefix that isn't http(s) is rejected outright.
+  const schemeMatch = u.match(/^([a-z][a-z0-9+.-]*):(.*)$/i);
+  const hasScheme = !!schemeMatch && !/^\d/.test(schemeMatch[2]);
+  if (hasScheme && !/^https?:\/\//i.test(u)) {
+    throw new Error(`unsupported URL scheme in "${u}". brandmd only extracts http(s) URLs.`);
+  }
+  if (/^https?:\/\/\//i.test(u)) throw new Error(`invalid URL "${u}" (empty host).`);
+  if (!hasScheme && /^[\/.~\\]/.test(u)) throw new Error(`"${u}" looks like a filesystem path, not a URL.`);
+  const normalized = /^https?:\/\//i.test(u) ? u : "https://" + u;
+  let host = "";
+  try {
+    host = new URL(normalized).hostname;
+  } catch { /* invalid below */ }
+  // Inferred-scheme inputs must be host-like: a dotted name or localhost.
+  if (!host || (!hasScheme && host !== "localhost" && !host.includes("."))) {
+    throw new Error(`invalid URL "${u}".`);
+  }
+  return normalized;
+}
+
+/** --cf-wait-ms must be an integer from 0 to 600000 (F-22); 0 means no wait. */
+function parseCfWait(v) {
+  const ms = Number(v);
+  if (!Number.isInteger(ms) || ms < 0 || ms > 600000) {
+    throw new Error(`--cf-wait-ms must be an integer between 0 and 600000 (got "${v}").`);
+  }
+  return ms;
+}
+
+/**
  * Read capture flags from the subcommand OR the root program. Options after
  * `check` reach check (positional options, below); this fallback keeps
  * `brandmd --viewport 1440x900 check <url>` working too.
@@ -111,11 +147,14 @@ program
       console.error(`Error: --fail-on must be major, any, or none (got "${opts.failOn}")`);
       process.exit(EXIT_ERROR);
     }
-    // Validate capture flags before any work. Doing it at the call site meant
-    // a bad --viewport was silently ignored whenever extraction was
-    // short-circuited, which is the worst of both worlds: no error, no effect.
-    let capture;
+    // Validate the URL and flags before any work, the same way extraction
+    // does. Doing it at the call site meant a bad --viewport was silently
+    // ignored whenever extraction was short-circuited, which is the worst of
+    // both worlds: no error, no effect.
+    let capture, cfWaitMs;
     try {
+      url = normalizeUrl(url);
+      cfWaitMs = parseCfWait(opts.cfWaitMs);
       capture = captureFrom(opts);
     } catch (err) {
       console.error(`Error: ${err.message}`);
@@ -157,7 +196,7 @@ program
           // is nothing to compare a dark capture against yet.
           dark: false,
           vision: false,
-          cfWaitMs: Number(opts.cfWaitMs) || 20000,
+          cfWaitMs,
           capture,
         });
         light = res.light;
@@ -235,48 +274,12 @@ program
   .option("--locale <tag>", "pin the browser locale, e.g. en-US")
   .option("--reduced-motion", "request prefers-reduced-motion: reduce")
   .action(async (urls, opts) => {
-    // --- URL validation (F-22): reject non-HTTP(S) schemes and path-like
-    // arguments; infer https:// only for genuinely host-like inputs. /tmp/x
-    // must be an error, never https:///tmp/x. ---
-    urls = urls.map((u) => {
-      // "localhost:3000" is host:port, not a scheme; everything else with a
-      // scheme prefix that isn't http(s) is rejected outright.
-      const schemeMatch = u.match(/^([a-z][a-z0-9+.-]*):(.*)$/i);
-      const hasScheme = !!schemeMatch && !/^\d/.test(schemeMatch[2]);
-      if (hasScheme && !/^https?:\/\//i.test(u)) {
-        console.error(`Error: unsupported URL scheme in "${u}". brandmd only extracts http(s) URLs.`);
-        process.exit(EXIT_ERROR);
-      }
-      if (/^https?:\/\/\//i.test(u)) {
-        console.error(`Error: invalid URL "${u}" (empty host).`);
-        process.exit(EXIT_ERROR);
-      }
-      if (!hasScheme) {
-        // Filesystem-like inputs are not URLs.
-        if (/^[\/.~\\]/.test(u)) {
-          console.error(`Error: "${u}" looks like a filesystem path, not a URL.`);
-          process.exit(EXIT_ERROR);
-        }
-      }
-      const normalized = /^https?:\/\//i.test(u) ? u : "https://" + u;
-      try {
-        const parsed = new URL(normalized);
-        if (!parsed.hostname) throw new Error("no host");
-        // Inferred-scheme inputs must be host-like: a dotted name or localhost.
-        if (!hasScheme && parsed.hostname !== "localhost" && !parsed.hostname.includes(".")) {
-          throw new Error("not host-like");
-        }
-        return normalized;
-      } catch {
-        console.error(`Error: invalid URL "${u}".`);
-        process.exit(EXIT_ERROR);
-      }
-    });
-
-    // --- --cf-wait-ms must be a finite, non-negative integer (F-22). ---
-    const cfWaitMs = Number(opts.cfWaitMs);
-    if (!Number.isFinite(cfWaitMs) || !Number.isInteger(cfWaitMs) || cfWaitMs < 0 || cfWaitMs > 600000) {
-      console.error(`Error: --cf-wait-ms must be an integer between 0 and 600000 (got "${opts.cfWaitMs}").`);
+    let cfWaitMs;
+    try {
+      urls = urls.map(normalizeUrl);
+      cfWaitMs = parseCfWait(opts.cfWaitMs);
+    } catch (err) {
+      console.error(`Error: ${err.message}`);
       process.exit(EXIT_ERROR);
     }
 
