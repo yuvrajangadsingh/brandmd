@@ -3,14 +3,14 @@
   --color-divider-border: #ebebeb;
   --color-primary-text: #4d4d4d;
   --color-page-background: #fafafa;
+  --color-page-background-2: #fafafa80;
   --color-dark-background-footer: #171717;
-  --color-accent-background: #52aeff;
-  --color-accent-background-2: #0072f5;
+  --color-accent-background: #0072f5;
+  --color-accent-background-2: #52aeff;
   --color-secondary-text: #8f8f8f;
   --color-light-text-on-dark: #ffffff;
   --color-overlay-scrim: #ffffff29;
   --color-divider-border-2: #ffffff66;
-  --color-secondary-background: #666666;
 
   /* Typography */
   --font-primary: "GeistSans";

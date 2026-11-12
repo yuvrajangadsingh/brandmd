@@ -9,8 +9,8 @@
 ### Shared (3)
 
 - `#FFFFFF` — background (background)
-- `#FFFFFF` — on-primary (on-primary)
-- `#1A1A1A` — on-secondary (on-secondary)
+- `#1A1A1A` — on-primary (on-primary)
+- `#FFFFFF` — on-secondary (on-secondary)
 
 ### Only in Stripe (6)
 
@@ -18,14 +18,14 @@
 - `#FFD7EF` — surface (surface)
 - `#533AFD` — on-surface-variant (on-surface-variant)
 - `#E5EDF5` — outline (outline)
-- `#533AFD` — primary (primary)
-- `#7F7DFC` — secondary (secondary)
+- `#7F7DFC` — primary (primary)
+- `#533AFD` — secondary (secondary)
 
 ### Only in Agentic Infrastructure (7)
 
 - `#FAFAFA` — background (background)
 - `#171717` — on-background (on-background)
-- `#666666` — surface (surface)
+- `#4D4D4D` — on-surface-variant (on-surface-variant)
 - `#EBEBEB` — outline (outline)
 - `#FFFFFF66` — outline-variant (outline-variant)
 - `#0072F5` — primary (primary)

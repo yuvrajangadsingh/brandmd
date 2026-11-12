@@ -6,6 +6,7 @@ colors:
   background: "#ffffff"
   on-background: "#000000"
   on-surface-variant: "#0000008a"
+  outline: "#808080"
   primary: "#00b6ff"
   on-primary: "#1a1a1a"
 typography:
@@ -93,10 +94,11 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **White** (`#ffffff`): Page background (dominant)
+- **Gray** (`#808080`): Divider / border (dominant)
 - **Black** (`#000000`): Dark background / footer (accent)
 - **Vivid Cyan** (`#00b6ff`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff29`, `#0000000a`, `#808080`
+**Incidental (low usage, do not lead with these):** `#0000008a`, `#ffffff29`, `#ffffff99`, `#0000000a`
 
 ## Typography
 

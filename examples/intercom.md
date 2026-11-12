@@ -102,6 +102,7 @@ _The page background `#ffffff` is the surface that fills the viewport; it is not
 - **Light gray** (`#dedbd6`): Divider / border (dominant)
 - **Black** (`#000000`): Dark background / footer (accent)
 - **Translucent Black** (`#11111166`): Primary text (accent)
+- **Translucent Black** (`#11111199`): Primary text (accent)
 - **Light Muted Orange** (`#d3cec6`): Muted text (accent)
 - **Vivid Blue** (`#0007cb`): Accent background (accent)
 - **Vivid Orange** (`#ff5600`): Accent background (accent)

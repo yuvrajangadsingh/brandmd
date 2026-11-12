@@ -125,12 +125,20 @@ function clusterColors(colorFreqPairs, threshold = 15) {
     byHex.set(hex, (byHex.get(hex) || 0) + freq);
   }
 
+  // deltaE ignores alpha, so a 10% scrim, a 50% tint and the solid colour under
+  // them all read as one colour. Opaque, translucent (alpha 0.5 to under 1) and
+  // faint (under 0.5) colours never share a cluster. The alpha byte is read
+  // off the hex: chroma rounds it to two decimals, which would put a 99.6%
+  // colour in the opaque band.
+  const alphaBand = (hex) => {
+    const a = hex.length === 9 ? parseInt(hex.slice(7), 16) / 255 : 1;
+    return a >= 1 ? 2 : a >= 0.5 ? 1 : 0;
+  };
   const clusters = [];
   for (const [hex, freq] of [...byHex].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))) {
     const cluster = clusters.find((c) => {
       try {
-        // deltaE ignores alpha; a 10% scrim must not absorb the solid colour under it.
-        if (isSolidFill(hex) !== isSolidFill(c.hex)) return false;
+        if (alphaBand(hex) !== alphaBand(c.hex)) return false;
         return chroma.deltaE(hex, c.hex) < threshold;
       } catch {
         return false;

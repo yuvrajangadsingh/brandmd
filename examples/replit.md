@@ -8,7 +8,7 @@ colors:
   surface: "#f1f1ee"
   on-surface-variant: "#5c5c5c"
   outline: "#f5efee"
-  outline-variant: "#66483d21"
+  outline-variant: "#ffffff94"
   primary: "#ff5b25"
   on-primary: "#1a1a1a"
   secondary: "#e94b1b"
@@ -113,12 +113,13 @@ _The page background `#f6f5f4` is the surface that fills the viewport; it is not
 - **Black** (`#1d1d1d`): Primary text (dominant)
 - **Off-white** (`#f1f1ee`): Surface / card background (dominant)
 - **Gray** (`#77716f`): Secondary text (dominant)
+- **White** (`#ffffffdb`): Page background (accent)
 - **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
 - **Vivid Red** (`#ff5b25`): Accent background (accent)
 - **Red** (`#e94b1b`): Secondary text (accent)
 - **Light Orange** (`#ffd2c2`): Surface / card background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#8b8077`, `#66483d21`, `#1b1817f0`
+**Incidental (low usage, do not lead with these):** `#a6a09e`, `#ffffff94`, `#8b8077`
 
 ## Typography
 

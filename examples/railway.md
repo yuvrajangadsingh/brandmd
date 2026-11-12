@@ -99,7 +99,7 @@ _The page background `#13111c` is the surface that fills the viewport; it is not
 - **Near-transparent White** (`#ffffff0d`): Overlay / scrim (accent)
 - **Dark Purple** (`#180d43`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff16`, `#00000073`, `#609f89`, `#a1a0ab`, `#428a7233`, `#313c3c`
+**Incidental (low usage, do not lead with these):** `#ffffff16`, `#00000073`, `#ffffff80`, `#609f89`, `#33323e80`, `#428a7233`
 
 ## Typography
 

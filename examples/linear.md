@@ -101,9 +101,8 @@ _The page background `#08090a` is the surface that fills the viewport; it is not
 - **Light Pink** (`#f79ce0`): Link / accent text (accent)
 - **Near-transparent Vivid Green** (`#00ff051a`): Overlay / scrim (accent)
 - **Near-transparent Vivid Red** (`#f34e521a`): Overlay / scrim (accent)
-- **Near-transparent Green** (`#27a64412`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#d0d6e0`
+**Incidental (low usage, do not lead with these):** `#d0d6e0`, `#08090a80`
 
 ## Typography
 

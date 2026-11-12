@@ -11,8 +11,6 @@ colors:
   outline-variant: "#26251e8c"
   primary: "#65afe0"
   on-primary: "#1a1a1a"
-  secondary: "#f54e00"
-  on-secondary: "#1a1a1a"
 typography:
   headline-lg:
     fontFamily: CursorGothic
@@ -97,15 +95,14 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Cream** (`#f2f1ed`): Surface / card background (dominant)
 - **Near-transparent Dark gray** (`#26251e1a`): Divider / border (dominant)
-- **Translucent Dark gray** (`#26251e8c`): Divider / border (dominant)
+- **Translucent Dark gray** (`#26251e99`): Primary text (accent)
 - **Near-transparent Black** (`#00000033`): Primary text (accent)
 - **Dark gray** (`#26251e`): Dark background / footer (accent)
 - **Translucent Black** (`#00000061`): Overlay / scrim (accent)
 - **Blue** (`#65afe0`): Accent background (accent)
-- **Vivid Orange** (`#f54e00`): Secondary text (accent)
-- **Orange** (`#c08532`): Accent background (accent)
+- **Translucent Dark gray** (`#26251e8c`): Divider / border (accent)
 
-**Incidental (low usage, do not lead with these):** `#f7f7f4`, `#fbfbfb59`
+**Incidental (low usage, do not lead with these):** `#f7f7f4`, `#fcfcfca6`, `#fbfbfb59`
 
 ## Typography
 
