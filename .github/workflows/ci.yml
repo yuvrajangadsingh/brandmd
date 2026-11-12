@@ -48,9 +48,16 @@ jobs:
           printf -- '---\nname: Warmup\ncolors:\n  primary: "#111111"\n---\n\n## Overview\n\nWarm.\n' > "$RUNNER_TEMP/designmd-warm.md"
           npx -y @google/design.md@0.3.0 lint --format json "$RUNNER_TEMP/designmd-warm.md"
 
+      # The repo's own Playwright, so the browser build is the one the code launches.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Run tests
         env:
           # Fail-closed linter gate: any would-be skip of the conformance test
           # becomes a failure in CI (codex grade blocker 2).
           BRANDMD_REQUIRE_LINT: "1"
+          # Same for the browser tests: a Chromium that cannot launch fails them
+          # instead of skipping them.
+          BRANDMD_REQUIRE_BROWSER: "1"
         run: npm test

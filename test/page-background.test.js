@@ -243,6 +243,7 @@ test("probePageBackground reads the surface the viewport shows", async (t) => {
   try {
     browser = await chromium.launch({ headless: true });
   } catch (err) {
+    if (process.env.BRANDMD_REQUIRE_BROWSER) throw err;
     t.skip(`chromium not available: ${err.message.split("\n")[0]}`);
     return;
   }
