@@ -189,20 +189,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       }
     });
 
-    // Scroll to trigger lazy content. `instant` overrides `scroll-behavior:
-    // smooth`, which otherwise animates each jump and leaves the page mid-scroll
-    // when the reads below run.
-    await page.evaluate(async () => {
-      const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-      const step = window.innerHeight;
-      const max = document.body.scrollHeight;
-      for (let y = 0; y < max; y += step) {
-        window.scrollTo({ top: y, behavior: "instant" });
-        await delay(200);
-      }
-      window.scrollTo({ top: 0, behavior: "instant" });
-      await delay(500);
-    });
+    await page.evaluate(scrollPass);
 
     // Without this wait, getComputedStyle() can return the fallback font (e.g.
     // "Inter" or system-ui) while a slow web font is still loading. 5s cap so a
@@ -847,6 +834,28 @@ export function mergeRaw(pages) {
   }
 
   return merged;
+}
+
+/**
+ * Runs inside the page: scroll a screen at a time to wake lazy content, then
+ * back to the top. `instant` overrides `scroll-behavior: smooth`, which
+ * otherwise animates each jump and leaves the page mid-scroll when the reads
+ * run. At most 50 screens, and no new screen after 15 s: a very tall page, or
+ * one whose scroll handlers stall each step, would otherwise scroll for
+ * minutes. A page that blocks its main thread for good hangs every evaluate,
+ * this one included; the MCP deadline is what stops that.
+ */
+export async function scrollPass() {
+  const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+  const step = window.innerHeight;
+  const max = Math.min(document.body.scrollHeight, 50 * step);
+  const end = Date.now() + 15000;
+  for (let y = 0; y < max && Date.now() < end; y += step) {
+    window.scrollTo({ top: y, behavior: "instant" });
+    await delay(200);
+  }
+  window.scrollTo({ top: 0, behavior: "instant" });
+  await delay(500);
 }
 
 /**
