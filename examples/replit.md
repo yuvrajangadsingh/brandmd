@@ -3,7 +3,7 @@ version: alpha
 name: "Welcome to Replit - Replit"
 description: "Bright, high contrast"
 colors:
-  background: "#f6f6f4"
+  background: "#f6f5f4"
   on-background: "#1d1d1d"
   surface: "#f1f1ee"
   on-surface-variant: "#5c5c5c"
@@ -11,7 +11,7 @@ colors:
   outline-variant: "#6d483a1f"
   primary: "#ff3c00"
   on-primary: "#1a1a1a"
-  secondary: "#ff9a78"
+  secondary: "#e94b1b"
   on-secondary: "#1a1a1a"
 typography:
   display:
@@ -97,7 +97,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; off-white background dominates with black text and vivid red accents
+**Visual character:** Bright, high contrast; off-white background dominates with black text and red accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -108,11 +108,11 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Off-white** (`#f5efee`): Divider / border (dominant)
-- **Off-white** (`#f6f6f4`): Page background (dominant)
 - **Black** (`#000000`): Primary text (dominant)
+- **Off-white** (`#f6f5f4`): Page background (dominant)
 - **Gray** (`#77716f`): Secondary text (dominant)
 - **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
-- **Gray** (`#a6a09e`): Muted text (accent)
+- **Red** (`#e94b1b`): Secondary text (accent)
 - **Muted Orange** (`#bca39a`): Secondary background (accent)
 - **Vivid Red** (`#ff3c00`): Accent background (accent)
 - **Orange** (`#ff9a78`): Accent background (accent)
@@ -134,9 +134,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 400, 600, 650, 700
 
-**Line heights:** 28px, 24px, 20px, 19px, 40px, 23px, 61.5px, 17.5px, 18px, 27px
+**Line heights:** 28px, 24px, 20px, 19px, 23px, 40px, 17.5px, 18px, 61.5px, 24.5px
 
-**Letter spacing:** -0.8px, -0.3px, -1.68px, -0.54px, -0.875px
+**Letter spacing:** -0.3px, -0.8px, -1.68px, -0.875px, -0.54px
 
 ## Layout
 

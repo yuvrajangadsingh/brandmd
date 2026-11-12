@@ -1,17 +1,17 @@
 ---
 version: alpha
-name: "PostHog - your product’s context layer"
-description: "Bright, strong contrast"
+name: "PostHog – Your product’s context layer"
+description: "Bright, high contrast"
 colors:
   background: "#eeefe9"
-  on-background: "#374151"
-  on-surface-variant: "#111111"
+  on-background: "#111111"
+  on-surface-variant: "#374151"
   outline: "#d2d3cc"
   outline-variant: "#b17816"
   primary: "#cd8407"
   on-primary: "#1a1a1a"
-  secondary: "#b17816"
-  on-secondary: "#1a1a1a"
+  secondary: "#b62ad9"
+  on-secondary: "#ffffff"
 typography:
   headline-lg:
     fontFamily: RoundHog
@@ -25,9 +25,9 @@ typography:
     lineHeight: 1.78
   body-sm:
     fontFamily: RoundHog
-    fontSize: 15px
-    fontWeight: 500
-    lineHeight: 1.77
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.5
   label-sm:
     fontFamily: RoundHog
     fontSize: 13px
@@ -36,9 +36,10 @@ typography:
 rounded:
   sm: 2px
   md: 4px
-  lg: 5.5px
-  xl: 6px
-  2xl: 8px
+  lg: 5px
+  xl: 5.5px
+  2xl: 6px
+  3xl: 20px
   full: 9999px
 spacing:
   base: 8px
@@ -52,7 +53,7 @@ components:
     backgroundColor: "#cd8407"
     textColor: "#23251d"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.xl}"
+    rounded: "{rounded.2xl}"
     height: 32px
   button-secondary:
     backgroundColor: transparent
@@ -71,13 +72,13 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: PostHog - your product’s context layer
+# Design System: PostHog – Your product’s context layer
 
 > Extracted from [https://posthog.com](https://posthog.com) by brandmd
 
 ## Overview
 
-**Visual character:** Bright, strong contrast; cream background dominates with muted blue text and orange accents
+**Visual character:** Bright, high contrast; cream background dominates with black text and purple accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -86,61 +87,61 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Black** (`#000000`): Primary text (dominant)
-- **Muted Blue** (`#374151`): Primary text (dominant)
 - **Cream** (`#eeefe9`): Surface / card background (dominant)
 - **Light gray** (`#d2d3cc`): Divider / border (dominant)
+- **Muted Blue** (`#374151`): Primary text (accent)
 - **White** (`#ffffff`): Light text (on dark) (accent)
 - **Gray** (`#65675e`): Secondary text (accent)
-- **Translucent Light Muted Green** (`#e5e7e04d`): Overlay / scrim (accent)
-- **Orange** (`#b17816`): Focus / active border (accent)
-- **Vivid Orange** (`#cd8407`): Accent background (accent)
-- **Green** (`#53ffcb`): Surface / card background (accent)
-- **Cyan** (`#49bac5`): Accent background (accent)
+- **Black** (`#0f0f10`): Dark background / footer (accent)
 - **Purple** (`#b62ad9`): Accent background (accent)
+- **Vivid Orange** (`#cd8407`): Accent background (accent)
+- **Orange** (`#b17816`): Focus / active border (accent)
+
+**Incidental (low usage, do not lead with these):** `#e5e7e04d`, `#9ea096`
 
 ## Typography
 
 **Primary font:** RoundHog
-**Secondary font:** Source Code Pro
+**Secondary font:** SFMono-Regular
 
 **Fonts by role:**
 - Headings: RoundHog
 - Body: RoundHog
 
-**All detected fonts:** RoundHog (1798), Source Code Pro (6), SFMono-Regular (4), avenir next (1)
+**All detected fonts:** RoundHog (1929), SFMono-Regular (130), Source Code Pro (31), avenir next (1)
 
 **Type scale:**
 - Headings: 24px
-- Body / UI: 14px, 14.5px, 15px, 16px, 17px, 18px
-- Captions / Small: 11px, 11.5px, 12px, 12.5px, 13px
+- Body / UI: 14px, 14.5px, 15px, 16px, 18px, 20px
+- Captions / Small: 10.5px, 11px, 12px, 13px, 13.5px
 
 **Weights in use:** 400, 500, 600, 700, 800
 
-**Line heights:** 32px, 26.5px, 24px, 20px, 27px, 18px, 13px, 16.5px, 28px, 21px
+**Line heights:** 32px, 24px, 20px, 18px, 16px, 22.5px, 13px, 26.5px, 27px, 16.5px
 
-**Letter spacing:** -0.75px, -0.6px, -0.9px
+**Letter spacing:** -0.6px, -0.75px, -0.45px, -0.9px, -1.8px, -0.375px
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 4.5px, 5px, 6px, 8px, 12px, 24px
+**Spacing scale:** 2px, 4px, 5px, 6px, 8px, 10px, 12px, 16px
 
 ## Elevation & Depth
 
 Uses 5 shadow styles for layering and elevation:
 
-- Level 1: `rgb(210, 211, 204) 0px 2.30934px 0px 0px`
-- Level 2: `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`
-- Level 3: `rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px`
-- Level 4: `rgba(255, 255, 255, 0.4) 0px 0px 6px 2px`
-- Level 5: `rgb(210, 211, 204) 0px 2.82253px 0px 0px`
+- Level 1: `rgba(0, 0, 0, 0.05) 0px 1px 2px 0px`
+- Level 2: `rgb(210, 211, 204) 0px 2.30934px 0px 0px`
+- Level 3: `rgba(0, 0, 0, 0.25) 0px 25px 50px -12px`
+- Level 4: `rgba(0, 0, 0, 0.25) 0px 0px 0px 0.5px inset, rgba(0, 0, 0, 0.25) 0px 1px 2px 0px`
+- Level 5: `rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px`
 
 ## Shapes
 
-**Shape language:** Subtle rounding on interactive elements.
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 2px, 4px, 5.5px, 6px, 6px 6px 0px 0px, 8px, 40%, 9999px (pill)
+**Border radii:** 2px, 4px, 5px, 5.5px, 6px, 20px, 40%, 9999px (pill)
 
-Asymmetric / percentage radii observed (6px 6px 0px 0px, 40%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (40%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
@@ -163,8 +164,8 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Do use `#cd8407` for primary actions and CTAs
 - Do use `RoundHog` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond RoundHog and Source Code Pro
-- Don't use border-radius values outside: 2px, 4px, 5.5px, 6px, 6px 6px 0px 0px, 8px, 40%, 9999px (pill)
+- Don't mix fonts beyond RoundHog and SFMono-Regular
+- Don't use border-radius values outside: 2px, 4px, 5px, 5.5px, 6px, 20px, 40%, 9999px (pill)
 
 ---
 

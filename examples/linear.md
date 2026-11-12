@@ -58,12 +58,6 @@ spacing:
   lg: 6px
   xl: 7px
 components:
-  button-primary:
-    backgroundColor: "#e5e5e6"
-    textColor: "#08090a"
-    typography: "{typography.label-sm}"
-    rounded: "{rounded.full}"
-    height: 44px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -160,12 +154,11 @@ Asymmetric / percentage radii observed (12px 12px 0px 0px, 50%); kept out of the
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#e5e5e6`
-- Text color: `#08090a`
-- Corner radius: 9999px
-- Height: 44px
-- Padding: 0px 20px 0px 20px
-- Font: 16px, weight 510
+- Text color: `#ffffff`
+- Corner radius: 0px
+- Height: 28px
+- Padding: 1px 6px 1px 6px
+- Font: 13.3333px, weight 400
 
 ### Cards
 - Background: `#0f1011`
@@ -181,7 +174,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#e5e5e6` for primary actions and CTAs
+- Do use `#4ea7fc` for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and Berkeley Mono

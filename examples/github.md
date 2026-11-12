@@ -1,33 +1,33 @@
 ---
 version: alpha
 name: "GitHub · Change is constant. GitHub keeps you ahead. · GitHub · GitHub"
-description: "Dark, high contrast"
+description: "Bright, high contrast"
 colors:
-  background: "#0d1117"
-  on-background: "#ffffff"
-  on-surface-variant: "#a4aea6"
-  outline: "#ffffff"
-  outline-variant: "#262c28"
-  primary: "#1f6feb"
-  on-primary: "#ffffff"
-  secondary: "#a2daff"
-  on-secondary: "#1a1a1a"
+  background: "#ffffff"
+  on-background: "#000000"
+  on-surface-variant: "#58635b"
+  outline: "#e4ebe6"
+  outline-variant: "#000000"
+  primary: "#ff80d2"
+  on-primary: "#1a1a1a"
+  secondary: "#0969da"
+  on-secondary: "#ffffff"
 typography:
   display:
     fontFamily: Mona Sans
     fontSize: 64px
-    fontWeight: 425
-    lineHeight: 1.08
+    fontWeight: 400
+    lineHeight: 1
   headline-lg:
     fontFamily: Mona Sans
-    fontSize: 48px
-    fontWeight: 800
-    lineHeight: 1
+    fontSize: 56px
+    fontWeight: 440
+    lineHeight: 1.1
   headline-md:
     fontFamily: Mona Sans
-    fontSize: 40px
-    fontWeight: 460
-    lineHeight: 1.2
+    fontSize: 34px
+    fontWeight: 400
+    lineHeight: 1.29
   body-lg:
     fontFamily: Mona Sans
     fontSize: 16px
@@ -41,39 +41,42 @@ typography:
   label-sm:
     fontFamily: Mona Sans
     fontSize: 12px
-    fontWeight: 500
-    lineHeight: 1.5
+    fontWeight: 400
+    lineHeight: 1.29
 rounded:
-  sm: 6px
-  md: 8px
-  lg: 16px
-  xl: 24px
-  2xl: 60px
+  sm: 4px
+  md: 6px
+  lg: 8px
+  xl: 12px
+  2xl: 24px
+  full: 9999px
 spacing:
-  base: 8px
+  base: 12px
   xs: 2px
-  sm: 2.5px
-  md: 4px
-  lg: 12px
+  sm: 4px
+  md: 6px
+  lg: 8px
   xl: 16px
 components:
   button-primary:
     backgroundColor: "#08872b"
     textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.md}"
     padding: 6px
-    height: 48px
+    height: 43px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: 0px
-    padding: 8px
-    height: 40px
+    rounded: "{rounded.2xl}"
+    height: 28px
+  card:
+    rounded: "{rounded.md}"
+    padding: 12px
   input:
     typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 18px
+    rounded: "{rounded.lg}"
+    padding: 16px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://github.com](https://github.com) with `npx brandmd`.
@@ -89,29 +92,26 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; dark muted blue background dominates with white text and light blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
-
-**Motion:** Animation surfaces detected (canvas rendering). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Off-white** (`#f0f6fc`): Light text (on dark) (dominant)
-- **Dark Muted Blue** (`#0d1117`): Dark background / footer (dominant)
-- **White** (`#ffffff`): Divider / border (dominant)
-- **Dark gray** (`#262c28`): Divider / border (dominant)
-- **Gray** (`#a4aea6`): Muted text (accent)
-- **Light Blue** (`#a2daff`): Link / accent text (accent)
-- **Near-transparent White** (`#ffffff1f`): Overlay / scrim (accent)
-- **Blue** (`#5049c2`): Accent background (accent)
-- **Light Purple** (`#e6b7fe`): Accent background (accent)
-- **Dark Blue** (`#000240`): Dark background / footer (accent)
-- **Blue** (`#1f6feb`): Accent background (accent)
+- **Dark Muted Blue** (`#1f2328`): Primary text (dominant)
+- **White** (`#ffffff`): Page background (dominant)
+- **Off-white** (`#e4ebe6`): Divider / border (dominant)
+- **Black** (`#000000`): Divider / border (dominant)
+- **Gray** (`#58635b`): Secondary text (accent)
+- **Vivid Blue** (`#0969da`): Secondary text (accent)
+- **Vivid Green** (`#0fbf3e`): Accent background (accent)
+- **Light Purple** (`#c898fd`): Accent background (accent)
+- **Light Pink** (`#ff80d2`): Accent background (accent)
+- **Green** (`#08872b`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#24292fe6`
+**Incidental (low usage, do not lead with these):** `#0000000f`
 
 ## Typography
 
@@ -123,34 +123,35 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: Mona Sans
 
 **Type scale:**
-- Headings: 24px, 40px, 48px, 64px
-- Body / UI: 14px, 16px, 18px, 22px
-- Captions / Small: 11px, 12px
+- Headings: 24px, 28px, 32px, 34px, 56px, 64px
+- Body / UI: 14px, 16px, 18px, 20px, 22px
+- Captions / Small: 12px
 
-**Weights in use:** 400, 425, 460, 480, 500, 600
+**Weights in use:** 400, 440, 460, 480, 500, 600
 
-**Line heights:** 21px, 24px, 27px, 31px, 18px, 48px, 36px, 52px, 14px, 10px
+**Line heights:** 21px, 24px, 15.5px, 38px, 18px, 20px, 64px, 61.5px, 27px, 44px
 
-**Letter spacing:** 0.24px, 0.21px, 0.18px, 0.16px, -2.24px
+**Letter spacing:** 0.21px, 0.24px, 0.18px, 1px, 0.16px
 
 ## Layout
 
-**Spacing scale:** 2px, 2.5px, 4px, 8px, 12px, 16px, 24px, 32px
+**Spacing scale:** 2px, 4px, 6px, 8px, 12px, 16px, 24px, 32px
+
+**Base unit:** 4px grid — 86% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
-Uses 2 shadow styles for layering and elevation:
+Uses 1 shadow style for layering and elevation:
 
-- Level 1: `rgb(61, 68, 77) 0px 0px 0px 1px, rgba(1, 4, 9, 0.4) 0px 6px 12px -3px, rgba(1, 4, 9, 0.4) 0px 6px 18px 0px`
-- Level 2: `rgb(25, 31, 27) 0px -1px 0px 0px inset`
+- Level 1: `rgb(228, 235, 230) 0px -1px 0px 0px inset`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 6px, 8px, 16px 0px 0px, 16px, 24px 24px 0px 0px, 24px, 50%, 60px
+**Border radii:** 4px, 6px, 8px, 8px 0px 0px 8px, 12px, 24px, 50%, 9999px (pill)
 
-Asymmetric / percentage radii observed (16px 0px 0px, 24px 24px 0px 0px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (8px 0px 0px 8px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
@@ -160,23 +161,28 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Background: `#08872b`
 - Text color: `#ffffff`
 - Corner radius: 6px
-- Height: 48px
+- Height: 43px
 - Padding: 6px 20px 6px 20px
 - Font: 14px, weight 400
+
+### Cards
+- Corner radius: 6px
+- Padding: 12px 12px 12px 12px
 
 ### Inputs
 - Border: 0px none rgb(0, 0, 0)
 - Corner radius: 8px
-- Padding: 18px 12px 0px 18px
-- Font size: 16px
+- Padding: 16px 12px 0px 16px
+- Font size: 14px
 
 ## Do's and Don'ts
 
+- Do use a 4px grid for spacing
 - Do use `#08872b` for primary actions and CTAs
 - Do use `Mona Sans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Mona Sans and Mona Sans Mono
-- Don't use border-radius values outside: 6px, 8px, 16px 0px 0px, 16px, 24px 24px 0px 0px, 24px, 50%, 60px
+- Don't use border-radius values outside: 4px, 6px, 8px, 8px 0px 0px 8px, 12px, 24px, 50%, 9999px (pill)
 
 ---
 

@@ -6,8 +6,8 @@ colors:
   background: "#ffffff"
   on-background: "#111111"
   on-surface-variant: "#0007cb"
-  outline: "#11111133"
-  outline-variant: "#d3cec6"
+  outline: "#1111111a"
+  outline-variant: "#dedbd6"
   primary: "#ff5600"
   on-primary: "#1a1a1a"
   secondary: "#0007cb"
@@ -45,7 +45,7 @@ typography:
     lineHeight: 1
 rounded:
   sm: 4px
-  md: 6px
+  full: 9999px
 spacing:
   base: 16px
   xs: 4px
@@ -65,11 +65,8 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: "{rounded.sm}"
+    padding: 4px
     height: 40px
-  input:
-    typography: "{typography.body-md}"
-    rounded: 0px
-    padding: 8px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://intercom.com](https://intercom.com) with `npx brandmd`.
@@ -99,14 +96,14 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Near-transparent Black** (`#11111133`): Divider / border (dominant)
-- **Light Muted Orange** (`#d3cec6`): Divider / border (dominant)
+- **Near-transparent Black** (`#1111111a`): Divider / border (dominant)
+- **Light gray** (`#dedbd6`): Divider / border (dominant)
 - **Black** (`#111111`): Dark background / footer (accent)
 - **Translucent Black** (`#11111166`): Primary text (accent)
 - **Vivid Blue** (`#0007cb`): Accent background (accent)
 - **Vivid Orange** (`#ff5600`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#11111126`
+**Incidental (low usage, do not lead with these):** `#00000008`, `#ffffff0d`
 
 ## Typography
 
@@ -117,34 +114,36 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Saans, Serrif
 - Body: Saans
 
-**All detected fonts:** Saans (767), SaansMono (34), Serrif (23), Segoe UI Symbol (5)
+**All detected fonts:** Saans (755), SaansMono (36), Serrif (23), Segoe UI Symbol (5)
 
 **Type scale:**
 - Headings: 24px, 28px, 40px, 54px, 80px
-- Body / UI: 14px, 15px, 16px, 20px
+- Body / UI: 14px, 16px, 20px
 - Captions / Small: 12px
 
 **Weights in use:** 300, 400, 500
 
-**Line heights:** 24px, 17.5px, 19.5px, 15.5px, 12px, 22.5px, 28px, 54px, 20px, 80px
+**Line heights:** 24px, 17.5px, 28px, 19.5px, 12px, 22.5px, 15.5px, 54px, 80px, 40px
 
-**Letter spacing:** 0.6px, -0.16px, -0.96px, 1.2px, -0.2px, -1.6px
+**Letter spacing:** -0.96px, 0.6px, -0.16px, 1.2px, -0.2px, -1.6px
 
 ## Layout
 
 **Spacing scale:** 4px, 8px, 12px, 14px, 16px, 24px, 32px, 96px
 
-**Base unit:** 4px grid — 90% of all weighted spacing values are multiples of 4.
+**Base unit:** 4px grid — 89% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
-Flat design: hierarchy comes from color contrast and borders, not shadows.
+Uses 1 shadow style for layering and elevation:
+
+- Level 1: `rgba(0, 0, 0, 0.75) 0px 9.841px 82.665px 0px`
 
 ## Shapes
 
-**Shape language:** Subtle rounding on interactive elements.
+**Shape language:** Sharp, geometric edges.
 
-**Border radii:** 4px, 6px
+**Border radii:** 4px, 9999px (pill)
 
 ## Components
 
@@ -158,12 +157,6 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Padding: 16px 16px 16px 16px
 - Font: 16px, weight 400
 
-### Inputs
-- Border: 0px none rgb(17, 17, 17)
-- Corner radius: 0px
-- Padding: 8px 12px 8px 12px
-- Font size: 14px
-
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
@@ -172,7 +165,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Do use `Saans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Saans and Serrif
-- Don't use border-radius values outside: 4px, 6px
+- Don't use border-radius values outside: 4px, 9999px (pill)
 
 ---
 

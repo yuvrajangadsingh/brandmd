@@ -8,8 +8,8 @@ colors:
   on-surface-variant: "#533afd"
   primary: "#533afd"
   on-primary: "#ffffff"
-  secondary: "#29227d"
-  on-secondary: "#ffffff"
+  secondary: "#7f7dfc"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: sohne-var
@@ -70,6 +70,9 @@ components:
     height: 40px
   card:
     rounded: 0px
+  input:
+    typography: "{typography.body-md}"
+    rounded: 0px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://stripe.com](https://stripe.com) with `npx brandmd`.
@@ -87,7 +90,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -100,7 +103,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
 - **Muted Blue** (`#64748d`): Secondary text (accent)
-- **Blue** (`#29227d`): Accent background (accent)
+- **Dark Blue** (`#0d1738`): Dark background / footer (accent)
 - **Light Purple** (`#dac0ff`): Accent background (accent)
 - **Vivid Blue** (`#533afd`): Accent background (accent)
 - **Blue** (`#7f7dfc`): Accent background (accent)
@@ -163,6 +166,12 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ### Cards
 - Corner radius: 0px
 - Padding: 0px 0px 0px 0px
+
+### Inputs
+- Border: 0px none rgb(6, 27, 49)
+- Corner radius: 0px
+- Padding: 0px 15px 0px 15px
+- Font size: 16px
 
 ## Do's and Don'ts
 

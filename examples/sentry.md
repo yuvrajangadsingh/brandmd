@@ -125,7 +125,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: Monaco
 - Buttons / nav: Rubik
 
-**All detected fonts:** Rubik (1249), Monaco (1128), IBM Plex Mono (57), Segoe UI (41), Dammit Sans (17)
+**All detected fonts:** Rubik (1243), Monaco (1128), IBM Plex Mono (57), Segoe UI (41), Dammit Sans (17)
 
 **Type scale:**
 - Headings: 24px, 27px, 30px, 60px, 88px

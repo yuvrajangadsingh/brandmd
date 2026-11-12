@@ -68,7 +68,7 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: 0px
-    padding: 4px
+    padding: 20px
     height: 64px
   card:
     backgroundColor: "{colors.surface}"
@@ -122,10 +122,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: paperMono
 - Buttons / nav: inter
 
-**All detected fonts:** inter (842), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
+**All detected fonts:** inter (903), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
 
 **Type scale:**
-- Headings: 24px, 35px, 36px, 44px, 50px
+- Headings: 24px, 32px, 35px, 36px, 44px, 50px
 - Body / UI: 14px, 16px, 18px
 - Captions / Small: 12px
 
@@ -137,7 +137,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 ## Layout
 
-**Spacing scale:** 4px, 8px, 12px, 16px, 24px, 32px, 40px, 176px
+**Spacing scale:** 4px, 8px, 12px, 16px, 20px, 24px, 32px, 176px
 
 **Base unit:** 4px grid — 94% of all weighted spacing values are multiples of 4.
 

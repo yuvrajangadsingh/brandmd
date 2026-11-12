@@ -1,16 +1,16 @@
 ---
 version: alpha
-name: "Spotify - Web Player: Music for everyone"
+name: "Spotify - Web Player: Listen to Music, Podcasts, and Audiobooks Online"
 description: "Dark, high contrast"
 colors:
   background: "#000000"
   on-background: "#b3b3b3"
   on-surface-variant: "#ffffff"
   outline: "#292929"
-  primary: "#1ed760"
-  on-primary: "#1a1a1a"
-  secondary: "#782830"
-  on-secondary: "#ffffff"
+  primary: "#b00008"
+  on-primary: "#ffffff"
+  secondary: "#1ed760"
+  on-secondary: "#1a1a1a"
 typography:
   headline-lg:
     fontFamily: SpotifyMixUI
@@ -75,7 +75,7 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: Spotify - Web Player: Music for everyone
+# Design System: Spotify - Web Player: Listen to Music, Podcasts, and Audiobooks Online
 
 > Extracted from [https://spotify.com](https://spotify.com) by brandmd
 
@@ -96,8 +96,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Dark gray** (`#292929`): Divider / border (dominant)
 - **Black** (`#000000`): Primary text (accent)
 - **Green** (`#1ed760`): Accent background (accent)
+- **Vivid Red** (`#b00008`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#782830`, `#535353`, `#ffffff4d`, `#ffffff`, `#808080`
+**Incidental (low usage, do not lead with these):** `#535353`, `#ffffff`, `#ffffff4d`, `#808080`
 
 ## Typography
 
@@ -108,7 +109,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: SpotifyMixUI, SpotifyMixUITitle
 - Body: SpotifyMixUI
 
-**All detected fonts:** SpotifyMixUI (1439), SpotifyMixUITitle (10), Times (1)
+**All detected fonts:** SpotifyMixUI (1424), SpotifyMixUITitle (10), Times (1)
 
 **Type scale:**
 - Headings: 24px

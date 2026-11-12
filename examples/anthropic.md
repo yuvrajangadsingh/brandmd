@@ -3,61 +3,76 @@ version: alpha
 name: "Home \\ Anthropic"
 description: "Bright, high contrast"
 colors:
-  background: "#f0eee6"
+  background: "#faf9f5"
   on-background: "#141413"
-  outline: "#1414131a"
-  primary: "#f0eee6"
+  on-surface-variant: "#5e5d59"
+  outline: "#e8e6dc"
+  outline-variant: "#30302e"
+  primary: "#faf9f5"
   on-primary: "#1a1a1a"
 typography:
   display:
-    fontFamily: Anthropic Sans
-    fontSize: 79.5px
-    fontWeight: 400
-    lineHeight: 1.16
+    fontFamily: anthropicSerif
+    fontSize: 70px
+    fontWeight: 500
+    lineHeight: 1
   headline-lg:
-    fontFamily: Anthropic Sans
-    fontSize: 61px
-    fontWeight: 700
-    lineHeight: 1.1
+    fontFamily: anthropicSerif
+    fontSize: 67.5px
+    fontWeight: 500
+    lineHeight: 1
   headline-md:
-    fontFamily: Anthropic Sans
-    fontSize: 24px
-    fontWeight: 600
-    lineHeight: 1.29
-  body-lg:
-    fontFamily: Anthropic Sans
-    fontSize: 20px
+    fontFamily: anthropicSerif
+    fontSize: 41px
     fontWeight: 400
-    lineHeight: 1.4
+    lineHeight: 1.24
   body-md:
-    fontFamily: Anthropic Sans
-    fontSize: 16px
+    fontFamily: anthropicSans
+    fontSize: 16.5px
     fontWeight: 400
-    lineHeight: 1.41
+    lineHeight: 1.55
+  body-sm:
+    fontFamily: anthropicSans
+    fontSize: 14.5px
+    fontWeight: 400
+    lineHeight: 1.52
   label-sm:
-    fontFamily: Anthropic Sans
-    fontSize: 12px
+    fontFamily: anthropicSans
+    fontSize: 13px
     fontWeight: 400
-    lineHeight: 1.42
+    lineHeight: 1.54
 rounded:
-  sm: 8px
-  md: 16px
-  lg: 23px
-  xl: 24px
+  sm: 4px
+  md: 8px
+  lg: 10px
+  xl: 16px
+  full: 9999px
 spacing:
   base: 8px
   xs: 2px
   sm: 4px
-  md: 12px
-  lg: 16px
-  xl: 22.5px
+  md: 6.5px
+  lg: 12px
+  xl: 16px
 components:
+  button-primary:
+    backgroundColor: "#faf9f5"
+    textColor: "#141413"
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.lg}"
+    padding: 12px
+    height: 36px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: 0px
-    padding: 22px
-    height: 69px
+    padding: 12px
+    height: 52px
+  card:
+    rounded: 0px
+  input:
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
 ---
 
 > This is a real `DESIGN.md` example generated from [https://anthropic.com](https://anthropic.com) with `npx brandmd`.
@@ -79,7 +94,7 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (canvas rendering, Lottie animations, scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (Lottie animations). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -87,72 +102,84 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 _No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
 
-_The page background `#f0eee6` is the surface that fills the viewport; it is not among the most frequent fills listed below._
-
-- **Black** (`#000000`): Primary text (dominant)
-- **Gray** (`#87867f`): Secondary text (dominant)
 - **Cream** (`#faf9f5`): Page background (dominant)
 - **Black** (`#141413`): Dark background / footer (dominant)
-- **Near-transparent Black** (`#1414131a`): Divider / border (dominant)
+- **Light Muted Yellow** (`#e8e6dc`): Divider / border (dominant)
+- **Dark gray** (`#30302e`): Divider / border (dominant)
+- **Gray** (`#5e5d59`): Secondary text (accent)
+- **Gray** (`#87867f`): Secondary text (accent)
 
 ## Typography
 
-**Primary font:** Anthropic Sans
-**Secondary font:** Anthropic Serif
+**Primary font:** anthropicSerif
+**Secondary font:** anthropicSans
 
 **Fonts by role:**
-- Headings: Anthropic Sans, Anthropic Serif
-- Body: Anthropic Sans
-- Buttons / nav: Anthropic Serif
+- Headings: anthropicSans, anthropicSerif
+- Body: anthropicSans
 
-**All detected fonts:** Anthropic Sans (483), Anthropic Serif (309), Anthropic Mono (9)
+**All detected fonts:** anthropicSans (452), anthropicSerif (8), Segoe UI (1)
 
 **Type scale:**
-- Headings: 24px, 61px, 79.5px
-- Body / UI: 14px, 15px, 16px, 18px, 20px, 22.5px
-- Captions / Small: 12px
+- Headings: 41px, 67.5px, 70px
+- Body / UI: 14.5px, 16px, 16.5px, 21.5px
+- Captions / Small: 11px, 13px
 
-**Weights in use:** 400, 465, 500, 600, 700
+**Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 17px, 22.5px, 28px, 16px, 67px, 92px, 31px, 25px, 18px, 21px
+**Line heights:** 25.5px, 20px, 19px, 15px, 16.5px, 22px, 26.5px, 67.5px, 51px, 31px
 
-**Letter spacing:** -0.24px, -0.08px, -1.1958px, -0.0375px
+**Letter spacing:** 0.13px, 0.198px, -0.407843px
 
 ## Layout
 
-**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 22.5px, 24px, 31.5px
+**Spacing scale:** 2px, 4px, 8px, 12px, 16px, 24px, 32px, 80px
+
+**Base unit:** 4px grid — 91% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
 Uses 1 shadow style for layering and elevation:
 
-- Level 1: `rgba(0, 0, 0, 0.01) 0px 2px 2px 0px, rgba(0, 0, 0, 0.02) 0px 4px 4px 0px, rgba(0, 0, 0, 0.04) 0px 16px 24px 0px`
+- Level 1: `rgb(250, 249, 245) 0px 0px 0px 2px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 0px 0px 8px 8px, 0px 8px 8px 0px, 8px, 8px 0px 0px 8px, 16px, 23px, 24px
-
-Asymmetric / percentage radii observed (0px 0px 8px 8px, 0px 8px 8px 0px, 8px 0px 0px 8px); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+**Border radii:** 4px, 8px, 10px, 16px, 9999px (pill)
 
 ## Components
 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
+- Background: `#faf9f5`
 - Text color: `#141413`
+- Corner radius: 10px
+- Height: 36px
+- Padding: 12px 24px 12px 24px
+- Font: 16.6863px, weight 400
+
+### Cards
 - Corner radius: 0px
-- Height: 69px
-- Padding: 22.4px 12px 22.4px 12px
-- Font: 20px, weight 400
+- Padding: 0px 0px 0px 0px
+
+### Inputs
+- Background: `#f5f4ed`
+- Border: 1px solid rgb(232, 230, 220)
+- Corner radius: 8px
+- Padding: 0px 16px 0px 36px
+- Font size: 13px
 
 ## Do's and Don'ts
 
-- Do use `Anthropic Sans` as the primary typeface
+- Do use a 4px grid for spacing
+- Do stick to 4 font weights: 400, 500, 600, 700
+- Do use `anthropicSerif` as the primary typeface
 - Don't introduce colors outside the palette above
-- Don't mix fonts beyond Anthropic Sans and Anthropic Serif
-- Don't use border-radius values outside: 0px 0px 8px 8px, 0px 8px 8px 0px, 8px, 8px 0px 0px 8px, 16px, 23px, 24px
+- Don't mix fonts beyond anthropicSerif and anthropicSans
+- Don't use border-radius values outside: 4px, 8px, 10px, 16px, 9999px (pill)
 
 ---
 

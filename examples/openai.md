@@ -13,7 +13,7 @@ colors:
 typography:
   display:
     fontFamily: OpenAI Sans
-    fontSize: 80px
+    fontSize: 71.5px
     fontWeight: 600
     lineHeight: 1
   headline-lg:
@@ -60,8 +60,8 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    height: 32px
+    rounded: "{rounded.full}"
+    height: 44px
   card:
     rounded: "{rounded.xl}"
     padding: 16px
@@ -113,14 +113,14 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: OpenAI Sans
 
 **Type scale:**
-- Headings: 24px, 26px, 30px, 80px
+- Headings: 24px, 26px, 30px, 71.5px
 - Body / UI: 14px, 16px, 18px
 
 **Weights in use:** 400, 500, 600
 
-**Line heights:** 20px, 24px, 14px, 80px, 29px, 39px, 42px
+**Line heights:** 20px, 24px, 14px, 71.5px, 29px, 39px, 42px
 
-**Letter spacing:** -0.16px, -0.14px, -1.6px, -0.18px, -0.52px, -0.6px
+**Letter spacing:** -0.16px, -0.14px, -1.4336px, -0.18px, -0.52px, -0.6px
 
 ## Layout
 
@@ -128,10 +128,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 ## Elevation & Depth
 
-Uses 2 shadow styles for layering and elevation:
+Uses 3 shadow styles for layering and elevation:
 
 - Level 1: `oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 2px 4px -1px`
-- Level 2: `rgba(15, 23, 42, 0.45) 0px 16px 48px -18px`
+- Level 2: `rgba(0, 0, 0, 0.1) 0px 4px 8px -2px`
+- Level 3: `rgba(15, 23, 42, 0.45) 0px 16px 48px -18px`
 
 ## Shapes
 

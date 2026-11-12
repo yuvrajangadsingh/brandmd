@@ -16,6 +16,11 @@ typography:
     fontSize: 32px
     fontWeight: 600
     lineHeight: 1.25
+  headline-lg:
+    fontFamily: geistNumbers
+    fontSize: 24px
+    fontWeight: 500
+    lineHeight: 1.33
   body-md:
     fontFamily: geistNumbers
     fontSize: 16px
@@ -40,12 +45,12 @@ rounded:
   3xl: 12.5px
   full: 9999px
 spacing:
-  base: 8px
+  base: 12px
   xs: 2px
   sm: 4px
   md: 6px
-  lg: 10px
-  xl: 12px
+  lg: 8px
+  xl: 10px
 components:
   button-primary:
     backgroundColor: "#212126"
@@ -91,7 +96,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#131316`): Dark background / footer (accent)
 - **Near-transparent Vivid Cyan** (`#3ad4fd14`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#9394a1`, `#00000033`, `#13131626`, `#ffffff33`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#8f8f9c`, `#00000033`, `#13131626`, `#ffffff33`
 
 ## Typography
 
@@ -102,16 +107,16 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: geistNumbers, Segoe UI Symbol
 - Body: geistNumbers
 
-**All detected fonts:** geistNumbers (1981), Segoe UI Symbol (1281), Inter (169), soehneMono (17)
+**All detected fonts:** geistNumbers (2035), Segoe UI Symbol (1281), soehneMono (85)
 
 **Type scale:**
-- Headings: 32px
+- Headings: 24px, 32px
 - Body / UI: 14px, 15px, 16px, 17px
-- Captions / Small: 8px, 9px, 10px, 10.5px, 11px, 12px, 13px
+- Captions / Small: 9px, 10px, 10.5px, 11px, 12px, 13px
 
 **Weights in use:** 400, 450, 500, 510, 600, 700
 
-**Line heights:** 24px, 20px, 18px, 16px, 14px, 13px, 15px, 19.5px, 12px, 14.5px
+**Line heights:** 24px, 20px, 18px, 16px, 14px, 13px, 19.5px, 15px, 14.5px, 40px
 
 **Letter spacing:** -0.12px, -0.17px, -0.14px, -0.48px, 1px, -0.24px
 
@@ -124,10 +129,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 Uses 5 shadow styles for layering and elevation:
 
 - Level 1: `rgba(19, 19, 22, 0.024) 0px 0px 0px 1px, rgba(19, 19, 22, 0.024) 0px 1px 1px -0.5px, rgba(19, 19, 22, 0.024) 0px 3px 3px -1.5px, rgba(19, 19, 22, 0.024) 0px 6px 6px -3px, rgba(19, 19, 22, 0.024) 0px 12px 12px -6px, rgba(19, 19, 22, 0.024) 0px 24px 24px -12px`
-- Level 2: `rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
-- Level 3: `oklab(0.999994 0.0000455678 0.0000200868 / 0.05) 0px 0px 0px 1px inset`
-- Level 4: `lab(84.5189 -31.4667 -23.9754 / 0.08) 0px 0px 0px 1px inset`
-- Level 5: `rgb(217, 217, 222) 0px 0px 0px 0.5px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.08) 0px 0px 2px 0px`
+- Level 2: `rgba(0, 0, 0, 0.1) 0px 1px 4px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px`
+- Level 3: `rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`
+- Level 4: `oklab(0.999994 0.0000455678 0.0000200868 / 0.05) 0px 0px 0px 1px inset`
+- Level 5: `lab(84.5189 -31.4667 -23.9754 / 0.08) 0px 0px 0px 1px inset`
 
 ## Shapes
 

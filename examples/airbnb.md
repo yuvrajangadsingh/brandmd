@@ -89,7 +89,7 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (canvas rendering, scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -156,7 +156,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#da1249` for primary actions and CTAs
+- Do use the `button-primary` gradient from Components for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `Airbnb Cereal` as the primary typeface
 - Don't introduce colors outside the palette above

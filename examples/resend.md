@@ -5,11 +5,11 @@ description: "Dark, high contrast"
 colors:
   background: "#000000"
   on-background: "#f0f0f0"
-  surface: "#43fea4ab"
+  surface: "#8f8f8fab"
   outline: "#ffffff0d"
   outline-variant: "#262a2d"
-  primary: "#43fea4ab"
-  on-primary: "#1a1a1a"
+  primary: "#000000"
+  on-primary: "#ffffff"
 typography:
   display:
     fontFamily: aBCFavorit
@@ -27,17 +27,17 @@ typography:
     fontWeight: 400
     lineHeight: 1.2
   body-md:
-    fontFamily: inter
+    fontFamily: Inter Website
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
   body-sm:
-    fontFamily: inter
+    fontFamily: Inter Website
     fontSize: 14px
     fontWeight: 400
     lineHeight: 1.43
   label-sm:
-    fontFamily: inter
+    fontFamily: Inter Website
     fontSize: 12px
     fontWeight: 400
     lineHeight: 1.33
@@ -94,7 +94,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; black background dominates with off-white text and translucent vivid green accents
+**Visual character:** Dark, high contrast; black background dominates with off-white text and near-transparent vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -102,11 +102,13 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
+_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
+
 - **Black** (`#000000`): Dark background / footer (dominant)
 - **Gray** (`#a1a4a5`): Muted text (dominant)
 - **Near-transparent White** (`#ffffff0d`): Divider / border (dominant)
 - **Near-transparent White** (`#fdfdfd0d`): Overlay / scrim (accent)
-- **Translucent Vivid Green** (`#43fea4ab`): Surface / card background (accent)
+- **Near-transparent Vivid Blue** (`#00a3ff21`): Overlay / scrim (accent)
 
 **Incidental (low usage, do not lead with these):** `#464a4d`, `#70757e`, `#50505026`, `#ffffff`, `#8f8f8fab`, `#262a2d`
 
@@ -117,9 +119,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Fonts by role:**
 - Headings: aBCFavorit, domaine
-- Body: inter
+- Body: Inter Website
 
-**All detected fonts:** inter (1383), commitMono (730), aBCFavorit (30), Helvetica (22), Segoe UI (3), domaine (2)
+**All detected fonts:** Inter Website (1384), Commit Mono Website (781), aBCFavorit (30), Helvetica (22), Segoe UI (3), domaine (2)
 
 **Type scale:**
 - Headings: 24px, 56px, 77px, 96px
@@ -128,7 +130,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 24px, 16px, 20px, 22.5px, 27px, 67px, 14px, 26px, 25px, 33.5px
+**Line heights:** 16px, 24px, 20px, 22.5px, 27px, 67px, 14px, 26px, 25px, 33.5px
 
 **Letter spacing:** -2.8px, 0.35px, -0.8px, -0.96px, -0.768px
 
