@@ -324,16 +324,23 @@ test("check: a truncated baseline exits 1", () => {
   assert.equal(r.status, 1);
 });
 
-// Capture flags are declared on BOTH the root program and `check`. commander
-// hands a same-named option to the ROOT in that situation, so without an
-// explicit fallback the flag renders in `check --help` and silently does
-// nothing. These lock the fallback.
+// Capture flags, --allow-blocked and --cf-wait-ms are declared on BOTH the
+// root program and `check`. Unless options are positional, commander hands a
+// same-named option to the ROOT, so the flag renders in `check --help` and
+// silently does nothing. These lock that check sees them.
 test("check: an invalid --viewport exits 1 before doing any work", () => {
   const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--viewport", "nonsense"], {
     rawFile: VERCEL_FIXTURE,
   });
   assert.equal(r.status, 1);
   assert.match(r.out, /--viewport must look like/);
+});
+
+test("check: --allow-blocked after the URL reaches check", () => {
+  const r = runCLI(["check", "https://example.com", "--against", SPEC, "--allow-blocked", "--fail-on", "none"], {
+    rawFile: BLOCK_FIXTURE,
+  });
+  assert.equal(r.status, 0, `the override was dropped:\n${r.out}`);
 });
 
 test("check: a valid --viewport is accepted, not ignored", () => {
