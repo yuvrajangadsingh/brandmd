@@ -15,6 +15,7 @@ import { parseDesign } from "./parse-design.js";
 import { compareDesigns, exitCodeFor, formatDrift, validateBaseline } from "./check.js";
 import { writeAllAtomic, writeFileAtomic } from "./atomic-write.js";
 import { serve } from "./mcp.js";
+import { launchErrorLine } from "./launch-error.js";
 import { readFileSync } from "fs";
 import { basename, dirname, isAbsolute, relative, resolve } from "path";
 import { createRequire } from "module";
@@ -30,26 +31,15 @@ const EXIT_ERROR = 1;
 const EXIT_REFUSED = 2;
 
 /**
- * Browser-launch failures get a one-line remediation instead of Playwright's
- * multi-line ASCII banner (F-27); the raw dump stays behind --debug. Shared so
- * `check` and the extract path cannot drift apart on error handling.
+ * Browser failures get a one-line remediation (launch-error.js) instead of
+ * Playwright's banner; the raw dump stays behind --debug. Shared so `check`
+ * and the extract path cannot drift apart on error handling.
  */
 function reportError(err, { debug } = {}) {
   const msg = err && err.message ? err.message : String(err);
-  if (
-    /Executable doesn't exist|playwright install|browserType\.launch|Failed to launch|Target page, context or browser has been closed/i.test(
-      msg
-    )
-  ) {
-    console.error(
-      "Error: could not launch the headless browser. Install it with: npx playwright@" +
-        require("playwright/package.json").version +
-        " install chromium"
-    );
-    if (debug) console.error(msg);
-  } else {
-    console.error(`Error: ${msg}`);
-  }
+  const line = launchErrorLine(msg, require("playwright/package.json").version);
+  console.error(line || `Error: ${msg}`);
+  if (line && debug) console.error(msg);
 }
 
 
