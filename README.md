@@ -144,6 +144,8 @@ brandmd does it from the terminal. Point it at any URL, get a spec-valid DESIGN.
 
 ## Install
 
+Needs Node 20 or newer (Playwright and the Gemini SDK both require it).
+
 ```bash
 # Run directly (no install). On a machine without Playwright's headless
 # Chromium it stops and prints the command that installs it. A bare Linux
