@@ -33,6 +33,10 @@ const TOOL = {
 const timeout = Number(process.env.BRANDMD_MCP_TIMEOUT);
 const TIMEOUT_S = timeout > 0 && timeout <= 86400 ? timeout : 180;
 
+// Each call runs its own Chromium. Past this many at once, a call is refused
+// with a tool error rather than queued.
+const MAX_RUNNING = 2;
+
 const children = new Set();
 const calls = new Map(); // request id -> AbortController, for notifications/cancelled
 const rpcError = (code, message) => Object.assign(new Error(message), { code });
@@ -86,6 +90,7 @@ async function extract(args, signal) {
   // anyway (not host-like), except localhost.
   const bad = urls.find((u) => u.startsWith("-") || (/^[a-z][a-z0-9-]*$/i.test(u) && u.toLowerCase() !== "localhost"));
   if (bad) return toolError(`"${bad}" is not a URL. Pass a page like https://example.com or example.com.`);
+  if (children.size >= MAX_RUNNING) return toolError(`brandmd is already running ${MAX_RUNNING} extractions. Call again when one finishes.`);
   const { code, out, err, timedOut } = await runCli([...(dark ? ["--dark"] : []), ...urls], signal);
   if (timedOut) return toolError(`brandmd stopped after ${TIMEOUT_S}s without finishing. Try fewer pages, or leave out dark.`);
   if (code !== 0) return toolError(err.trim() || `brandmd exited with code ${code}`);

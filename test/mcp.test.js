@@ -240,3 +240,27 @@ test("mcp: notifications/cancelled stops that call's CLI run and sends no reply"
   assert.equal(gone, true, "the cancelled call's CLI run must be gone");
   assert.equal(late, undefined, "a cancelled call gets no reply");
 });
+
+test("mcp: a third call while two run is refused, not queued", { skip: process.platform === "win32" }, async () => {
+  const raw = fifo();
+  const r = await session([1, 2, 3].map((id) => call(id, { urls: ["vercel.com"] })), { BRANDMD_RAW_FILE: raw }, 1);
+  assert.equal(r[3]?.result.isError, true, "the third call must answer at once");
+  assert.match(r[3].result.content[0].text, /already running 2 extractions/);
+  // 1 and 2 ran until the server halted them on the way out; neither was refused.
+  for (const id of [1, 2]) assert.doesNotMatch(r[id]?.result.content[0].text ?? "", /already running/);
+});
+
+test("mcp: a cancelled call keeps its slot until its CLI run exits", { skip: process.platform === "win32" }, async (t) => {
+  const raw = fifo();
+  const s = live(t, { BRANDMD_RAW_FILE: raw });
+  s.send(call(1, { urls: ["vercel.com"] }), call(2, { urls: ["vercel.com"] }));
+  await sleep(500);
+  s.send(cancel(1), call(3, { urls: ["vercel.com"] })); // one write: 3 arrives before 1's run has exited
+  const refused = await s.reply(3);
+  await sleep(1000);
+  s.send(call(4, { urls: ["vercel.com"] }));
+  const fourth = await s.reply(4, 1000);
+  await s.end();
+  assert.match(refused?.result.content[0].text ?? "", /already running 2 extractions/, "1's run had not exited yet");
+  assert.equal(fourth, undefined, "once 1's run has exited its slot is free, so 4 runs instead of being refused");
+});
