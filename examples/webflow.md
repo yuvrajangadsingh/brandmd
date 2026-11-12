@@ -7,7 +7,7 @@ colors:
   on-background: "#080808"
   on-surface-variant: "#5a5a5a"
   outline: "#d8d8d8"
-  outline-variant: "#080808"
+  outline-variant: "#000000"
   primary: "#146ef5"
   on-primary: "#ffffff"
 typography:
@@ -100,15 +100,14 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
 - **Light gray** (`#d8d8d8`): Divider / border (dominant)
-- **Black** (`#080808`): Divider / border (dominant)
-- **Gray** (`#808080`): Secondary text (accent)
-- **Translucent Black** (`#08080899`): Dark background / footer (accent)
+- **Black** (`#000000`): Divider / border (dominant)
+- **Gray** (`#5a5a5a`): Secondary text (accent)
+- **Black** (`#080808`): Dark background / footer (accent)
 - **Vivid Blue** (`#146ef5`): Accent background (accent)
 - **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
-- **Near-transparent Black** (`#08080833`): Overlay / scrim (accent)
+- **Translucent Black** (`#00000040`): Overlay / scrim (accent)
 
 ## Typography
 

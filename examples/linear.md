@@ -7,11 +7,8 @@ colors:
   on-background: "#f7f8f8"
   surface: "#0f1011"
   on-surface-variant: "#8a8f98"
-  outline: "#ffffff14"
-  primary: "#4ea7fc"
+  primary: "#f79ce0"
   on-primary: "#1a1a1a"
-  secondary: "#f79ce0"
-  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: Inter
@@ -94,18 +91,19 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
+_The page background `#08090a` is the surface that fills the viewport; it is not among the most frequent fills listed below._
+
 - **White** (`#f7f8f8`): Light text (on dark) (dominant)
-- **Black** (`#08090a`): Dark background / footer (dominant)
-- **Near-transparent White** (`#ffffff05`): Overlay / scrim (dominant)
-- **Near-transparent White** (`#ffffff14`): Divider / border (dominant)
+- **Black** (`#0f1011`): Dark background / footer (dominant)
+- **Near-transparent White** (`#ffffff14`): Overlay / scrim (dominant)
 - **Gray** (`#8a8f98`): Secondary text (accent)
 - **Gray** (`#62666d`): Secondary text (accent)
 - **Light Pink** (`#f79ce0`): Link / accent text (accent)
 - **Near-transparent Vivid Green** (`#00ff051a`): Overlay / scrim (accent)
-- **Vivid Blue** (`#4ea7fc`): Accent background (accent)
 - **Near-transparent Vivid Red** (`#f34e521a`): Overlay / scrim (accent)
+- **Near-transparent Green** (`#27a64412`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#e5e5e6`
+**Incidental (low usage, do not lead with these):** `#d0d6e0`
 
 ## Typography
 
@@ -174,7 +172,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#4ea7fc` for primary actions and CTAs
+- Do use `#f79ce0` for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and Berkeley Mono

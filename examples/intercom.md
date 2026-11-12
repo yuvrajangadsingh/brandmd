@@ -94,12 +94,15 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
-- **White** (`#ffffff`): Page background (dominant)
+_The page background `#ffffff` is the surface that fills the viewport; it is not among the most frequent fills listed below._
+
+- **Black** (`#111111`): Primary text (dominant)
+- **Cream** (`#faf9f6`): Page background (dominant)
 - **Near-transparent Black** (`#1111111a`): Divider / border (dominant)
 - **Light gray** (`#dedbd6`): Divider / border (dominant)
-- **Black** (`#111111`): Dark background / footer (accent)
+- **Black** (`#000000`): Dark background / footer (accent)
 - **Translucent Black** (`#11111166`): Primary text (accent)
+- **Light Muted Orange** (`#d3cec6`): Muted text (accent)
 - **Vivid Blue** (`#0007cb`): Accent background (accent)
 - **Vivid Orange** (`#ff5600`): Accent background (accent)
 

@@ -7,7 +7,7 @@ colors:
   on-background: "#ffffff"
   surface: "#c2ef4e"
   outline: "#584674"
-  primary: "#f97583"
+  primary: "#fd44b0"
   on-primary: "#1a1a1a"
   secondary: "#9ecbff"
   on-secondary: "#1a1a1a"
@@ -107,13 +107,17 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Dark Purple** (`#1f1633`): Dark background / footer (dominant)
+_The page background `#1f1633` is the surface that fills the viewport; it is not among the most frequent fills listed below._
+
+- **Dark Purple** (`#150f23`): Dark background / footer (dominant)
 - **Light Blue** (`#9ecbff`): Link / accent text (accent)
 - **Red** (`#f97583`): Link / accent text (accent)
 - **Light Purple** (`#b392f0`): Link / accent text (accent)
+- **Dark Purple** (`#30145f`): Accent background (accent)
+- **Vivid Pink** (`#fd44b0`): Accent background (accent)
 - **Green** (`#c2ef4e`): Surface / card background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#b44092`, `#6a5fc1`, `#ad6caa26`, `#584674`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#6a5fc1`, `#584674`
 
 ## Typography
 

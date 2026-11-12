@@ -5,10 +5,10 @@ description: "Bright, high contrast"
 colors:
   background: "#eeefe9"
   on-background: "#111111"
-  on-surface-variant: "#374151"
-  outline: "#d2d3cc"
+  surface: "#9ea096"
+  outline: "#bfc1b7"
   outline-variant: "#b17816"
-  primary: "#cd8407"
+  primary: "#eb9d2a"
   on-primary: "#1a1a1a"
   secondary: "#b62ad9"
   on-secondary: "#ffffff"
@@ -62,6 +62,7 @@ components:
     padding: 2px
     height: 28px
   card:
+    backgroundColor: "{colors.surface}"
     rounded: 0px
 ---
 
@@ -78,7 +79,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; cream background dominates with black text and purple accents
+**Visual character:** Bright, high contrast; cream background dominates with black text and orange accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -86,18 +87,20 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
-- **Cream** (`#eeefe9`): Surface / card background (dominant)
-- **Light gray** (`#d2d3cc`): Divider / border (dominant)
+_The page background `#eeefe9` is the surface that fills the viewport; it is not among the most frequent fills listed below._
+
+- **Black** (`#111111`): Primary text (dominant)
+- **Cream** (`#fdfdf8`): Page background (dominant)
+- **Light gray** (`#bfc1b7`): Divider / border (dominant)
 - **Muted Blue** (`#374151`): Primary text (accent)
 - **White** (`#ffffff`): Light text (on dark) (accent)
 - **Gray** (`#65675e`): Secondary text (accent)
-- **Black** (`#0f0f10`): Dark background / footer (accent)
+- **Translucent Black** (`#00000099`): Dark background / footer (accent)
+- **Orange** (`#eb9d2a`): Accent background (accent)
 - **Purple** (`#b62ad9`): Accent background (accent)
-- **Vivid Orange** (`#cd8407`): Accent background (accent)
 - **Orange** (`#b17816`): Focus / active border (accent)
 
-**Incidental (low usage, do not lead with these):** `#e5e7e04d`, `#9ea096`
+**Incidental (low usage, do not lead with these):** `#e5e7e033`, `#9ea096`
 
 ## Typography
 

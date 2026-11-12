@@ -6,10 +6,9 @@ colors:
   background: "#ffffff"
   on-background: "#030712"
   on-surface-variant: "#4a5565"
-  outline: "#0000000d"
-  primary: "#00bcff"
+  primary: "#00a6f4"
   on-primary: "#1a1a1a"
-  secondary: "#00a6f4"
+  secondary: "#74d4ff"
   on-secondary: "#1a1a1a"
 typography:
   display:
@@ -89,7 +88,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with dark blue text and vivid cyan accents
+**Visual character:** Bright, high contrast; white background dominates with dark blue text and cyan accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -99,13 +98,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **White** (`#ffffff`): Page background (dominant)
 - **Near-transparent Dark Blue** (`#0307120d`): Overlay / scrim (dominant)
-- **Near-transparent Black** (`#0000000d`): Divider / border (dominant)
+- **Off-white** (`#f8fafc`): Light text (on dark) (accent)
 - **Muted Blue** (`#90a1b9`): Muted text (accent)
-- **Near-transparent White** (`#ffffff33`): Overlay / scrim (accent)
-- **Vivid Cyan** (`#00a6f4`): Link / accent text (accent)
-- **Black** (`#000000`): Dark background / footer (accent)
-- **Vivid Cyan** (`#00bcff`): Accent background (accent)
-- **Dark Blue** (`#052f4a`): Accent background (accent)
+- **Near-transparent White** (`#ffffff1a`): Overlay / scrim (accent)
+- **Cyan** (`#74d4ff`): Link / accent text (accent)
+- **Dark Blue** (`#030712`): Dark background / footer (accent)
+- **Vivid Cyan** (`#00a6f4`): Accent background (accent)
+- **Blue** (`#00598a`): Accent background (accent)
 
 ## Typography
 

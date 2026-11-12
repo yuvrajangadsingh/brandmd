@@ -7,10 +7,9 @@ colors:
   on-background: "#b3b3b3"
   on-surface-variant: "#ffffff"
   outline: "#292929"
-  primary: "#b00008"
-  on-primary: "#ffffff"
-  secondary: "#1ed760"
-  on-secondary: "#1a1a1a"
+  outline-variant: "#7676764d"
+  primary: "#1ed760"
+  on-primary: "#1a1a1a"
 typography:
   headline-lg:
     fontFamily: SpotifyMixUI
@@ -96,9 +95,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Dark gray** (`#292929`): Divider / border (dominant)
 - **Black** (`#000000`): Primary text (accent)
 - **Green** (`#1ed760`): Accent background (accent)
-- **Vivid Red** (`#b00008`): Accent background (accent)
+- **Translucent Gray** (`#7676764d`): Divider / border (accent)
 
-**Incidental (low usage, do not lead with these):** `#535353`, `#ffffff`, `#ffffff4d`, `#808080`
+**Incidental (low usage, do not lead with these):** `#535353`, `#ffffff`, `#ffffff4d`, `#481818`, `#808080`
 
 ## Typography
 

@@ -5,9 +5,9 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000"
-  on-surface-variant: "#5e5f6e"
+  surface: "#5e5f6e"
   outline: "#d9d9de"
-  outline-variant: "#00000033"
+  outline-variant: "#0000000f"
   primary: "#212126"
   on-primary: "#ffffff"
 typography:
@@ -90,13 +90,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Light gray** (`#d9d9de`): Divider / border (dominant)
 - **Black** (`#000000`): Primary text (dominant)
-- **White** (`#f7f7f8`): Page background (dominant)
-- **Gray** (`#5e5f6e`): Secondary text (accent)
-- **Dark gray** (`#42434d`): Dark background / footer (accent)
+- **White** (`#ffffff`): Page background (dominant)
+- **Gray** (`#747686`): Secondary text (accent)
 - **Black** (`#131316`): Dark background / footer (accent)
-- **Near-transparent Vivid Cyan** (`#3ad4fd14`): Overlay / scrim (accent)
+- **Near-transparent Vivid Cyan** (`#38dafd2e`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#8f8f9c`, `#00000033`, `#13131626`, `#ffffff33`
+**Incidental (low usage, do not lead with these):** `#42434d`, `#0000000f`, `#5e5f6e`, `#2121261a`, `#ffffff1a`
 
 ## Typography
 

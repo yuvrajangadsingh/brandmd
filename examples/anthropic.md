@@ -6,8 +6,8 @@ colors:
   background: "#faf9f5"
   on-background: "#141413"
   on-surface-variant: "#5e5d59"
-  outline: "#e8e6dc"
-  outline-variant: "#30302e"
+  outline: "#dedcd1"
+  outline-variant: "#3d3d3a"
   primary: "#faf9f5"
   on-primary: "#1a1a1a"
 typography:
@@ -104,8 +104,8 @@ _No explicit accent or action color was observed on this page. The machine token
 
 - **Cream** (`#faf9f5`): Page background (dominant)
 - **Black** (`#141413`): Dark background / footer (dominant)
-- **Light Muted Yellow** (`#e8e6dc`): Divider / border (dominant)
-- **Dark gray** (`#30302e`): Divider / border (dominant)
+- **Light Muted Yellow** (`#dedcd1`): Divider / border (dominant)
+- **Dark gray** (`#3d3d3a`): Divider / border (dominant)
 - **Gray** (`#5e5d59`): Secondary text (accent)
 - **Gray** (`#87867f`): Secondary text (accent)
 

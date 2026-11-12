@@ -7,10 +7,10 @@ colors:
   on-background: "#222222"
   on-surface-variant: "#6c6c6c"
   outline: "#dddddd"
-  primary: "#da1249"
-  on-primary: "#ffffff"
-  secondary: "#ff385c"
-  on-secondary: "#1a1a1a"
+  primary: "#ff385c"
+  on-primary: "#1a1a1a"
+  secondary: "#bd1e59"
+  on-secondary: "#ffffff"
 typography:
   headline-lg:
     fontFamily: Airbnb Cereal
@@ -85,7 +85,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with dark gray text and red accents
+**Visual character:** Bright, high contrast; white background dominates with dark gray text and pink accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -95,14 +95,14 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
+- **Dark gray** (`#222222`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
 - **Light gray** (`#dddddd`): Divider / border (dominant)
 - **Gray** (`#6c6c6c`): Secondary text (accent)
-- **Dark gray** (`#222222`): Dark background / footer (accent)
+- **Black** (`#000000`): Dark background / footer (accent)
 - **Translucent Black** (`#00000040`): Overlay / scrim (accent)
-- **Red** (`#da1249`): Accent background (accent)
-- **Vivid Red** (`#ff385c`): Secondary text (accent)
+- **Pink** (`#bd1e59`): Accent background (accent)
+- **Vivid Red** (`#ff385c`): Accent background (accent)
 
 ## Typography
 

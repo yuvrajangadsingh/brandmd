@@ -5,7 +5,9 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000"
+  surface: "#ffd7ef"
   on-surface-variant: "#533afd"
+  outline: "#e5edf5"
   primary: "#533afd"
   on-primary: "#ffffff"
   secondary: "#7f7dfc"
@@ -69,6 +71,7 @@ components:
     padding: 11px
     height: 40px
   card:
+    backgroundColor: "{colors.surface}"
     rounded: 0px
   input:
     typography: "{typography.body-md}"
@@ -90,7 +93,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -102,12 +105,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Muted Blue** (`#64748d`): Secondary text (accent)
+- **Off-white** (`#e5edf5`): Divider / border (dominant)
+- **Muted Blue** (`#50617a`): Secondary text (accent)
 - **Dark Blue** (`#0d1738`): Dark background / footer (accent)
-- **Light Purple** (`#dac0ff`): Accent background (accent)
-- **Vivid Blue** (`#533afd`): Accent background (accent)
 - **Blue** (`#7f7dfc`): Accent background (accent)
-- **Orange** (`#ffcf5e`): Accent background (accent)
+- **Off-white** (`#ffd7ef`): Surface / card background (accent)
+- **Orange** (`#efc680`): Accent background (accent)
+- **Vivid Blue** (`#533afd`): Accent background (accent)
 
 ## Typography
 

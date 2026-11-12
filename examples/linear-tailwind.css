@@ -2,16 +2,15 @@
 
 @theme {
   --color-light-text-on-dark: #f7f8f8;
-  --color-dark-background-footer: #08090a;
-  --color-overlay-scrim: #ffffff05;
-  --color-divider-border: #ffffff14;
+  --color-dark-background-footer: #0f1011;
+  --color-overlay-scrim: #ffffff14;
   --color-secondary-text: #8a8f98;
   --color-secondary-text-2: #62666d;
   --color-link-accent-text: #f79ce0;
   --color-overlay-scrim-2: #00ff051a;
-  --color-accent-background: #4ea7fc;
   --color-overlay-scrim-3: #f34e521a;
-  --color-surface-card-background: #e5e5e6;
+  --color-overlay-scrim-4: #27a64412;
+  --color-secondary-background: #d0d6e0;
 
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "Berkeley Mono", monospace;

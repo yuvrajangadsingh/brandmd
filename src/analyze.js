@@ -109,34 +109,35 @@ function dedupeFonts(map) {
 
 /**
  * Cluster similar colors together. Returns deduplicated list.
+ *
+ * Colours are clustered most-used first (ties by hex), so each cluster's
+ * representative is its most-used member and the result never depends on the
+ * order the page listed them in. Notations of one colour sum before sorting.
  */
 function clusterColors(colorFreqPairs, threshold = 15) {
-  const clusters = [];
-
-  for (const [color, freq] of colorFreqPairs) {
+  // Summed in key order: fractional multi-page counts add up to a different
+  // float in a different order, which could flip a tie.
+  const byHex = new Map();
+  for (const [color, freq] of [...colorFreqPairs].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) {
     const hex = toHex(color);
-    if (!hex) continue;
     // Alpha 0 paints nothing: layout plumbing, not palette evidence.
-    if (/^#[0-9a-f]{6}00$/i.test(hex)) continue;
+    if (!hex || /^#[0-9a-f]{6}00$/i.test(hex)) continue;
+    byHex.set(hex, (byHex.get(hex) || 0) + freq);
+  }
 
-    let merged = false;
-    for (const cluster of clusters) {
+  const clusters = [];
+  for (const [hex, freq] of [...byHex].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))) {
+    const cluster = clusters.find((c) => {
       try {
         // deltaE ignores alpha; a 10% scrim must not absorb the solid colour under it.
-        if (isSolidFill(hex) !== isSolidFill(cluster.hex)) continue;
-        if (chroma.deltaE(hex, cluster.hex) < threshold) {
-          cluster.freq += freq;
-          merged = true;
-          break;
-        }
+        if (isSolidFill(hex) !== isSolidFill(c.hex)) return false;
+        return chroma.deltaE(hex, c.hex) < threshold;
       } catch {
-        continue;
+        return false;
       }
-    }
-
-    if (!merged) {
-      clusters.push({ hex, freq, original: color });
-    }
+    });
+    if (cluster) cluster.freq += freq;
+    else clusters.push({ hex, freq });
   }
 
   return clusters.sort((a, b) => b.freq - a.freq);
@@ -763,9 +764,10 @@ export function analyze(raw) {
     // Exact colours, not clusters: a one-use 50% black must not absorb a
     // hundred-use black and carry its frequency to the gate. The gate judges the
     // same hex string the token emits. Ties break on the hex, so the pick is
-    // deterministic whatever order the capture listed them in.
+    // deterministic whatever order the capture listed them in, and the sum runs
+    // in key order so fractional multi-page counts add up to the same float.
     const byHex = new Map();
-    for (const [color, freq] of Object.entries(raw.textOnPage || raw.colors.text)) {
+    for (const [color, freq] of Object.entries(raw.textOnPage || raw.colors.text).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))) {
       const hex = toHex(color)?.toLowerCase();
       if (!hex || !isOpaque(hex)) continue;
       byHex.set(hex, (byHex.get(hex) || 0) + freq);
