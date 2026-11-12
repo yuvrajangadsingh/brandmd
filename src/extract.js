@@ -569,7 +569,11 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       authLanding = bare(from.hostname) !== bare(to.hostname) || AUTH_URL.test(to.hostname + to.pathname + to.hash);
     } catch { /* leave defaults */ }
     const loginLike = !!(raw.hasPasswordField || (raw.loginCopy && authLanding));
-    const provenance = { requestedUrl: url, finalUrl, redirected, crossOrigin, loginLike, blockLikely };
+    // Evidence is judged per page as well as merged: merging adds up text and
+    // palettes, so an empty page next to a healthy one used to pass.
+    const evidence = assessEvidence(raw);
+    const thin = evidence.ok ? false : evidence.reasons.join("; ");
+    const provenance = { requestedUrl: url, finalUrl, redirected, crossOrigin, loginLike, blockLikely, thin };
 
     // raw already carries `motion` and `bodyTextLength` from the evaluate.
     return { ...raw, title, url, finalUrl, provenance, vision: visionData, blockLikely };
