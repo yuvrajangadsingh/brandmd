@@ -358,6 +358,14 @@ test("a missing browser names the install command for the Playwright brandmd res
   assert.ok(r.stderr.includes(`Install it with: npx playwright@${version} install chromium`), r.stderr);
 });
 
+test("check --debug prints the raw launch error, like extraction does", () => {
+  const args = ["check", "https://example.com", "--against", SPEC];
+  assert.doesNotMatch(runCLI(args).stderr, /Executable doesn't exist at/);
+  const r = runCLI([...args, "--debug"]);
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /Executable doesn't exist at/);
+});
+
 // Playwright 1.65's own texts, copied from playwright-core/lib/coreBundle.js
 // (validateDependenciesLinux, executablePathOrDie, the launch exit path).
 // The API wraps each as "browserType.launch: <message>".

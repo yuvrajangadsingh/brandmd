@@ -162,7 +162,8 @@ program
         light = res.light;
       }
     } catch (err) {
-      reportError(err, { debug: opts.debug });
+      // --debug is declared on the root too, so commander hands it to the root.
+      reportError(err, { debug: opts.debug || program.opts().debug });
       process.exit(EXIT_ERROR);
     }
 
