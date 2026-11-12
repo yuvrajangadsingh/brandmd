@@ -19,6 +19,8 @@ const PAGES = {
   // A Cloudflare marker that never goes away, on an otherwise real page.
   "/challenge": `<!doctype html><title>Just a moment...</title>${BODY}<div id="cf-challenge-running"></div>`,
   "/ok": `<!doctype html><title>Acme</title>${BODY}`,
+  "/narrow": `<!doctype html><title>Acme</title>${BODY}
+<script>if (innerWidth < 800) document.body.replaceChildren();</script>`,
   // Real type and colour, almost no text: thin, but not a block page.
   "/thin": `<!doctype html><title>Acme</title><body style="background:#0b1020;color:#e6e9f2;font-family:Georgia,serif"><div style="background:#1e293b">Soon.</div>`,
   // Fine in light; under prefers-color-scheme: dark the page renders nothing.
@@ -102,6 +104,20 @@ test("a Cloudflare challenge that never clears is refused (exit 2), in extractio
   r = await run(t, ["check", url, "--against", SPEC, "--cf-wait-ms", "0"]);
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /Refusing to report drift/);
+  assert.match(r.stderr, /after 0ms/, "check waited the time it was given");
+
+  // Before the subcommand, too: a default on check used to win over it.
+  r = await run(t, ["--cf-wait-ms", "0", "check", url, "--against", SPEC]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /after 0ms/);
+});
+
+test("check renders at the --viewport it is given", { timeout: 120000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  // /narrow is empty below 800px, so only a 400px-wide render refuses.
+  const r = await run(t, ["check", `${base}/narrow`, "--against", SPEC, "--viewport", "400x800"]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /insufficient evidence/);
 });
 
 test("a multi-page run names the page that was blocked, not the first one", { timeout: 120000 }, async (t) => {
