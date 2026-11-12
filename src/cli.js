@@ -22,9 +22,10 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const pkg = require("../package.json");
 
-// Exit-code contract (locked by test/cli-contract.test.js):
+// Exit-code contract (locked by test/cli-contract.test.js, listed in the
+// README's "Refusals and exit codes"):
 //   0 = success, 1 = operational/validation error, 2 = refused (block /
-//   insufficient evidence / redirect not accepted).
+//   insufficient evidence / login wall), 3 = drift (`check` only).
 const EXIT_OK = 0;
 const EXIT_ERROR = 1;
 const EXIT_REFUSED = 2;
