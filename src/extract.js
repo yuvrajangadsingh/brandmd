@@ -138,10 +138,6 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
     const httpStatus = response ? response.status() : null;
     await page.waitForTimeout(2000);
-    // Record where we actually landed. Playwright follows redirects silently,
-    // so the requested URL and the extracted origin can differ (login walls,
-    // marketing → app, cross-origin SSO). The caller flags this in provenance.
-    const finalUrl = page.url();
 
     // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
     // Most JS challenges clear in 5-10s; some take longer on first visit.
@@ -492,6 +488,14 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
       return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, typeSamples, spacings, radii, shadows, cssVars, components, motion, bodyTextLength, hasPasswordField, loginCopy };
     });
+
+    // Record where we actually landed. Playwright follows redirects silently,
+    // so the requested URL and the extracted origin can differ (login walls,
+    // marketing → app, cross-origin SSO). The caller flags this in provenance.
+    // Read with the DOM sample, not before the waits: a challenge that clears,
+    // or an app that routes itself while the page scrolls, can land somewhere
+    // else, a sign-in page included.
+    const finalUrl = page.url();
 
     raw.pageBackground = await page.evaluate(probePageBackground);
 
