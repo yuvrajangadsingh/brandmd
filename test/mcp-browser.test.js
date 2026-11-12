@@ -16,14 +16,19 @@ const PAGE = `<!doctype html><title>Acme</title>
 <p style="font-size:16px">A small local page with enough text, colour and type for brandmd to accept it.</p>
 <a href="#" class="btn" style="display:inline-block;background:#3b82f6;color:#fff;padding:12px 20px;border-radius:8px">Get started</a>`;
 
-test("mcp: a real extraction of a local page returns its DESIGN.md", async (t) => {
+async function browserOk(t) {
   try {
     await (await chromium.launch({ headless: true })).close();
+    return true;
   } catch (err) {
     if (process.env.BRANDMD_REQUIRE_BROWSER) throw err;
     t.skip(`chromium not available: ${err.message.split("\n")[0]}`);
-    return;
+    return false;
   }
+}
+
+test("mcp: a real extraction of a local page returns its DESIGN.md", async (t) => {
+  if (!(await browserOk(t))) return;
   const server = createServer((_, res) => res.end(PAGE)).listen(0, "127.0.0.1");
   await once(server, "listening");
   const env = { ...process.env };
@@ -50,4 +55,34 @@ test("mcp: a real extraction of a local page returns its DESIGN.md", async (t) =
     child.stdin.end();
     server.close();
   }
+});
+
+// A cancel or a deadline sends the CLI run SIGTERM. Playwright's debug log
+// names the browser it launched and records how it went: the browser exited,
+// or the CLI exited first and Playwright SIGKILLed the browser's process group
+// on the way out. So the test needs no process listing and signals only the
+// CLI it spawned. The 10 s bound sits well under the 45 s page-load timeout,
+// which would otherwise end the run on its own.
+test("a CLI run sent SIGTERM mid page load closes its browser", { skip: process.platform === "win32", timeout: 60000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  let reached;
+  const navigating = new Promise((r) => (reached = r));
+  const server = createServer(() => reached()).listen(0, "127.0.0.1"); // never answers, so the page load hangs
+  t.after(() => (server.closeAllConnections(), server.close()));
+  await once(server, "listening");
+  const env = { ...process.env, DEBUG: "pw:browser" };
+  delete env.BRANDMD_RAW_FILE;
+  const cli = spawn(process.execPath, [BIN, `http://127.0.0.1:${server.address().port}/`], { env, stdio: ["ignore", "ignore", "pipe"] });
+  t.after(() => cli.kill("SIGTERM")); // a no-op once it has exited
+  let log = "";
+  cli.stderr.setEncoding("utf8").on("data", (d) => (log += d));
+  const closed = once(cli, "close");
+  await Promise.race([navigating, closed.then(() => assert.fail(`the CLI exited before loading the page:\n${log}`))]);
+  const pid = log.match(/<launched> pid=(\d+)/)?.[1];
+  assert.ok(pid, "Playwright logged the browser it launched");
+  cli.kill("SIGTERM");
+  const late = new Promise((r) => setTimeout(r, 10000, "late").unref());
+  assert.notEqual(await Promise.race([closed, late]), "late", "the CLI must exit within 10 s of SIGTERM");
+  assert.match(log, new RegExp(`\\[pid=${pid}\\] <(process did exit|will force kill)`), "the browser exited or was killed");
+  assert.doesNotMatch(log, /exception while trying to kill process/);
 });

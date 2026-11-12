@@ -38,6 +38,7 @@ function session(messages, env, expect) {
 
 const call = (id, args) => ({ jsonrpc: "2.0", id, method: "tools/call", params: { name: "extract_design_md", arguments: args } });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const cancel = (requestId) => ({ jsonrpc: "2.0", method: "notifications/cancelled", params: { requestId, reason: "test" } });
 
 // A server that stays up until end(), so a test can look at it between replies.
 function live(t, env) {
@@ -222,4 +223,20 @@ test("mcp: an out-of-range BRANDMD_MCP_TIMEOUT falls back to 180 s", { skip: pro
   const early = await s.reply(1, 1500);
   await s.end();
   assert.equal(early, undefined, "2147484 s overflows Node's timer, which would stop the call at once");
+});
+
+test("mcp: notifications/cancelled stops that call's CLI run and sends no reply", { skip: process.platform === "win32" }, async (t) => {
+  const raw = fifo();
+  const s = live(t, { BRANDMD_RAW_FILE: raw });
+  s.send(call(1, { urls: ["vercel.com"] }));
+  const fd = await holdReader(t, raw);
+  s.send(cancel(1));
+  const gone = await readerGone(fd);
+  s.send({ jsonrpc: "2.0", id: 2, method: "ping" });
+  const pong = await s.reply(2);
+  const late = await s.reply(1, 500);
+  await s.end();
+  assert.ok(pong, "the server keeps serving");
+  assert.equal(gone, true, "the cancelled call's CLI run must be gone");
+  assert.equal(late, undefined, "a cancelled call gets no reply");
 });
