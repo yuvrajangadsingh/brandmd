@@ -34,6 +34,7 @@ const timeout = Number(process.env.BRANDMD_MCP_TIMEOUT);
 const TIMEOUT_S = timeout > 0 && timeout <= 86400 ? timeout : 180;
 
 const children = new Set();
+const calls = new Map(); // request id -> AbortController, for notifications/cancelled
 const rpcError = (code, message) => Object.assign(new Error(message), { code });
 const text = (t) => ({ type: "text", text: t });
 const toolError = (t) => ({ isError: true, content: [text(t)] });
@@ -49,11 +50,12 @@ function halt(child) {
   setTimeout(() => child.kill("SIGKILL"), 10000).unref();
 }
 
-function runCli(args) {
+function runCli(args, signal) {
   return new Promise((done) => {
     const child = spawn(process.execPath, [BIN, ...args], { stdio: ["ignore", "pipe", "pipe"] });
     children.add(child);
     const timer = setTimeout(() => (halt(child), done({ timedOut: true })), TIMEOUT_S * 1000);
+    signal.addEventListener("abort", () => halt(child), { once: true });
     let out = "";
     let err = "";
     // setEncoding decodes across chunk boundaries; `+= buffer` would split
@@ -72,7 +74,7 @@ function runCli(args) {
   });
 }
 
-async function extract(args) {
+async function extract(args, signal) {
   const { urls, dark } = args && typeof args === "object" ? args : {};
   if (!Array.isArray(urls) || !urls.length || !urls.every((u) => typeof u === "string" && u && !u.includes("\0"))) {
     return toolError("urls must be a non-empty array of URL strings");
@@ -84,14 +86,14 @@ async function extract(args) {
   // anyway (not host-like), except localhost.
   const bad = urls.find((u) => u.startsWith("-") || (/^[a-z][a-z0-9-]*$/i.test(u) && u.toLowerCase() !== "localhost"));
   if (bad) return toolError(`"${bad}" is not a URL. Pass a page like https://example.com or example.com.`);
-  const { code, out, err, timedOut } = await runCli([...(dark ? ["--dark"] : []), ...urls]);
+  const { code, out, err, timedOut } = await runCli([...(dark ? ["--dark"] : []), ...urls], signal);
   if (timedOut) return toolError(`brandmd stopped after ${TIMEOUT_S}s without finishing. Try fewer pages, or leave out dark.`);
   if (code !== 0) return toolError(err.trim() || `brandmd exited with code ${code}`);
   const warnings = err.split("\n").filter((l) => /^Warning:/.test(l));
   return { content: [text(out), ...(warnings.length ? [text(warnings.join("\n"))] : [])] };
 }
 
-async function handle({ method, params }, version) {
+async function handle({ method, params }, version, signal) {
   switch (method) {
     case "initialize":
       return {
@@ -105,7 +107,7 @@ async function handle({ method, params }, version) {
       return { tools: [TOOL] };
     case "tools/call":
       if (params?.name !== TOOL.name) throw rpcError(-32602, `Unknown tool: ${params?.name}`);
-      return extract(params.arguments);
+      return extract(params.arguments, signal);
     default:
       throw rpcError(-32601, `Method not found: ${method}`);
   }
@@ -122,13 +124,23 @@ async function respond(msg, version) {
   // MCP request ids are strings or numbers, never null.
   const idOk = typeof msg.id === "string" || typeof msg.id === "number";
   if (msg.jsonrpc !== "2.0" || typeof msg.method !== "string") return invalid(idOk ? msg.id : null);
-  if (!("id" in msg)) return undefined;
-  if (!idOk) return invalid(null);
-  try {
-    return reply(msg.id, { result: await handle(msg, version) });
-  } catch (e) {
-    return reply(msg.id, { error: { code: Number.isInteger(e.code) ? e.code : -32603, message: e.message } });
+  if (!("id" in msg)) {
+    if (msg.method === "notifications/cancelled") calls.get(msg.params?.requestId)?.abort();
+    return undefined;
   }
+  if (!idOk) return invalid(null);
+  const call = new AbortController();
+  calls.set(msg.id, call);
+  let body;
+  try {
+    body = { result: await handle(msg, version, call.signal) };
+  } catch (e) {
+    body = { error: { code: Number.isInteger(e.code) ? e.code : -32603, message: e.message } };
+  } finally {
+    if (calls.get(msg.id) === call) calls.delete(msg.id);
+  }
+  // MCP: a cancelled request gets no reply.
+  return call.signal.aborted ? undefined : reply(msg.id, body);
 }
 
 export function serve(version) {
