@@ -5,7 +5,7 @@ description: "Dark, high contrast"
 colors:
   background: "#13111c"
   on-background: "#f7f7f8"
-  on-surface-variant: "#a1a0ab"
+  on-surface-variant: "#8888a0"
   outline: "#33323e"
   outline-variant: "#ffffff26"
   primary: "#180d43"
@@ -84,6 +84,8 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
+**Motion:** Animation surfaces detected (canvas rendering). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
@@ -95,7 +97,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Near-transparent White** (`#ffffff33`): Overlay / scrim (accent)
 - **Dark Purple** (`#180d43`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff26`, `#a1a0ab`, `#13111c0b`, `#42946e`, `#428a7233`, `#313c3c`
+**Incidental (low usage, do not lead with these):** `#ffffff26`, `#a1a0ab`, `#00000073`, `#42946e`, `#428a7233`, `#313c3c`
 
 ## Typography
 
@@ -103,12 +105,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 **Secondary font:** IBM Plex Serif
 
 **Fonts by role:**
-- Headings: IBM Plex Serif
-- Display / hero: SFMono-Regular, Inter
+- Headings: IBM Plex Serif, Inter
+- Display / hero: SFMono-Regular
 - Body: SFMono-Regular
 - Buttons / nav: Inter
 
-**All detected fonts:** Inter (7144), SFMono-Regular (2165), JetBrains Mono (306), Helvetica (17), SF Mono (16), IBM Plex Serif (8), Inter Tight (4)
+**All detected fonts:** Inter (7146), SFMono-Regular (2196), JetBrains Mono (306), Helvetica (17), SF Mono (16), IBM Plex Serif (8), Inter Tight (4)
 
 **Type scale:**
 - Headings: 24px, 40px
@@ -117,7 +119,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 400, 500, 600, 700, 800
 
-**Line heights:** 26px, 56px, 65px, 19.5px, 23px, 9.5px, 11px, 20px, 18px, 21px
+**Line heights:** 26px, 56px, 65px, 19.5px, 23px, 9.5px, 20px, 11px, 18px, 21px
 
 **Letter spacing:** -0.22px, -0.24px, 0.24px, -0.09px, -0.06px, -0.8px
 

@@ -67,8 +67,8 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: "{rounded.full}"
-    padding: 12px
-    height: 56px
+    padding: 8px
+    height: 44px
   card:
     backgroundColor: "{colors.background}"
     rounded: 0px
@@ -97,8 +97,6 @@ components:
 **Visual character:** Dark, high contrast; dark cyan background dominates with white text and vivid green accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
-
-**Motion:** Animation surfaces detected (canvas rendering). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 

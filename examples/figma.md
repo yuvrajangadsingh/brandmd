@@ -51,9 +51,9 @@ spacing:
   base: 12px
   xs: 2px
   sm: 4px
-  md: 6px
-  lg: 8px
-  xl: 16px
+  md: 4.5px
+  lg: 6px
+  xl: 8px
 components:
   button-primary:
     backgroundColor: "#000000"

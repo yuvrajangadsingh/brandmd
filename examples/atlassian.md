@@ -6,7 +6,8 @@ colors:
   background: "#ffffff"
   on-background: "#292a2e"
   on-surface-variant: "#1868db"
-  outline: "#dddee1"
+  outline: "#101214"
+  outline-variant: "#dddee1"
   primary: "#c75300"
   on-primary: "#ffffff"
   secondary: "#4c6b1f"
@@ -99,8 +100,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **Dark gray** (`#292a2e`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
+- **Black** (`#101214`): Divider / border (dominant)
 - **Light gray** (`#dddee1`): Divider / border (dominant)
-- **Black** (`#101214`): Dark background / footer (accent)
+- **Dark gray** (`#1e1f21`): Dark background / footer (accent)
 - **Green** (`#4c6b1f`): Accent background (accent)
 - **Dark Blue** (`#09326c`): Primary text (accent)
 - **Blue** (`#1868db`): Accent background (accent)
@@ -118,7 +120,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Display / hero: Atlassian Mono
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (1653), Charlie Display (636), Atlassian Mono (27)
+**All detected fonts:** Charlie Text (1625), Charlie Display (651), Atlassian Mono (27)
 
 **Type scale:**
 - Headings: 24px, 40px, 48px, 64px, 96px
@@ -127,9 +129,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 14px, 24px, 15.5px, 31px, 16px, 18px, 25px, 30px, 96px, 32.5px
+**Line heights:** 14px, 24px, 15.5px, 31px, 16px, 18px, 30px, 25px, 96px, 32.5px
 
-**Letter spacing:** 0.42px, -0.2px, -3px, 0.48px, -0.16px, 0.8px
+**Letter spacing:** 0.42px, -0.2px, -3px, 0.8px, -0.16px, -0.24px
 
 ## Layout
 
@@ -142,7 +144,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 Uses 3 shadow styles for layering and elevation:
 
 - Level 1: `rgb(248, 248, 248) 0px 0px 0px 0px`
-- Level 2: `rgba(9, 30, 66, 0.15) 0px 8px 12px 0px, rgba(9, 30, 66, 0.31) 0px 0px 1px 0px`
+- Level 2: `rgba(30, 31, 33, 0.15) 0px 8px 12px 0px, rgba(30, 31, 33, 0.31) 0px 0px 1px 0px`
 - Level 3: `rgb(128, 128, 128) 0px 0px 5px 0px`
 
 ## Shapes

@@ -120,7 +120,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Manrope
 - Body: Inter
 
-**All detected fonts:** Inter (4179), Source Code Pro (96), Manrope (42)
+**All detected fonts:** Inter (4190), Source Code Pro (96), Manrope (42)
 
 **Type scale:**
 - Headings: 34px, 46px

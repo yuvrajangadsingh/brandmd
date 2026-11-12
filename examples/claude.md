@@ -1,6 +1,6 @@
 ---
 version: alpha
-name: "Claude"
+name: "Claude by Anthropic | The AI for problem solvers"
 description: "Bright, high contrast"
 colors:
   background: "#faf9f5"
@@ -13,9 +13,9 @@ colors:
 typography:
   display:
     fontFamily: anthropicSerif
-    fontSize: 72px
-    fontWeight: 330
-    lineHeight: 1.1
+    fontSize: 56px
+    fontWeight: 400
+    lineHeight: 1.15
   headline-lg:
     fontFamily: anthropicSerif
     fontSize: 52px
@@ -23,14 +23,14 @@ typography:
     lineHeight: 1.2
   headline-md:
     fontFamily: anthropicSerif
-    fontSize: 30px
-    fontWeight: 400
-    lineHeight: 1.2
+    fontSize: 32px
+    fontWeight: 500
+    lineHeight: 1.09
   body-lg:
     fontFamily: anthropicSans
-    fontSize: 16px
+    fontSize: 17px
     fontWeight: 400
-    lineHeight: 1.63
+    lineHeight: 1.59
   body-md:
     fontFamily: anthropicSans
     fontSize: 15px
@@ -51,10 +51,10 @@ rounded:
 spacing:
   base: 8px
   xs: 4px
-  sm: 12px
-  md: 16px
-  lg: 20px
-  xl: 24px
+  sm: 6px
+  md: 12px
+  lg: 16px
+  xl: 20px
 components:
   button-primary:
     backgroundColor: "#c6613f"
@@ -84,7 +84,7 @@ components:
 > Generate one for your site: `npx brandmd https://yoursite.com` ([npm](https://www.npmjs.com/package/brandmd) · [repo](https://github.com/yuvrajangadsingh/brandmd))
 
 
-# Design System: Claude
+# Design System: Claude by Anthropic | The AI for problem solvers
 
 > Extracted from [https://claude.com](https://claude.com) by brandmd
 
@@ -117,16 +117,16 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: anthropicSans, anthropicSerif
 - Body: anthropicSans
 
-**All detected fonts:** anthropicSans (897), anthropicSerif (12), Segoe UI (1)
+**All detected fonts:** anthropicSans (935), anthropicSerif (14), Segoe UI (1)
 
 **Type scale:**
-- Headings: 24px, 30px, 52px, 72px
-- Body / UI: 14px, 15px, 16px, 17px, 19px, 23px
-- Captions / Small: 11px, 12px
+- Headings: 24px, 32px, 52px, 56px
+- Body / UI: 15px, 16px, 17px, 18px, 19px
+- Captions / Small: 11px, 11.5px, 12px
 
-**Weights in use:** 330, 400, 500, 600, 700
+**Weights in use:** 400, 500, 600
 
-**Line heights:** 22.5px, 19px, 26px, 24px, 12px, 18px, 17.5px, 19.5px, 20px, 27px
+**Line heights:** 22.5px, 19px, 24px, 12px, 18px, 25.5px, 17.5px, 27px, 62.5px, 17px
 
 **Letter spacing:** 0.12px
 
@@ -134,7 +134,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Spacing scale:** 4px, 8px, 12px, 16px, 20px, 24px, 32px, 64px
 
-**Base unit:** 4px grid — 100% of all weighted spacing values are multiples of 4.
+**Base unit:** 4px grid — 99% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
@@ -144,7 +144,7 @@ Uses 5 shadow styles for layering and elevation:
 - Level 2: `rgba(0, 0, 0, 0.1) 0px 4px 16px 0px`
 - Level 3: `rgb(20, 20, 19) 0px 0px 0px 0px`
 - Level 4: `rgba(0, 0, 0, 0.016) 0px 4px 24px 0px, rgba(0, 0, 0, 0.016) 0px 4px 32px 0px, rgba(0, 0, 0, 0.01) 0px 2px 64px 0px, rgba(0, 0, 0, 0.01) 0px 16px 32px 0px`
-- Level 5: `color(srgb 0.85098 0.466667 0.341177 / 0.1) 0px 4px 20px 0px`
+- Level 5: `rgba(98, 158, 218, 0.16) 0px 4px 20px 0px`
 
 ## Shapes
 
@@ -180,6 +180,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 - Do use a 4px grid for spacing
 - Do use `#c6613f` for primary actions and CTAs
+- Do stick to 3 font weights: 400, 500, 600
 - Do use `anthropicSerif` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond anthropicSerif and anthropicSans

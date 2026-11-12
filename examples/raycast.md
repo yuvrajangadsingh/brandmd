@@ -5,17 +5,22 @@ description: "Dark, high contrast"
 colors:
   background: "#07080a"
   on-background: "#ffffff"
-  surface: "#e6e6e6"
+  surface: "#ffffff"
   outline: "#ffffff0f"
   primary: "#20235bb3"
   on-primary: "#ffffff"
 typography:
   display:
     fontFamily: Inter
+    fontSize: 41px
+    fontWeight: 400
+    lineHeight: 1
+  headline-lg:
+    fontFamily: Inter
     fontSize: 32px
     fontWeight: 500
     lineHeight: 1.16
-  headline-lg:
+  headline-md:
     fontFamily: Inter
     fontSize: 24px
     fontWeight: 500
@@ -34,20 +39,19 @@ typography:
     fontFamily: Inter
     fontSize: 13px
     fontWeight: 400
-    lineHeight: 1.23
+    lineHeight: 1.81
 rounded:
   sm: 6px
-  md: 8px
+  md: 10px
   lg: 11px
   xl: 12px
   2xl: 16px
   3xl: 20px
-  full: 9999px
 spacing:
   base: 8px
-  xs: 2.5px
+  xs: 1px
   sm: 4px
-  md: 10px
+  md: 6px
   lg: 12px
   xl: 14.5px
 components:
@@ -67,7 +71,8 @@ components:
     height: 67px
   card:
     backgroundColor: "{colors.surface}"
-    rounded: 0px
+    rounded: "{rounded.xl}"
+    padding: 4px
   input:
     typography: "{typography.body-md}"
     rounded: 0px
@@ -98,13 +103,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 - **White** (`#ffffff`): Light text (on dark) (dominant)
 - **Dark Muted Blue** (`#07080a`): Dark background / footer (dominant)
+- **Near-transparent Off-white** (`#dee2ff14`): Overlay / scrim (dominant)
 - **Near-transparent White** (`#ffffff0f`): Divider / border (dominant)
-- **Near-transparent Off-white** (`#dee2ff14`): Overlay / scrim (accent)
 - **Gray** (`#6a6b6c`): Secondary text (accent)
-- **Gray** (`#9c9c9d`): Muted text (accent)
 - **Off-white** (`#e6e6e6`): Surface / card background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff66`, `#00000070`, `#434345`, `#20235bb3`
+**Incidental (low usage, do not lead with these):** `#9c9c9d`, `#ffffff66`, `#00000070`, `#434345`, `#20235bb3`
 
 ## Typography
 
@@ -115,22 +119,22 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Inter
 - Body: Inter
 
-**All detected fonts:** Inter (1997), SF Pro Text (522), SF Pro (37), GeistMono (31), jetBrainsMono (1)
+**All detected fonts:** Inter (2112), SF Pro Text (522), SF Pro (37), GeistMono (31), jetBrainsMono (1)
 
 **Type scale:**
-- Headings: 24px, 32px
-- Body / UI: 14px, 15px, 16px, 18px, 20px, 22px
+- Headings: 24px, 32px, 41px
+- Body / UI: 14px, 15px, 16px, 18px, 20px
 - Captions / Small: 10px, 11px, 12px, 13px
 
-**Weights in use:** 300, 400, 500, 600, 700
+**Weights in use:** 300, 350, 400, 500, 600, 700
 
-**Line heights:** 18.5px, 27.5px, 37px, 16px, 22.5px, 38.5px, 25.5px, 19.5px, 13px, 20.5px
+**Line heights:** 18.5px, 27.5px, 23.5px, 16px, 37px, 41px, 22.5px, 11px, 20.5px, 32px
 
-**Letter spacing:** 0.1px, 0.2px, 0.3px, 0.8px, 0.5px, -0.05px
+**Letter spacing:** 0.2px, 0.3px, 0.5px, 0.4px, 1.44px, -0.8px
 
 ## Layout
 
-**Spacing scale:** 8px, 10px, 12px, 14.5px, 15px, 16px, 20px, 24px
+**Spacing scale:** 4px, 8px, 12px, 14.5px, 15px, 16px, 20px, 24px
 
 ## Elevation & Depth
 
@@ -138,17 +142,17 @@ Uses 5 shadow styles for layering and elevation:
 
 - Level 1: `rgba(0, 0, 0, 0.4) 0px 1.5px 0.5px 2.5px, rgb(0, 0, 0) 0px 0px 0.5px 1px, rgba(0, 0, 0, 0.25) 0px 2px 1px 1px inset, rgba(255, 255, 255, 0.2) 0px 1px 1px 1px inset`
 - Level 2: `rgb(27, 28, 30) 0px 0px 0px 1px, rgb(7, 8, 10) 0px 0px 0px 1px inset`
-- Level 3: `rgba(215, 201, 175, 0.05) 0px 0px 20px 5px, rgba(215, 201, 175, 0.05) 0px 0px 16px -7px`
-- Level 4: `rgba(0, 0, 0, 0.28) 0px 1.189px 2.377px 0px`
-- Level 5: `rgba(255, 255, 255, 0.05) 0px 1px 0px 0px inset, rgba(255, 255, 255, 0.25) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px -1px 0px 0px inset`
+- Level 3: `rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset`
+- Level 4: `rgba(0, 0, 0, 0.25) 0px 0px 0px 0.5px`
+- Level 5: `rgba(215, 201, 175, 0.05) 0px 0px 20px 5px, rgba(215, 201, 175, 0.05) 0px 0px 16px -7px`
 
 ## Shapes
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 6px, 8px, 11px, 12px, 16px, 20px, 100%, 9999px (pill)
+**Border radii:** 6px, 10px, 11px, 12px, 16px, 20px, 25%, 100%
 
-Asymmetric / percentage radii observed (100%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (25%, 100%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
@@ -163,8 +167,9 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Font: 16px, weight 400
 
 ### Cards
-- Corner radius: 0px
-- Padding: 0px 0px 0px 0px
+- Background: `#ffffff`
+- Corner radius: 12px
+- Padding: 4px 4px 4px 4px
 
 ### Inputs
 - Border: 0px none rgb(255, 255, 255)
@@ -178,7 +183,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and SF Pro Text
-- Don't use border-radius values outside: 6px, 8px, 11px, 12px, 16px, 20px, 100%, 9999px (pill)
+- Don't use border-radius values outside: 6px, 10px, 11px, 12px, 16px, 20px, 25%, 100%
 
 ---
 

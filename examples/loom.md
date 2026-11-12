@@ -116,7 +116,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: Charlie Display, Charlie Text
 - Body: Charlie Text
 
-**All detected fonts:** Charlie Text (852), Charlie Display (30), Segoe UI (1)
+**All detected fonts:** Charlie Text (855), Charlie Display (30), Segoe UI (1)
 
 **Type scale:**
 - Headings: 25.5px, 26.5px, 32.5px, 44px, 63.5px
@@ -125,7 +125,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 400, 500, 700
 
-**Line heights:** 24px, 27px, 18.5px, 16px, 30.5px, 33.5px, 65px, 40.5px, 15.5px, 18px
+**Line heights:** 24px, 27px, 18.5px, 16px, 30.5px, 33.5px, 40.5px, 65px, 15.5px, 18px
 
 ## Layout
 

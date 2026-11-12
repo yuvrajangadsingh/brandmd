@@ -76,7 +76,7 @@ components:
     padding: 16px
 ---
 
-> This is a real `DESIGN.md` example generated from [https://notion.so](https://notion.so) with `npx brandmd`.
+> This is a real `DESIGN.md` example generated from [https://notion.com](https://notion.com) with `npx brandmd`.
 >
 > Drop a `DESIGN.md` like this in your project root so Claude Code, Cursor, Gemini CLI, Codex, or Google Stitch can use the colors, typography, spacing, and UI patterns when generating UI.
 >
@@ -85,9 +85,9 @@ components:
 
 # Design System: The AI workspace that works for you. | Notion
 
-> Extracted from [https://notion.so](https://notion.so) by brandmd
+> Extracted from [https://notion.com](https://notion.com) by brandmd
 
-> ⚠️ **Provenance:** `https://notion.so` landed on a different origin (`https://www.notion.com/`). These tokens may describe that page, not the URL you asked for.
+> ⚠️ **Provenance:** `https://notion.com` redirected to `https://www.notion.com/`. These tokens may describe that page, not the URL you asked for.
 
 ## Overview
 

@@ -6,32 +6,28 @@
 
 ## Color palette
 
-### Shared (0)
-
-_none_
-
-### Only in Stripe (7)
+### Shared (3)
 
 - `#FFFFFF` — background (background)
+- `#FFFFFF` — on-primary (on-primary)
+- `#1A1A1A` — on-secondary (on-secondary)
+
+### Only in Stripe (4)
+
 - `#000000` — on-background (on-background)
 - `#533AFD` — on-surface-variant (on-surface-variant)
 - `#533AFD` — primary (primary)
-- `#FFFFFF` — on-primary (on-primary)
-- `#29227D` — secondary (secondary)
-- `#FFFFFF` — on-secondary (on-secondary)
+- `#7F7DFC` — secondary (secondary)
 
-### Only in Agentic Infrastructure (10)
+### Only in Agentic Infrastructure (7)
 
 - `#FAFAFA` — background (background)
 - `#171717` — on-background (on-background)
-- `#00FF95` — surface (surface)
-- `#4D4D4D` — on-surface-variant (on-surface-variant)
+- `#666666` — surface (surface)
 - `#EBEBEB` — outline (outline)
-- `#00000014` — outline-variant (outline-variant)
-- `#FF1744` — primary (primary)
-- `#1A1A1A` — on-primary (on-primary)
-- `#FFD000` — secondary (secondary)
-- `#1A1A1A` — on-secondary (on-secondary)
+- `#FFFFFF66` — outline-variant (outline-variant)
+- `#0072F5` — primary (primary)
+- `#52AEFF` — secondary (secondary)
 
 
 ## Typography
@@ -49,7 +45,7 @@ _none_
 | | Stripe | Agentic Infrastructure |
 |---|---|---|
 | Spacing scale | 8px, 1px, 2px, 4px, 6px, 10px | 2px, 2.5px, 4px, 5px, 6px, 8px |
-| Border radii | 4px, 5px, 6px, 8px, 16px | 4px, 6px, 8px, 9999px |
+| Border radii | 4px, 5px, 6px, 8px, 16px | 4px, 6px, 8px, 20px, 9999px |
 
 ## Components
 
@@ -61,7 +57,7 @@ _none_
 | Corner radius | 4px | 9999px | ≠ |
 | Font | 14px, weight 400 | 16px, weight 500 | ≠ |
 | Height | 40px | 40px | = |
-| Padding | 11.5px 20px 12.5px 20px | 0px 8px 0px 4px | ≠ |
+| Padding | 11.5px 20px 12.5px 20px | 0px 12px 0px 8px | ≠ |
 | Text color | #ffffff | #171717 | ≠ |
 
 _5 of 6 properties differ between Stripe and Agentic Infrastructure buttons._
@@ -73,6 +69,16 @@ _only in Stripe_:
 ```
 Corner radius: 0px
 Padding: 0px 0px 0px 0px
+```
+
+### Inputs
+
+_only in Stripe_:
+```
+Border: 0px none rgb(6, 27, 49)
+Corner radius: 0px
+Padding: 0px 15px 0px 15px
+Font size: 16px
 ```
 
 ### button-primary
@@ -106,6 +112,14 @@ _3 of 5 properties differ between Stripe and Agentic Infrastructure button-secon
 
 _only in Stripe_:
 ```
+rounded: 0px
+```
+
+### input
+
+_only in Stripe_:
+```
+typography: {typography.body-md}
 rounded: 0px
 ```
 

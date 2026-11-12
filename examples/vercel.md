@@ -5,13 +5,12 @@ description: "Bright, high contrast"
 colors:
   background: "#fafafa"
   on-background: "#171717"
-  surface: "#00ff95"
-  on-surface-variant: "#4d4d4d"
+  surface: "#666666"
   outline: "#ebebeb"
-  outline-variant: "#00000014"
-  primary: "#ff1744"
-  on-primary: "#1a1a1a"
-  secondary: "#ffd000"
+  outline-variant: "#ffffff66"
+  primary: "#0072f5"
+  on-primary: "#ffffff"
+  secondary: "#52aeff"
   on-secondary: "#1a1a1a"
 typography:
   display:
@@ -41,13 +40,14 @@ typography:
     lineHeight: 1.43
   label-sm:
     fontFamily: GeistSans
-    fontSize: 12px
+    fontSize: 13px
     fontWeight: 400
-    lineHeight: 1.33
+    lineHeight: 1.38
 rounded:
   sm: 4px
   md: 6px
   lg: 8px
+  xl: 20px
   full: 9999px
 spacing:
   base: 2px
@@ -83,11 +83,11 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and vivid yellow accents
+**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (canvas rendering, scripted animation via requestAnimationFrame). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -97,12 +97,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Dark gray** (`#4d4d4d`): Primary text (dominant)
 - **White** (`#fafafa`): Page background (dominant)
 - **Black** (`#171717`): Dark background / footer (accent)
-- **Vivid Yellow** (`#ffd000`): Accent background (accent)
-- **Vivid Green** (`#00ff95`): Surface / card background (accent)
-- **Vivid Red** (`#ff1744`): Accent background (accent)
-- **Vivid Purple** (`#9500ff`): Accent background (accent)
+- **Blue** (`#52aeff`): Accent background (accent)
+- **Vivid Blue** (`#0072f5`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#ffffff`, `#00000014`
+**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#ffffff`, `#ffffff29`, `#ffffff66`, `#666666`
 
 ## Typography
 
@@ -116,11 +114,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 **Type scale:**
 - Headings: 24px, 56px, 64px
 - Body / UI: 14px, 16px, 18px, 20px, 22px
-- Captions / Small: 11px, 12px
+- Captions / Small: 11px, 12px, 13px
 
-**Weights in use:** 400, 450, 500
+**Weights in use:** 400, 450, 500, 600
 
-**Line heights:** 24px, 20px, 32px, 21px, 28px, 16px, 33px, 56px, 26.5px, 64px
+**Line heights:** 24px, 20px, 32px, 21px, 28px, 18px, 33px, 56px, 26.5px, 64px
 
 **Letter spacing:** -0.96px, -3.36px, 0.2px, -0.32px, -1.2px, -3.84px
 
@@ -133,18 +131,18 @@ Palette extracted from the live page. Token names below map to the machine-reada
 Uses 5 shadow styles for layering and elevation:
 
 - Level 1: `rgb(235, 235, 235) 0px 0px 0px 1px`
-- Level 2: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px`
-- Level 3: `rgb(235, 235, 235) 0px 0px 0px 1px inset`
+- Level 2: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`
+- Level 3: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px`
 - Level 4: `rgba(0, 0, 0, 0.1) 0px 1px 0px 0px`
 - Level 5: `rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px`
 
 ## Shapes
 
-**Shape language:** Subtle rounding on interactive elements.
+**Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 0px 0px 0px 1px, 0px 8px 8px 0px, 4px, 6px, 8px, 100%, 9999px (pill)
+**Border radii:** 4px, 6px, 7px 7px 0px, 8px, 20px, 9999px (pill)
 
-Asymmetric / percentage radii observed (0px 0px 0px 1px, 0px 8px 8px 0px, 100%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (7px 7px 0px); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
@@ -155,17 +153,17 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Text color: `#171717`
 - Corner radius: 9999px
 - Height: 40px
-- Padding: 0px 8px 0px 4px
+- Padding: 0px 12px 0px 8px
 - Font: 16px, weight 500
 
 ## Do's and Don'ts
 
 - Do use `#ffffff` for primary actions and CTAs
-- Do stick to 3 font weights: 400, 450, 500
+- Do stick to 4 font weights: 400, 450, 500, 600
 - Do use `GeistSans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond GeistSans and Geist Mono
-- Don't use border-radius values outside: 0px 0px 0px 1px, 0px 8px 8px 0px, 4px, 6px, 8px, 100%, 9999px (pill)
+- Don't use border-radius values outside: 4px, 6px, 7px 7px 0px, 8px, 20px, 9999px (pill)
 
 ---
 

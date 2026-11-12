@@ -8,7 +8,7 @@ colors:
   on-surface-variant: "#4a5565"
   outline: "#e5e7eb"
   outline-variant: "#ffffff0d"
-  primary: "#2b7fff"
+  primary: "#ff6900"
   on-primary: "#1a1a1a"
   secondary: "#8e51ff"
   on-secondary: "#ffffff"
@@ -25,9 +25,9 @@ typography:
     lineHeight: 1.1
   headline-md:
     fontFamily: Source Sans Pro
-    fontSize: 30px
+    fontSize: 48px
     fontWeight: 700
-    lineHeight: 1.2
+    lineHeight: 1
   body-md:
     fontFamily: Source Sans Pro
     fontSize: 16px
@@ -68,17 +68,10 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: 0px
-    padding: 2px
-    height: 20px
+    rounded: "{rounded.lg}"
+    height: 36px
   card:
     rounded: "{rounded.lg}"
-  input:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.on-background}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.lg}"
-    padding: 8px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://huggingface.co](https://huggingface.co) with `npx brandmd`.
@@ -94,7 +87,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and purple accents
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid orange accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -109,9 +102,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Gray** (`#6a7282`): Secondary text (accent)
 - **Translucent White** (`#ffffff73`): Overlay / scrim (accent)
 - **Dark Blue** (`#101828`): Dark background / footer (accent)
-- **Purple** (`#8e51ff`): Accent background (accent)
 - **Vivid Orange** (`#ff6900`): Accent background (accent)
-- **Vivid Blue** (`#2b7fff`): Accent background (accent)
+- **Purple** (`#8e51ff`): Accent background (accent)
+- **Vivid Red** (`#fb2c36`): Accent background (accent)
 
 **Incidental (low usage, do not lead with these):** `#ffffff0d`
 
@@ -125,9 +118,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: Source Sans Pro
 
 **Type scale:**
-- Headings: 24px, 30px, 60px, 96px
+- Headings: 24px, 30px, 48px, 60px, 96px
 - Body / UI: 14px, 15px, 16px, 18px, 20px
-- Captions / Small: 10.5px, 12px, 13.5px
+- Captions / Small: 12px, 13.5px
 
 **Weights in use:** 400, 600, 700
 
@@ -171,16 +164,9 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Shadow: `rgba(0, 0, 0, 0.05) 0px 1px 2px 0px`
 - Padding: 0px 0px 0px 0px
 
-### Inputs
-- Background: `#ffffff`
-- Border: 1px solid oklch(0.928 0.006 264.531)
-- Corner radius: 8px
-- Padding: 8px 12px 8px 32px
-- Font size: 16px
-
 ## Do's and Don'ts
 
-- Do use `#2b7fff` for primary actions and CTAs
+- Do use `#ff6900` for primary actions and CTAs
 - Do stick to 3 font weights: 400, 600, 700
 - Do use `Source Sans Pro` as the primary typeface
 - Don't introduce colors outside the palette above

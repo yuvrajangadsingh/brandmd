@@ -3,15 +3,15 @@
 @theme {
   --color-light-text-on-dark: #f7f8f8;
   --color-dark-background-footer: #08090a;
-  --color-surface-card-background: #e5e5e6;
+  --color-overlay-scrim: #ffffff05;
+  --color-divider-border: #ffffff14;
   --color-secondary-text: #8a8f98;
   --color-secondary-text-2: #62666d;
   --color-link-accent-text: #f79ce0;
-  --color-overlay-scrim: #00ff051a;
-  --color-accent-background: #eb5757;
-  --color-accent-background-2: #4ea7fc;
-  --color-divider-border: #24282c;
-  --color-accent-background-3: #27a644;
+  --color-overlay-scrim-2: #00ff051a;
+  --color-accent-background: #4ea7fc;
+  --color-overlay-scrim-3: #f34e521a;
+  --color-surface-card-background: #e5e5e6;
 
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "Berkeley Mono", monospace;

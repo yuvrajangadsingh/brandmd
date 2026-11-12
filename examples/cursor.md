@@ -115,7 +115,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: CursorGothic, Segoe UI
 - Body: CursorGothic
 
-**All detected fonts:** CursorGothic (1011), Segoe UI (470), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
+**All detected fonts:** CursorGothic (1014), Segoe UI (470), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
 
 **Type scale:**
 - Headings: 26px
