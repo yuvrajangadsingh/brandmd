@@ -46,6 +46,8 @@ For Cursor, Claude Desktop, and other clients that read an `mcpServers` config:
 
 The tool takes one or more pages of a site (`urls`) and an optional `dark` flag, and refuses block pages and login walls the same way the CLI does. It renders pages in Playwright's headless Chromium; if that browser is missing, the call fails with the command that installs it.
 
+A call runs for at most 180 seconds (set `BRANDMD_MCP_TIMEOUT` in seconds to change it), and at most two run at once (a third gets an error asking it to retry). Cancelling a call, or running out of time, stops it and closes its browser on macOS and Linux. On Windows the run is ended outright and the browser may be left open (untested).
+
 Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
 Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md) · [+20 more in the gallery](examples/README.md)
