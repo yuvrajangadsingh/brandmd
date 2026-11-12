@@ -181,7 +181,7 @@ export GEMINI_API_KEY=your-key-here  # free: https://aistudio.google.com/apikey
 brandmd https://linear.app --vision
 # Cloudflare-protected sites: brandmd waits up to 20s for the JS challenge
 # to auto-resolve. If your site needs longer, pass --cf-wait-ms 30000.
-# If the challenge persists, you'll get a clear error rather than garbage tokens.
+# If the challenge persists, brandmd refuses (exit 2) rather than writing garbage tokens.
 
 # CSS custom properties
 brandmd https://vercel.com --css
@@ -201,16 +201,18 @@ brandmd diff examples/stripe.md examples/vercel.md --out BRAND_DIFF.md
 
 ## Refusals and exit codes
 
-brandmd fails closed. If a page is a bot-block / access-denied page, a login / sign-in wall landing, or too thin to describe (no rendered text, empty palette), it refuses in **every** format and writes no artifact, so a bad capture can't silently overwrite a good `DESIGN.md`. A plain cross-origin redirect (say marketing -> app on another domain) doesn't refuse: it warns on stderr and is flagged in the output's provenance block, per page.
+brandmd fails closed. If a page is a bot-block / access-denied page (a Cloudflare challenge that never clears included), a login / sign-in wall landing, or too thin to describe (no rendered text, empty palette), it refuses in **every** format and writes no artifact, so a bad capture can't silently overwrite a good `DESIGN.md`. A login wall means a password field on screen when the page loads, or sign-in copy on an auth page: a `/login`-style URL, or another host the request was sent to. A hidden or off-screen sign-up form, or a "Sign up free" headline on an ordinary page, is not one. A plain cross-origin redirect (say marketing -> app on another domain) doesn't refuse: it warns on stderr and is flagged in the output's provenance block, per page.
+
+Every capture goes through the same gate, page by page. One refused page (a block page, a login wall, or a page with almost no text, even next to a rich one) refuses a multi-page run, and with `--dark` the dark capture is checked too. A page that fails to load (a timeout, a DNS error) is left out with a warning and the rest are merged; if none load, the run exits 1. `--dark` that gets no dark capture, like `--vision` that gets no vision result, still writes the light output and exits 1.
 
 | Exit code | Meaning |
 |---|---|
 | `0` | success |
-| `1` | operational or validation error (bad URL, bad flag, browser launch failure) |
-| `2` | refused: block page, insufficient evidence, or a login-wall landing |
+| `1` | operational or validation error (bad URL, bad flag, browser launch failure, no page loaded, `--dark` or `--vision` came back empty) |
+| `2` | refused: block page, insufficient evidence, or a login-wall landing, on any page or theme |
 | `3` | `brandmd check` only: the page drifted from the spec |
 
-Pass `--allow-blocked` to force output anyway; the artifact carries a block marker in every format (Markdown callout, CSS/Tailwind comment header, HTML banner, JSON `blockLikely`). Writes are transactional (temp file + rename with rollback), including the `--agent` set and `brandmd diff`, so a partial failure never truncates an existing file. Atomicity is per process: concurrent brandmd runs against the same output directory are not coordinated, though collision-safe temp/backup names mean one run can never eat another's files.
+Pass `--allow-blocked` to force output anyway; whatever the refusal was, the artifact carries a refused-source marker in every format (Markdown callout, CSS/Tailwind comment header, HTML banner, JSON `blockLikely`). Writes are transactional (temp file + rename with rollback), including the `--agent` set and `brandmd diff`, so a partial failure never truncates an existing file. Atomicity is per process: concurrent brandmd runs against the same output directory are not coordinated, though collision-safe temp/backup names mean one run can never eat another's files.
 
 ## Gallery
 
@@ -242,7 +244,8 @@ Colours are compared **by role**, not as a set of hexes. One hex legitimately fi
 | `--against <file>` | the committed `DESIGN.md` (required) |
 | `--report <file>` | write the drift as JSON for CI annotations |
 | `--fail-on <level>` | `major` (default), `any`, or `none` |
-| `--allow-blocked` | compare anyway if the page looks blocked |
+| `--allow-blocked` | compare anyway if the page is refused (blocked, thin, or a login wall) |
+| `--cf-wait-ms <ms>` | how long to wait for a Cloudflare challenge (default `20000`) |
 | `--viewport <WxH>` | pin the viewport (default `1440x900`) |
 | `--locale <tag>` | pin the browser locale |
 | `--reduced-motion` | request `prefers-reduced-motion: reduce` |
