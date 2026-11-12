@@ -297,6 +297,20 @@ test("check: --report writes machine-readable drift", () => {
   assert.equal(report.spec, SPEC);
 });
 
+test("check: a --report it cannot write exits 1 with a message, not a crash", () => {
+  // A regular file where the directory should be: the write cannot succeed.
+  const dir = tmp();
+  writeFileSync(join(dir, "not-a-dir"), "");
+  const out = join(dir, "not-a-dir", "drift.json");
+  const r = runCLI(["check", "https://vercel.com", "--against", SPEC, "--report", out], {
+    rawFile: VERCEL_FIXTURE,
+  });
+  assert.equal(r.status, 1, r.out);
+  assert.match(r.stderr, /could not write .*drift\.json/);
+  assert.doesNotMatch(r.stderr, /^\s+at /m, "no stack trace");
+  assert.equal(r.stdout, "", "no drift report before the failure");
+});
+
 test("check: the offline seam skips live extraction", () => {
   const r = runCLI(["check", "https://vercel.com", "--against", SPEC], {
     rawFile: VERCEL_FIXTURE,
