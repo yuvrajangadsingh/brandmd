@@ -7,6 +7,8 @@ import { constants, closeSync, existsSync, mkdtempSync, openSync, readFileSync, 
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { createInterface } from "node:readline";
+import { once } from "node:events";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const BIN = join(here, "..", "bin", "brandmd.js");
@@ -35,6 +37,86 @@ function session(messages, env, expect) {
 }
 
 const call = (id, args) => ({ jsonrpc: "2.0", id, method: "tools/call", params: { name: "extract_design_md", arguments: args } });
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// A server that stays up until end(), so a test can look at it between replies.
+function live(t, env) {
+  const child = spawn(process.execPath, [BIN, "mcp"], { env: { ...process.env, ...env } });
+  t.after(() => child.kill("SIGTERM")); // a no-op once it has exited; its own shutdown halts its runs
+  const closed = once(child, "close");
+  const replies = new Map();
+  createInterface({ input: child.stdout }).on("line", (l) => {
+    const m = JSON.parse(l);
+    replies.set(m.id, m);
+  });
+  return {
+    send: (...msgs) => child.stdin.write(msgs.map((m) => `${JSON.stringify(m)}\n`).join("")),
+    async reply(id, ms = 5000) {
+      for (const until = Date.now() + ms; !replies.has(id) && Date.now() < until; ) await sleep(50);
+      return replies.get(id);
+    },
+    // SIGTERM is the server's own shutdown path, so its CLI runs go with it.
+    async end() {
+      child.stdin.end();
+      const late = new Promise((r) => setTimeout(r, 10000, "late").unref());
+      if ((await Promise.race([closed, late])) === "late") {
+        child.kill("SIGTERM");
+        assert.fail("the server did not exit within 10 s of stdin closing");
+      }
+    },
+  };
+}
+
+// The CLI reads BRANDMD_RAW_FILE with a blocking read, so a FIFO nobody writes
+// keeps every call running until something stops it.
+function fifo() {
+  const path = join(mkdtempSync(join(tmpdir(), "brandmd-mcp-")), "raw.fifo");
+  assert.equal(spawnSync("mkfifo", [path]).status, 0);
+  return path;
+}
+
+// A non-blocking open for writing fails with ENXIO only if no CLI is left
+// reading the FIFO. If any are, writing and closing releases them all.
+function cliStillReading(path) {
+  let fd;
+  try {
+    fd = openSync(path, constants.O_WRONLY | constants.O_NONBLOCK);
+  } catch (e) {
+    assert.equal(e.code, "ENXIO");
+    return false;
+  }
+  writeSync(fd, "{}");
+  closeSync(fd);
+  return true;
+}
+
+// Wait until a CLI has the FIFO open, and hold the write end so it stays
+// blocked: a test that then stops it knows it was really running.
+async function holdReader(t, path) {
+  for (const until = Date.now() + 10000; Date.now() < until; await sleep(50)) {
+    try {
+      const fd = openSync(path, constants.O_WRONLY | constants.O_NONBLOCK);
+      t.after(() => closeSync(fd));
+      return fd;
+    } catch (e) {
+      assert.equal(e.code, "ENXIO");
+    }
+  }
+  assert.fail("no CLI opened the FIFO within 10 s");
+}
+
+// With the write end held, a write fails with EPIPE once no reader is left.
+async function readerGone(fd, ms = 5000) {
+  for (const until = Date.now() + ms; Date.now() < until; await sleep(100)) {
+    try {
+      writeSync(fd, " ");
+    } catch (e) {
+      assert.equal(e.code, "EPIPE");
+      return true;
+    }
+  }
+  return false;
+}
 
 test("mcp: handshake, tool list, and unknown methods", async () => {
   const r = await session([
@@ -108,26 +190,36 @@ test("mcp: a URL can never become a CLI flag, a subcommand, or bad input", async
   assert.match(r[5].result.content[0].text, /unsupported URL scheme/, "the CLI's own check must see the URL unchanged");
 });
 
-// The CLI reads BRANDMD_RAW_FILE with a blocking read, so a FIFO nobody writes
-// keeps every call running. After the client hangs up, a non-blocking open for
-// writing fails with ENXIO only if no CLI is left holding the FIFO.
-test("mcp: closing stdin stops running extractions", { skip: process.platform === "win32" }, async () => {
-  const fifo = join(mkdtempSync(join(tmpdir(), "brandmd-mcp-")), "raw.fifo");
-  assert.equal(spawnSync("mkfifo", [fifo]).status, 0);
-  const server = spawn(process.execPath, [BIN, "mcp"], { env: { ...process.env, BRANDMD_RAW_FILE: fifo }, stdio: ["pipe", "ignore", "ignore"] });
-  server.stdin.write(`${JSON.stringify(call(1, { urls: ["vercel.com"] }))}\n${JSON.stringify(call(2, { urls: ["vercel.com"] }))}\n`);
-  await new Promise((r) => setTimeout(r, 1500));
-  server.stdin.end();
-  await new Promise((r) => server.on("close", r));
-  await new Promise((r) => setTimeout(r, 1500));
-  let fd;
-  try {
-    fd = openSync(fifo, constants.O_WRONLY | constants.O_NONBLOCK);
-  } catch (e) {
-    assert.equal(e.code, "ENXIO");
-    return;
-  }
-  writeSync(fd, "{}"); // let the orphans exit before failing
-  closeSync(fd);
-  assert.fail("a CLI run outlived the server");
+test("mcp: closing stdin stops running extractions", { skip: process.platform === "win32" }, async (t) => {
+  const raw = fifo();
+  const s = live(t, { BRANDMD_RAW_FILE: raw });
+  s.send(call(1, { urls: ["vercel.com"] }), call(2, { urls: ["vercel.com"] }));
+  await sleep(1500);
+  await s.end();
+  await sleep(1500);
+  assert.equal(cliStillReading(raw), false, "a CLI run outlived the server");
+});
+
+test("mcp: a call past BRANDMD_MCP_TIMEOUT answers with a tool error and its CLI run is stopped", { skip: process.platform === "win32" }, async (t) => {
+  const raw = fifo();
+  const s = live(t, { BRANDMD_RAW_FILE: raw, BRANDMD_MCP_TIMEOUT: "3" });
+  s.send(call(1, { urls: ["vercel.com"] }));
+  const fd = await holdReader(t, raw);
+  const r = await s.reply(1);
+  const gone = await readerGone(fd); // stdin is still open, so only the deadline can have stopped it
+  await s.end();
+  assert.equal(r?.result.isError, true, "the call must answer, not hang");
+  assert.match(r.result.content[0].text, /stopped after 3s/);
+  assert.equal(gone, true, "the deadline must stop the CLI run, not only answer");
+});
+
+test("mcp: an out-of-range BRANDMD_MCP_TIMEOUT falls back to 180 s", { skip: process.platform === "win32" }, async (t) => {
+  const raw = fifo();
+  const s = live(t, { BRANDMD_RAW_FILE: raw, BRANDMD_MCP_TIMEOUT: "2147484" });
+  s.send({ jsonrpc: "2.0", id: 2, method: "ping" });
+  assert.ok(await s.reply(2), "the server is up before the window starts");
+  s.send(call(1, { urls: ["vercel.com"] }));
+  const early = await s.reply(1, 1500);
+  await s.end();
+  assert.equal(early, undefined, "2147484 s overflows Node's timer, which would stop the call at once");
 });
