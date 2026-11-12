@@ -99,9 +99,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#ffffff`): Page background (dominant)
 - **Near-transparent Black** (`#0d0d0d0d`): Divider / border (dominant)
 - **Off-white** (`#ededed`): Divider / border (dominant)
+- **Black** (`#000000e6`): Primary text (accent)
 - **Gray** (`#5d5d5d`): Secondary text (accent)
 
-**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#181818`, `#0d0d0d14`
+**Incidental (low usage, do not lead with these):** `#ffffff80`, `#181818`, `#0d0d0d14`
 
 ## Typography
 

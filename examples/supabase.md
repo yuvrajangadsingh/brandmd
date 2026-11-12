@@ -107,10 +107,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Near-transparent Gray** (`#6969691a`): Overlay / scrim (accent)
 - **Vivid Red** (`#fa1f41`): Accent background (accent)
 - **Black** (`#000000`): Dark background / footer (accent)
+- **Dark Green** (`#15593b`): Primary text (accent)
 - **Vivid Orange** (`#fe6a1e`): Accent background (accent)
 - **Green** (`#3fcf8e`): Focus / active border (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#a0a0a0`, `#00000003`
+**Incidental (low usage, do not lead with these):** `#a0a0a0`, `#00000003`
 
 ## Typography
 

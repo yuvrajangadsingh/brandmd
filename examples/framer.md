@@ -101,9 +101,8 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Gray** (`#999999`): Muted text (accent)
 - **Near-transparent White** (`#ffffff1a`): Overlay / scrim (accent)
 - **Near-transparent Vivid Blue** (`#0099ff37`): Overlay / scrim (accent)
-- **Near-transparent Vivid Green** (`#00bb881a`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#666666`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#666666`, `#222222cc`
 
 ## Typography
 

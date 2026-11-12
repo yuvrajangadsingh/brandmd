@@ -108,6 +108,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Vivid Blue** (`#146ef5`): Accent background (accent)
 - **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
 - **Translucent Black** (`#00000040`): Overlay / scrim (accent)
+- **Translucent Black** (`#00000080`): Dark background / footer (accent)
 
 ## Typography
 

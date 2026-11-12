@@ -109,12 +109,13 @@ _The page background `#07080a` is the surface that fills the viewport; it is not
 - **Black** (`#0d0d0d`): Dark background / footer (dominant)
 - **Near-transparent White** (`#ffffff0d`): Overlay / scrim (dominant)
 - **Near-transparent White** (`#ffffff1a`): Divider / border (dominant)
+- **Translucent White** (`#ffffff99`): Light text (on dark) (accent)
 - **Gray** (`#6a6b6c`): Secondary text (accent)
 - **White** (`#ffffff`): Page background (accent)
 - **Vivid Blue** (`#043f96b3`): Accent background (accent)
 - **Red** (`#ff6363`): Focus / active border (accent)
 
-**Incidental (low usage, do not lead with these):** `#9c9c9d`, `#ffffff66`, `#00000070`, `#434345`
+**Incidental (low usage, do not lead with these):** `#9c9c9d`, `#00000070`, `#434345`
 
 ## Typography
 

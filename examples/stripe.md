@@ -8,10 +8,10 @@ colors:
   surface: "#ffd7ef"
   on-surface-variant: "#533afd"
   outline: "#e5edf5"
-  primary: "#533afd"
-  on-primary: "#ffffff"
-  secondary: "#7f7dfc"
-  on-secondary: "#1a1a1a"
+  primary: "#7f7dfc"
+  on-primary: "#1a1a1a"
+  secondary: "#533afd"
+  on-secondary: "#ffffff"
 typography:
   display:
     fontFamily: sohne-var
@@ -93,7 +93,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -106,12 +106,13 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
 - **Off-white** (`#e5edf5`): Divider / border (dominant)
+- **Vivid Blue** (`#533afd`): Secondary text (accent)
 - **Muted Blue** (`#50617a`): Secondary text (accent)
 - **Dark Blue** (`#0d1738`): Dark background / footer (accent)
 - **Blue** (`#7f7dfc`): Accent background (accent)
 - **Off-white** (`#ffd7ef`): Surface / card background (accent)
 - **Orange** (`#efc680`): Accent background (accent)
-- **Vivid Blue** (`#533afd`): Accent background (accent)
+- **Light Blue** (`#b4d8ff`): Accent background (accent)
 
 ## Typography
 

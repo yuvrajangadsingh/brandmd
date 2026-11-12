@@ -5,7 +5,8 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000"
-  surface: "#5e5f6e"
+  surface: "#f0ebff80"
+  on-surface-variant: "#5e5f6e"
   outline: "#d9d9de"
   outline-variant: "#0000000f"
   primary: "#212126"
@@ -78,7 +79,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and near-transparent vivid cyan accents
+**Visual character:** Bright, high contrast; white background dominates with black text
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -93,9 +94,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#ffffff`): Page background (dominant)
 - **Gray** (`#747686`): Secondary text (accent)
 - **Black** (`#131316`): Dark background / footer (accent)
-- **Near-transparent Vivid Cyan** (`#38dafd2e`): Overlay / scrim (accent)
+- **Translucent Off-white** (`#f0ebff80`): Surface / card background (accent)
 
-**Incidental (low usage, do not lead with these):** `#42434d`, `#0000000f`, `#5e5f6e`, `#2121261a`, `#ffffff1a`
+**Incidental (low usage, do not lead with these):** `#42434d`, `#0000000f`, `#5e5f6e`, `#2121261a`, `#131316cc`
 
 ## Typography
 

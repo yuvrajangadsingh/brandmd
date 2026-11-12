@@ -100,11 +100,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **White** (`#ffffff`): Page background (dominant)
 - **Muted Blue** (`#99a1af`): Muted text (accent)
 - **Muted Blue** (`#4a5565`): Primary text (accent)
+- **White** (`#ffffffcc`): Page background (accent)
 - **Near-transparent White** (`#ffffff1a`): Overlay / scrim (accent)
 - **Dark Blue** (`#0b0f19`): Dark background / footer (accent)
 - **Vivid Orange** (`#ff6900`): Accent background (accent)
 - **Purple** (`#8e51ff`): Accent background (accent)
-- **Vivid Red** (`#fb2c36`): Accent background (accent)
 
 **Incidental (low usage, do not lead with these):** `#ffffff0d`
 

@@ -6,7 +6,7 @@
 //
 // Findings locked here:
 //   F-02  color clustering order-independence            (1.0)
-//   F-07  alpha-aware clustering (scrim never eats brand) (v0.15 scope -> todo)
+//   F-07  alpha-aware clustering (scrim never eats brand) (1.0)
 //   F-19  filter-before-truncate; no fake base-grid claim (v0.14)
 //   F-21  empty raw maps -> no invented design system     (v0.14)
 //   F-04  CTA names the accent, never the primary text    (v0.14)
@@ -114,13 +114,12 @@ test("F-02: text roles sum fractional counts the same in any key order", () => {
   );
 });
 
-// --- F-07: alpha-aware clustering (v0.15 scope) -----------------------------
+// --- F-07: alpha-aware clustering -------------------------------------------
 // A 1-use translucent scrim must not absorb a 100-use opaque brand color.
-// Today chroma.deltaE ignores alpha, so rgba(255,0,0,.1) eats rgb(255,0,0).
-// Marked todo: alpha-band separation is P1/v0.15 in the plan.
+// chroma.deltaE ignores alpha, so rgba(255,0,0,.1) used to eat rgb(255,0,0).
+// The scrim may stay in the palette as its own overlay token.
 test(
   "F-07: a 1-use rgba scrim never absorbs a 100-use opaque color",
-  { todo: "alpha-aware clustering is v0.15 (P1) scope per improvement-plan.md" },
   () => {
     const t = analyze(rawSkeleton({
       colors: {
@@ -129,15 +128,34 @@ test(
         border: {},
       },
     }));
-    const opaqueRed = t.palette.find((c) => c.hex === "#FF0000");
+    const opaqueRed = t.palette.find((c) => c.hex === "#ff0000");
     assert.ok(opaqueRed, "the opaque 100-use red must survive as its own token");
-    assert.ok(opaqueRed.freq >= 100, "opaque red keeps its real frequency");
-    assert.ok(
-      !t.palette.some((c) => c.hex === "#FF00001A"),
-      "the near-transparent scrim must not be the representative"
-    );
+    assert.equal(opaqueRed.freq, 100, "opaque red keeps its real frequency");
+    const scrim = t.palette.find((c) => c.hex === "#ff00001a");
+    assert.ok(!scrim || scrim.freq === 1, "the scrim never absorbs the opaque red");
   }
 );
+
+test("F-07: a 50% tint and the opaque colour under it stay separate tokens", () => {
+  // Both clear the 0.5 solid-fill bar, which used to be the only alpha check.
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 0, 0)": 100, "rgba(255, 0, 0, 0.5)": 50 }, text: {}, border: {} },
+  }));
+  assert.equal(t.palette.find((c) => c.hex === "#ff0000")?.freq, 100);
+  assert.equal(t.palette.find((c) => c.hex === "#ff000080")?.freq, 50);
+});
+
+test("F-07: a 99.6% colour is translucent, not opaque", () => {
+  // chroma reads alpha 0.996 as 1; the band comes from the hex's alpha byte.
+  const t = analyze(rawSkeleton({
+    colors: {
+      background: { "rgba(100, 100, 200, 0.5)": 100, "rgba(100, 100, 200, 0.996)": 90 },
+      text: {},
+      border: {},
+    },
+  }));
+  assert.equal(t.palette.find((c) => c.hex === "#6464c880")?.freq, 190);
+});
 
 // --- F-19: filter-before-truncate, no invented base grid --------------------
 

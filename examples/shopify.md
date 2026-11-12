@@ -106,13 +106,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Dark Cyan** (`#02090a`): Dark background / footer (dominant)
 - **Gray** (`#a1a1aa`): Muted text (accent)
 - **Black** (`#000000`): Primary text (accent)
-- **White** (`#ffffff`): Page background (accent)
 - **Near-transparent White** (`#ffffff1a`): Overlay / scrim (accent)
+- **Translucent Dark Cyan** (`#02080880`): Dark background / footer (accent)
 - **Vivid Green** (`#36f4a4`): Link / accent text (accent)
-- **Translucent Vivid Blue** (`#1260ff59`): Overlay / scrim (accent)
 - **Dark Green** (`#11352d`): Focus / active border (accent)
 
-**Incidental (low usage, do not lead with these):** `#3f3f4b80`, `#244749`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#3f3f4b80`, `#ffffff8c`
 
 ## Typography
 

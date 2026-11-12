@@ -110,7 +110,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Vivid Cyan** (`#0077a6`): Accent background (accent)
 - **Near-transparent Green** (`#1fa77a14`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#969e9b`
+**Incidental (low usage, do not lead with these):** `#08090a99`
 
 ## Typography
 

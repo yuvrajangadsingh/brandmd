@@ -5,13 +5,13 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#000000e5"
-  surface: "#f2f9ff"
   on-surface-variant: "#0000008a"
   outline: "#0000001a"
   primary: "#ffb110"
   on-primary: "#1a1a1a"
-  secondary: "#0075de"
-  on-secondary: "#ffffff"
+  secondary: "#097fe8"
+  on-secondary: "#1a1a1a"
+  surface: "#f2f9ff"
 typography:
   display:
     fontFamily: NotionInter
@@ -104,11 +104,11 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Near-transparent Black** (`#0000001a`): Divider / border (dominant)
 - **Gray** (`#a39e98`): Muted text (accent)
 - **Black** (`#000000bf`): Dark background / footer (accent)
-- **Vivid Blue** (`#0075de`): Secondary text (accent)
 - **Vivid Blue** (`#097fe8`): Accent background (accent)
 - **Vivid Red** (`#f64932`): Accent background (accent)
 - **Vivid Orange** (`#ffb110`): Accent background (accent)
-- **Light Green** (`#d0f4d8`): Surface / card background (accent)
+
+**Incidental (low usage, do not lead with these):** `#000000`
 
 ## Typography
 

@@ -97,7 +97,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Green** (`#1ed760`): Accent background (accent)
 - **Translucent Gray** (`#7676764d`): Divider / border (accent)
 
-**Incidental (low usage, do not lead with these):** `#535353`, `#ffffff`, `#ffffff4d`, `#481818`, `#808080`
+**Incidental (low usage, do not lead with these):** `#535353`, `#ffffff4d`, `#ffffff`, `#481818`, `#808080`
 
 ## Typography
 

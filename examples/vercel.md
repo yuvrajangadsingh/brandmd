@@ -5,7 +5,7 @@ description: "Bright, high contrast"
 colors:
   background: "#fafafa"
   on-background: "#171717"
-  surface: "#666666"
+  on-surface-variant: "#4d4d4d"
   outline: "#ebebeb"
   outline-variant: "#ffffff66"
   primary: "#0072f5"
@@ -83,7 +83,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with black text and blue accents
+**Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -96,11 +96,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Off-white** (`#ebebeb`): Divider / border (dominant)
 - **Dark gray** (`#4d4d4d`): Primary text (dominant)
 - **White** (`#fafafa`): Page background (dominant)
+- **Translucent White** (`#fafafa80`): Page background (accent)
 - **Black** (`#171717`): Dark background / footer (accent)
-- **Blue** (`#52aeff`): Accent background (accent)
 - **Vivid Blue** (`#0072f5`): Accent background (accent)
+- **Blue** (`#52aeff`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#ffffff`, `#ffffff29`, `#ffffff66`, `#666666`
+**Incidental (low usage, do not lead with these):** `#8f8f8f`, `#ffffff`, `#ffffff29`, `#ffffff66`
 
 ## Typography
 

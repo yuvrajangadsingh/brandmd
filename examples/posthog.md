@@ -95,12 +95,11 @@ _The page background `#eeefe9` is the surface that fills the viewport; it is not
 - **Muted Blue** (`#374151`): Primary text (accent)
 - **White** (`#ffffff`): Light text (on dark) (accent)
 - **Gray** (`#65675e`): Secondary text (accent)
-- **Translucent Black** (`#00000099`): Dark background / footer (accent)
 - **Orange** (`#eb9d2a`): Accent background (accent)
 - **Purple** (`#b62ad9`): Accent background (accent)
 - **Orange** (`#b17816`): Focus / active border (accent)
 
-**Incidental (low usage, do not lead with these):** `#e5e7e033`, `#9ea096`
+**Incidental (low usage, do not lead with these):** `#e5e7e033`, `#0f0f10`, `#9ea096`
 
 ## Typography
 
