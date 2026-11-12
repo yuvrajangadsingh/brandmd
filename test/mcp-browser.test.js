@@ -58,11 +58,16 @@ test("mcp: a real extraction of a local page returns its DESIGN.md", async (t) =
 });
 
 // A cancel or a deadline sends the CLI run SIGTERM. Playwright's debug log
-// names the browser it launched and records how it went: the browser exited,
-// or the CLI exited first and Playwright SIGKILLed the browser's process group
-// on the way out. So the test needs no process listing and signals only the
-// CLI it spawned. The 10 s bound sits well under the 45 s page-load timeout,
-// which would otherwise end the run on its own.
+// names the browser it launched (the last launch, as it relaunches once on a
+// glibc race), so the test needs no process listing: it signals only the CLI it
+// spawned and probes that browser's process group with signal 0, which fails
+// once no member lives. While an exited member awaits reaping, macOS answers
+// EPERM rather than ESRCH; Linux counts the zombie, so there the test needs an
+// init that reaps, as Playwright's Docker guide asks for anyway. The log's own
+// account is not asserted: as the CLI exits, Playwright SIGKILLs the group, and
+// when the browser has exited a moment before, macOS answers EPERM, which
+// Playwright logs and ignores. The 10 s bound sits well under the 45 s
+// page-load timeout, which would otherwise end the run on its own.
 test("a CLI run sent SIGTERM mid page load closes its browser", { skip: process.platform === "win32", timeout: 60000 }, async (t) => {
   if (!(await browserOk(t))) return;
   let reached;
@@ -78,11 +83,23 @@ test("a CLI run sent SIGTERM mid page load closes its browser", { skip: process.
   cli.stderr.setEncoding("utf8").on("data", (d) => (log += d));
   const closed = once(cli, "close");
   await Promise.race([navigating, closed.then(() => assert.fail(`the CLI exited before loading the page:\n${log}`))]);
-  const pid = log.match(/<launched> pid=(\d+)/)?.[1];
+  const pid = Number([...log.matchAll(/<launched> pid=(\d+)/g)].at(-1)?.[1]);
   assert.ok(pid, "Playwright logged the browser it launched");
+  const groupLives = () => {
+    try {
+      process.kill(-pid, 0);
+      return true;
+    } catch (err) {
+      if (err.code === "ESRCH" || (err.code === "EPERM" && process.platform === "darwin")) return false;
+      throw err;
+    }
+  };
+  assert.ok(groupLives(), "the probe sees the running browser");
   cli.kill("SIGTERM");
   const late = new Promise((r) => setTimeout(r, 10000, "late").unref());
-  assert.notEqual(await Promise.race([closed, late]), "late", "the CLI must exit within 10 s of SIGTERM");
-  assert.match(log, new RegExp(`\\[pid=${pid}\\] <(process did exit|will force kill)`), "the browser exited or was killed");
-  assert.doesNotMatch(log, /exception while trying to kill process/);
+  const exit = await Promise.race([closed, late]);
+  assert.notEqual(exit, "late", "the CLI must exit within 10 s of SIGTERM");
+  assert.deepEqual(exit, [1, null], "a run cut short exits with the CLI's error code");
+  for (let i = 0; i < 50 && groupLives(); i++) await new Promise((r) => setTimeout(r, 100));
+  assert.ok(!groupLives(), "nothing in the browser's process group outlives the CLI");
 });
