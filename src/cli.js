@@ -8,7 +8,6 @@ import { generate } from "./generate.js";
 import { generateCSS } from "./generate-css.js";
 import { generateTailwind } from "./generate-tailwind.js";
 import { generateHTML } from "./generate-html.js";
-import { extractVision } from "./extract-vision.js";
 import { planAgentPack } from "./generate-agent.js";
 import { diffDesigns } from "./diff.js";
 import { parseDesign } from "./parse-design.js";
@@ -388,6 +387,8 @@ program
             ...(light.vision.toneSnippets.hero_text || []).map((s) => `HERO: ${s}`),
             ...(light.vision.toneSnippets.buttons || []).map((s) => `BTN: ${s}`),
           ].join("\n").slice(0, 4000);
+          // Loaded here, not at the top: the Gemini SDK is ~14 MB and only --vision uses it.
+          const { extractVision } = await import("./extract-vision.js");
           tokens.vision = await extractVision({
             screenshotBase64: light.vision.screenshotBase64,
             pageText,
