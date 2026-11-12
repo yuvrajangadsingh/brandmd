@@ -142,6 +142,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
     // Most JS challenges clear in 5-10s; some take longer on first visit.
     // Default 20s, configurable via cfWaitMs option.
+    let challenged = false;
     if ((await isCloudflareChallenge(page)) === "yes") {
       const start = Date.now();
       while (Date.now() - start < cfWaitMs) {
@@ -150,18 +151,17 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         // "no" = cleared; "unknown" = mid-navigation, keep polling
         if (state === "no") break;
       }
-      // Tier A: still on challenge after the wait — tell the caller clearly.
-      if ((await isCloudflareChallenge(page)) === "yes") {
-        throw new Error(
-          `Cloudflare challenge active on ${url} after ${cfWaitMs}ms. ` +
-          `The site is bot-protected; brandmd cannot extract through it. ` +
-          `Try a non-protected page (e.g. /docs, /pricing) or run from a residential IP.`
-        );
+      // Tier A: still on the challenge after the wait. That is a block page,
+      // so it is extracted and refused like any other (exit 2, unless
+      // --allow-blocked). Throwing made it an error (exit 1), or dropped it
+      // from a multi-page run with only a warning.
+      challenged = (await isCloudflareChallenge(page)) === "yes";
+      if (!challenged) {
+        // Resolved (or unknown) — wait for the real page to be loaded enough
+        // to extract from, then give it a small settle window.
+        await page.waitForLoadState("domcontentloaded", { timeout: 5000 }).catch(() => {});
+        await page.waitForTimeout(1500);
       }
-      // Resolved (or unknown) — wait for the real page to be loaded enough
-      // to extract from, then give it a small settle window.
-      await page.waitForLoadState("domcontentloaded", { timeout: 5000 }).catch(() => {});
-      await page.waitForTimeout(1500);
     }
 
     // Dismiss cookie banners and overlays
@@ -485,14 +485,19 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
     const title = await page.title();
 
-    const blockLikely = detectBlockLikely({
+    const blockLikely = challenged || detectBlockLikely({
       title,
       httpStatus,
       bodyTextLength: raw.bodyTextLength,
       colors: raw.colors,
       fonts: raw.fonts,
     });
-    if (blockLikely) {
+    if (challenged) {
+      process.stderr.write(
+        `Warning: Cloudflare challenge still active on ${url} after ${cfWaitMs}ms. The site is bot-protected. ` +
+        `Try a non-protected page (e.g. /docs, /pricing) or run from a residential IP.\n`
+      );
+    } else if (blockLikely) {
       process.stderr.write(
         `Warning: ${url} looks like a block / access-denied page (status ${httpStatus ?? "?"}, title "${title}"). ` +
         `The generated design system is likely garbage. Try a non-protected page.\n`
@@ -545,7 +550,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       crossOrigin = registrableDomain(from.hostname) !== registrableDomain(to.hostname);
     } catch { /* leave defaults */ }
     const loginLike = !!(raw.hasPasswordField || raw.loginCopy);
-    const provenance = { requestedUrl: url, finalUrl, redirected, crossOrigin, loginLike };
+    const provenance = { requestedUrl: url, finalUrl, redirected, crossOrigin, loginLike, blockLikely };
 
     // raw already carries `motion` and `bodyTextLength` from the evaluate.
     return { ...raw, title, url, finalUrl, provenance, vision: visionData, blockLikely };
