@@ -7,10 +7,10 @@ colors:
   on-background: "#030303"
   on-surface-variant: "#696969"
   outline: "#03030315"
-  outline-variant: "#696969b3"
-  primary: "#fc1a58"
+  outline-variant: "#3fcf8e"
+  primary: "#fe6a1e"
   on-primary: "#1a1a1a"
-  secondary: "#fc541f"
+  secondary: "#fa1f41"
   on-secondary: "#1a1a1a"
 typography:
   display:
@@ -101,15 +101,16 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Near-transparent Black** (`#03030315`): Divider / border (dominant)
-- **Black** (`#000000`): Primary text (dominant)
+- **Black** (`#030303`): Primary text (dominant)
 - **White** (`#fdfdfd`): Page background (dominant)
-- **Dark gray** (`#464646`): Primary text (accent)
-- **Translucent Gray** (`#6969694d`): Overlay / scrim (accent)
-- **Dark Blue** (`#0c0f24`): Dark background / footer (accent)
-- **Vivid Red** (`#fc1a58`): Accent background (accent)
-- **Vivid Red** (`#fc541f`): Accent background (accent)
+- **Gray** (`#696969`): Secondary text (accent)
+- **Near-transparent Gray** (`#6969691a`): Overlay / scrim (accent)
+- **Vivid Red** (`#fa1f41`): Accent background (accent)
+- **Black** (`#000000`): Dark background / footer (accent)
+- **Vivid Orange** (`#fe6a1e`): Accent background (accent)
+- **Green** (`#3fcf8e`): Focus / active border (accent)
 
-**Incidental (low usage, do not lead with these):** `#fafcfb`, `#a0a0a0`, `#00000003`, `#696969b3`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#a0a0a0`, `#00000003`
 
 ## Typography
 

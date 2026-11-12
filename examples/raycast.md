@@ -5,10 +5,13 @@ description: "Dark, high contrast"
 colors:
   background: "#07080a"
   on-background: "#ffffff"
+  outline: "#ffffff1a"
+  outline-variant: "#ff6363"
+  primary: "#ff6363"
+  on-primary: "#1a1a1a"
+  secondary: "#043f96b3"
+  on-secondary: "#ffffff"
   surface: "#ffffff"
-  outline: "#ffffff0f"
-  primary: "#20235bb3"
-  on-primary: "#ffffff"
 typography:
   display:
     fontFamily: Inter
@@ -93,7 +96,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; dark muted blue background dominates with white text
+**Visual character:** Dark, high contrast; dark muted blue background dominates with white text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -101,14 +104,17 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **White** (`#ffffff`): Light text (on dark) (dominant)
-- **Dark Muted Blue** (`#07080a`): Dark background / footer (dominant)
-- **Near-transparent Off-white** (`#dee2ff14`): Overlay / scrim (dominant)
-- **Near-transparent White** (`#ffffff0f`): Divider / border (dominant)
-- **Gray** (`#6a6b6c`): Secondary text (accent)
-- **Off-white** (`#e6e6e6`): Surface / card background (accent)
+_The page background `#07080a` is the surface that fills the viewport; it is not among the most frequent fills listed below._
 
-**Incidental (low usage, do not lead with these):** `#9c9c9d`, `#ffffff66`, `#00000070`, `#434345`, `#20235bb3`
+- **Black** (`#0d0d0d`): Dark background / footer (dominant)
+- **Near-transparent White** (`#ffffff0d`): Overlay / scrim (dominant)
+- **Near-transparent White** (`#ffffff1a`): Divider / border (dominant)
+- **Gray** (`#6a6b6c`): Secondary text (accent)
+- **White** (`#ffffff`): Page background (accent)
+- **Vivid Blue** (`#043f96b3`): Accent background (accent)
+- **Red** (`#ff6363`): Focus / active border (accent)
+
+**Incidental (low usage, do not lead with these):** `#9c9c9d`, `#ffffff66`, `#00000070`, `#434345`
 
 ## Typography
 

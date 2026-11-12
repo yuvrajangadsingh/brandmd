@@ -593,7 +593,8 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 function mergeFreqMaps(maps) {
   const merged = {};
   for (const map of maps) {
-    const total = Object.values(map).reduce((s, v) => s + v, 0) || 1;
+    // Summed smallest first: a float sum in key order would differ by page order.
+    const total = Object.values(map).sort((a, b) => a - b).reduce((s, v) => s + v, 0) || 1;
     for (const [key, count] of Object.entries(map)) {
       merged[key] = (merged[key] || 0) + count / total;
     }

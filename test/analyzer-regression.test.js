@@ -5,7 +5,7 @@
 // several fail against v0.13 src on purpose — they define done.
 //
 // Findings locked here:
-//   F-02  color clustering order-independence            (v0.15 scope -> todo)
+//   F-02  color clustering order-independence            (1.0)
 //   F-07  alpha-aware clustering (scrim never eats brand) (v0.15 scope -> todo)
 //   F-19  filter-before-truncate; no fake base-grid claim (v0.14)
 //   F-21  empty raw maps -> no invented design system     (v0.14)
@@ -51,14 +51,12 @@ function rawSkeleton(overrides = {}) {
   };
 }
 
-// --- F-02: clustering is order-independent (v0.15 scope) --------------------
+// --- F-02: clustering is order-independent ----------------------------------
 // Same frequency map, permuted key insertion order, must yield the same palette.
-// Today clusterColors keeps the first-seen representative, so #F0F0F0 (freq 1)
-// wins over #FFFFFF (freq 1000) purely on DOM order. Marked todo: the stable
-// alpha-aware rewrite is P1/v0.15 in the plan.
+// clusterColors used to keep the first-seen representative, so #F0F0F0 (freq 1)
+// won over #FFFFFF (freq 1000) purely on DOM order.
 test(
   "F-02: permuting color key order yields an identical palette",
-  { todo: "clustering rewrite is v0.15 (P1) scope per improvement-plan.md" },
   () => {
     const a = analyze(rawSkeleton({
       colors: { background: { "#f0f0f0": 1, "#ffffff": 1000 }, text: {}, border: {} },
@@ -72,9 +70,49 @@ test(
       "palette order/representatives must not depend on key insertion order"
     );
     // The 1000-use color must be the representative, not the 1-use one.
-    assert.equal(a.palette[0].hex, "#FFFFFF");
+    assert.equal(a.palette[0].hex, "#ffffff");
   }
 );
+
+test("F-02: two notations of one colour count as one before the representative is picked", () => {
+  // 600 + 600 uses of white outweigh 1000 of #f0f0f0 once the notations sum.
+  const t = analyze(rawSkeleton({
+    colors: {
+      background: { "#f0f0f0": 1000, "#ffffff": 600, "rgb(255, 255, 255)": 600 },
+      text: {},
+      border: {},
+    },
+  }));
+  assert.equal(t.palette[0].hex, "#ffffff");
+  assert.equal(t.palette[0].freq, 2200);
+});
+
+test("F-02: fractional counts sum the same in any key order", () => {
+  // Multi-page captures carry fractional counts: 1/12 + 2/12 + 3/12 is 0.5 in
+  // one order and 0.49999999999999994 in the other, which flips the tie with
+  // white's 0.5 unless the sum order is fixed.
+  const bg = (keys) => analyze(rawSkeleton({
+    colors: { background: Object.fromEntries(keys), text: {}, border: {} },
+  })).palette.map((c) => c.hex);
+  const aliases = [["#f0f0f0", 1 / 12], ["#F0F0F0", 2 / 12], ["rgb(240, 240, 240)", 3 / 12]];
+  assert.deepEqual(
+    bg([...aliases, ["#ffffff", 0.5]]),
+    bg([...aliases.reverse(), ["#ffffff", 0.5]])
+  );
+});
+
+test("F-02: text roles sum fractional counts the same in any key order", () => {
+  // Same float trap as the clusters, on the separate on-background accumulator.
+  const onBg = (keys) => analyze(rawSkeleton({
+    colors: { background: { "#ffffff": 10 }, text: Object.fromEntries(keys), border: {} },
+    pageBackground: { surface: "rgb(255, 255, 255)", canvas: null },
+  })).textRoles.onBackground;
+  const aliases = [["#111111", 1 / 12], ["#111", 2 / 12], ["rgb(17, 17, 17)", 3 / 12]];
+  assert.equal(
+    onBg([...aliases, ["#222222", 0.5]]),
+    onBg([...aliases.reverse(), ["#222222", 0.5]])
+  );
+});
 
 // --- F-07: alpha-aware clustering (v0.15 scope) -----------------------------
 // A 1-use translucent scrim must not absorb a 100-use opaque brand color.
@@ -761,4 +799,17 @@ test("dark mode overrides list the resolved text pair, not the luminance guesses
   const md = generate(light);
   assert.match(md, /^- Text on background: `#000000` → `#ffffff`$/m);
   assert.doesNotMatch(md, /^- (Primary text|Light text \(on dark\)|Secondary text|Muted text):/m);
+});
+
+test("F-02: a multi-page merge weighs a page the same in any key order", () => {
+  // Each page is normalized by its own total; 1.1 + 1.3 + 1 is
+  // 3.4000000000000004 in one order and 3.4 in another.
+  const merge = (first) => mergeRaw([
+    rawSkeleton({ colors: { background: first, text: {}, border: {} } }),
+    rawSkeleton({ colors: { background: { "#000000": 1 }, text: {}, border: {} } }),
+  ]).colors.background;
+  assert.deepEqual(
+    merge({ "#0000ee": 1.1, "#0000ff": 1.3, "#ffffff": 1 }),
+    merge({ "#ffffff": 1, "#0000ff": 1.3, "#0000ee": 1.1 })
+  );
 });

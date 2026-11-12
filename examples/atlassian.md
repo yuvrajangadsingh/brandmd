@@ -10,7 +10,7 @@ colors:
   outline-variant: "#dddee1"
   primary: "#c75300"
   on-primary: "#ffffff"
-  secondary: "#4c6b1f"
+  secondary: "#1868db"
   on-secondary: "#ffffff"
 typography:
   display:
@@ -90,7 +90,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; white background dominates with dark gray text and green accents
+**Visual character:** Bright, high contrast; white background dominates with dark gray text and blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -103,12 +103,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Black** (`#101214`): Divider / border (dominant)
 - **Light gray** (`#dddee1`): Divider / border (dominant)
 - **Dark gray** (`#1e1f21`): Dark background / footer (accent)
+- **Blue** (`#1868db`): Secondary text (accent)
 - **Green** (`#4c6b1f`): Accent background (accent)
-- **Dark Blue** (`#09326c`): Primary text (accent)
-- **Blue** (`#1868db`): Accent background (accent)
+- **Blue** (`#1558bc`): Accent background (accent)
 - **Vivid Orange** (`#c75300`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#803fa5`
+**Incidental (low usage, do not lead with these):** `#42526e`, `#803fa5`
 
 ## Typography
 

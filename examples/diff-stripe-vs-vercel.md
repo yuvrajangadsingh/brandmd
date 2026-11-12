@@ -12,10 +12,12 @@
 - `#FFFFFF` — on-primary (on-primary)
 - `#1A1A1A` — on-secondary (on-secondary)
 
-### Only in Stripe (4)
+### Only in Stripe (6)
 
 - `#000000` — on-background (on-background)
+- `#FFD7EF` — surface (surface)
 - `#533AFD` — on-surface-variant (on-surface-variant)
+- `#E5EDF5` — outline (outline)
 - `#533AFD` — primary (primary)
 - `#7F7DFC` — secondary (secondary)
 
@@ -112,6 +114,7 @@ _3 of 5 properties differ between Stripe and Agentic Infrastructure button-secon
 
 _only in Stripe_:
 ```
+backgroundColor: {colors.surface}
 rounded: 0px
 ```
 

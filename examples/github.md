@@ -6,11 +6,10 @@ colors:
   background: "#ffffff"
   on-background: "#000000"
   on-surface-variant: "#58635b"
-  outline: "#e4ebe6"
-  outline-variant: "#000000"
+  outline: "#d2d9d4"
   primary: "#ff80d2"
   on-primary: "#1a1a1a"
-  secondary: "#0969da"
+  secondary: "#0055d5"
   on-secondary: "#ffffff"
 typography:
   display:
@@ -100,12 +99,11 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Dark Muted Blue** (`#1f2328`): Primary text (dominant)
+- **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Off-white** (`#e4ebe6`): Divider / border (dominant)
-- **Black** (`#000000`): Divider / border (dominant)
+- **Light gray** (`#d2d9d4`): Divider / border (dominant)
 - **Gray** (`#58635b`): Secondary text (accent)
-- **Vivid Blue** (`#0969da`): Secondary text (accent)
+- **Vivid Blue** (`#0055d5`): Secondary text (accent)
 - **Vivid Green** (`#0fbf3e`): Accent background (accent)
 - **Light Purple** (`#c898fd`): Accent background (accent)
 - **Light Pink** (`#ff80d2`): Accent background (accent)

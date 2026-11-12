@@ -6,7 +6,7 @@ colors:
   background: "#faf9f5"
   on-background: "#141413"
   surface: "#5e5d59"
-  outline: "#e8e6dc"
+  outline: "#d1cfc5"
   outline-variant: "#30302e"
   primary: "#c6613f"
   on-primary: "#1a1a1a"
@@ -98,9 +98,8 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
 - **Cream** (`#faf9f5`): Page background (dominant)
-- **Light Muted Yellow** (`#e8e6dc`): Divider / border (dominant)
+- **Light gray** (`#d1cfc5`): Divider / border (dominant)
 - **Gray** (`#87867f`): Secondary text (accent)
 - **Black** (`#141413`): Dark background / footer (accent)
 - **Dark gray** (`#30302e`): Divider / border (accent)

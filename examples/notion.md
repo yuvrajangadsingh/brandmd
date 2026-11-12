@@ -7,7 +7,7 @@ colors:
   on-background: "#000000e5"
   surface: "#f2f9ff"
   on-surface-variant: "#0000008a"
-  outline: "#0000000d"
+  outline: "#0000001a"
   primary: "#ffb110"
   on-primary: "#1a1a1a"
   secondary: "#0075de"
@@ -99,14 +99,15 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000f2`): Primary text (dominant)
+- **Black** (`#000000e5`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Near-transparent Black** (`#0000000d`): Divider / border (dominant)
+- **Near-transparent Black** (`#0000001a`): Divider / border (dominant)
 - **Gray** (`#a39e98`): Muted text (accent)
 - **Black** (`#000000bf`): Dark background / footer (accent)
-- **Vivid Blue** (`#0075de`): Accent background (accent)
-- **Vivid Orange** (`#ffb110`): Accent background (accent)
+- **Vivid Blue** (`#0075de`): Secondary text (accent)
+- **Vivid Blue** (`#097fe8`): Accent background (accent)
 - **Vivid Red** (`#f64932`): Accent background (accent)
+- **Vivid Orange** (`#ffb110`): Accent background (accent)
 - **Light Green** (`#d0f4d8`): Surface / card background (accent)
 
 ## Typography

@@ -6,7 +6,7 @@ colors:
   background: "#ffffff"
   on-background: "#000000"
   on-surface-variant: "#08090a99"
-  outline: "#08090a12"
+  outline: "#0000000a"
   primary: "#0052ff"
   on-primary: "#ffffff"
   secondary: "#0c8c5e"
@@ -103,14 +103,14 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Green** (`#0c8c5e`): Secondary text (dominant)
 - **Black** (`#000000`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
-- **Near-transparent Black** (`#08090a12`): Divider / border (dominant)
+- **Near-transparent Black** (`#0000000a`): Divider / border (dominant)
 - **Near-transparent Black** (`#00000005`): Overlay / scrim (accent)
-- **Red** (`#c44120`): Accent background (accent)
+- **Red** (`#c2452a`): Accent background (accent)
 - **Vivid Blue** (`#0052ff`): Accent background (accent)
 - **Vivid Cyan** (`#0077a6`): Accent background (accent)
 - **Near-transparent Green** (`#1fa77a14`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#717d79`
+**Incidental (low usage, do not lead with these):** `#969e9b`
 
 ## Typography
 

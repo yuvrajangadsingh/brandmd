@@ -5,13 +5,14 @@ description: "Bright, high contrast"
 colors:
   background: "#f7f7f4"
   on-background: "#26251e"
+  surface: "#f2f1ed"
   on-surface-variant: "#14141499"
-  outline: "#26251e33"
+  outline: "#26251e1a"
+  outline-variant: "#26251e8c"
   primary: "#65afe0"
   on-primary: "#1a1a1a"
-  secondary: "#e7000b"
-  on-secondary: "#ffffff"
-  surface: "#f2f1ed"
+  secondary: "#f54e00"
+  on-secondary: "#1a1a1a"
 typography:
   headline-lg:
     fontFamily: CursorGothic
@@ -94,17 +95,17 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
-- **Cream** (`#f7f7f4`): Page background (dominant)
-- **Near-transparent Dark gray** (`#26251e33`): Divider / border (dominant)
-- **Translucent Dark gray** (`#26251e66`): Primary text (accent)
+- **Cream** (`#f2f1ed`): Surface / card background (dominant)
+- **Near-transparent Dark gray** (`#26251e1a`): Divider / border (dominant)
+- **Translucent Dark gray** (`#26251e8c`): Divider / border (dominant)
+- **Near-transparent Black** (`#00000033`): Primary text (accent)
 - **Dark gray** (`#26251e`): Dark background / footer (accent)
-- **Near-transparent Dark gray** (`#26251e1a`): Overlay / scrim (accent)
+- **Translucent Black** (`#00000061`): Overlay / scrim (accent)
 - **Blue** (`#65afe0`): Accent background (accent)
-- **Vivid Red** (`#e7000b`): Secondary text (accent)
+- **Vivid Orange** (`#f54e00`): Secondary text (accent)
 - **Orange** (`#c08532`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#fbfbfb59`
+**Incidental (low usage, do not lead with these):** `#f7f7f4`, `#fbfbfb59`
 
 ## Typography
 

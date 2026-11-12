@@ -95,7 +95,7 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000e6`): Primary text (dominant)
+- **Dark gray** (`#282828`): Primary text (dominant)
 - **White** (`#ffffff`): Page background (dominant)
 - **Near-transparent Black** (`#0d0d0d0d`): Divider / border (dominant)
 - **Off-white** (`#ededed`): Divider / border (dominant)

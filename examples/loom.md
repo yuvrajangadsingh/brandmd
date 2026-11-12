@@ -5,9 +5,8 @@ description: "Bright, high contrast"
 colors:
   background: "#ffffff"
   on-background: "#292a2e"
-  surface: "#f8eefe"
-  on-surface-variant: "#1868db"
-  outline: "#292a2e"
+  surface: "#eed7fc"
+  on-surface-variant: "#48245d"
   primary: "#1868db"
   on-primary: "#ffffff"
   secondary: "#123263"
@@ -96,15 +95,13 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-- **Black** (`#000000`): Primary text (dominant)
-- **Off-white** (`#f8eefe`): Surface / card background (dominant)
-- **Dark gray** (`#292a2e`): Divider / border (dominant)
-- **White** (`#ffffff`): Light text (on dark) (accent)
+- **Dark gray** (`#292a2e`): Primary text (dominant)
+- **White** (`#ffffff`): Page background (dominant)
 - **Blue** (`#1868db`): Accent background (accent)
 - **Black** (`#101214`): Dark background / footer (accent)
 - **Dark Blue** (`#123263`): Accent background (accent)
-- **Green** (`#b3df72`): Accent background (accent)
-- **Off-white** (`#efffd6`): Page background (accent)
+- **Off-white** (`#eed7fc`): Surface / card background (accent)
+- **Green** (`#82b536`): Accent background (accent)
 - **Purple** (`#bf63f3`): Secondary text (accent)
 
 ## Typography

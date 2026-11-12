@@ -6,10 +6,9 @@ colors:
   background: "#000000"
   on-background: "#f0f0f0"
   surface: "#8f8f8fab"
-  outline: "#ffffff0d"
-  outline-variant: "#262a2d"
-  primary: "#000000"
-  on-primary: "#ffffff"
+  outline: "#262a2d"
+  primary: "#ffc446"
+  on-primary: "#1a1a1a"
 typography:
   display:
     fontFamily: aBCFavorit
@@ -94,7 +93,7 @@ components:
 
 ## Overview
 
-**Visual character:** Dark, high contrast; black background dominates with off-white text and near-transparent vivid blue accents
+**Visual character:** Dark, high contrast; black background dominates with off-white text and vivid orange accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -102,15 +101,16 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
-
+- **Off-white** (`#f0f0f0`): Light text (on dark) (dominant)
 - **Black** (`#000000`): Dark background / footer (dominant)
 - **Gray** (`#a1a4a5`): Muted text (dominant)
-- **Near-transparent White** (`#ffffff0d`): Divider / border (dominant)
-- **Near-transparent White** (`#fdfdfd0d`): Overlay / scrim (accent)
+- **Near-transparent Off-white** (`#d6ebfd30`): Focus / active border (dominant)
+- **Dark gray** (`#464a4d`): Primary text (accent)
+- **Translucent Off-white** (`#d7eff847`): Overlay / scrim (accent)
+- **Vivid Orange** (`#ffc446`): Link / accent text (accent)
 - **Near-transparent Vivid Blue** (`#00a3ff21`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#464a4d`, `#70757e`, `#50505026`, `#ffffff`, `#8f8f8fab`, `#262a2d`
+**Incidental (low usage, do not lead with these):** `#50505026`, `#ffffff`, `#8f8f8fab`, `#262a2d`
 
 ## Typography
 

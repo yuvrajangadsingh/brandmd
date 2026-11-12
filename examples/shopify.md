@@ -7,7 +7,7 @@ colors:
   on-background: "#ffffff"
   on-surface-variant: "#a1a1aa"
   outline: "#e5e7eb"
-  outline-variant: "#1e2c31"
+  outline-variant: "#11352d"
   primary: "#36f4a4"
   on-primary: "#1a1a1a"
 typography:
@@ -102,18 +102,17 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
-_The page background `#02090a` is the surface that fills the viewport; it is not among the most frequent fills listed below._
-
 - **Off-white** (`#e5e7eb`): Divider / border (dominant)
-- **Black** (`#000000`): Dark background / footer (dominant)
+- **Dark Cyan** (`#02090a`): Dark background / footer (dominant)
 - **Gray** (`#a1a1aa`): Muted text (accent)
+- **Black** (`#000000`): Primary text (accent)
 - **White** (`#ffffff`): Page background (accent)
-- **Near-transparent White** (`#ffffff0f`): Overlay / scrim (accent)
+- **Near-transparent White** (`#ffffff1a`): Overlay / scrim (accent)
 - **Vivid Green** (`#36f4a4`): Link / accent text (accent)
 - **Translucent Vivid Blue** (`#1260ff59`): Overlay / scrim (accent)
-- **Dark Green** (`#0d3a2d`): Dark background / footer (accent)
+- **Dark Green** (`#11352d`): Focus / active border (accent)
 
-**Incidental (low usage, do not lead with these):** `#3f3f4b80`, `#1e2c31`
+**Incidental (low usage, do not lead with these):** `#3f3f4b80`, `#244749`
 
 ## Typography
 

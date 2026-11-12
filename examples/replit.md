@@ -8,8 +8,8 @@ colors:
   surface: "#f1f1ee"
   on-surface-variant: "#5c5c5c"
   outline: "#f5efee"
-  outline-variant: "#6d483a1f"
-  primary: "#ff3c00"
+  outline-variant: "#66483d21"
+  primary: "#ff5b25"
   on-primary: "#1a1a1a"
   secondary: "#e94b1b"
   on-secondary: "#1a1a1a"
@@ -97,7 +97,7 @@ components:
 
 ## Overview
 
-**Visual character:** Bright, high contrast; off-white background dominates with black text and red accents
+**Visual character:** Bright, high contrast; off-white background dominates with black text and vivid red accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
@@ -107,17 +107,18 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
+_The page background `#f6f5f4` is the surface that fills the viewport; it is not among the most frequent fills listed below._
+
 - **Off-white** (`#f5efee`): Divider / border (dominant)
-- **Black** (`#000000`): Primary text (dominant)
-- **Off-white** (`#f6f5f4`): Page background (dominant)
+- **Black** (`#1d1d1d`): Primary text (dominant)
+- **Off-white** (`#f1f1ee`): Surface / card background (dominant)
 - **Gray** (`#77716f`): Secondary text (dominant)
 - **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
+- **Vivid Red** (`#ff5b25`): Accent background (accent)
 - **Red** (`#e94b1b`): Secondary text (accent)
-- **Muted Orange** (`#bca39a`): Secondary background (accent)
-- **Vivid Red** (`#ff3c00`): Accent background (accent)
-- **Orange** (`#ff9a78`): Accent background (accent)
+- **Light Orange** (`#ffd2c2`): Surface / card background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff`, `#6d483a1f`, `#191818`
+**Incidental (low usage, do not lead with these):** `#ffffff`, `#8b8077`, `#66483d21`, `#1b1817f0`
 
 ## Typography
 
