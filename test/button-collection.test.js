@@ -77,3 +77,46 @@ test("a button the reader cannot see is not collected; one pinned to the viewpor
   if (!buttons) return;
   assert.deepEqual(heights(buttons), [41, 46, 49, 50, 51, 53, 58, 59, 61, 62, 63, 66]);
 });
+
+// A label in a styled child paints its own colour; the button's computed
+// colour is not what a reader sees, and neither is hidden, transparent,
+// icon-font or screen-reader text, however deep it sits.
+test("each button records its tag, its label and the colour its label is painted in", async (t) => {
+  const buttons = await buttonsOf(t, '<body style="margin:0;background:#fff">'
+    + '<button style="height:40px;background:#212126;color:#000"><span style="visibility:hidden">Loading</span><span style="opacity:0">Saving</span>'
+    + '<span class="sr">Opens a form</span><span class="sr"><span>Help</span></span><span style="color:#000;-webkit-text-fill-color:#fff">Go</span></button>'
+    + '<input type="submit" role="button" value="Get started" style="height:38px"><input type="submit" role="button" style="height:39px">'
+    + '<a href="/x" class="btn" style="display:inline-block;height:30px">  Read\n  <b>the</b> <b>docs</b> </a>'
+    + '<button style="height:20px"><span style="display:contents;visibility:hidden">Back</span><span style="display:contents;color:#f00">Next</span></button>'
+    + '<button style="height:35px"><span style="font-family:Material Symbols Outlined">chat</span>'
+    + '<span style="display:inline-block;width:20px;overflow:hidden;white-space:nowrap;text-indent:30px">Close</span>'
+    + '<span style="display:inline-block;width:20px;height:10px;font-size:0">Shut</span><span style="position:absolute;left:-9999px">Open chat</span><span style="position:absolute;left:600px">Tooltip</span>'
+    + '<span style="position:absolute;width:1px;height:1px;white-space:nowrap;clip-path:inset(50%)"><b>Close menu</b></span>'
+    + '<span style="display:inline-block;width:20px;text-indent:-9999px;overflow:hidden">Menu</span><i style="font-family:FontAwesome">\uf075</i> Help</button>'
+    + '<button style="height:55px;width:120px"><span style="display:inline-block;width:0;white-space:nowrap">Zero width</span></button>'
+    + '<div style="height:10px;overflow:hidden"><button style="height:50px"><span style="position:relative;top:20px">Below</span></button></div>'
+    + '<button style="height:45px;background:#212126;color:#fff"><span style="color:transparent">Loading</span><span style="color:red;-webkit-text-fill-color:transparent">Wait</span>Submit</button>'
+    + "</body>");
+  if (!buttons) return;
+  const [contents, link, icon, input, bare, button, submit, under, narrow] = [...buttons].sort((a, b) => parseFloat(a.height) - parseFloat(b.height));
+  assert.equal(button.tag, "button");
+  assert.equal(button.label, "Go");
+  assert.equal(button.color, "rgb(255, 255, 255)");
+  assert.equal(link.tag, "a");
+  assert.equal(link.label, "Read the docs");
+  assert.equal(input.label, "Get started");
+  assert.equal(bare.label, "Submit");
+  // display:contents has no box of its own; its text is still what the reader sees
+  assert.equal(contents.label, "Next");
+  assert.equal(contents.color, "rgb(255, 0, 0)");
+  // an icon font's ligature or glyph draws an icon; text off the button, off the
+  // page or out of a box that clips it, or set at font-size 0, is not seen; and
+  // transparent text (by color or by text fill) draws nothing
+  assert.equal(icon.label, "Help");
+  assert.equal(submit.label, "Submit");
+  assert.equal(submit.color, "rgb(255, 255, 255)");
+  // a box above the button that hides its overflow hides the label under it
+  assert.equal(under.label, "");
+  // a box too narrow to hold its text still shows it when it does not clip
+  assert.equal(narrow.label, "Zero width");
+});
