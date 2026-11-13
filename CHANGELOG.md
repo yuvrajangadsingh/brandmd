@@ -2,6 +2,33 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [1.0.0] - 2026-11-13
+
+The first stable release. The README's [Stability](README.md#stability) section says what 1.x keeps: the commands, flags and exit codes, the DESIGN.md frontmatter keys and sections, the MCP tool and its inputs, and the environment variables. Measured values, wording and the `--json` shape are not frozen.
+
+### Added
+
+- **Stability and Known limits sections in the README.** Known limits: a hero button that fades in as the page loads can be missed, and on a page whose buttons paint no fill at rest, `colors.primary` falls back to the page colour, marked low confidence, unless another accent colour stands out.
+
+### Changed
+
+- **Node 20 or newer is required**, which Playwright and the Gemini SDK already needed.
+- **The Gemini SDK loads only when `--vision` runs**, not on every start.
+- **The primary button is the most repeated fill with real colour** (LCH chroma 20 or more), then the most chromatic; when every fill is neutral, contrast against the page decides. It used to rank by HSL saturation, which scored a dark navy as fully vivid. A coloured button fill also competes with the accent colours for `colors.primary`.
+- **What counts as a button.** A link painted like a button (a fill, a gradient or a top border, with a short visible label) counts, and `btn` or `button` classes match in any case. Controls the page hides (opacity or visibility, past its top or left edge, or cut away by a box that hides its overflow), skip links and controls inside a `<table>` (a sample email, a data grid) are left out, unless every control on the page sits in a table. A button with no label text (an icon-only launcher) is never the primary one. The Buttons prose names the element each button was sampled from.
+- **A button's `textColor` is its observed label colour** when that clears 4.5:1 against the sampled fill colour, both composited over the page and with alpha ignored (the way the linter reads it), and is left out otherwise. A gradient painted over the fill is not part of that check. It used to be swapped for `#1a1a1a` or white.
+- **The palette no longer depends on the order a page lists its colours.** Each cluster is led by its most-used colour, and opaque, translucent and faint colours never share a cluster.
+- **Refusals follow one rule on every page, theme and path.** One gate covers light, dark and `check`. A refused page refuses a multi-page run, a refused dark capture refuses the run, and `--dark` with no dark capture exits 1. A Cloudflare challenge that never clears is a block page (exit 2). A login wall needs a password field on screen, or sign-in copy on an auth URL or after a redirect to another host; a "Sign up free" headline no longer refuses. Output forced past any refusal carries the refused-source marker in every format.
+- **The gallery is regenerated with this release** and has 29 sites. anthropic.com is dropped: its hero button fades in and is missed (see Known limits).
+
+### Fixed
+
+- **Launch errors name the right fix.** Missing system libraries on Linux print the `install-deps` command, a missing browser prints the install command, and any other launch failure prints its first line, with `--debug` for the rest. Windows' own missing-library message, which names its own fix, prints in full.
+- **`check` honours its flags.** `--debug`, `--allow-blocked` and `--cf-wait-ms` reach `check` wherever they sit on the command line, its URL and wait are validated like extraction's, and a `--report` that can't be written exits 1 with a message instead of a stack trace.
+- **MCP calls are bounded.** A call stops after 180 seconds (`BRANDMD_MCP_TIMEOUT`), at most two run at once, and a cancelled call, or a client that goes away, stops its run and closes the browser (macOS and Linux). Every extraction's scroll pass stops after 50 screens and starts no new screen after 15 seconds; a very tall page used to scroll for minutes, and an MCP call could run forever.
+- **`color(srgb ...)` values and per-side border colours are read.** Chrome writes some computed colours this way, and they dropped out of the palette.
+- **Docs match the code**: `GOOGLE_API_KEY` for `--vision`, the Dark Mode Overrides section name, `check --debug`, and SKILL.md's section list.
+
 ## [0.19.1] - 2026-11-12
 
 ### Fixed
