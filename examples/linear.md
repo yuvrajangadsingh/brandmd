@@ -8,8 +8,10 @@ colors:
   surface: "#0f1011"
   on-surface-variant: "#8a8f98"
   outline: "#ffffff14"
-  primary: "#f79ce0"
+  primary: "#e5e5e6"
   on-primary: "#1a1a1a"
+  secondary: "#f79ce0"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: Inter
