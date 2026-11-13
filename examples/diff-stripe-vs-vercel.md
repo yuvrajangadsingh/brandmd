@@ -6,14 +6,14 @@
 
 ## Color palette
 
-### Shared (2)
+### Shared (3)
 
 - `#FFFFFF` — background (background)
+- `#000000` — on-background (on-background)
 - `#FFFFFF` — on-primary (on-primary)
 
-### Only in Stripe (7)
+### Only in Stripe (6)
 
-- `#000000` — on-background (on-background)
 - `#FFD7EF` — surface (surface)
 - `#533AFD` — on-surface-variant (on-surface-variant)
 - `#E5EDF5` — outline (outline)

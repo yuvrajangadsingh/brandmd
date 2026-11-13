@@ -11,7 +11,7 @@ colors:
   primary: "#171717"
   on-primary: "#ffffff"
   secondary: "#0072f5"
-  on-secondary: "#ffffff"
+  on-secondary: "#000000"
 typography:
   display:
     fontFamily: GeistSans

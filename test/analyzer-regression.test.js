@@ -22,7 +22,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import chroma from "chroma-js";
-import { analyze, flatten } from "../src/analyze.js";
+import { analyze, contrastOn, flatten } from "../src/analyze.js";
 import { mergeRaw } from "../src/extract.js";
 import { generate } from "../src/generate.js";
 
@@ -298,13 +298,28 @@ test("colors.primary is the main button's fill, neutral or chromatic; the accent
   assert.equal(primaryTok(red), flatten("#ff000083", "#ffffff"));
   assert.doesNotMatch(red, /^  secondary: "#ff0000/m, "the same pink twice");
   // a translucent fill is primary as drawn, and on-primary is picked against
-  // that grey: dark text, not the white that 50% black alone would suggest
-  // (white on the drawn grey is under 4:1)
+  // that grey (#7f7f7f): white is 4.0:1 and #1a1a1a 4.35:1, so pure black
   const md = generate(analyze(accentRaw([btn("rgba(0, 0, 0, 0.5)")])));
   const onPrimary = md.match(/^  on-primary: "(#[0-9a-f]+)"$/m)?.[1];
   assert.equal(primaryTok(md), flatten("#00000080", "#ffffff"));
-  assert.equal(onPrimary, "#1a1a1a");
-  assert.ok(chroma.contrast(primaryTok(md), onPrimary) > chroma.contrast(primaryTok(md), "#ffffff"));
+  assert.equal(onPrimary, "#000000");
+  assert.ok(chroma.contrast(primaryTok(md), onPrimary) >= 4.5);
+  // a translucent token is judged as drawn: 50% blue on black is #00397b,
+  // where black text would be 1.87:1
+  const dark = generate(analyze(rawSkeleton({
+    colors: { background: { "rgb(0, 0, 0)": 50, "rgba(0, 114, 245, 0.5)": 40 }, text: { "rgb(255, 255, 255)": 100 }, border: {} },
+    pageBackground: { surface: "rgb(0, 0, 0)", canvas: null },
+  })));
+  assert.equal(primaryTok(dark), "#0072f580");
+  assert.match(dark, /^  on-primary: "#ffffff"$/m);
+  // an older capture with a translucent page colour: 50% orange over 50%
+  // black over the white canvas is #bf803f, where white text is 3.29:1
+  const veiled = generate(analyze(rawSkeleton({
+    colors: { background: { "rgba(0, 0, 0, 0.5)": 50, "rgba(255, 128, 0, 0.5)": 40 }, text: { "rgb(0, 0, 0)": 100 }, border: {} },
+  })));
+  const veiledOn = veiled.match(/^  on-primary: "(#[0-9a-f]+)"$/m)?.[1];
+  const veiledBg = veiled.match(/^  background: "(#[0-9a-f]+)"$/m)?.[1];
+  assert.ok(contrastOn(veiledOn, flatten(primaryTok(veiled), flatten(veiledBg, "#ffffff"))) >= 4.5, `${primaryTok(veiled)} on ${veiledBg}: ${veiledOn}`);
 });
 
 // --- An icon-font glyph is no label -----------------------------------------

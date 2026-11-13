@@ -11,7 +11,7 @@ colors:
   primary: "#0e7e4e"
   on-primary: "#ffffff"
   secondary: "#fa1f41"
-  on-secondary: "#1a1a1a"
+  on-secondary: "#000000"
 typography:
   display:
     fontFamily: Manrope

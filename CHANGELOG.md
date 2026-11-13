@@ -25,6 +25,7 @@ The first stable release. The README's [Stability](README.md#stability) section 
 
 ### Fixed
 
+- **`on-primary` and `on-secondary` reach 4.5:1.** They were near-black (`#1a1a1a`) or white, whichever contrasted more, and on a mid-tone neither reaches 4.5:1: supabase's red secondary `#fa1f41` got near-black at 4.42:1, vercel's blue `#0072f5` white at 4.44:1. Pure black stands in when neither does, and one of black or white always does. On-secondary changes in claude, mintlify, notion, supabase and vercel.
 - **Launch errors name the right fix.** Missing system libraries on Linux print the `install-deps` command, a missing browser prints the install command, and any other launch failure prints its first line, with `--debug` for the rest. Windows' own missing-library message, which names its own fix, prints in full.
 - **`check` honours its flags.** `--debug`, `--allow-blocked` and `--cf-wait-ms` reach `check` wherever they sit on the command line, its URL and wait are validated like extraction's, and a `--report` that can't be written exits 1 with a message instead of a stack trace.
 - **MCP calls are bounded.** A call stops after 180 seconds (`BRANDMD_MCP_TIMEOUT`), at most two run at once, and a cancelled call, or a client that goes away, stops its run and closes the browser (macOS and Linux). Every extraction's scroll pass stops after 50 screens and starts no new screen after 15 seconds; a very tall page used to scroll for minutes, and an MCP call could run forever.
