@@ -290,8 +290,11 @@ function analyzeComponents(components, pageBgHex = null) {
   const buttons = (components?.buttons || []).filter(buttonSized).map(pill);
   if (buttons.length > 0) {
     // A control with no label a reader sees (a chat launcher, an icon) is not a
-    // call to action. Older captures have no label and stay in.
-    const solids = buttons.filter((b) => isSolidFill(b.bg) && b.label !== "");
+    // call to action. An icon font's glyph sits in a Private Use Area
+    // (cursor's "\uec12" button), so a label of only those is no label either.
+    // Older captures have no label and stay in.
+    const labelled = (b) => typeof b.label !== "string" || /[^\s\p{Co}]/u.test(b.label);
+    const solids = buttons.filter((b) => isSolidFill(b.bg) && labelled(b));
     const ghosts = buttons.filter((b) => !isSolidFill(b.bg));
 
     if (solids.length > 0) {

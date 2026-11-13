@@ -307,6 +307,19 @@ test("colors.primary is the main button's fill, neutral or chromatic; the accent
   assert.ok(chroma.contrast(primaryTok(md), onPrimary) > chroma.contrast(primaryTok(md), "#ffffff"));
 });
 
+// --- An icon-font glyph is no label -----------------------------------------
+// cursor.com: a 28px button whose only text is U+EC12, an icon font's glyph,
+// filled #111110, beat the #26251e "Download" buttons on contrast.
+test("a button labelled only with icon-font glyphs is not the primary button", () => {
+  const pick = (buttons) => analyze(accentRaw(buttons)).components.buttons.bg;
+  const icon = btn("rgb(17, 17, 16)", { label: "\uec12" });
+  const download = btn("rgb(38, 37, 30)", { label: "Download" });
+  assert.equal(pick([icon, download]), "rgb(38, 37, 30)");
+  assert.equal(pick([btn("rgb(17, 17, 16)", { label: " \uec12 " }), download]), "rgb(38, 37, 30)", "spaces around it too");
+  assert.equal(pick([btn("rgb(17, 17, 16)", { label: "\u{F0000}" }), download]), "rgb(38, 37, 30)", "a supplementary private-use glyph");
+  assert.equal(pick([btn("rgb(17, 17, 16)", { label: "Go \uec12" }), download]), "rgb(17, 17, 16)", "a word beside the glyph is a label");
+});
+
 // --- A solid fill under a gradient overlay is the button's base ------------
 // supabase's CTA is a green background-color under a 1.6% white-to-black
 // gradient; the prose printed the overlay alone and a reader painted a near-
