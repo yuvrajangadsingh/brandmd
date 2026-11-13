@@ -8,9 +8,9 @@ colors:
   on-surface-variant: "#1868db"
   outline: "#101214"
   outline-variant: "#dddee1"
-  primary: "#c75300"
+  primary: "#1868db"
   on-primary: "#ffffff"
-  secondary: "#1868db"
+  secondary: "#4c6b1f"
   on-secondary: "#ffffff"
 typography:
   display:

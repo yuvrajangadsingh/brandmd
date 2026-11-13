@@ -21,7 +21,8 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { analyze } from "../src/analyze.js";
+import chroma from "chroma-js";
+import { analyze, flatten } from "../src/analyze.js";
 import { mergeRaw } from "../src/extract.js";
 import { generate } from "../src/generate.js";
 
@@ -278,6 +279,32 @@ test("the CTA guideline names the observed primary button, the accent only witho
   assert.doesNotMatch(g, /#ff0000/);
   const one = ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { gradient: ["#ff0000"], gradientRaw: "linear-gradient(#ff0000, oklch(0.5 0.2 260))" })]))));
   assert.match(one, /button-primary.*gradient/, "one readable stop is still a gradient");
+});
+
+// --- colors.primary is the main button's fill ------------------------------
+// The YAML primary ranked a vivid accent role above the button, so cal.com's
+// primary was the red close dot of a screenshot mockup (#ff5f57) while its
+// button-primary said #242424; 19 of 29 examples disagreed with themselves.
+const primaryTok = (md) => md.match(/^  primary: "(#[0-9a-f]+)"$/m)?.[1] ?? null;
+
+test("colors.primary is the main button's fill, neutral or chromatic; the accent only without one", () => {
+  assert.equal(primaryTok(generate(analyze(accentRaw([btn("rgb(17, 17, 17)")])))), "#111111", "neutral button beats a vivid accent");
+  assert.equal(primaryTok(generate(analyze(accentRaw([btn("rgb(192, 133, 50)")])))), "#c08532", "chromatic button");
+  assert.equal(primaryTok(generate(analyze(accentRaw([])))), "#635bff", "no button: the accent");
+  assert.equal(primaryTok(generate(analyze(accentRaw([btn("rgb(255, 255, 255)")])))), "#635bff", "a button in the page's own colour: the accent");
+  assert.equal(primaryTok(generate(analyze(accentRaw([btn("rgba(255, 255, 255, 0.5)")])))), "#635bff", "50% white on white is the page's colour too");
+  // the drawn primary still excludes its own source colour from secondary
+  const red = generate(analyze(accentRaw([btn("rgba(255, 0, 0, 0.514)")])));
+  assert.equal(primaryTok(red), flatten("#ff000083", "#ffffff"));
+  assert.doesNotMatch(red, /^  secondary: "#ff0000/m, "the same pink twice");
+  // a translucent fill is primary as drawn, and on-primary is picked against
+  // that grey: dark text, not the white that 50% black alone would suggest
+  // (white on the drawn grey is under 4:1)
+  const md = generate(analyze(accentRaw([btn("rgba(0, 0, 0, 0.5)")])));
+  const onPrimary = md.match(/^  on-primary: "(#[0-9a-f]+)"$/m)?.[1];
+  assert.equal(primaryTok(md), flatten("#00000080", "#ffffff"));
+  assert.equal(onPrimary, "#1a1a1a");
+  assert.ok(chroma.contrast(primaryTok(md), onPrimary) > chroma.contrast(primaryTok(md), "#ffffff"));
 });
 
 // --- A solid fill under a gradient overlay is the button's base ------------
@@ -915,7 +942,7 @@ test("a border that shares its hex with a fill still gives the outline token, un
 // --- A link colour is not the primary when a button was seen ------------------
 // linear's pink (#f79ce0) is a text colour (41) and fills nothing; its Sign up
 // button is #e5e5e6. The pink was the primary.
-test("a link colour is the primary only when no button was seen or it draws a focus border", () => {
+test("a link colour is the primary only when no button was seen", () => {
   const raw = (buttons, border = {}) => rawSkeleton({
     colors: { background: { "rgb(8, 9, 10)": 1000 }, text: { "rgb(247, 247, 248)": 500, "rgb(247, 156, 224)": 41 }, border },
     fonts: { Inter: 100 },
@@ -925,14 +952,18 @@ test("a link colour is the primary only when no button was seen or it draws a fo
   const sign = btn("rgb(229, 229, 230)", { color: "rgb(8, 9, 10)" });
   assert.match(generate(analyze(raw([sign]))), /^ {2}primary: "#e5e5e6"$/m);
   assert.match(generate(analyze(raw([]))), /^ {2}primary: "#f79ce0"$/m);
-  // the same pink drawing a focus border is accent evidence, though its entry is the text one
-  assert.match(generate(analyze(raw([sign], { "rgb(247, 156, 224)": 10 }))), /^ {2}primary: "#f79ce0"$/m);
+  // a focus border in the same pink does not outrank the button; without one it is the accent
+  assert.match(generate(analyze(raw([sign], { "rgb(247, 156, 224)": 10 }))), /^ {2}primary: "#e5e5e6"$/m);
+  assert.match(generate(analyze(raw([], { "rgb(247, 156, 224)": 10 }))), /^ {2}primary: "#f79ce0"$/m);
 });
 
-// --- A chromatic CTA competes with the accent roles ---------------------------
+// --- The button fill beats every accent role ---------------------------------
 // stripe: the #533afd on its buttons is mostly a text colour in the palette, so
 // only the paler #7f7dfc decorative fill held an accent role and became primary.
-test("a chromatic button fill competes with the accent roles on vividness", () => {
+// A neutral or duller button deferred to that fill until primary meant the
+// button (notion's blue CTA lost to a yellow illustration fill, vercel's black
+// to a link blue).
+test("the main button's fill is the primary, whatever an accent role says", () => {
   const raw = (buttons) => rawSkeleton({
     colors: { background: { "rgb(255, 255, 255)": 1000, "rgb(127, 125, 252)": 80 }, text: { "rgb(0, 0, 0)": 1700, "rgb(83, 58, 253)": 577 }, border: {} },
     fonts: { Inter: 100 },
@@ -941,8 +972,9 @@ test("a chromatic button fill competes with the accent roles on vividness", () =
   });
   const primary = (buttons) => generate(analyze(raw(buttons))).match(/^ {2}primary: "(#[0-9a-f]+)"$/m)?.[1];
   assert.equal(primary([btn("rgb(83, 58, 253)")]), "#533afd", "the CTA fill beats a paler decorative fill");
-  assert.equal(primary([btn("rgb(17, 17, 17)")]), "#7f7dfc", "a neutral button still defers to the accent");
-  assert.equal(primary([btn("rgb(14, 126, 78)")]), "#7f7dfc", "a duller chromatic button competes and loses");
+  assert.equal(primary([btn("rgb(17, 17, 17)")]), "#111111", "a neutral button");
+  assert.equal(primary([btn("rgb(14, 126, 78)")]), "#0e7e4e", "a duller chromatic button");
+  assert.equal(primary([]), "#7f7dfc", "no button: the accent fill");
 });
 
 test("a color(srgb ...) value counts in the palette", () => {

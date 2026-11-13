@@ -8,10 +8,10 @@ colors:
   on-surface-variant: "#4d4d4d"
   outline: "#ebebeb"
   outline-variant: "#ffffff66"
-  primary: "#0072f5"
+  primary: "#171717"
   on-primary: "#ffffff"
-  secondary: "#52aeff"
-  on-secondary: "#1a1a1a"
+  secondary: "#0072f5"
+  on-secondary: "#ffffff"
 typography:
   display:
     fontFamily: GeistSans

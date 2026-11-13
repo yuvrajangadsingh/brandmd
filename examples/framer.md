@@ -7,10 +7,10 @@ colors:
   on-background: "#ffffff"
   surface: "#666666"
   outline: "#ffffff0f"
-  primary: "#0099ff"
+  primary: "#ffffff"
   on-primary: "#1a1a1a"
-  secondary: "#0000ee"
-  on-secondary: "#ffffff"
+  secondary: "#0099ff"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: GT Walsheim Medium

@@ -452,39 +452,31 @@ function vividness(hex) {
 }
 
 /**
- * Pick the brand's primary/CTA color. Evidence ranking per the plan:
- *   1. explicit accent roles from the palette (Accent background > Link/accent
- *      text > focus border), most vivid first — a bright brand blue beats a
- *      dark navy sharing the role. A link colour only colours text, so it
- *      counts only when no button was seen (linear's pink links against its
- *      #e5e5e6 Sign up), unless the same hex also draws a focus border;
- *      A chromatic button fill joins this list and competes on vividness;
- *   2. the representative non-transparent button background (a rendered button
- *      is direct action evidence, even when it's a neutral black-on-white CTA);
- *   3. the most vivid mid-tone chromatic palette color.
+ * Pick the brand's primary/CTA color: the main button's fill when a solid
+ * button was seen (primary means the colour the site paints its main action
+ * with, a neutral black or #e5e5e6 included; a louder accent elsewhere, a logo,
+ * a banner, a gradient headline, stays in the palette). Without one: explicit
+ * accent roles (Accent background, Link/accent text, focus border), most vivid
+ * first, then the most vivid mid-tone chromatic palette color.
  * NEVER a text-neutral role. Returns a palette-shaped entry or null.
  */
 function pickPrimaryAccent(palette, solidButtonBg = null) {
-  const accentRoles = new Set(["Accent background", "Focus / active border", ...(solidButtonBg ? [] : ["Link / accent text"])]);
-  const button = solidButtonBg && (palette.find((c) => c.hex === solidButtonBg) || {
-    hex: solidButtonBg,
-    name: describeColor(solidButtonBg),
-    varName: null,
-    role: "Button background",
-    freq: 1,
-    type: "component",
-    tier: "accent",
-  });
-  // A chromatic button fill is accent evidence too, ranked on the same
-  // vividness, so a decorative fill or a focus border no longer outranks the
-  // CTA by role alone (stripe's #7f7dfc fill against its #533afd buttons).
+  if (solidButtonBg) {
+    return palette.find((c) => c.hex === solidButtonBg) || {
+      hex: solidButtonBg,
+      name: describeColor(solidButtonBg),
+      varName: null,
+      role: "Button background",
+      freq: 1,
+      type: "component",
+      tier: "accent",
+    };
+  }
+  const accentRoles = new Set(["Accent background", "Focus / active border", "Link / accent text"]);
   const explicit = palette
     .filter((c) => accentRoles.has(c.role) || accentRoles.has(c.alsoBorder))
-    .concat(button && lchChroma(button.hex) >= CHROMATIC ? [button] : [])
     .sort((a, b) => vividness(b.hex) - vividness(a.hex));
   if (explicit.length && vividness(explicit[0].hex) > 0) return explicit[0];
-
-  if (button) return button;
 
   // Otherwise the most vivid mid-tone chromatic color that isn't body text.
   let best = null;
@@ -926,7 +918,11 @@ export function analyze(raw) {
   let solidBtnBgHex = null;
   if (components.buttons && isSolidFill(components.buttons.bg)) {
     const h = toHex(components.buttons.bg);
-    if (h && h.toLowerCase() !== (pageBgHex || "").toLowerCase()) solidBtnBgHex = h.toLowerCase();
+    // primary is a flat colour: a translucent fill as the page shows it, so
+    // on-primary is chosen against what is drawn (50% black on white is grey),
+    // and 50% white on white is the page's own colour.
+    const drawn = h ? flatten(h, pageBgHex).toLowerCase() : null;
+    if (drawn && drawn !== (pageBgHex || "").toLowerCase()) solidBtnBgHex = drawn;
   }
   const primaryColor = pickPrimaryAccent(dedupedPalette, solidBtnBgHex);
 

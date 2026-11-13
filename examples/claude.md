@@ -8,8 +8,10 @@ colors:
   surface: "#5e5d59"
   outline: "#d1cfc5"
   outline-variant: "#30302e"
-  primary: "#c6613f"
-  on-primary: "#1a1a1a"
+  primary: "#141413"
+  on-primary: "#ffffff"
+  secondary: "#c6613f"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: anthropicSerif

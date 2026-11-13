@@ -7,8 +7,8 @@ colors:
   on-background: "#ffffff"
   surface: "#c2ef4e"
   outline: "#584674"
-  primary: "#fd44b0"
-  on-primary: "#1a1a1a"
+  primary: "#c83852"
+  on-primary: "#ffffff"
   secondary: "#9ecbff"
   on-secondary: "#1a1a1a"
 typography:

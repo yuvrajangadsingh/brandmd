@@ -7,8 +7,10 @@ colors:
   on-background: "#000000"
   on-surface-variant: "#0000008a"
   outline: "#808080"
-  primary: "#00b6ff"
-  on-primary: "#1a1a1a"
+  primary: "#000000"
+  on-primary: "#ffffff"
+  secondary: "#00b6ff"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: figmaSans

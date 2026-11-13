@@ -9,9 +9,9 @@ colors:
   on-surface-variant: "#5c5c5c"
   outline: "#f5efee"
   outline-variant: "#ffffff94"
-  primary: "#ff5b25"
+  primary: "#e94b1b"
   on-primary: "#1a1a1a"
-  secondary: "#e94b1b"
+  secondary: "#ff5b25"
   on-secondary: "#1a1a1a"
 typography:
   display:

@@ -9,9 +9,9 @@ colors:
   on-surface-variant: "#374151"
   outline: "#bfc1b7"
   outline-variant: "#b17816"
-  primary: "#eb9d2a"
+  primary: "#cd8407"
   on-primary: "#1a1a1a"
-  secondary: "#b17816"
+  secondary: "#eb9d2a"
   on-secondary: "#1a1a1a"
 typography:
   headline-lg:

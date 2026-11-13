@@ -8,8 +8,8 @@ colors:
   on-surface-variant: "#696969"
   outline: "#03030315"
   outline-variant: "#3fcf8e"
-  primary: "#fe6a1e"
-  on-primary: "#1a1a1a"
+  primary: "#0e7e4e"
+  on-primary: "#ffffff"
   secondary: "#fa1f41"
   on-secondary: "#1a1a1a"
 typography:
