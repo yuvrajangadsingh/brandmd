@@ -161,6 +161,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 40px
 - Padding: 8px 12px 8px 12px
 - Font: 14px, weight 700
+- Sampled from: `<button>` labelled `Check availability`
 
 ### Inputs
 - Border: 0px solid rgb(0, 0, 0)

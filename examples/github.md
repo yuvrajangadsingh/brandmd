@@ -67,8 +67,8 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: "{rounded.2xl}"
-    height: 28px
+    rounded: "{rounded.md}"
+    height: 32px
   card:
     rounded: "{rounded.md}"
     padding: 12px
@@ -94,6 +94,8 @@ components:
 **Visual character:** Bright, high contrast; white background dominates with black text and vivid blue accents
 
 **Density:** spacious. The layout uses a varied spacing scale.
+
+**Motion:** Animation surfaces detected (WebGL / 3D canvas). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -162,6 +164,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 43px
 - Padding: 6px 20px 6px 20px
 - Font: 14px, weight 400
+- Sampled from: `<button>` labelled `Sign up for GitHub`
 
 ### Cards
 - Corner radius: 6px

@@ -57,17 +57,18 @@ spacing:
   xl: 20px
 components:
   button-primary:
-    backgroundColor: "#c6613f"
+    backgroundColor: "#141413"
+    textColor: "#faf9f5"
     typography: "{typography.label-sm}"
     rounded: "{rounded.md}"
-    padding: 4px
-    height: 28px
+    padding: 8px
+    height: 36px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: "{rounded.sm}"
+    rounded: 0px
     padding: 8px
-    height: 35px
+    height: 40px
   card:
     backgroundColor: "{colors.surface}"
     rounded: 0px
@@ -158,12 +159,13 @@ Asymmetric / percentage radii observed (12px 12px 0px 0px); kept out of the ordi
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#c6613f`
-- Text color: `#ffffff` (4.05:1 on the fill, below the 4.5:1 AA minimum)
+- Background: `#141413`
+- Text color: `#faf9f5`
 - Corner radius: 8px
-- Height: 28px
-- Padding: 4px 4px 4px 4px
-- Font: 12px, weight 500
+- Height: 36px
+- Padding: 8px 16px 8px 16px
+- Font: 15px, weight 500
+- Sampled from: `<a>` labelled `Try Claude`
 
 ### Cards
 - Corner radius: 0px
@@ -178,7 +180,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#c6613f` for primary actions and CTAs
+- Do use `#141413` for primary actions and CTAs
 - Do stick to 3 font weights: 400, 500, 600
 - Do use `anthropicSerif` as the primary typeface
 - Don't introduce colors outside the palette above

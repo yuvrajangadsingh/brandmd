@@ -8,8 +8,8 @@ colors:
   on-surface-variant: "#5e5d59"
   outline: "#dedcd1"
   outline-variant: "#3d3d3a"
-  primary: "#262624"
-  on-primary: "#ffffff"
+  primary: "#e8e6dc"
+  on-primary: "#1a1a1a"
 typography:
   display:
     fontFamily: anthropicSerif
@@ -56,10 +56,11 @@ spacing:
   xl: 16px
 components:
   button-primary:
-    backgroundColor: "#262624"
-    textColor: "#faf9f5"
+    backgroundColor: "#e8e6dc"
+    textColor: "#30302e"
     typography: "{typography.label-sm}"
     rounded: "{rounded.lg}"
+    padding: 12px
     height: 36px
   button-secondary:
     backgroundColor: transparent
@@ -152,12 +153,13 @@ Uses 1 shadow style for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#262624`
-- Text color: `#faf9f5`
+- Background: `#e8e6dc`
+- Text color: `#30302e`
 - Corner radius: 10px
 - Height: 36px
-- Padding: 0px 0px 0px 0px
+- Padding: 12px 20px 12px 24px
 - Font: 16.6863px, weight 400
+- Sampled from: `<a>` labelled `Read announcement`
 
 ### Cards
 - Corner radius: 0px
@@ -173,7 +175,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#262624` for primary actions and CTAs
+- Do use `#e8e6dc` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `anthropicSerif` as the primary typeface
 - Don't introduce colors outside the palette above

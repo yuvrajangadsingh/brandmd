@@ -158,6 +158,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 48px
 - Padding: 7.80769px 15.6154px 7.80769px 15.6154px
 - Font: 15.6154px, weight 400
+- Sampled from: `<a>` labelled `Get Loom for free`
 
 ## Do's and Don'ts
 

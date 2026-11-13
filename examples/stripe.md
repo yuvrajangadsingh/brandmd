@@ -68,7 +68,7 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: "{rounded.sm}"
-    padding: 11px
+    padding: 12px
     height: 40px
   card:
     backgroundColor: "{colors.surface}"
@@ -97,7 +97,7 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (canvas rendering). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (WebGL / 3D canvas). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -167,6 +167,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 40px
 - Padding: 11.5px 20px 12.5px 20px
 - Font: 14px, weight 400
+- Sampled from: `<a>` labelled `Contact sales`
 
 ### Cards
 - Corner radius: 0px

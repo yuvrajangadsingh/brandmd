@@ -98,6 +98,8 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
+**Motion:** Animation surfaces detected (WebGL / 3D canvas). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
@@ -124,7 +126,7 @@ _The page background `#07080a` is the surface that fills the viewport; it is not
 - Headings: Inter
 - Body: Inter
 
-**All detected fonts:** Inter (2112), SF Pro Text (522), SF Pro (37), GeistMono (31), jetBrainsMono (1)
+**All detected fonts:** Inter (2115), SF Pro Text (522), SF Pro (37), GeistMono (31), jetBrainsMono (1)
 
 **Type scale:**
 - Headings: 24px, 32px, 41px
@@ -170,6 +172,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 36px
 - Padding: 8px 12px 8px 12px
 - Font: 14px, weight 500
+- Sampled from: `<a>` labelled `Download`
 
 ### Cards
 - Background: `#ffffff`

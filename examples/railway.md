@@ -52,11 +52,12 @@ spacing:
   xl: 16px
 components:
   button-primary:
-    backgroundColor: "#291839"
-    textColor: "#f7f7f8"
+    backgroundColor: "#553f83"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
     rounded: "{rounded.lg}"
-    height: 32px
+    padding: 12px
+    height: 58px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -84,7 +85,7 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (canvas rendering). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (WebGL / 3D canvas). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
@@ -96,10 +97,9 @@ _The page background `#13111c` is the surface that fills the viewport; it is not
 - **White** (`#f7f7f8`): Light text (on dark) (dominant)
 - **Dark Muted Blue** (`#0b0b0f`): Dark background / footer (dominant)
 - **Gray** (`#6b7280`): Secondary text (accent)
-- **Near-transparent White** (`#ffffff0d`): Overlay / scrim (accent)
 - **Dark Purple** (`#180d43`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff16`, `#00000073`, `#ffffff80`, `#609f89`, `#33323e80`, `#428a7233`
+**Incidental (low usage, do not lead with these):** `#ffffff16`, `#ffffff0d`, `#00000073`, `#ffffff80`, `#609f89`, `#33323e80`, `#428a7233`
 
 ## Typography
 
@@ -112,7 +112,7 @@ _The page background `#13111c` is the surface that fills the viewport; it is not
 - Body: SFMono-Regular
 - Buttons / nav: Inter
 
-**All detected fonts:** Inter (7146), SFMono-Regular (2196), JetBrains Mono (306), Helvetica (17), SF Mono (16), IBM Plex Serif (8), Inter Tight (4)
+**All detected fonts:** Inter (7111), SFMono-Regular (2196), JetBrains Mono (306), Helvetica (17), SF Mono (16), IBM Plex Serif (8), Inter Tight (4)
 
 **Type scale:**
 - Headings: 24px, 40px
@@ -127,9 +127,9 @@ _The page background `#13111c` is the surface that fills the viewport; it is not
 
 ## Layout
 
-**Spacing scale:** 4px, 6px, 8px, 12px, 16px, 24px, 32px, 40px
+**Spacing scale:** 4px, 6px, 8px, 12px, 16px, 24px, 32px, 64px
 
-**Base unit:** 4px grid — 90% of all weighted spacing values are multiples of 4.
+**Base unit:** 4px grid — 89% of all weighted spacing values are multiples of 4.
 
 ## Elevation & Depth
 
@@ -154,17 +154,18 @@ Asymmetric / percentage radii observed (0px 0px 4px 4px, 4px 4px 0px 0px); kept 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#291839`
-- Text color: `#f7f7f8`
+- Background: `#553f83`
+- Text color: `#ffffff`
 - Corner radius: 8px
-- Height: 32px
-- Padding: 0px 0px 0px 0px
-- Font: 16px, weight 400
+- Height: 58px
+- Padding: 12px 24px 12px 24px
+- Font: 20px, weight 500
+- Sampled from: `<a>` labelled `Deploy →`
 
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#291839` for primary actions and CTAs
+- Do use `#553f83` for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and IBM Plex Serif

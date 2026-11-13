@@ -153,6 +153,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 48px
 - Padding: 14px 24px 14px 24px
 - Font: 16px, weight 500
+- Sampled from: `<button>` labelled `Log in to claim offer`
 
 ## Do's and Don'ts
 

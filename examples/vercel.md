@@ -58,11 +58,11 @@ spacing:
   xl: 8px
 components:
   button-primary:
-    backgroundColor: "#ffffff"
-    textColor: "#171717"
+    backgroundColor: "#171717"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.full}"
-    height: 40px
+    rounded: "{rounded.md}"
+    height: 32px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -133,9 +133,9 @@ Uses 5 shadow styles for layering and elevation:
 
 - Level 1: `rgb(235, 235, 235) 0px 0px 0px 1px`
 - Level 2: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 2px 2px 0px, rgb(250, 250, 250) 0px 0px 0px 1px`
-- Level 3: `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px`
-- Level 4: `rgba(0, 0, 0, 0.1) 0px 1px 0px 0px`
-- Level 5: `rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px`
+- Level 3: `rgba(0, 0, 0, 0.1) 0px 1px 0px 0px`
+- Level 4: `rgb(255, 255, 255) 0px 0px 0px 2px, rgb(0, 114, 245) 0px 0px 0px 4px`
+- Level 5: `rgba(0, 0, 0, 0.18) 0px 1px 2px 0px inset, rgba(0, 0, 0, 0.14) 0px 0px 24px 0px inset`
 
 ## Shapes
 
@@ -150,16 +150,17 @@ Asymmetric / percentage radii observed (7px 7px 0px); kept out of the ordinal `r
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#ffffff`
-- Text color: `#171717`
-- Corner radius: 9999px
-- Height: 40px
-- Padding: 0px 12px 0px 8px
-- Font: 16px, weight 500
+- Background: `#171717`
+- Text color: `#ffffff`
+- Corner radius: 6px
+- Height: 32px
+- Padding: 0px 6px 0px 6px
+- Font: 14px, weight 500
+- Sampled from: `<a>` labelled `Sign Up`
 
 ## Do's and Don'ts
 
-- Do use `#ffffff` for primary actions and CTAs
+- Do use `#171717` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 450, 500, 600
 - Do use `GeistSans` as the primary typeface
 - Don't introduce colors outside the palette above

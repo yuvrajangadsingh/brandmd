@@ -61,12 +61,11 @@ spacing:
   xl: 9px
 components:
   button-primary:
-    backgroundColor: "#ffffff80"
-    textColor: "#57514f"
+    backgroundColor: "#e94b1b"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.2xl}"
-    padding: 8px
-    height: 34px
+    rounded: "{rounded.md}"
+    padding: 9px
+    height: 48px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -165,12 +164,13 @@ Uses 5 shadow styles for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#ffffff80`
-- Text color: `#57514f`
-- Corner radius: 12px
-- Height: 34px
-- Padding: 8px 14px 8px 14px
-- Font: 16px, weight 400
+- Background: `#e94b1b`
+- Text color: `#ffffff` (3.82:1 on the fill, below the 4.5:1 AA minimum)
+- Corner radius: 9px
+- Height: 48px
+- Padding: 9px 16px 9px 16px
+- Font: 16px, weight 650
+- Sampled from: `<a>` labelled `Get started →`
 
 ### Cards
 - Background: `#f1f1ee`
@@ -185,7 +185,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#ffffff80` for primary actions and CTAs
+- Do use `#e94b1b` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 600, 650, 700
 - Do use `ABC Diatype Plus` as the primary typeface
 - Don't introduce colors outside the palette above

@@ -59,8 +59,9 @@ components:
     backgroundColor: "#000000"
     textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.full}"
-    height: 36px
+    rounded: "{rounded.lg}"
+    padding: 12px
+    height: 46px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -146,10 +147,11 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ### Buttons
 - Background: `#000000`
 - Text color: `#ffffff`
-- Corner radius: 9999px
-- Height: 36px
-- Padding: 0px 0px 0px 0px
-- Font: 14px, weight 400
+- Corner radius: 8px
+- Height: 46px
+- Padding: 12px 22px 12px 22px
+- Font: 18px, weight 330
+- Sampled from: `<a>` labelled `Get started for free`
 
 ### Cards
 - Corner radius: 0px

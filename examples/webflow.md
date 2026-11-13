@@ -165,6 +165,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 51px
 - Padding: 16px 24px 16px 24px
 - Font: 16px, weight 500
+- Sampled from: `<a>` labelled `Start for free`
 
 ### Cards
 - Corner radius: 0px
