@@ -20,9 +20,12 @@ async function isCloudflareChallenge(page) {
       const body = (document.body?.innerText || "").toLowerCase();
       const html = (document.documentElement?.outerHTML || "").toLowerCase();
 
-      // STRONG markers — Cloudflare-specific, sufficient alone
+      // STRONG markers — Cloudflare-specific, sufficient alone. Of the
+      // challenge-platform paths only the challenge page's orchestrate script
+      // counts: normal pages with Cloudflare's JS detections on load
+      // /cdn-cgi/challenge-platform/scripts/jsd/main.js (discord, monday).
       const strong =
-        /cf-browser-verification|cf-challenge-running|cf-error-details|__cf_chl_|\/cdn-cgi\/challenge-platform\//.test(html) ||
+        /cf-browser-verification|cf-challenge-running|cf-error-details|__cf_chl_|\/cdn-cgi\/challenge-platform\/[^"'\s]*orchestrate\//.test(html) ||
         /cloudflare ray id/.test(body);
 
       if (strong) return "yes";
