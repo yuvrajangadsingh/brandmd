@@ -9,8 +9,8 @@ colors:
   on-surface-variant: "#14141499"
   outline: "#26251e1a"
   outline-variant: "#26251e8c"
-  primary: "#c08532"
-  on-primary: "#1a1a1a"
+  primary: "#26251e"
+  on-primary: "#ffffff"
   secondary: "#65afe0"
   on-secondary: "#1a1a1a"
 typography:
@@ -50,11 +50,12 @@ spacing:
   xl: 6px
 components:
   button-primary:
-    backgroundColor: "#c08532"
+    backgroundColor: "#26251e"
+    textColor: "#f7f7f4"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.md}"
-    padding: 2px
-    height: 20px
+    rounded: "{rounded.full}"
+    padding: 6px
+    height: 27px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -153,13 +154,13 @@ Asymmetric / percentage radii observed (2px 0px 0px 2px, 50%); kept out of the o
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#c08532`
-- Text color: `#ffffff` (3.16:1 on the fill, below the 4.5:1 AA minimum)
-- Corner radius: 4px
-- Height: 20px
-- Padding: 2px 6px 2px 6px
-- Font: 12px, weight 500
-- Sampled from: `<button>` labelled `Continue`
+- Background: `#26251e`
+- Text color: `#f7f7f4`
+- Corner radius: 9999px
+- Height: 27px
+- Padding: 5.6px 10.5px 5.88px 10.5px
+- Font: 14px, weight 400
+- Sampled from: `<a>` labelled `Download`
 
 ### Cards
 - Background: `#f2f1ed`
@@ -175,7 +176,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#c08532` for primary actions and CTAs
+- Do use `#26251e` for primary actions and CTAs
 - Do use `CursorGothic` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond CursorGothic and Segoe UI

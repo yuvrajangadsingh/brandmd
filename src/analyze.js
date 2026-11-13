@@ -318,9 +318,19 @@ function analyzeComponents(components, pageBgHex = null) {
       // three 1/3 votes to 1. Equal evidence must tie and go on to chroma.
       const tied = (d) => (Math.abs(d) < 1e-9 ? 0 : d);
       for (const x of chromatic) weight[x.hex] = (weight[x.hex] || 0) + (typeof x.b._pageWeight === "number" ? x.b._pageWeight : 1);
-      const ranked = chromatic.length
-        ? chromatic.sort((p, q) => tied(weight[q.hex] - weight[p.hex]) || q.chroma - p.chroma || q.contrast - p.contrast)
-        : info.sort((p, q) => q.contrast - p.contrast);
+      chromatic.sort((p, q) => tied(weight[q.hex] - weight[p.hex]) || q.chroma - p.chroma || q.contrast - p.contrast);
+      // A chromatic fill seen once (a promo, a badge) is no pattern: when a
+      // neutral fill repeats more, the neutrals decide (tailwindcss's one pink
+      // button against its two black ones, cursor's one orange against five
+      // near-black, asana's one pink against its black CTAs).
+      // Counted as occurrences, not page weights: "once" means one element.
+      const seen = {};
+      for (const x of info) seen[x.hex] = (seen[x.hex] || 0) + 1;
+      const outvoted = chromatic.length > 0 && seen[chromatic[0].hex] === 1
+        && info.some((x) => x.chroma < CHROMATIC && seen[x.hex] >= 2);
+      const ranked = chromatic.length && !outvoted
+        ? chromatic
+        : info.filter((x) => x.chroma < CHROMATIC).sort((p, q) => q.contrast - p.contrast);
       result.buttons = ranked[0].b;
     }
 

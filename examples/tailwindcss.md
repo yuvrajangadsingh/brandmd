@@ -7,8 +7,8 @@ colors:
   on-background: "#030712"
   on-surface-variant: "#4a5565"
   outline: "#0307120d"
-  primary: "#f6339a"
-  on-primary: "#1a1a1a"
+  primary: "#000000"
+  on-primary: "#ffffff"
   secondary: "#74d4ff"
   on-secondary: "#1a1a1a"
 typography:
@@ -59,9 +59,10 @@ spacing:
   xl: 16px
 components:
   button-primary:
-    backgroundColor: "#f6339a"
+    backgroundColor: "#000000"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.md}"
+    rounded: "{rounded.3xl}"
     padding: 8px
     height: 40px
   button-secondary:
@@ -155,13 +156,13 @@ Asymmetric / percentage radii observed (16px 16px 0px 0px); kept out of the ordi
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#f6339a`
-- Text color: `#ffffff` (3.58:1 on the fill, below the 4.5:1 AA minimum)
-- Corner radius: 8px
+- Background: `#000000`
+- Text color: `#ffffff`
+- Corner radius: 32px
 - Height: 40px
-- Padding: 8px 12px 8px 12px
-- Font: 14px, weight 700
-- Sampled from: `<button>` labelled `Check availability`
+- Padding: 8px 16px 8px 16px
+- Font: 14px, weight 600
+- Sampled from: `<a>` labelled `Get started`
 
 ### Inputs
 - Border: 0px solid rgb(0, 0, 0)
@@ -172,7 +173,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#f6339a` for primary actions and CTAs
+- Do use `#000000` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `inter` as the primary typeface
 - Don't introduce colors outside the palette above
