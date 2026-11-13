@@ -283,12 +283,21 @@ function buildModel(tokens) {
   // button-primary: ONLY when a real solid (or gradient) button was observed.
   // Never invented from palette colors — a page with no buttons gets no button
   // token. Values are literals from the observed element; textColor only when
-  // it clears WCAG AA on the fill (the linter checks contrast).
+  // it clears WCAG AA on the fill both as a reader sees it (a translucent fill
+  // composited over the page) and as the linter reads the pair (alpha
+  // ignored), so the YAML never fails the lint. A text colour that fails is left
+  // out, not swapped for black or white: a substitute is a colour the site
+  // never used, and the prose prints the observed one with its ratio.
+  let buttonTextRatio = null;
   if (solidBtnBg) {
     const bp = { backgroundColor: lc(chroma(solidBtnBg).hex()) };
     const realText = safeChroma(solidBtn.color) ? lc(chroma(solidBtn.color).hex()) : null;
-    const on = realText && contrastOk(bp.backgroundColor, realText) ? realText : onColor(bp.backgroundColor);
-    if (contrastOk(bp.backgroundColor, on)) bp.textColor = on;
+    if (realText && contrastOn(realText, bp.backgroundColor, colors.background) >= 4.5 && contrastOk(bp.backgroundColor, realText)) bp.textColor = realText;
+    // The prose ratio is measured only on a plain fill: a gradient, opaque or
+    // laid over the base, changes the colour behind the label.
+    if (realText && !hasGradient(solidBtn)) {
+      buttonTextRatio = contrastOn(realText, bp.backgroundColor, colors.background);
+    }
     if (labelType) bp.typography = `{typography.${labelType}}`;
     const rr = roundedVal(solidBtn?.radius);
     if (rr) bp.rounded = rr;
@@ -379,7 +388,7 @@ function buildModel(tokens) {
   const name = sanitizeLine(tokens.title) || hostOf(tokens.url);
   const description = sanitizeLine(shortDescription(tokens.atmosphere));
   const onBackgroundOmitted = tr && !tr.onBackground ? { background: tr.background, best: tr.best } : null;
-  return { name, description, colors, typography, rounded, spacing, components, primaryFont, bodyFont, primaryNeutralFallback, pageBgSynthesized, onBackgroundOmitted };
+  return { name, description, colors, typography, rounded, spacing, components, primaryFont, bodyFont, primaryNeutralFallback, pageBgSynthesized, onBackgroundOmitted, buttonTextRatio };
 }
 
 /**
@@ -388,7 +397,7 @@ function buildModel(tokens) {
  * and Inputs may fall back to page-level tokens, but the fallback is labeled as
  * page-level, never passed off as observed component styling.
  */
-function emitComponentProse(lines, tokens) {
+function emitComponentProse(lines, tokens, model) {
   const hexish = (css) => {
     const c = safeChroma(css);
     return c ? lc(c.hex()) : css;
@@ -413,7 +422,11 @@ function emitComponentProse(lines, tokens) {
     const btnLines = [];
     const bgl = bgLine(btn);
     if (bgl) btnLines.push(bgl);
-    if (btn.color) btnLines.push(`- Text color: \`${hexish(btn.color)}\``);
+    if (btn.color) {
+      const r = btn === tokens.components?.buttons ? model.buttonTextRatio : null;
+      const low = r !== null && r < 4.5 ? ` (${Math.floor(r * 100) / 100}:1 on the fill, below the 4.5:1 AA minimum)` : "";
+      btnLines.push(`- Text color: \`${hexish(btn.color)}\`${low}`);
+    }
     if (btn.radius) btnLines.push(`- Corner radius: ${btn.radius}`);
     if (btn.height) btnLines.push(`- Height: ${btn.height}`);
     if (btn.padding) btnLines.push(`- Padding: ${btn.padding}`);
@@ -779,7 +792,7 @@ function emitBody(tokens, model) {
   } else {
     lines.push(`Observed from the live DOM. Machine-readable component tokens are in the \`components\` block above.${richPage ? "" : " _(low confidence: sampled from a sparse page)_"}`);
     lines.push("");
-    emitComponentProse(lines, tokens);
+    emitComponentProse(lines, tokens, model);
   }
 
   // 8. Do's and Don'ts. Every line here needs real evidence behind it: no CTA

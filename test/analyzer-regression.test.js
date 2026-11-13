@@ -849,3 +849,30 @@ test("a button with no label a reader sees is not a call to action", () => {
   assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { tag: "button", label: "" }), cta])))), "`#111111`");
   assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)"), cta])))), "`#ff0000`", "an older capture has no label to judge by");
 });
+
+// --- Button text below AA -----------------------------------------------------
+// tailwindcss and cursor paint white on a mid-tone fill (3.58:1, 3.16:1). The
+// YAML printed #1a1a1a, a colour neither site uses, while the prose printed white.
+test("a button text colour below AA stays out of the YAML and is flagged in the prose", () => {
+  const block = (md) => md.match(/^ {2}button-primary:\n((?: {4}.*\n)+)/m)[1];
+  const low = generate(analyze(accentRaw([btn("rgb(246, 51, 154)")])));
+  assert.doesNotMatch(block(low), /textColor/);
+  assert.match(low, /^- Text color: `#ffffff` \(3\.58:1 on the fill, below the 4\.5:1 AA minimum\)$/m);
+  const ok = generate(analyze(accentRaw([btn("rgb(83, 58, 253)")])));
+  assert.match(block(ok), /textColor: "#ffffff"/);
+  assert.match(ok, /^- Text color: `#ffffff`$/m);
+  // a translucent fill is measured over the page: white on 50% black over white is about 4:1
+  const half = generate(analyze(accentRaw([btn("rgba(0, 0, 0, 0.5)")])));
+  assert.doesNotMatch(block(half), /textColor/);
+  assert.match(half, /^- Text color: `#ffffff` \(4:1 on the fill/m);
+  // black on that fill reads 5.24:1, but the linter ignores alpha and sees 1:1
+  const dark = generate(analyze(accentRaw([btn("rgba(0, 0, 0, 0.5)", { color: "rgb(0, 0, 0)" })])));
+  assert.doesNotMatch(block(dark), /textColor/);
+  // under an opaque gradient the base is not what shows, so nothing is measured
+  const grad = generate(analyze(accentRaw([btn("rgb(0, 0, 0)", { color: "rgb(0, 0, 0)", bgFromGradient: false, gradient: ["#ffff00", "#ffffff"], stopCount: 2, gradientRaw: "linear-gradient(#ffff00, #ffffff)" })])));
+  assert.match(grad, /^- Text color: `#000000`$/m);
+  // nor under a translucent one: 80% white over a black base makes black text readable
+  const veil = "rgba(255, 255, 255, 0.8)";
+  const over = generate(analyze(accentRaw([btn("rgb(0, 0, 0)", { color: "rgb(0, 0, 0)", bgFromGradient: false, gradient: [veil, veil], stopCount: 2, gradientRaw: `linear-gradient(${veil}, ${veil})` })])));
+  assert.match(over, /^- Text color: `#000000`$/m);
+});
