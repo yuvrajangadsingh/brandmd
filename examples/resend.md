@@ -7,8 +7,8 @@ colors:
   on-background: "#f0f0f0"
   on-surface-variant: "#a1a4a5"
   outline: "#262a2d"
-  primary: "#00a3ff"
-  on-primary: "#1a1a1a"
+  primary: "#000000"
+  on-primary: "#ffffff"
 typography:
   display:
     fontFamily: aBCFavorit
@@ -57,11 +57,18 @@ spacing:
   xl: 8px
 components:
   button-primary:
-    backgroundColor: "#00a3ff"
+    backgroundColor: "#000000"
+    textColor: "#f0f0f0"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.sm}"
-    padding: 12px
-    height: 41px
+    rounded: "{rounded.full}"
+    padding: 5px
+    height: 32px
+  button-primary-gradient-stop-2:
+    backgroundColor: "#000000"
+  button-primary-gradient-stop-3:
+    backgroundColor: "#00000000"
+  button-primary-gradient-stop-4:
+    backgroundColor: "#00000000"
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -96,6 +103,8 @@ components:
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
+_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
+
 - **Off-white** (`#f0f0f0`): Light text (on dark) (dominant)
 - **Black** (`#000000`): Dark background / footer (dominant)
 - **Gray** (`#a1a4a5`): Muted text (dominant)
@@ -115,7 +124,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: aBCFavorit, domaine
 - Body: Inter Website
 
-**All detected fonts:** Inter Website (1363), Commit Mono Website (781), aBCFavorit (30), Helvetica (22), Segoe UI (3), domaine (2)
+**All detected fonts:** Inter Website (1390), Commit Mono Website (781), aBCFavorit (30), Helvetica (22), Segoe UI (3), domaine (2)
 
 **Type scale:**
 - Headings: 24px, 56px, 77px, 96px
@@ -152,13 +161,13 @@ Uses 4 shadow styles for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#00a3ff`
-- Text color: `#ffffff` (2.73:1 on the fill, below the 4.5:1 AA minimum)
-- Corner radius: 4px
-- Height: 41px
-- Padding: 12px 20px 12px 20px
-- Font: 14px, weight 600
-- Sampled from: `<a>` labelled `Get Started`
+- Background: `linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)), conic-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)` (gradient; first stop `#000000`)
+- Text color: `#f0f0f0`
+- Corner radius: 9999px
+- Height: 32px
+- Padding: 5px 12px 5px 12px
+- Font: 14px, weight 400
+- Sampled from: `<button>` labelled `Send`
 
 ### Inputs
 - Border: 0px none rgb(240, 240, 240)
@@ -168,7 +177,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#00a3ff` for primary actions and CTAs
+- Do use the `button-primary` gradient from Components for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `aBCFavorit` as the primary typeface
 - Don't introduce colors outside the palette above
