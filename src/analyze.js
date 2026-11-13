@@ -504,10 +504,17 @@ export function analyze(raw) {
   ];
 
   // Deduplicate palette by hex
-  const seen = new Set();
+  // A border that shares its hex with a fill (a white/8% divider that is also
+  // an overlay) is dropped as a palette entry but keeps its border role
+  // on the entry that stays, so the outline token still sees it.
+  const seen = new Map();
   const dedupedPalette = palette.filter((c) => {
-    if (seen.has(c.hex)) return false;
-    seen.add(c.hex);
+    const kept = seen.get(c.hex);
+    if (kept) {
+      if (c.type === "border" && kept.type !== "border" && !kept.alsoBorder) kept.alsoBorder = c.role;
+      return false;
+    }
+    seen.set(c.hex, c);
     return true;
   });
 
