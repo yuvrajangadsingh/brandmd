@@ -8,7 +8,7 @@ colors:
   on-surface-variant: "#0007cb"
   outline: "#1111111a"
   outline-variant: "#dedbd6"
-  primary: "#000000"
+  primary: "#111111"
   on-primary: "#ffffff"
   secondary: "#0007cb"
   on-secondary: "#ffffff"
@@ -55,12 +55,12 @@ spacing:
   xl: 20px
 components:
   button-primary:
-    backgroundColor: "#000000"
+    backgroundColor: "#111111"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: 0px
-    height: 16px
-  button-primary-gradient-stop-2:
-    backgroundColor: "#000000"
+    rounded: "{rounded.sm}"
+    padding: 4px
+    height: 40px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -154,18 +154,18 @@ Uses 1 shadow style for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `linear-gradient(to right in oklab, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%)` (gradient; first stop `#000000`)
-- Text color: `#000000`
-- Corner radius: 0px
-- Height: 16px
-- Padding: 0px 0px 0px 0px
-- Font: 14px, weight 400
-- Sampled from: `<a>` labelled `Inbox`
+- Background: `#111111`
+- Text color: `#ffffff`
+- Corner radius: 4px
+- Height: 40px
+- Padding: 4px 14px 4px 14px
+- Font: 16px, weight 400
+- Sampled from: `<a>` labelled `Start free trial`
 
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use the `button-primary` gradient from Components for primary actions and CTAs
+- Do use `#111111` for primary actions and CTAs
 - Do stick to 3 font weights: 300, 400, 500
 - Do use `Saans` as the primary typeface
 - Don't introduce colors outside the palette above
