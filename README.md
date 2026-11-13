@@ -30,7 +30,7 @@ Combine with:
 
 - **`--agent`**: also writes `.cursor/rules/brand.mdc` and `SKILL.md` to both `.agents/skills/brand-style/` (the universal Agent Skills path used by [skills.sh](https://skills.sh) across 50+ agents) and `.claude/skills/brand-style/` (backward-compat for direct Claude Code users). No manual wiring. Picked up automatically by Claude Code, Cursor, Codex, Gemini CLI, Kiro CLI, and the rest of the skills.sh ecosystem. Schema-compatible with [Anthropic Claude Code Skills](https://docs.anthropic.com/en/docs/claude-code/skills), [google/skills](https://github.com/google/skills), and [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 - **`--dark`**: also extract dark mode tokens
-- **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)). Uses `gemini-3.8-flash`; set `BRANDMD_VISION_MODEL` to pick another model. If the screenshot or the vision call fails the CSS-only `DESIGN.md` is still written and the run exits 1.
+- **`--vision`**: adds illustration style, photography mood, copywriting voice, and microcopy patterns from a screenshot. Requires `GEMINI_API_KEY` or `GOOGLE_API_KEY` (free at [aistudio.google.com/apikey](https://aistudio.google.com/apikey)). Uses `gemini-3.8-flash`; set `BRANDMD_VISION_MODEL` to pick another model. If the screenshot or the vision call fails the CSS-only `DESIGN.md` is still written and the run exits 1.
 
 Or let your agent run it. `brandmd mcp` is an MCP server with one tool, `extract_design_md`, so Claude Code, Cursor, or any MCP client can pull a site's DESIGN.md in the middle of a task ("make this page look like linear.app"):
 
@@ -245,6 +245,7 @@ Colours are compared **by role**, not as a set of hexes. One hex legitimately fi
 | `--fail-on <level>` | `major` (default), `any`, or `none` |
 | `--allow-blocked` | compare anyway if the page is refused (blocked, thin, or a login wall) |
 | `--cf-wait-ms <ms>` | how long to wait for a Cloudflare challenge (default `20000`) |
+| `--debug` | print the raw error instead of a one-line remediation |
 | `--viewport <WxH>` | pin the viewport (default `1440x900`) |
 | `--locale <tag>` | pin the browser locale |
 | `--reduced-motion` | request `prefers-reduced-motion: reduce` |
@@ -257,7 +258,7 @@ A blocked page, an evidence-thin page, or a login-wall landing **refuses with ex
 
 Worth knowing before you rely on it:
 
-- **Component drift is reported but never fails a build.** Background, text colour and radius are compared on the machine-token components; height and padding are not, because the representative button is picked by frequency and a transparent nav button can win over the real CTA. Opt in with `--fail-on any` once that improves.
+- **Component drift is reported but does not fail a build by default.** Background, text colour and radius are compared on the machine-token components; height and padding are not. Components are the least certain part of an extraction (a button that fades in, or one that paints no fill at rest, is missed; see [Known limits](#known-limits)), so component drift is always `minor`. Opt in with `--fail-on any`.
 - **`secondaryFont` is unreliable.** The live side is round-tripped through the same generator and parser as a written `DESIGN.md`, which keeps both sides honestly comparable but drops fields the markdown does not carry cleanly. A secondary-font change can pass unnoticed.
 - **Majors can flip on sites that change between visits.** Each colour cluster is led by its most-used colour, so the order a page lists its colours in no longer changes the palette or the text roles, but rotating hero imagery or an A/B test that changes how often a colour is used can still repaint a role. On static marketing pages runs are byte-identical; on dynamic ones, re-run before believing a surprising major.
 
@@ -277,7 +278,7 @@ Exit `3` fails the job on drift; `1` and `2` still mean the tool errored or refu
 brandmd diff examples/stripe.md examples/vercel.md --out BRAND_DIFF.md
 ```
 
-Compares two `DESIGN.md` files and writes a markdown diff: shared and unique colors, typography table, spacing and radii table, per-component property diff, and a "what to copy / what to avoid" synthesis. Local files only in v0.11. See [`examples/diff-stripe-vs-vercel.md`](./examples/diff-stripe-vs-vercel.md) for the output format.
+Compares two `DESIGN.md` files and writes a markdown diff: shared and unique colors, typography table, spacing and radii table, per-component property diff, and a "what to copy / what to avoid" synthesis. Local files only. See [`examples/diff-stripe-vs-vercel.md`](./examples/diff-stripe-vs-vercel.md) for the output format.
 
 ## Output formats
 
@@ -337,7 +338,7 @@ Extract dark theme tokens as a separate section:
 brandmd https://github.com --dark
 ```
 
-Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palette. Uses `prefers-color-scheme: dark` via Playwright, so it captures what users actually see in dark mode. Only affects DESIGN.md output (ignored for `--css`, `--tailwind`, `--html`).
+Adds a "Dark Mode Overrides" section to the DESIGN.md with the dark color palette. Uses `prefers-color-scheme: dark` via Playwright, so it captures what users actually see in dark mode. Affects DESIGN.md and `--json` output (ignored for `--css`, `--tailwind` and `--html`).
 
 ## What it extracts
 
@@ -346,7 +347,7 @@ Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palet
 - **Typography** with role-aware Primary detection (display > heading > body), per-role font breakdown, and a full "all detected fonts" frequency list. Skips monospace, default fallbacks, and icon fonts when picking Primary.
 - **Spacing scale** and base grid unit
 - **Border radii** and shadow styles
-- **Component patterns** (buttons, cards, inputs). A button is a `<button>`, a `role="button"`, or a link classed or painted like one (a fill, a gradient or a border other than an underline, with a short visible label); hidden and off-page controls, skip links and controls inside a `<table>` (a sample email, a data grid) are left out, unless every control on the page sits in a table, and a control with no visible label is never the primary button. The primary button is the most repeated fill with real colour (LCH chroma), or, when every fill is neutral, the one that stands out most against the page; a coloured one also competes with the accent colours for `colors.primary`. The prose names the element each button was sampled from.
+- **Component patterns** (buttons, cards, inputs). A button is a `<button>`, a `role="button"`, or a link classed or painted like one (a fill, a gradient or a border other than an underline, with a short visible label); hidden and off-page controls, skip links and controls inside a `<table>` (a sample email, a data grid) are left out, unless every control on the page sits in a table, and a control with no label text (an icon-only launcher) is never the primary button. The primary button is the most repeated fill with real colour (LCH chroma), or, when every fill is neutral, the one that stands out most against the page; a coloured one also competes with the accent colours for `colors.primary`. The prose names the element each button was sampled from.
 
 ### Known limits
 

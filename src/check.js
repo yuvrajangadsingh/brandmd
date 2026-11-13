@@ -185,16 +185,15 @@ function compareLayout(base, cur) {
 /**
  * Component drift is reported but ALWAYS minor, deliberately.
  *
- * Component extraction is the least trustworthy part of the pipeline: the
- * representative button is picked by frequency, so a transparent nav button
- * can win over the real CTA, and the stripe fixture currently reports a 676px
- * tall "button-secondary". Failing builds on that would produce exactly the
- * flaky gate people switch off. Reported at minor, so `--fail-on any` can opt
- * in once extraction improves.
+ * Component extraction is the least trustworthy part of the pipeline: a CTA
+ * that fades in or paints no fill at rest is missed (README Known limits),
+ * and a site that serves another variant can sample another button. Failing
+ * builds on that would produce exactly the flaky gate people switch off.
+ * Reported at minor, so `--fail-on any` can opt in.
  *
  * Only the machine-token components (button-primary, card, ...) are compared,
  * not the prose sections, and only fields that are reliably measured. Height
- * and padding are excluded for the reason above.
+ * and padding are excluded: they change with whichever button was sampled.
  */
 const COMPONENT_FIELDS = ["backgroundColor", "textColor", "rounded"];
 const isTokenComponent = (k) => /^[a-z][a-z0-9-]*$/.test(k);

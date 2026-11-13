@@ -28,15 +28,18 @@ Pass the most design-rich page (usually the homepage) for best results. The tool
 
 ## What it extracts
 
-The output follows Google Stitch's DESIGN.md format. Sections 1-5 are always present; 6-7 are conditional on flags.
+The output is the official DESIGN.md format (github.com/google-labs-code/design.md): YAML frontmatter with `colors`, `typography`, `rounded`, `spacing` and `components` tokens, then the canonical sections, which are always present:
 
-1. **Visual Theme & Atmosphere** - mood, shape language, depth
-2. **Color Palette & Roles** - colors with semantic roles (background, text, accent, border)
-3. **Typography Rules** - Primary font (role-aware: display > heading > body, skipping mono/fallback/icon fonts), per-role font breakdown (Headings, Display, Body, Buttons), all detected fonts with frequencies, size scale, weights, line heights, letter spacing
-4. **Component Stylings** - buttons, cards, inputs with radii, colors, shadows
-5. **Layout Principles** - spacing scale, base grid unit, border radii
-6. **Dark Theme Overrides** (with `--dark`) - palette + atmosphere for dark mode
-7. **Visual Identity Beyond CSS** (with `--vision`) - illustration style, photography mood, copywriting voice, microcopy patterns. Requires `GEMINI_API_KEY` (free tier: aistudio.google.com/apikey).
+1. **Overview** - visual character, density, motion
+2. **Colors** - colors with semantic roles (background, text, accent, border)
+3. **Typography** - Primary font (role-aware: display > heading > body, skipping mono/fallback/icon fonts), per-role font breakdown, all detected fonts with frequencies, size scale, weights, line heights, letter spacing
+4. **Layout** - spacing scale
+5. **Elevation & Depth** - shadows
+6. **Shapes** - shape language and border radii
+7. **Components** - buttons, cards, inputs with radii and colors; each button also names the element it was sampled from
+8. **Do's and Don'ts**
+
+Two more are conditional on flags: **Dark Mode Overrides** (with `--dark`), the dark palette, and **Visual Identity Beyond CSS** (with `--vision`), illustration style, photography mood, copywriting voice and microcopy patterns. `--vision` requires `GEMINI_API_KEY` or `GOOGLE_API_KEY` (free tier: aistudio.google.com/apikey).
 
 ## After extraction
 
@@ -49,12 +52,12 @@ The output follows Google Stitch's DESIGN.md format. Sections 1-5 are always pre
 
 - `npx brandmd <url>` - DESIGN.md to stdout
 - `npx brandmd <url> -o DESIGN.md` - DESIGN.md to file
-- `npx brandmd <url> --dark` - also extract dark-mode palette (Section 6)
-- `npx brandmd <url> --vision` - also extract illustration / photography / voice / microcopy via Gemini (Section 7). Needs `GEMINI_API_KEY` env var.
+- `npx brandmd <url> --dark` - also extract dark-mode palette (Dark Mode Overrides)
+- `npx brandmd <url> --vision` - also extract illustration / photography / voice / microcopy via Gemini (Visual Identity Beyond CSS). Needs `GEMINI_API_KEY` or `GOOGLE_API_KEY`.
 - `npx brandmd <url> --css` - CSS custom properties output instead of DESIGN.md
 - `npx brandmd <url> --tailwind` - Tailwind v4 `@theme` block instead of DESIGN.md
 - `npx brandmd <url> --html` - HTML brand guide (visual, shareable)
-- `npx brandmd <url> --json` - raw tokens as JSON (programmatic use)
+- `npx brandmd <url> --json` - raw tokens as JSON (brandmd's internal shape, can change in 1.x)
 - Multiple URLs merge tokens: `npx brandmd <url1> <url2> <url3>`
 
 ## Limitations
@@ -63,4 +66,4 @@ The output follows Google Stitch's DESIGN.md format. Sections 1-5 are always pre
 - Can't read Figma tokens or design tool files
 - Color role assignment is heuristic (based on usage frequency and luminance)
 - Requires a publicly accessible URL (no auth-gated pages)
-- Cloudflare-protected sites: brandmd waits up to 20s for the JS challenge to auto-resolve (`--cf-wait-ms` to tune). If the challenge persists, you get a clear error rather than garbage tokens. Hard-blocked sites (openai.com, perplexity.ai, discord.com, etc.) are correctly flagged as bot-protected and not bypassed.
+- Cloudflare-protected sites: brandmd waits up to 20s for the JS challenge to auto-resolve (`--cf-wait-ms` to tune). If the challenge persists, brandmd refuses (exit 2) rather than writing garbage tokens. Block pages, login walls and near-empty pages are refused the same way; `--allow-blocked` forces output with a refused-source marker.
