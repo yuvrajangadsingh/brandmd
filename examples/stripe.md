@@ -8,10 +8,10 @@ colors:
   surface: "#ffd7ef"
   on-surface-variant: "#533afd"
   outline: "#e5edf5"
-  primary: "#7f7dfc"
-  on-primary: "#1a1a1a"
-  secondary: "#533afd"
-  on-secondary: "#ffffff"
+  primary: "#533afd"
+  on-primary: "#ffffff"
+  secondary: "#7f7dfc"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: sohne-var

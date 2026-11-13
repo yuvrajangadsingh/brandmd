@@ -438,6 +438,7 @@ function vividness(hex) {
  *      dark navy sharing the role. A link colour only colours text, so it
  *      counts only when no button was seen (linear's pink links against its
  *      #e5e5e6 Sign up), unless the same hex also draws a focus border;
+ *      A chromatic button fill joins this list and competes on vividness;
  *   2. the representative non-transparent button background (a rendered button
  *      is direct action evidence, even when it's a neutral black-on-white CTA);
  *   3. the most vivid mid-tone chromatic palette color.
@@ -445,23 +446,25 @@ function vividness(hex) {
  */
 function pickPrimaryAccent(palette, solidButtonBg = null) {
   const accentRoles = new Set(["Accent background", "Focus / active border", ...(solidButtonBg ? [] : ["Link / accent text"])]);
+  const button = solidButtonBg && (palette.find((c) => c.hex === solidButtonBg) || {
+    hex: solidButtonBg,
+    name: describeColor(solidButtonBg),
+    varName: null,
+    role: "Button background",
+    freq: 1,
+    type: "component",
+    tier: "accent",
+  });
+  // A chromatic button fill is accent evidence too, ranked on the same
+  // vividness, so a decorative fill or a focus border no longer outranks the
+  // CTA by role alone (stripe's #7f7dfc fill against its #533afd buttons).
   const explicit = palette
     .filter((c) => accentRoles.has(c.role) || accentRoles.has(c.alsoBorder))
+    .concat(button && lchChroma(button.hex) >= CHROMATIC ? [button] : [])
     .sort((a, b) => vividness(b.hex) - vividness(a.hex));
   if (explicit.length && vividness(explicit[0].hex) > 0) return explicit[0];
 
-  if (solidButtonBg) {
-    const existing = palette.find((c) => c.hex === solidButtonBg);
-    return existing || {
-      hex: solidButtonBg,
-      name: describeColor(solidButtonBg),
-      varName: null,
-      role: "Button background",
-      freq: 1,
-      type: "component",
-      tier: "accent",
-    };
-  }
+  if (button) return button;
 
   // Otherwise the most vivid mid-tone chromatic color that isn't body text.
   let best = null;

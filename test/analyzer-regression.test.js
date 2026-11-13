@@ -928,3 +928,19 @@ test("a link colour is the primary only when no button was seen or it draws a fo
   // the same pink drawing a focus border is accent evidence, though its entry is the text one
   assert.match(generate(analyze(raw([sign], { "rgb(247, 156, 224)": 10 }))), /^ {2}primary: "#f79ce0"$/m);
 });
+
+// --- A chromatic CTA competes with the accent roles ---------------------------
+// stripe: the #533afd on its buttons is mostly a text colour in the palette, so
+// only the paler #7f7dfc decorative fill held an accent role and became primary.
+test("a chromatic button fill competes with the accent roles on vividness", () => {
+  const raw = (buttons) => rawSkeleton({
+    colors: { background: { "rgb(255, 255, 255)": 1000, "rgb(127, 125, 252)": 80 }, text: { "rgb(0, 0, 0)": 1700, "rgb(83, 58, 253)": 577 }, border: {} },
+    fonts: { Inter: 100 },
+    fontsByRole: { heading: {}, body: { Inter: 100 }, button: {}, display: {} },
+    components: { buttons, cards: [], inputs: [] },
+  });
+  const primary = (buttons) => generate(analyze(raw(buttons))).match(/^ {2}primary: "(#[0-9a-f]+)"$/m)?.[1];
+  assert.equal(primary([btn("rgb(83, 58, 253)")]), "#533afd", "the CTA fill beats a paler decorative fill");
+  assert.equal(primary([btn("rgb(17, 17, 17)")]), "#7f7dfc", "a neutral button still defers to the accent");
+  assert.equal(primary([btn("rgb(14, 126, 78)")]), "#7f7dfc", "a duller chromatic button competes and loses");
+});
