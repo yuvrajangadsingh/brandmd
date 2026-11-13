@@ -8,8 +8,10 @@ colors:
   on-surface-variant: "#a1a1aa"
   outline: "#e5e7eb"
   outline-variant: "#11352d"
-  primary: "#36f4a4"
+  primary: "#ffffff"
   on-primary: "#1a1a1a"
+  secondary: "#36f4a4"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: Shopify-Inter

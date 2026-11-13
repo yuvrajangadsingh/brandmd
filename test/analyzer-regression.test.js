@@ -895,3 +895,20 @@ test("a border that shares its hex with a fill still gives the outline token, un
   const two = raw({ "rgb(255, 255, 255)": 1000, "rgb(255, 0, 0)": 300, "rgb(107, 114, 128)": 100 }, { "rgb(17, 17, 17)": 500 }, { "rgb(107, 114, 128)": 100, "rgb(255, 0, 0)": 2 });
   assert.match(generate(analyze(two)), /^ {2}outline: "#6b7280"$/m);
 });
+
+// --- A link colour is not the primary when a button was seen ------------------
+// linear's pink (#f79ce0) is a text colour (41) and fills nothing; its Sign up
+// button is #e5e5e6. The pink was the primary.
+test("a link colour is the primary only when no button was seen or it draws a focus border", () => {
+  const raw = (buttons, border = {}) => rawSkeleton({
+    colors: { background: { "rgb(8, 9, 10)": 1000 }, text: { "rgb(247, 247, 248)": 500, "rgb(247, 156, 224)": 41 }, border },
+    fonts: { Inter: 100 },
+    fontsByRole: { heading: {}, body: { Inter: 100 }, button: {}, display: {} },
+    components: { buttons, cards: [], inputs: [] },
+  });
+  const sign = btn("rgb(229, 229, 230)", { color: "rgb(8, 9, 10)" });
+  assert.match(generate(analyze(raw([sign]))), /^ {2}primary: "#e5e5e6"$/m);
+  assert.match(generate(analyze(raw([]))), /^ {2}primary: "#f79ce0"$/m);
+  // the same pink drawing a focus border is accent evidence, though its entry is the text one
+  assert.match(generate(analyze(raw([sign], { "rgb(247, 156, 224)": 10 }))), /^ {2}primary: "#f79ce0"$/m);
+});

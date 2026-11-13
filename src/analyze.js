@@ -410,16 +410,18 @@ function vividness(hex) {
  * Pick the brand's primary/CTA color. Evidence ranking per the plan:
  *   1. explicit accent roles from the palette (Accent background > Link/accent
  *      text > focus border), most vivid first — a bright brand blue beats a
- *      dark navy sharing the role;
+ *      dark navy sharing the role. A link colour only colours text, so it
+ *      counts only when no button was seen (linear's pink links against its
+ *      #e5e5e6 Sign up), unless the same hex also draws a focus border;
  *   2. the representative non-transparent button background (a rendered button
  *      is direct action evidence, even when it's a neutral black-on-white CTA);
  *   3. the most vivid mid-tone chromatic palette color.
  * NEVER a text-neutral role. Returns a palette-shaped entry or null.
  */
 function pickPrimaryAccent(palette, solidButtonBg = null) {
-  const accentRoles = new Set(["Accent background", "Link / accent text", "Focus / active border"]);
+  const accentRoles = new Set(["Accent background", "Focus / active border", ...(solidButtonBg ? [] : ["Link / accent text"])]);
   const explicit = palette
-    .filter((c) => accentRoles.has(c.role))
+    .filter((c) => accentRoles.has(c.role) || accentRoles.has(c.alsoBorder))
     .sort((a, b) => vividness(b.hex) - vividness(a.hex));
   if (explicit.length && vividness(explicit[0].hex) > 0) return explicit[0];
 
