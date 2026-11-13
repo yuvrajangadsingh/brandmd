@@ -840,3 +840,12 @@ test("the Buttons prose names the element the button was sampled from", () => {
   assert.match(iconOnly, /^- Sampled from: `<button>`$/m);
   assert.doesNotMatch(generate(analyze(accentRaw([btn("rgb(192, 133, 50)")]))), /Sampled from/, "an older capture has no provenance to print");
 });
+
+// --- A control with no visible label ------------------------------------------
+// clerk's capture picked a fixed 40px support launcher: an icon, its label only
+// for screen readers.
+test("a button with no label a reader sees is not a call to action", () => {
+  const cta = btn("rgb(17, 17, 17)", { tag: "a", label: "Sign up" });
+  assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)", { tag: "button", label: "" }), cta])))), "`#111111`");
+  assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)"), cta])))), "`#ff0000`", "an older capture has no label to judge by");
+});
