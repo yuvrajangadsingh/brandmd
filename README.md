@@ -100,6 +100,7 @@ That installs 5 brandmd-generated skills (Tailwind CSS, shadcn/ui, Vercel, Mintl
 <details>
 <summary>Release notes</summary>
 
+- **v1.0:** Stable release. A stated 1.x contract (see [Stability](#stability)), bounded MCP calls, buttons read from the page's real call to action, a palette that no longer depends on colour order, and one refusal rule for every page and theme.
 - **v0.14:** Spec + truth release. Emits the official [DESIGN.md format](https://github.com/google-labs-code/design.md) (YAML frontmatter + canonical sections) that passes `@google/design.md lint` clean. Fail-closed refusals with a distinct exit code (`--allow-blocked` to override), atomic writes, gradient-stop parsing, honest CTA/button selection, shadow values in DESIGN.md, and a fixed generate/parse/diff round trip.
 - **v0.13:** Detects block / access-denied pages (Akamai, PerimeterX, WAF 403s) and warns instead of emitting a garbage design system. Notes when a site uses motion (canvas, WebGL, Lottie, rAF).
 - **v0.12:** Trust-repair: evidence-based visual character, tiered palette, HSL color naming, no more scientific-notation radii, clustered type scale.
