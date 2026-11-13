@@ -11,7 +11,7 @@ colors:
   primary: "#141413"
   on-primary: "#ffffff"
   secondary: "#c6613f"
-  on-secondary: "#1a1a1a"
+  on-secondary: "#000000"
 typography:
   display:
     fontFamily: anthropicSerif

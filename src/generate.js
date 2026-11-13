@@ -66,12 +66,21 @@ function lum(hex) {
   return c ? c.luminance() : 0;
 }
 
-/** Best readable on-color (near-black or white) for a background. */
-function onColor(bgHex) {
+/**
+ * Best readable on-color (near-black or white) for a background, judged on
+ * the fill as drawn over the page (50% blue on black is a dark blue), and a
+ * translucent page as drawn over the browser's white canvas. A mid grey
+ * (#7f7f7f) reaches 4.5:1 with neither, so pure black stands in; black or
+ * white always reaches it.
+ */
+function onColor(bgHex, underHex) {
   const black = "#1a1a1a";
   const white = "#ffffff";
-  const cb = safeChroma(bgHex) ? chroma.contrast(bgHex, black) : 0;
-  const cw = safeChroma(bgHex) ? chroma.contrast(bgHex, white) : 0;
+  if (!safeChroma(bgHex)) return white;
+  const bg = flatten(bgHex, underHex && flatten(underHex, white));
+  const cb = chroma.contrast(bg, black);
+  const cw = chroma.contrast(bg, white);
+  if (Math.max(cb, cw) < 4.5 && chroma.contrast(bg, "#000000") >= 4.5) return "#000000";
   return cw >= cb ? white : black;
 }
 
@@ -175,7 +184,7 @@ function buildModel(tokens) {
     primaryNeutralFallback = true;
   }
   put("primary", primaryHex);
-  put("on-primary", onColor(colors.primary));
+  put("on-primary", onColor(colors.primary, colors.background));
 
   // A distinct secondary accent (a second saturated color), if the palette has one.
   const secondAccent = solid.find((c) => {
@@ -186,7 +195,7 @@ function buildModel(tokens) {
   });
   if (secondAccent) {
     put("secondary", secondAccent.hex);
-    put("on-secondary", onColor(colors.secondary));
+    put("on-secondary", onColor(colors.secondary, colors.background));
   }
 
   // --- Typography levels --------------------------------------------------

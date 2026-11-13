@@ -10,7 +10,7 @@ colors:
   primary: "#08090a"
   on-primary: "#ffffff"
   secondary: "#0c8c5e"
-  on-secondary: "#ffffff"
+  on-secondary: "#000000"
   surface: "#faf8f5"
 typography:
   display:
