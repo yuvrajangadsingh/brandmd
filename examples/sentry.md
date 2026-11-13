@@ -59,18 +59,18 @@ spacing:
   xl: 20.5px
 components:
   button-primary:
-    backgroundColor: "#fa7faa"
-    textColor: "#1f1633"
+    backgroundColor: "#c83852"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
     rounded: "{rounded.sm}"
     padding: 12px
     height: 40px
   button-primary-gradient-stop-2:
-    backgroundColor: "#ff9691"
+    backgroundColor: "#b44092"
   button-primary-gradient-stop-3:
-    backgroundColor: "#ffb287"
+    backgroundColor: "#6a5fc1"
   button-primary-gradient-stop-4:
-    backgroundColor: "#ffffff"
+    backgroundColor: "#00000000"
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -169,8 +169,8 @@ Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `linear-gradient(120deg, rgb(250, 127, 170) 0%, rgb(255, 150, 145) 25%, rgb(255, 178, 135) 50%, rgb(255, 255, 255) 55%, rgb(255, 255, 255) 100%)` (gradient; first stop `#fa7faa`)
-- Text color: `#1f1633`
+- Background: `linear-gradient(120deg, rgb(200, 56, 82) 0%, rgb(180, 64, 146) 25%, rgb(106, 95, 193) 50%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0) 100%)` (gradient; first stop `#c83852`)
+- Text color: `#ffffff`
 - Corner radius: 8px
 - Height: 40px
 - Padding: 12px 16px 12px 16px

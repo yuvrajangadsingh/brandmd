@@ -850,6 +850,22 @@ test("a button with no label a reader sees is not a call to action", () => {
   assert.equal(ctaLine(generate(analyze(accentRaw([btn("rgb(255, 0, 0)"), cta])))), "`#ff0000`", "an older capture has no label to judge by");
 });
 
+// --- Bug 9: the button pick ranks by perceptual chroma ------------------------
+// HSL saturation read any colour with a zero channel as fully saturated (a dark
+// navy rgb(0, 37, 51) scored 1.0) and a pale tint as vivid (loom's #e9f2fe at
+// 0.91, intercom's off-white at 0.29), so both beat the real CTA.
+test("the primary button is the repeated chromatic fill, judged by LCH chroma", () => {
+  const pick = (buttons) => ctaLine(generate(analyze(accentRaw(buttons))));
+  assert.equal(pick([btn("rgb(0, 37, 51)"), btn("rgb(14, 126, 78)")]), "`#0e7e4e`", "a dark navy is less chromatic than a brand green");
+  assert.equal(pick([btn("rgb(233, 242, 254)", { color: "rgb(0, 0, 0)" }), btn("rgb(24, 104, 219)")]), "`#1868db`", "a pale tint is a neutral");
+  assert.equal(pick([btn("rgb(250, 249, 246)", { color: "rgb(17, 17, 17)" }), btn("rgb(17, 17, 17)")]), "`#111111`", "between neutrals, contrast on the page decides");
+  const orange = btn("rgb(205, 132, 7)");
+  assert.equal(pick([btn("rgb(182, 42, 217)"), orange, orange, orange]), "`#cd8407`", "three orange CTAs beat one more chromatic purple badge");
+  // a two-page merge: one page of six blue buttons, one of three green; each page is one vote
+  const pages = [...Array(6)].map(() => btn("rgb(0, 0, 255)", { _pageWeight: 1 / 6 })).concat([...Array(3)].map(() => btn("rgb(0, 128, 0)", { _pageWeight: 1 / 3 })));
+  assert.equal(pick(pages), "`#0000ff`", "equal page votes tie despite float sums, and chroma decides");
+});
+
 // --- Button text below AA -----------------------------------------------------
 // tailwindcss and cursor paint white on a mid-tone fill (3.58:1, 3.16:1). The
 // YAML printed #1a1a1a, a colour neither site uses, while the prose printed white.
