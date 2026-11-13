@@ -475,6 +475,16 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         const s = getComputedStyle(btn);
         const rect = btn.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) continue;
+        // What the reader cannot see is skipped: an opacity-0 skip link, a
+        // faded-out mockup, anything under visibility:hidden or display:none,
+        // off the top or left edge or cut away by a box that hides its
+        // overflow (a menu collapsed to height 0), and an in-page skip link.
+        // A scrolled box on its layout chain can scroll it back into view.
+        let dx = scrollX, dy = scrollY;
+        for (let e = laidOutIn(btn); e && e !== document.body && e !== document.documentElement; e = laidOutIn(e)) { dx += e.scrollLeft; dy += e.scrollTop; }
+        if (rect.right + dx <= 0 || rect.bottom + dy <= 0) continue;
+        if (!btn.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue;
+        if (!unclipped(rect, laidOutIn(btn), null)) continue;
         // The label is its seen text nodes joined as written, so a word set
         // one span per letter stays one word; a blank node is a space.
         let label = "";
@@ -484,6 +494,8 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
           else if (shown(n, btn)) label += n.textContent;
         }
         label = label.trim().replace(/\s+/g, " ");
+        // ponytail: English skip links only; a localized one ("Zum Inhalt springen") still counts
+        if (btn.matches('a[href^="#"]') && /^skip\b/i.test(label)) continue;
         if (btn.localName === "a" && !btn.matches('[class*="btn" i], [class*="button" i], [role="button"]')
           && !(painted(s) && label.length > 0 && label.length <= 30 && rect.width <= 480)) continue;
         // A gradient button is transparent to backgroundColor. Fall back to the

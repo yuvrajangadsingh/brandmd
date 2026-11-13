@@ -46,3 +46,34 @@ test("a link painted like a button counts, in any class case; a text link and a 
   assert.deepEqual(heights(buttons), [31, 32, 33, 50, 51, 53, 54],
     "a black fill or border paints, and so does a gradient whose stops cannot be read and a label set one span per letter; a wide bar, a long label, a clear border, fill or gradient (in any colour space), a border-bottom underline, and a label only a screen reader gets do not");
 });
+
+test("a button the reader cannot see is not collected; one pinned to the viewport is", async (t) => {
+  const buttons = await buttonsOf(t, '<body style="margin:0;background:#fff">'
+    + '<button style="height:41px">Seen</button>'
+    + '<button style="height:42px;opacity:0">Faded</button>'
+    + '<div style="opacity:0"><button style="height:43px">In a faded group</button></div>'
+    + '<button style="height:44px;visibility:hidden">Hidden</button>'
+    + '<a href="#main" style="display:inline-block;height:45px;background:#5e6ad2;color:#fff">Skip to content</a>'
+    + '<button style="height:46px;position:fixed;right:8px;bottom:8px;background:#212126;color:#fff">Buy now</button>'
+    + '<button style="height:47px;position:absolute;left:-9999px">Offscreen</button>'
+    + '<button style="height:57px;position:absolute;top:-9999px">Above</button>'
+    + '<div style="height:0;overflow:hidden"><button style="height:48px;background:#f00;color:#fff">Collapsed</button></div>'
+    + '<div style="height:20px;overflow:auto"><div style="height:60px"></div><button style="height:49px">Scrolled</button></div>'
+    + '<div id="up" style="height:20px;overflow:auto"><button style="height:58px">Scrolled up</button><div style="height:2000px"></div></div>'
+    + '<div id="left" style="width:50px;overflow:auto;white-space:nowrap"><button style="height:59px;width:40px">Back</button><span style="display:inline-block;width:3000px"></span></div>'
+    + '<div id="panel" style="position:fixed;top:0;left:0;width:80px;height:40px;overflow:auto"><button style="height:61px">Panel</button><div style="height:2000px"></div></div>'
+    + '<div style="height:30px;overflow:hidden"><div style="height:30px;overflow:auto"><div style="height:100px"></div><button style="height:62px">Below the fold</button></div></div>'
+    + '<div style="width:60px;overflow:hidden"><div style="overflow-x:auto;white-space:nowrap"><span style="display:inline-block;width:100px"></span><button style="height:63px">Next slide</button></div></div>'
+    + '<div style="height:30px;overflow:auto"><div style="height:0;overflow:hidden"><button style="height:64px">Folded</button></div></div>'
+    + '<div style="width:30px;overflow-x:auto"><div style="width:0;overflow:hidden"><button style="height:65px">Folded aside</button></div></div>'
+    + '<span style="font-size:0;overflow:auto"><button style="height:66px;font-size:16px">Gapless</button></span>'
+    + '<script>document.getElementById("up").scrollTop = 1500; document.getElementById("left").scrollLeft = 2500; document.getElementById("panel").scrollTop = 1500;</script>'
+    + '<div style="height:0;overflow:hidden"><button style="height:50px;position:fixed;left:8px;bottom:8px">Chat</button>'
+    + '<button style="height:51px;position:absolute;left:200px;top:0">Popover</button>'
+    + '<div style="display:contents;position:relative"><button style="height:53px;position:absolute;left:300px;top:0">Menu</button></div>'
+    + '<div style="display:contents;position:fixed"><button style="height:56px">Wrapped</button></div></div>'
+    + '<button style="height:52px;position:fixed;left:100vw;top:0">Off to the right</button>'
+    + '<main id="main"><p>Body copy.</p></main></body>');
+  if (!buttons) return;
+  assert.deepEqual(heights(buttons), [41, 46, 49, 50, 51, 53, 58, 59, 61, 62, 63, 66]);
+});
