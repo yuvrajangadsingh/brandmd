@@ -59,11 +59,12 @@ spacing:
   xl: 10px
 components:
   button-primary:
-    backgroundColor: "#101214"
+    backgroundColor: "#1868db"
     textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    padding: 20px
-    height: 60px
+    rounded: "{rounded.full}"
+    padding: 10px
+    height: 48px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -160,12 +161,13 @@ Asymmetric / percentage radii observed (8px 0px 0px 8px, 100%); kept out of the 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#101214`
+- Background: `#1868db`
 - Text color: `#ffffff`
-- Corner radius: 100%
-- Height: 60px
-- Padding: 19.5px 15px 19.5px 15px
-- Font: 13.3333px, weight 400
+- Corner radius: 9999px
+- Height: 48px
+- Padding: 10px 26px 10px 26px
+- Font: 20px, weight 400
+- Sampled from: `<a>` labelled `Get started with Jira`
 
 ### Cards
 - Corner radius: 0px
@@ -180,7 +182,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#101214` for primary actions and CTAs
+- Do use `#1868db` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `Charlie Display` as the primary typeface
 - Don't introduce colors outside the palette above

@@ -47,12 +47,6 @@ spacing:
   lg: 8px
   xl: 16px
 components:
-  button-primary:
-    backgroundColor: "#292929"
-    textColor: "#ffffff"
-    typography: "{typography.label-sm}"
-    padding: 8px
-    height: 40px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -95,9 +89,10 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Dark gray** (`#292929`): Divider / border (dominant)
 - **Black** (`#000000`): Primary text (accent)
 - **Green** (`#1ed760`): Accent background (accent)
+- **Dark gray** (`#535353`): Dark background / footer (accent)
 - **Translucent Gray** (`#7676764d`): Divider / border (accent)
 
-**Incidental (low usage, do not lead with these):** `#535353`, `#ffffff4d`, `#ffffff`, `#481818`, `#808080`
+**Incidental (low usage, do not lead with these):** `#ffffff4d`, `#ffffff`, `#481818`, `#808080`
 
 ## Typography
 
@@ -108,7 +103,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: SpotifyMixUI, SpotifyMixUITitle
 - Body: SpotifyMixUI
 
-**All detected fonts:** SpotifyMixUI (1424), SpotifyMixUITitle (10), Times (1)
+**All detected fonts:** SpotifyMixUI (1429), SpotifyMixUITitle (10), Times (1)
 
 **Type scale:**
 - Headings: 24px
@@ -146,12 +141,12 @@ Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#292929`
-- Text color: `#ffffff`
-- Corner radius: 50%
-- Height: 40px
-- Padding: 8px 8px 8px 8px
+- Text color: `#b3b3b3`
+- Corner radius: 9999px
+- Height: 48px
+- Padding: 12px 12px 12px 12px
 - Font: 16px, weight 400
+- Sampled from: `<button>`
 
 ### Cards
 - Corner radius: 6px
@@ -167,7 +162,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#292929` for primary actions and CTAs
+- Do use `#1ed760` for primary actions and CTAs
 - Do stick to 2 font weights: 400, 700
 - Do use `SpotifyMixUI` as the primary typeface
 - Don't introduce colors outside the palette above

@@ -7,7 +7,7 @@ colors:
   on-background: "#000000"
   on-surface-variant: "#4a5565"
   outline: "#e5e7eb"
-  outline-variant: "#ffffff0d"
+  outline-variant: "#ffffff1a"
   primary: "#ff6900"
   on-primary: "#1a1a1a"
   secondary: "#8e51ff"
@@ -59,17 +59,18 @@ spacing:
   xl: 16px
 components:
   button-primary:
-    backgroundColor: "#ffffff"
-    textColor: "#6a7282"
+    backgroundColor: "#000000"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.full}"
+    rounded: "{rounded.lg}"
     padding: 4px
-    height: 30px
+    height: 34px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: "{rounded.lg}"
-    height: 36px
+    padding: 8px
+    height: 38px
   card:
     rounded: "{rounded.lg}"
 ---
@@ -101,12 +102,12 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Muted Blue** (`#99a1af`): Muted text (accent)
 - **Muted Blue** (`#4a5565`): Primary text (accent)
 - **White** (`#ffffffcc`): Page background (accent)
-- **Near-transparent White** (`#ffffff1a`): Overlay / scrim (accent)
 - **Dark Blue** (`#0b0f19`): Dark background / footer (accent)
+- **Translucent White** (`#ffffff66`): Overlay / scrim (accent)
 - **Vivid Orange** (`#ff6900`): Accent background (accent)
 - **Purple** (`#8e51ff`): Accent background (accent)
 
-**Incidental (low usage, do not lead with these):** `#ffffff0d`
+**Incidental (low usage, do not lead with these):** `#ffffff1a`
 
 ## Typography
 
@@ -152,12 +153,13 @@ Asymmetric / percentage radii observed (0px 12px 12px 0px, 50%); kept out of the
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#ffffff`
-- Text color: `#6a7282`
-- Corner radius: 9999px
-- Height: 30px
-- Padding: 4px 10px 4px 8px
-- Font: 14px, weight 400
+- Background: `#000000`
+- Text color: `#ffffff`
+- Corner radius: 8px
+- Height: 34px
+- Padding: 4px 14px 4px 14px
+- Font: 16px, weight 400
+- Sampled from: `<a>` labelled `Explore Models`
 
 ### Cards
 - Corner radius: 8px
@@ -166,7 +168,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#ff6900` for primary actions and CTAs
+- Do use `#000000` for primary actions and CTAs
 - Do stick to 3 font weights: 400, 600, 700
 - Do use `Source Sans Pro` as the primary typeface
 - Don't introduce colors outside the palette above

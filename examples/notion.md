@@ -160,6 +160,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 36px
 - Padding: 4px 14px 4px 14px
 - Font: 16px, weight 500
+- Sampled from: `<a>` labelled `Get Notion free`
 
 ### Cards
 - Background: `#f2f9ff`

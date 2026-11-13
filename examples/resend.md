@@ -7,8 +7,8 @@ colors:
   on-background: "#f0f0f0"
   on-surface-variant: "#a1a4a5"
   outline: "#262a2d"
-  primary: "#000000"
-  on-primary: "#ffffff"
+  primary: "#00a3ff"
+  on-primary: "#1a1a1a"
 typography:
   display:
     fontFamily: aBCFavorit
@@ -57,18 +57,11 @@ spacing:
   xl: 8px
 components:
   button-primary:
-    backgroundColor: "#000000"
-    textColor: "#f0f0f0"
+    backgroundColor: "#00a3ff"
     typography: "{typography.label-sm}"
-    rounded: "{rounded.full}"
-    padding: 5px
-    height: 32px
-  button-primary-gradient-stop-2:
-    backgroundColor: "#000000"
-  button-primary-gradient-stop-3:
-    backgroundColor: "#00000000"
-  button-primary-gradient-stop-4:
-    backgroundColor: "#00000000"
+    rounded: "{rounded.sm}"
+    padding: 12px
+    height: 41px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -97,11 +90,11 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
+**Motion:** Animation surfaces detected (WebGL / 3D canvas). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
-
-_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
 
 - **Off-white** (`#f0f0f0`): Light text (on dark) (dominant)
 - **Black** (`#000000`): Dark background / footer (dominant)
@@ -122,7 +115,7 @@ _No explicit accent or action color was observed on this page. The machine token
 - Headings: aBCFavorit, domaine
 - Body: Inter Website
 
-**All detected fonts:** Inter Website (1384), Commit Mono Website (781), aBCFavorit (30), Helvetica (22), Segoe UI (3), domaine (2)
+**All detected fonts:** Inter Website (1363), Commit Mono Website (781), aBCFavorit (30), Helvetica (22), Segoe UI (3), domaine (2)
 
 **Type scale:**
 - Headings: 24px, 56px, 77px, 96px
@@ -131,7 +124,7 @@ _No explicit accent or action color was observed on this page. The machine token
 
 **Weights in use:** 400, 500, 600, 700
 
-**Line heights:** 16px, 24px, 20px, 22.5px, 27px, 67px, 14px, 26px, 25px, 33.5px
+**Line heights:** 24px, 16px, 20px, 22.5px, 27px, 67px, 14px, 26px, 25px, 33.5px
 
 **Letter spacing:** -2.8px, 0.35px, -0.8px, -0.96px, -0.768px
 
@@ -159,12 +152,13 @@ Uses 4 shadow styles for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0)), conic-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%)` (gradient; first stop `#000000`)
-- Text color: `#f0f0f0`
-- Corner radius: 9999px
-- Height: 32px
-- Padding: 5px 12px 5px 12px
-- Font: 14px, weight 400
+- Background: `#00a3ff`
+- Text color: `#ffffff` (2.73:1 on the fill, below the 4.5:1 AA minimum)
+- Corner radius: 4px
+- Height: 41px
+- Padding: 12px 20px 12px 20px
+- Font: 14px, weight 600
+- Sampled from: `<a>` labelled `Get Started`
 
 ### Inputs
 - Border: 0px none rgb(240, 240, 240)
@@ -174,7 +168,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use the `button-primary` gradient from Components for primary actions and CTAs
+- Do use `#00a3ff` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `aBCFavorit` as the primary typeface
 - Don't introduce colors outside the palette above

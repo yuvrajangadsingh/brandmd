@@ -139,9 +139,9 @@ Uses 3 shadow styles for layering and elevation:
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 4px 4px 0px 0px, 6px, 8px, 8px 8px 0px 0px, 10px, 12px, 16px, 9999px (pill)
+**Border radii:** 4px 4px 0px 0px, 6px, 8px, 10px, 12px, 16px, 50%, 9999px (pill)
 
-Asymmetric / percentage radii observed (4px 4px 0px 0px, 8px 8px 0px 0px); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
+Asymmetric / percentage radii observed (4px 4px 0px 0px, 50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
@@ -154,6 +154,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 44px
 - Padding: 0px 16px 0px 16px
 - Font: 14px, weight 500
+- Sampled from: `<button>` labelled `Ask AI`
 
 ### Cards
 - Corner radius: 12px
@@ -172,7 +173,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Do use `OpenAI Sans` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond OpenAI Sans and SF Mono
-- Don't use border-radius values outside: 4px 4px 0px 0px, 6px, 8px, 8px 8px 0px 0px, 10px, 12px, 16px, 9999px (pill)
+- Don't use border-radius values outside: 4px 4px 0px 0px, 6px, 8px, 10px, 12px, 16px, 50%, 9999px (pill)
 
 ---
 

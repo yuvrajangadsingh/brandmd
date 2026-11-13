@@ -74,8 +74,9 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: 0px
-    height: 68px
+    rounded: "{rounded.sm}"
+    padding: 12px
+    height: 40px
   input:
     typography: "{typography.body-md}"
     rounded: "{rounded.sm}"
@@ -129,7 +130,7 @@ _The page background `#1f1633` is the surface that fills the viewport; it is not
 - Body: Monaco
 - Buttons / nav: Rubik
 
-**All detected fonts:** Rubik (1243), Monaco (1128), IBM Plex Mono (57), Segoe UI (41), Dammit Sans (17)
+**All detected fonts:** Rubik (1242), Monaco (1128), IBM Plex Mono (57), Segoe UI (41), Dammit Sans (17)
 
 **Type scale:**
 - Headings: 24px, 27px, 30px, 60px, 88px
@@ -175,6 +176,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 40px
 - Padding: 12px 16px 12px 16px
 - Font: 14px, weight 700
+- Sampled from: `<a>` labelled `Get Demo`
 
 ### Inputs
 - Background: `#422082`

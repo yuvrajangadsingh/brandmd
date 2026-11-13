@@ -109,8 +109,9 @@ _The page background `#ffffff` is the surface that fills the viewport; it is not
 - **Vivid Blue** (`#2997ff`): Secondary text (accent)
 - **Translucent Black** (`#00000080`): Dark background / footer (accent)
 - **Translucent Black** (`#1d1d1f66`): Overlay / scrim (accent)
-- **Dark Pink** (`#5a122c`): Accent background (accent)
 - **Vivid Blue** (`#0071e3`): Accent background (accent)
+
+**Incidental (low usage, do not lead with these):** `#1a4c44`
 
 ## Typography
 
@@ -161,6 +162,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 44px
 - Padding: 11px 21px 11px 21px
 - Font: 17px, weight 400
+- Sampled from: `<a>` labelled `Shop gifts`
 
 ### Cards
 - Corner radius: 0px

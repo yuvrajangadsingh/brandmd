@@ -56,9 +56,8 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: 0px
-    padding: 6px
-    height: 34px
+    rounded: "{rounded.md}"
+    height: 28px
   card:
     backgroundColor: "{colors.surface}"
     rounded: "{rounded.md}"
@@ -112,7 +111,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Headings: CursorGothic, Segoe UI
 - Body: CursorGothic
 
-**All detected fonts:** CursorGothic (1014), Segoe UI (470), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
+**All detected fonts:** CursorGothic (1014), Segoe UI (471), berkeleyMono (237), EB Garamond (135), Lato (69), CursorIcons16 (11)
 
 **Type scale:**
 - Headings: 26px
@@ -156,8 +155,9 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Text color: `#ffffff` (3.16:1 on the fill, below the 4.5:1 AA minimum)
 - Corner radius: 4px
 - Height: 20px
-- Padding: 2px 8px 2px 8px
+- Padding: 2px 6px 2px 6px
 - Font: 12px, weight 500
+- Sampled from: `<button>` labelled `Continue`
 
 ### Cards
 - Background: `#f2f1ed`

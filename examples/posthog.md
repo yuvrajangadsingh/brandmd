@@ -5,13 +5,14 @@ description: "Bright, high contrast"
 colors:
   background: "#eeefe9"
   on-background: "#111111"
-  surface: "#9ea096"
+  surface: "#53ffcb"
+  on-surface-variant: "#374151"
   outline: "#bfc1b7"
   outline-variant: "#b17816"
   primary: "#eb9d2a"
   on-primary: "#1a1a1a"
-  secondary: "#b62ad9"
-  on-secondary: "#ffffff"
+  secondary: "#b17816"
+  on-secondary: "#1a1a1a"
 typography:
   headline-lg:
     fontFamily: RoundHog
@@ -51,7 +52,7 @@ spacing:
 components:
   button-primary:
     backgroundColor: "#cd8407"
-    textColor: "#23251d"
+    textColor: "#000000"
     typography: "{typography.label-sm}"
     rounded: "{rounded.2xl}"
     height: 32px
@@ -96,8 +97,8 @@ _The page background `#eeefe9` is the surface that fills the viewport; it is not
 - **White** (`#ffffff`): Light text (on dark) (accent)
 - **Gray** (`#65675e`): Secondary text (accent)
 - **Orange** (`#eb9d2a`): Accent background (accent)
-- **Purple** (`#b62ad9`): Accent background (accent)
 - **Orange** (`#b17816`): Focus / active border (accent)
+- **Green** (`#53ffcb`): Surface / card background (accent)
 
 **Incidental (low usage, do not lead with these):** `#e5e7e033`, `#0f0f10`, `#9ea096`
 
@@ -110,7 +111,7 @@ _The page background `#eeefe9` is the surface that fills the viewport; it is not
 - Headings: RoundHog
 - Body: RoundHog
 
-**All detected fonts:** RoundHog (1929), SFMono-Regular (130), Source Code Pro (31), avenir next (1)
+**All detected fonts:** RoundHog (1929), SFMono-Regular (129), Source Code Pro (31), avenir next (1)
 
 **Type scale:**
 - Headings: 24px
@@ -151,11 +152,12 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ### Buttons
 - Background: `#cd8407`
-- Text color: `#23251d`
+- Text color: `#000000`
 - Corner radius: 6px
 - Height: 32px
 - Padding: 0px 0px 0px 0px
 - Font: 16px, weight 400
+- Sampled from: `<a>` labelled `Get started – free`
 
 ### Cards
 - Corner radius: 0px

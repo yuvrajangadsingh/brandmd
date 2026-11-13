@@ -9,8 +9,8 @@ colors:
   on-surface-variant: "#5e5f6e"
   outline: "#d9d9de"
   outline-variant: "#0000000f"
-  primary: "#212126"
-  on-primary: "#ffffff"
+  primary: "#ffffff"
+  on-primary: "#1a1a1a"
 typography:
   display:
     fontFamily: geistNumbers
@@ -43,7 +43,7 @@ rounded:
   lg: 8px
   xl: 10px
   2xl: 12px
-  3xl: 12.5px
+  3xl: 16px
   full: 9999px
 spacing:
   base: 12px
@@ -53,11 +53,6 @@ spacing:
   lg: 8px
   xl: 10px
 components:
-  button-primary:
-    backgroundColor: "#212126"
-    typography: "{typography.label-sm}"
-    rounded: "{rounded.full}"
-    height: 40px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -82,11 +77,13 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
-**Motion:** Animation surfaces detected (canvas rendering). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+**Motion:** Animation surfaces detected (WebGL / 3D canvas). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
 
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
+
+_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
 
 - **Light gray** (`#d9d9de`): Divider / border (dominant)
 - **Black** (`#000000`): Primary text (dominant)
@@ -137,27 +134,28 @@ Uses 5 shadow styles for layering and elevation:
 
 **Shape language:** Rounded, friendly aesthetic with generous corner radii.
 
-**Border radii:** 4px, 6px, 8px, 10px, 12px, 12.5px, 16px, 9999px (pill)
+**Border radii:** 4px, 6px, 8px, 10px, 12px, 16px, 50%, 9999px (pill)
+
+Asymmetric / percentage radii observed (50%); kept out of the ordinal `rounded` scale since they don't fit a magnitude order.
 
 ## Components
 
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#212126`
-- Text color: `#000000` (1.31:1 on the fill, below the 4.5:1 AA minimum)
-- Corner radius: 9999px
-- Height: 40px
-- Padding: 0px 0px 0px 0px
+- Text color: `#131316`
+- Corner radius: 0px
+- Height: 20px
+- Padding: 0px 8px 0px 0px
 - Font: 16px, weight 400
+- Sampled from: `<button>` labelled `Products`
 
 ## Do's and Don'ts
 
-- Do use `#212126` for primary actions and CTAs
 - Do use `geistNumbers` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond geistNumbers and Segoe UI Symbol
-- Don't use border-radius values outside: 4px, 6px, 8px, 10px, 12px, 12.5px, 16px, 9999px (pill)
+- Don't use border-radius values outside: 4px, 6px, 8px, 10px, 12px, 16px, 50%, 9999px (pill)
 
 ---
 

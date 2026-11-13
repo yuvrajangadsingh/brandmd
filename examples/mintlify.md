@@ -58,12 +58,12 @@ spacing:
   xl: 12px
 components:
   button-primary:
-    backgroundColor: "#fefdfb"
-    textColor: "#121715"
+    backgroundColor: "#08090a"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
     rounded: "{rounded.md}"
-    padding: 12px
-    height: 42px
+    padding: 8px
+    height: 34px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -110,7 +110,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Vivid Cyan** (`#0077a6`): Accent background (accent)
 - **Near-transparent Green** (`#1fa77a14`): Overlay / scrim (accent)
 
-**Incidental (low usage, do not lead with these):** `#08090a99`
+**Incidental (low usage, do not lead with these):** `#969e9b`
 
 ## Typography
 
@@ -122,7 +122,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - Body: paperMono
 - Buttons / nav: inter
 
-**All detected fonts:** inter (903), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
+**All detected fonts:** inter (913), paperMono (790), arizonaFlare (2), Segoe UI Symbol (1)
 
 **Type scale:**
 - Headings: 24px, 32px, 35px, 36px, 44px, 50px
@@ -160,12 +160,13 @@ Asymmetric / percentage radii observed (12px 12px 0px 0px, 23.5px 23.5px 0px 0px
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#fefdfb`
-- Text color: `#121715`
+- Background: `#08090a`
+- Text color: `#ffffff`
 - Corner radius: 4px
-- Height: 42px
-- Padding: 12px 12px 12px 12px
-- Font: 16px, weight 400
+- Height: 34px
+- Padding: 8px 14px 8px 14px
+- Font: 14px, weight 500
+- Sampled from: `<a>` labelled `Contact sales`
 
 ### Cards
 - Background: `#faf8f5`
@@ -175,7 +176,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#fefdfb` for primary actions and CTAs
+- Do use `#08090a` for primary actions and CTAs
 - Do stick to 2 font weights: 400, 500
 - Do use `inter` as the primary typeface
 - Don't introduce colors outside the palette above

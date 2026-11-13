@@ -41,8 +41,8 @@ typography:
   label-sm:
     fontFamily: Shopify-Inter
     fontSize: 12px
-    fontWeight: 420
-    lineHeight: 1.21
+    fontWeight: 400
+    lineHeight: 1.5
 rounded:
   sm: 4px
   md: 5px
@@ -100,6 +100,8 @@ components:
 
 **Density:** spacious. The layout uses a varied spacing scale.
 
+**Motion:** Animation surfaces detected (WebGL / 3D canvas). The brand uses motion, so treat static tokens as a floor. Detection is presence-only; it does not describe the animations.
+
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
@@ -121,7 +123,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 **Secondary font:** SFMono-Regular
 
 **Fonts by role:**
-- Headings: Shopify-Inter
+- Headings: Shopify-Inter, SFMono-Regular
 - Body: Shopify-Inter
 
 **Type scale:**
@@ -131,9 +133,9 @@ Palette extracted from the live page. Token names below map to the machine-reada
 
 **Weights in use:** 300, 330, 400, 420, 450, 550
 
-**Line heights:** 24px, 20px, 103.5px, 19px, 25px, 28px, 26px, 18px, 14.5px, 31px
+**Line heights:** 24px, 20px, 103.5px, 19px, 25px, 18px, 28px, 26px, 14.5px, 31px
 
-**Letter spacing:** -1.92px, 0.72px, -1.68px, 0.28px, -0.44px, -0.24px
+**Letter spacing:** -1.92px, 0.24px, 0.72px, -1.68px, 0.28px, -0.44px
 
 ## Layout
 
@@ -168,6 +170,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 - Height: 44px
 - Padding: 8px 20px 8px 20px
 - Font: 16px, weight 550
+- Sampled from: `<a>` labelled `Start for free`
 
 ### Cards
 - Background: `#02090a`
