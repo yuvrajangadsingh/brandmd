@@ -55,7 +55,6 @@ spacing:
 components:
   button-primary:
     backgroundColor: "#212126"
-    textColor: "#ffffff"
     typography: "{typography.label-sm}"
     rounded: "{rounded.full}"
     height: 40px
@@ -146,7 +145,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ### Buttons
 - Background: `#212126`
-- Text color: `#000000`
+- Text color: `#000000` (1.31:1 on the fill, below the 4.5:1 AA minimum)
 - Corner radius: 9999px
 - Height: 40px
 - Padding: 0px 0px 0px 0px

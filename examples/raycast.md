@@ -60,7 +60,6 @@ spacing:
 components:
   button-primary:
     backgroundColor: "#111214"
-    textColor: "#ffffff"
     typography: "{typography.label-sm}"
     rounded: 86px
     padding: 20px
