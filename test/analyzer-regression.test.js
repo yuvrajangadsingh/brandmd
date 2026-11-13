@@ -320,6 +320,23 @@ test("a button labelled only with icon-font glyphs is not the primary button", (
   assert.equal(pick([btn("rgb(17, 17, 16)", { label: "Go \uec12" }), download]), "rgb(17, 17, 16)", "a word beside the glyph is a label");
 });
 
+// --- A chromatic button seen once is no pattern -------------------------------
+// tailwindcss.com: two black "Get started" buttons and one pink promo button;
+// the pink won on chroma alone and became the primary.
+test("a one-off chromatic button loses to a neutral fill the page repeats", () => {
+  const pick = (buttons) => analyze(accentRaw(buttons)).components.buttons.bg;
+  const black = btn("rgb(0, 0, 0)");
+  const pink = btn("rgb(246, 51, 154)");
+  const orange = btn("rgb(205, 132, 7)");
+  assert.equal(pick([black, black, pink]), "rgb(0, 0, 0)", "repeated black beats one pink");
+  assert.equal(pick([black, pink]), "rgb(246, 51, 154)", "one each: the chromatic still wins");
+  assert.equal(pick([orange, orange, black, black, black, pink]), "rgb(205, 132, 7)", "a repeated chromatic fill keeps winning over more neutrals");
+  // multi-page: page weights differ (one button of two on page A, the only one on page B), counts do not
+  const purple = btn("rgb(124, 58, 237)", { _pageWeight: 0.5 });
+  const back = btn("rgb(241, 241, 241)", { _pageWeight: 1, color: "rgb(17, 17, 17)" });
+  assert.equal(pick([purple, back]), "rgb(124, 58, 237)", "one of each across pages: the colour");
+});
+
 // --- A solid fill under a gradient overlay is the button's base ------------
 // supabase's CTA is a green background-color under a 1.6% white-to-black
 // gradient; the prose printed the overlay alone and a reader painted a near-
