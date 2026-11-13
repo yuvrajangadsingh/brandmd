@@ -89,7 +89,7 @@ test("shadow placeholders do not eat a page's share of the merge", () => {
   assert.deepEqual(merged.shadows, { [soft]: 1, [deep]: 1 });
 });
 
-// --- A button candidate is a box a hand can hit: 16px to 100px tall. ---------
+// --- A button candidate is a box a hand can hit: 24px to 100px tall. ---------
 // The selector also matches a 2px "expand image" control (docs.replit.com) and
 // 76x480 testimonial cards with role=button (supabase.com); both became the
 // primary button, the first by document order, the second on HSL saturation.
@@ -111,8 +111,15 @@ test("a 480px card with role=button never beats a 38px CTA (supabase.com)", () =
   assert.equal(out.components.buttons.height, "38px");
 });
 
-test("the gate is inclusive at 16px and 100px, and a missing height is kept", () => {
-  for (const [h, kept] of [["15px", false], ["16px", true], ["100px", true], ["101px", false], [undefined, true]]) {
+test("17px tag chips never outvote the CTA (digitalocean.com)", () => {
+  const chip = solid("rgb(25, 101, 113)", "17px");
+  const cta = solid("rgb(111, 224, 237)", "40px", "rgb(0, 0, 0)");
+  const out = analyze(raw([chip, chip, chip, cta, cta]));
+  assert.equal(out.components.buttons.bg, "rgb(111, 224, 237)");
+});
+
+test("the gate is inclusive at 24px and 100px, and a missing height is kept", () => {
+  for (const [h, kept] of [["23px", false], ["24px", true], ["100px", true], ["101px", false], [undefined, true]]) {
     const out = analyze(raw([solid("rgb(255, 0, 0)", h)]));
     assert.equal(out.components.buttons !== null, kept, `height ${h}`);
   }

@@ -66,8 +66,8 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: "{rounded.md}"
-    height: 18px
+    rounded: "{rounded.xl}"
+    height: 66px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://airbnb.com](https://airbnb.com) with `npx brandmd`.

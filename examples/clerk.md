@@ -56,8 +56,8 @@ components:
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
-    rounded: 0px
-    height: 20px
+    rounded: "{rounded.md}"
+    height: 26px
 ---
 
 > This is a real `DESIGN.md` example generated from [https://clerk.com](https://clerk.com) with `npx brandmd`.
@@ -144,11 +144,11 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ### Buttons
 - Text color: `#131316`
-- Corner radius: 0px
-- Height: 20px
-- Padding: 0px 8px 0px 0px
-- Font: 16px, weight 400
-- Sampled from: `<button>` labelled `Products`
+- Corner radius: 6px
+- Height: 26px
+- Padding: 0px 10px 0px 10px
+- Font: 13px, weight 500
+- Sampled from: `<button>` labelled `Sign in`
 
 ## Do's and Don'ts
 

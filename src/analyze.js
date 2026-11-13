@@ -257,13 +257,16 @@ function isSolidFill(cssColor) {
 export const ICON_RE = /(^material (icons|symbols)|font ?awesome|^feather$|heroicons|phosphor|^tabler([\s-]?icons?)?$|^lucide$|simple line icons|bootstrap.?icons|ionicons|^remixicon$|fontello)/i;
 
 /**
- * A button candidate is a box a hand can hit: 16px to 100px tall. The selector
- * also matches a 2px "expand image" control and 480px testimonial cards with
- * role=button. A missing height (older captures) is unknown and kept.
+ * A button candidate is a box a hand can hit: 24px to 100px tall. 24px is
+ * WCAG 2.2's minimum target size (smaller ones can conform by an exception), used
+ * here as a sampling rule: the selector also matches a 2px "expand image"
+ * control, 17px tag chips (three on digitalocean.com outvoted its two CTAs) and
+ * 480px testimonial cards with role=button. A missing height (older captures)
+ * is unknown and kept.
  */
 export function buttonSized(b) {
   const h = parseFloat(b?.height);
-  return Number.isNaN(h) || (h >= 16 && h <= 100);
+  return Number.isNaN(h) || (h >= 24 && h <= 100);
 }
 
 /**

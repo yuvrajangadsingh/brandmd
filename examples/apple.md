@@ -67,7 +67,7 @@ components:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
     rounded: 0px
-    height: 18px
+    height: 44px
   card:
     rounded: 0px
   input:
