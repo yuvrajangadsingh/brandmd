@@ -209,6 +209,19 @@ function semanticName(varName) {
 /**
  * Is a CSS color a real, opaque-enough solid fill (not transparent/near-clear)?
  */
+// Perceptual chroma: LCH C, 0 for greys and about 130 for pure sRGB blue.
+// HSL saturation reads any colour with a zero channel as fully saturated, so
+// a dark navy rgb(0, 37, 51) scored 1.0 and outranked a brand green.
+function lchChroma(c) {
+  return chroma(c).lch()[1] || 0;
+}
+
+// LCH chroma at or above this reads as a colour, below it as a neutral. The
+// 30 captured sites' button fills sit at 14 or less (greys, pale tints like
+// stripe's #e2e4ff) or at 24.6 and up (railway's dark purple, then 45+ for
+// every brand colour).
+const CHROMATIC = 20;
+
 function isSolidFill(cssColor) {
   try {
     return chroma(cssColor).alpha() >= 0.5;
@@ -236,10 +249,11 @@ export function buttonSized(b) {
 /**
  * Analyze extracted component styles into representative tokens.
  *
- * The primary button is the most *saturated solid* candidate (tie-broken by
- * contrast against the page background), NOT the most frequent — most-frequent
- * favors the transparent nav/icon buttons that swamp a real CTA. Transparent
- * candidates become a separate "ghost / secondary" variant.
+ * The primary button is a *solid* candidate: among chromatic fills the most
+ * repeated, then the most chromatic, then the best contrast on the page; with
+ * none, the neutral with the best contrast. Transparent candidates never count
+ * (the nav/icon buttons that swamp a real CTA); they become a separate
+ * "ghost / secondary" variant.
  */
 // Chromium clamps calc(infinity * 1px), Tailwind v4's rounded-full, to
 // 3.35544e+07px. A uniform radius past this is a pill either way, and 9999px
@@ -261,19 +275,30 @@ function analyzeComponents(components, pageBgHex = null) {
     const ghosts = buttons.filter((b) => !isSolidFill(b.bg));
 
     if (solids.length > 0) {
-      const score = (b) => {
+      const info = solids.map((b) => {
         try {
           const c = chroma(toHex(b.bg));
-          const sat = c.hsl()[1] || 0;
           const contrast = pageBgHex ? chroma.contrast(c, pageBgHex) : 1;
-          // Saturation leads (brand CTAs are chromatic); contrast breaks ties
-          // and rescues saturated-but-neutral CTAs (a black button on white).
-          return sat * 10 + Math.min(contrast, 21) / 21;
+          return { b, hex: c.hex(), chroma: lchChroma(c), contrast };
         } catch {
-          return 0;
+          return { b, hex: null, chroma: 0, contrast: 0 };
         }
-      };
-      result.buttons = [...solids].sort((a, b) => score(b) - score(a))[0];
+      });
+      // A chromatic fill is the CTA: the one repeated most (page-weighted, like
+      // the ghost below), then the most chromatic, so posthog's five orange CTAs
+      // beat its one purple badge. With none, contrast against the page picks
+      // between neutral CTAs (a black button on white). Full ties keep the
+      // capture's order (the sort is stable).
+      const chromatic = info.filter((x) => x.chroma >= CHROMATIC);
+      const weight = {};
+      // Page weights are fractions: six 1/6 votes sum to 0.9999999999999999 and
+      // three 1/3 votes to 1. Equal evidence must tie and go on to chroma.
+      const tied = (d) => (Math.abs(d) < 1e-9 ? 0 : d);
+      for (const x of chromatic) weight[x.hex] = (weight[x.hex] || 0) + (typeof x.b._pageWeight === "number" ? x.b._pageWeight : 1);
+      const ranked = chromatic.length
+        ? chromatic.sort((p, q) => tied(weight[q.hex] - weight[p.hex]) || q.chroma - p.chroma || q.contrast - p.contrast)
+        : info.sort((p, q) => q.contrast - p.contrast);
+      result.buttons = ranked[0].b;
     }
 
     // Ghost = the most common transparent variant (a real, repeated pattern).

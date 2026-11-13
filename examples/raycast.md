@@ -59,13 +59,12 @@ spacing:
   xl: 14.5px
 components:
   button-primary:
-    backgroundColor: "#111214"
+    backgroundColor: "#e6e6e6"
+    textColor: "#2f3031"
     typography: "{typography.label-sm}"
-    rounded: 86px
-    padding: 20px
-    height: 57px
-  button-primary-gradient-stop-2:
-    backgroundColor: "#0c0d0f"
+    rounded: 8px
+    padding: 8px
+    height: 36px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -165,12 +164,12 @@ Asymmetric / percentage radii observed (25%, 100%); kept out of the ordinal `rou
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `linear-gradient(137deg, rgb(17, 18, 20) 4.87%, rgb(12, 13, 15) 75.88%)` (gradient; first stop `#111214`)
-- Text color: `#6a6b6c`
-- Corner radius: 86px
-- Height: 57px
-- Padding: 20px 20px 20px 20px
-- Font: 16px, weight 400
+- Background: `#e6e6e6`
+- Text color: `#2f3031`
+- Corner radius: 8px
+- Height: 36px
+- Padding: 8px 12px 8px 12px
+- Font: 14px, weight 500
 
 ### Cards
 - Background: `#ffffff`
@@ -185,7 +184,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use the `button-primary` gradient from Components for primary actions and CTAs
+- Do use `#e6e6e6` for primary actions and CTAs
 - Do use `Inter` as the primary typeface
 - Don't introduce colors outside the palette above
 - Don't mix fonts beyond Inter and SF Pro Text

@@ -55,12 +55,12 @@ spacing:
   xl: 20px
 components:
   button-primary:
-    backgroundColor: "#faf9f6"
-    textColor: "#111111"
+    backgroundColor: "#111111"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
-    rounded: 0px
-    padding: 16px
-    height: 58px
+    rounded: "{rounded.sm}"
+    padding: 4px
+    height: 40px
   button-secondary:
     backgroundColor: transparent
     typography: "{typography.label-sm}"
@@ -154,17 +154,17 @@ Uses 1 shadow style for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#faf9f6`
-- Text color: `#111111`
-- Corner radius: 0px
-- Height: 58px
-- Padding: 16px 16px 16px 16px
+- Background: `#111111`
+- Text color: `#ffffff`
+- Corner radius: 4px
+- Height: 40px
+- Padding: 4px 14px 4px 14px
 - Font: 16px, weight 400
 
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
-- Do use `#faf9f6` for primary actions and CTAs
+- Do use `#111111` for primary actions and CTAs
 - Do stick to 3 font weights: 300, 400, 500
 - Do use `Saans` as the primary typeface
 - Don't introduce colors outside the palette above

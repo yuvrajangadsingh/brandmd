@@ -59,8 +59,8 @@ spacing:
   xl: 15.5px
 components:
   button-primary:
-    backgroundColor: "#e9f2fe"
-    textColor: "#000000"
+    backgroundColor: "#1868db"
+    textColor: "#ffffff"
     typography: "{typography.label-sm}"
     rounded: "{rounded.full}"
     padding: 8px
@@ -152,8 +152,8 @@ Asymmetric / percentage radii observed (41.5px 0px 0px 41.5px, 50%); kept out of
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#e9f2fe`
-- Text color: `#000000`
+- Background: `#1868db`
+- Text color: `#ffffff`
 - Corner radius: 9999px
 - Height: 48px
 - Padding: 7.80769px 15.6154px 7.80769px 15.6154px
@@ -161,7 +161,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 
 ## Do's and Don'ts
 
-- Do use `#e9f2fe` for primary actions and CTAs
+- Do use `#1868db` for primary actions and CTAs
 - Do stick to 3 font weights: 400, 500, 700
 - Do use `Charlie Display` as the primary typeface
 - Don't introduce colors outside the palette above

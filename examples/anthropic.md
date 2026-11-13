@@ -8,8 +8,8 @@ colors:
   on-surface-variant: "#5e5d59"
   outline: "#dedcd1"
   outline-variant: "#3d3d3a"
-  primary: "#faf9f5"
-  on-primary: "#1a1a1a"
+  primary: "#262624"
+  on-primary: "#ffffff"
 typography:
   display:
     fontFamily: anthropicSerif
@@ -56,11 +56,10 @@ spacing:
   xl: 16px
 components:
   button-primary:
-    backgroundColor: "#faf9f5"
-    textColor: "#141413"
+    backgroundColor: "#262624"
+    textColor: "#faf9f5"
     typography: "{typography.label-sm}"
     rounded: "{rounded.lg}"
-    padding: 12px
     height: 36px
   button-secondary:
     backgroundColor: transparent
@@ -99,8 +98,6 @@ components:
 ## Colors
 
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
-
-_No explicit accent or action color was observed on this page. The machine token `primary` mirrors the dominant background neutral (low confidence) — do not treat it as a call-to-action color._
 
 - **Cream** (`#faf9f5`): Page background (dominant)
 - **Black** (`#141413`): Dark background / footer (dominant)
@@ -154,11 +151,11 @@ Uses 1 shadow style for layering and elevation:
 Observed from the live DOM. Machine-readable component tokens are in the `components` block above.
 
 ### Buttons
-- Background: `#faf9f5`
-- Text color: `#141413`
+- Background: `#262624`
+- Text color: `#faf9f5`
 - Corner radius: 10px
 - Height: 36px
-- Padding: 12px 24px 12px 24px
+- Padding: 0px 0px 0px 0px
 - Font: 16.6863px, weight 400
 
 ### Cards
@@ -175,6 +172,7 @@ Observed from the live DOM. Machine-readable component tokens are in the `compon
 ## Do's and Don'ts
 
 - Do use a 4px grid for spacing
+- Do use `#262624` for primary actions and CTAs
 - Do stick to 4 font weights: 400, 500, 600, 700
 - Do use `anthropicSerif` as the primary typeface
 - Don't introduce colors outside the palette above
