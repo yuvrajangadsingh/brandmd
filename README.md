@@ -347,7 +347,7 @@ Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palet
 - **Typography** with role-aware Primary detection (display > heading > body), per-role font breakdown, and a full "all detected fonts" frequency list. Skips monospace, default fallbacks, and icon fonts when picking Primary.
 - **Spacing scale** and base grid unit
 - **Border radii** and shadow styles
-- **Component patterns** (buttons, cards, inputs). A button is a `<button>`, a `role="button"`, or a link classed or painted like one (a fill, a gradient or a border other than an underline, with a short visible label); hidden and off-page controls and skip links are left out, and a control with no visible label is never the primary button. The primary button is the most repeated fill with real colour (LCH chroma), or, when every fill is neutral, the one that stands out most against the page; a coloured one also competes with the accent colours for `colors.primary`. The prose names the element each button was sampled from.
+- **Component patterns** (buttons, cards, inputs). A button is a `<button>`, a `role="button"`, or a link classed or painted like one (a fill, a gradient or a border other than an underline, with a short visible label); hidden and off-page controls, skip links and controls inside a `<table>` (a sample email, a data grid) are left out, unless every control on the page sits in a table, and a control with no visible label is never the primary button. The primary button is the most repeated fill with real colour (LCH chroma), or, when every fill is neutral, the one that stands out most against the page; a coloured one also competes with the accent colours for `colors.primary`. The prose names the element each button was sampled from.
 
 ## How it works
 
