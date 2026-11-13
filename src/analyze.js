@@ -255,7 +255,9 @@ function analyzeComponents(components, pageBgHex = null) {
   const pill = (c) => ({ ...c, radius: pillRadius(c.radius) ?? c.radius });
   const buttons = (components?.buttons || []).filter(buttonSized).map(pill);
   if (buttons.length > 0) {
-    const solids = buttons.filter((b) => isSolidFill(b.bg));
+    // A control with no label a reader sees (a chat launcher, an icon) is not a
+    // call to action. Older captures have no label and stay in.
+    const solids = buttons.filter((b) => isSolidFill(b.bg) && b.label !== "");
     const ghosts = buttons.filter((b) => !isSolidFill(b.bg));
 
     if (solids.length > 0) {
