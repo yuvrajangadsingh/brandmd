@@ -9,8 +9,10 @@ colors:
   on-surface-variant: "#14141499"
   outline: "#26251e1a"
   outline-variant: "#26251e8c"
-  primary: "#65afe0"
+  primary: "#c08532"
   on-primary: "#1a1a1a"
+  secondary: "#65afe0"
+  on-secondary: "#1a1a1a"
 typography:
   headline-lg:
     fontFamily: CursorGothic

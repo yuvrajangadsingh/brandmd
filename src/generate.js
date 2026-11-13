@@ -179,7 +179,8 @@ function buildModel(tokens) {
 
   // A distinct secondary accent (a second saturated color), if the palette has one.
   const secondAccent = solid.find((c) => {
-    if (!safeChroma(c.hex) || tok(c.hex) === colors.primary) return false;
+    // primary may be this colour flattened over the page (a translucent CTA)
+    if (!safeChroma(c.hex) || tok(c.hex) === colors.primary || lc(flatten(c.hex, colors.background)) === colors.primary) return false;
     const [, s, l] = chroma(c.hex).hsl();
     return (s || 0) > 0.4 && l > 0.2 && l < 0.85;
   });

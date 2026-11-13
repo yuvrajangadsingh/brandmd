@@ -8,10 +8,10 @@ colors:
   on-surface-variant: "#4a5565"
   outline: "#e5e7eb"
   outline-variant: "#ffffff1a"
-  primary: "#ff6900"
-  on-primary: "#1a1a1a"
-  secondary: "#8e51ff"
-  on-secondary: "#ffffff"
+  primary: "#000000"
+  on-primary: "#ffffff"
+  secondary: "#ff6900"
+  on-secondary: "#1a1a1a"
 typography:
   display:
     fontFamily: Source Sans Pro

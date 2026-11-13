@@ -6,13 +6,12 @@
 
 ## Color palette
 
-### Shared (3)
+### Shared (2)
 
 - `#FFFFFF` — background (background)
 - `#FFFFFF` — on-primary (on-primary)
-- `#1A1A1A` — on-secondary (on-secondary)
 
-### Only in Stripe (6)
+### Only in Stripe (7)
 
 - `#000000` — on-background (on-background)
 - `#FFD7EF` — surface (surface)
@@ -20,6 +19,7 @@
 - `#E5EDF5` — outline (outline)
 - `#533AFD` — primary (primary)
 - `#7F7DFC` — secondary (secondary)
+- `#1A1A1A` — on-secondary (on-secondary)
 
 ### Only in Agentic Infrastructure (7)
 
@@ -28,8 +28,8 @@
 - `#4D4D4D` — on-surface-variant (on-surface-variant)
 - `#EBEBEB` — outline (outline)
 - `#FFFFFF66` — outline-variant (outline-variant)
-- `#0072F5` — primary (primary)
-- `#52AEFF` — secondary (secondary)
+- `#171717` — primary (primary)
+- `#0072F5` — secondary (secondary)
 
 
 ## Typography
