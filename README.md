@@ -50,7 +50,7 @@ A call runs for at most 180 seconds (set `BRANDMD_MCP_TIMEOUT` in seconds to cha
 
 Works as brand context for Claude Code, Cursor rules, Gemini CLI, Codex, Google Stitch, MCP servers, and any coding agent that reads markdown.
 
-Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Anthropic](examples/anthropic.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md) · [+20 more in the gallery](examples/README.md)
+Real examples: [Stripe](examples/stripe.md) · [Linear](examples/linear.md) · [GitHub](examples/github.md) · [Vercel](examples/vercel.md) · [Notion](examples/notion.md) · [Cursor](examples/cursor.md) · [Figma](examples/figma.md) · [Supabase](examples/supabase.md) · [Raycast](examples/raycast.md) · [+20 more in the gallery](examples/README.md)
 
 <p align="center">
   <img src="demo.gif" alt="brandmd extracting Stripe into DESIGN.md for Claude Code, Cursor, and Google Stitch" width="700">
@@ -116,7 +116,7 @@ See [CHANGELOG.md](CHANGELOG.md) for the full history.
 
 ## Examples
 
-**[See all 30 DESIGN.md examples in the gallery →](examples/README.md)**
+**[See all 29 DESIGN.md examples in the gallery →](examples/README.md)**
 
 Flagship deep links (DESIGN.md):
 
@@ -126,7 +126,6 @@ Flagship deep links (DESIGN.md):
 - [Vercel](examples/vercel.md)
 - [Notion](examples/notion.md)
 - [Cursor](examples/cursor.md)
-- [Anthropic](examples/anthropic.md)
 - [Figma](examples/figma.md)
 - [Supabase](examples/supabase.md)
 - [Raycast](examples/raycast.md)
@@ -216,7 +215,7 @@ Pass `--allow-blocked` to force output anyway; whatever the refusal was, the art
 
 ## Gallery
 
-[See 5 real DESIGN.md snapshots in the browser](https://yuvrajangadsingh.github.io/brandmd/) (Stripe, Vercel, Linear, Anthropic, Mintlify), or scan the [`examples/`](./examples) folder for all 30. Each snapshot is generated from a single public page visit and is observed, not canonical.
+[See 4 real DESIGN.md snapshots in the browser](https://yuvrajangadsingh.github.io/brandmd/) (Stripe, Vercel, Linear, Mintlify), or scan the [`examples/`](./examples) folder for all 29. Each snapshot is generated from a single public page visit and is observed, not canonical.
 
 ## Check (drift detection in CI)
 
@@ -348,6 +347,11 @@ Adds a "Dark Theme Overrides" section to the DESIGN.md with the dark color palet
 - **Spacing scale** and base grid unit
 - **Border radii** and shadow styles
 - **Component patterns** (buttons, cards, inputs). A button is a `<button>`, a `role="button"`, or a link classed or painted like one (a fill, a gradient or a border other than an underline, with a short visible label); hidden and off-page controls, skip links and controls inside a `<table>` (a sample email, a data grid) are left out, unless every control on the page sits in a table, and a control with no visible label is never the primary button. The primary button is the most repeated fill with real colour (LCH chroma), or, when every fill is neutral, the one that stands out most against the page; a coloured one also competes with the accent colours for `colors.primary`. The prose names the element each button was sampled from.
+
+### Known limits
+
+- A hero button that fades in as the page loads or scrolls can be missed. A headless capture may never run the page's reveal, so the button stays at opacity 0 and is left out, and the primary comes from the other buttons.
+- A page whose buttons paint no fill at rest (transparent until hovered) has no primary button to sample. Unless another accent colour stands out on the page, `colors.primary` falls back to the page colour and the output says it is low confidence. [clerk.com](examples/clerk.md) is one in the gallery.
 
 ## How it works
 
