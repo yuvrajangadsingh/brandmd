@@ -120,3 +120,25 @@ test("each button records its tag, its label and the colour its label is painted
   // a box too narrow to hold its text still shows it when it does not clip
   assert.equal(narrow.label, "Zero width");
 });
+
+// HTML email is laid out in tables, so a sample email on a page (resend's demo)
+// brings its own buttons; none of the 30 example sites has a real one in a table.
+test("a control inside a table, an email sample or a data grid, is not collected", async (t) => {
+  const buttons = await buttonsOf(t, '<body style="margin:0;background:#fff">'
+    + '<a href="/a" style="display:inline-block;height:61px;background:#000;color:#fff">Get started</a>'
+    + '<table><tr><td><a href="/b" style="display:inline-block;height:62px;background:#00a3ff;color:#fff">Get Started</a></td></tr></table>'
+    + '<table><tr><td><button style="height:63px">Edit</button></td></tr></table>'
+    + "</body>");
+  if (!buttons) return;
+  assert.deepEqual(heights(buttons), [61]);
+});
+
+// A page laid out in a table has nothing else to sample.
+test("a page whose only controls sit in a table keeps them", async (t) => {
+  const buttons = await buttonsOf(t, '<body style="margin:0;background:#fff"><table><tr>'
+    + '<td><a href="/buy" style="display:inline-block;height:64px;background:#000;color:#fff">Buy now</a></td>'
+    + '<td><button style="height:65px;background:transparent;border:1px solid #000">Edit</button></td>'
+    + "</tr></table></body>");
+  if (!buttons) return;
+  assert.deepEqual(heights(buttons), [64, 65]);
+});

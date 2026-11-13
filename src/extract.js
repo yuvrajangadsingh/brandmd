@@ -471,10 +471,16 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         range.selectNodeContents(n);
         return !!boxed && boxed.checkVisibility({ opacityProperty: true }) && unclipped(range.getBoundingClientRect(), n.parentElement, btn);
       };
+      const tabled = [];
       for (const btn of document.querySelectorAll('button, a, [role="button"]')) {
         const s = getComputedStyle(btn);
         const rect = btn.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) continue;
+        // A control inside a <table> belongs to an HTML email sample or a data
+        // grid, not to the page's own chrome: resend's demo email has a blue
+        // "Get Started" that became the site's primary. A page with no control
+        // outside a table is laid out in one, so its controls count.
+        const into = btn.closest("table") ? tabled : components.buttons;
         // What the reader cannot see is skipped: an opacity-0 skip link, a
         // faded-out mockup, anything under visibility:hidden or display:none,
         // off the top or left edge or cut away by a box that hides its
@@ -517,7 +523,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         const stopTotal = colourStops(s.backgroundImage).length;
         const transparentBg = s.backgroundColor === "rgba(0, 0, 0, 0)" || s.backgroundColor === "transparent";
         const bg = (transparentBg && stops.length) ? stops[0] : s.backgroundColor;
-        components.buttons.push({
+        into.push({
           tag: btn.localName, label: label.slice(0, 40), // provenance: which element this is
           bg, color, radius: s.borderRadius,
           padding: `${s.paddingTop} ${s.paddingRight} ${s.paddingBottom} ${s.paddingLeft}`,
@@ -529,6 +535,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
           gradientRaw: stopTotal ? s.backgroundImage.slice(0, 300) : null,
         });
       }
+      if (!components.buttons.length) components.buttons.push(...tabled);
 
       for (const el of document.querySelectorAll('[class*="card"], [class*="Card"], article')) {
         const s = getComputedStyle(el);
