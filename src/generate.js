@@ -418,6 +418,8 @@ function emitComponentProse(lines, tokens) {
     if (btn.height) btnLines.push(`- Height: ${btn.height}`);
     if (btn.padding) btnLines.push(`- Padding: ${btn.padding}`);
     if (btn.fontSize) btnLines.push(`- Font: ${btn.fontSize}, weight ${btn.fontWeight || "400"}`);
+    const label = sanitizeLine(btn.label)?.replace(/`/g, "'");
+    if (btn.tag) btnLines.push(`- Sampled from: \`<${btn.tag}>\`${label ? ` labelled \`${label}\`` : ""}`);
     if (btnLines.length) {
       lines.push("### Buttons");
       lines.push(...btnLines);

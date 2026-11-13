@@ -831,3 +831,12 @@ test("F-02: a multi-page merge weighs a page the same in any key order", () => {
     merge({ "#ffffff": 1, "#0000ff": 1.3, "#0000ee": 1.1 })
   );
 });
+
+// --- Button provenance --------------------------------------------------------
+test("the Buttons prose names the element the button was sampled from", () => {
+  const md = generate(analyze(accentRaw([btn("rgb(192, 133, 50)", { tag: "a", label: "Sign `up` now" })])));
+  assert.match(md, /^- Sampled from: `<a>` labelled `Sign 'up' now`$/m);
+  const iconOnly = generate(analyze(accentRaw([btn("rgba(0, 0, 0, 0)", { tag: "button", label: "" })])));
+  assert.match(iconOnly, /^- Sampled from: `<button>`$/m);
+  assert.doesNotMatch(generate(analyze(accentRaw([btn("rgb(192, 133, 50)")]))), /Sampled from/, "an older capture has no provenance to print");
+});

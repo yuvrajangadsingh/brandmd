@@ -487,17 +487,26 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         if (!unclipped(rect, laidOutIn(btn), null)) continue;
         // The label is its seen text nodes joined as written, so a word set
         // one span per letter stays one word; a blank node is a space.
+        const texts = [];
         let label = "";
         const walker = document.createTreeWalker(btn, NodeFilter.SHOW_TEXT);
         for (let n = walker.nextNode(); n; n = walker.nextNode()) {
           if (!n.textContent.trim()) label += " ";
-          else if (shown(n, btn)) label += n.textContent;
+          else if (shown(n, btn)) { texts.push(n); label += n.textContent; }
         }
         label = label.trim().replace(/\s+/g, " ");
+        // An input button draws its value, or the browser's caption without
+        // one; it has no text nodes.
+        if (btn.localName === "input") label = (btn.value || { submit: "Submit", reset: "Reset" }[btn.type] || "").trim();
         // ponytail: English skip links only; a localized one ("Zum Inhalt springen") still counts
         if (btn.matches('a[href^="#"]') && /^skip\b/i.test(label)) continue;
         if (btn.localName === "a" && !btn.matches('[class*="btn" i], [class*="button" i], [role="button"]')
           && !(painted(s) && label.length > 0 && label.length <= 30 && rect.width <= 480)) continue;
+        // The colour a reader sees is the label's fill: text in a styled child
+        // computes its own colour, not the button's, and -webkit-text-fill-color
+        // paints over color.
+        const labelStyle = texts.length ? getComputedStyle(texts[0].parentElement) : s;
+        const color = labelStyle.webkitTextFillColor || labelStyle.color;
         // A gradient button is transparent to backgroundColor. Fall back to the
         // gradient stops so the CTA keeps a real fill instead of vanishing, and
         // keep the raw computed background-image so the output can print the
@@ -509,7 +518,8 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         const transparentBg = s.backgroundColor === "rgba(0, 0, 0, 0)" || s.backgroundColor === "transparent";
         const bg = (transparentBg && stops.length) ? stops[0] : s.backgroundColor;
         components.buttons.push({
-          bg, color: s.color, radius: s.borderRadius,
+          tag: btn.localName, label: label.slice(0, 40), // provenance: which element this is
+          bg, color, radius: s.borderRadius,
           padding: `${s.paddingTop} ${s.paddingRight} ${s.paddingBottom} ${s.paddingLeft}`,
           fontSize: s.fontSize, fontWeight: s.fontWeight, border: s.border,
           height: `${Math.round(rect.height)}px`,
