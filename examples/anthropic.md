@@ -100,11 +100,12 @@ components:
 Palette extracted from the live page. Token names below map to the machine-readable `colors` block above.
 
 - **Cream** (`#faf9f5`): Page background (dominant)
-- **Black** (`#141413`): Dark background / footer (dominant)
 - **Light Muted Yellow** (`#dedcd1`): Divider / border (dominant)
 - **Dark gray** (`#3d3d3a`): Divider / border (dominant)
 - **Gray** (`#5e5d59`): Secondary text (accent)
 - **Gray** (`#87867f`): Secondary text (accent)
+- **Black** (`#141413`): Dark background / footer (accent)
+- **Translucent Black** (`#1414134d`): Overlay / scrim (accent)
 
 ## Typography
 

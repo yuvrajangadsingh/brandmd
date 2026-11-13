@@ -1,12 +1,16 @@
 import chroma from "chroma-js";
 
 /**
- * Parse a CSS color string (rgb, rgba, hex) into a hex string.
+ * Parse a CSS color string (rgb, rgba, hex, color(srgb ...)) into a hex string.
  * Returns null if unparseable.
  */
 function toHex(cssColor) {
   if (!cssColor) return null;
+  // Chrome serializes some computed colours as color(srgb r g b / a), channels
+  // 0 to 1, which chroma cannot read.
+  const srgb = cssColor.match(/^color\(srgb ([\d.e+-]+) ([\d.e+-]+) ([\d.e+-]+)(?: \/ ([\d.]+))?\)$/i);
   try {
+    if (srgb) return chroma.gl(+srgb[1], +srgb[2], +srgb[3], +(srgb[4] ?? 1)).hex();
     return chroma(cssColor).hex();
   } catch {
     // Try parsing rgb/rgba manually
