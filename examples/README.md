@@ -1,4 +1,4 @@
-# DESIGN.md examples from 30 real sites
+# DESIGN.md examples from 29 real sites
 
 Each file in this folder is a real `DESIGN.md` extracted with `npx brandmd <url>` from a live website. Drop any of these into your project root and your AI coding agent (Claude Code, Cursor, Gemini CLI, Codex, Google Stitch) will start matching that site's visual system instead of generating generic UI.
 
@@ -15,7 +15,6 @@ Repo: [github.com/yuvrajangadsingh/brandmd](https://github.com/yuvrajangadsingh/
 
 ## AI & developer tools
 
-- [Anthropic](anthropic.md) · anthropic.com
 - [Claude](claude.md) · claude.com
 - [OpenAI](openai.md) · platform.openai.com/docs
 - [Cursor](cursor.md) · cursor.com

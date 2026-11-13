@@ -14,11 +14,6 @@ brands:
     url: https://linear.app
     category: productivity
     example: examples/linear.md
-  - slug: anthropic
-    name: Anthropic
-    url: https://anthropic.com
-    category: ai
-    example: examples/anthropic.md
   - slug: mintlify
     name: Mintlify
     url: https://mintlify.com

@@ -14,6 +14,6 @@ const EXAMPLES = fileURLToPath(new URL("../examples/", import.meta.url));
 test("examples/ is what test/captures replays to", () => {
   const dir = mkdtempSync(join(tmpdir(), "brandmd-replay-test-"));
   const files = replay(dir);
-  assert.equal(files.length, 33);
+  assert.equal(files.length, 32);
   for (const f of files) assert.equal(readFileSync(join(dir, f), "utf8"), readFileSync(join(EXAMPLES, f), "utf8"), `examples/${f} is stale: run node scripts/examples.mjs replay`);
 });
