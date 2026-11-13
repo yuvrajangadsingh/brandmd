@@ -19,6 +19,10 @@ const PAGES = {
   // A Cloudflare marker that never goes away, on an otherwise real page.
   "/challenge": `<!doctype html><title>Just a moment...</title>${BODY}<div id="cf-challenge-running"></div>`,
   "/ok": `<!doctype html><title>Acme</title>${BODY}`,
+  // Cloudflare's JS-detections loader rides on normal pages (discord.com);
+  // its challenge page loads the orchestrate script instead.
+  "/cf-jsd": `<!doctype html><title>Acme</title>${BODY}<script src="/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=1"></script>`,
+  "/cf-orchestrate": `<!doctype html><title>Just a moment...</title>${BODY}<script src="/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=1"></script>`,
   // An app that routes itself to sign-in 3 s in: after the CLI's 2 s settle,
   // while it scrolls the 20 screens.
   "/routes-late": `<!doctype html><title>Acme</title>${BODY}<div style="height:2000vh"></div>
@@ -102,6 +106,16 @@ function run(t, args) {
   child.stderr.setEncoding("utf8").on("data", (d) => (stderr += d));
   return once(child, "close").then(([status]) => ({ status, stdout, stderr }));
 }
+
+test("Cloudflare's detections loader on a real page is no challenge; its orchestrate script is", { timeout: 120000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  let r = await run(t, [`${base}/cf-jsd`, "--cf-wait-ms", "0"]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.doesNotMatch(r.stderr, /Cloudflare challenge/);
+  r = await run(t, [`${base}/cf-orchestrate`, "--cf-wait-ms", "0"]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /Cloudflare challenge still active/);
+});
 
 test("a Cloudflare challenge that never clears is refused (exit 2), in extraction and check", { timeout: 120000 }, async (t) => {
   if (!(await browserOk(t))) return;
