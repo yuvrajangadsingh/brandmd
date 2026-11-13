@@ -141,7 +141,12 @@ function buildModel(tokens) {
     : byRole("Primary text") || solid.find((c) => c.type === "text");
   const surface = byRole("Surface / card background") || byRole("Secondary background");
   const secondaryText = tr ? null : byRole("Secondary text") || byRole("Muted text");
-  const border = byRole("Divider / border", palette) || palette.find((c) => c.type === "border");
+  // With no border entry left, a border whose hex is also a fill survives on
+  // the fill's entry (alsoBorder), a divider before a focus ring; one in the
+  // page colour draws nothing.
+  const kept = (role) => palette.find((c) => role(c.alsoBorder) && c.hex !== pageBg?.hex);
+  const border = byRole("Divider / border", palette) || palette.find((c) => c.type === "border")
+    || kept((r) => r === "Divider / border") || kept(Boolean);
   const border2 = palette.filter((c) => c.type === "border")[1];
 
   put("background", pageBg?.hex);

@@ -876,3 +876,22 @@ test("a button text colour below AA stays out of the YAML and is flagged in the 
   const over = generate(analyze(accentRaw([btn("rgb(0, 0, 0)", { color: "rgb(0, 0, 0)", bgFromGradient: false, gradient: [veil, veil], stopCount: 2, gradientRaw: `linear-gradient(${veil}, ${veil})` })])));
   assert.match(over, /^- Text color: `#000000`$/m);
 });
+
+// --- An outline that shares its hex with a fill -------------------------------
+// linear's white/8% divider is also an overlay fill. The palette keeps one entry
+// per hex; once the most-used colour led each cluster, the fill kept the hex and
+// the border entry was dropped, and the outline token went with it.
+test("a border that shares its hex with a fill still gives the outline token, unless it is the page colour", () => {
+  const raw = (background, text, border) => rawSkeleton({
+    colors: { background, text, border },
+    fonts: { Inter: 100 },
+    fontsByRole: { heading: {}, body: { Inter: 100 }, button: {}, display: {} },
+  });
+  const dark = raw({ "rgb(8, 9, 10)": 1000, "rgba(255, 255, 255, 0.08)": 200 }, { "rgb(247, 248, 248)": 500 }, { "rgba(255, 255, 255, 0.08)": 66 });
+  assert.match(generate(analyze(dark)), /^ {2}outline: "#ffffff14"$/m);
+  const white = raw({ "rgb(255, 255, 255)": 1000 }, { "rgb(17, 17, 17)": 500 }, { "rgb(255, 255, 255)": 50 });
+  assert.doesNotMatch(generate(analyze(white)), /^ {2}outline:/m, "an outline in the page colour draws nothing");
+  // a grey divider outranks a red focus ring, though the red fill is used more
+  const two = raw({ "rgb(255, 255, 255)": 1000, "rgb(255, 0, 0)": 300, "rgb(107, 114, 128)": 100 }, { "rgb(17, 17, 17)": 500 }, { "rgb(107, 114, 128)": 100, "rgb(255, 0, 0)": 2 });
+  assert.match(generate(analyze(two)), /^ {2}outline: "#6b7280"$/m);
+});
