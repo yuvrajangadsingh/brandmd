@@ -217,6 +217,12 @@ function isSolidFill(cssColor) {
   }
 }
 
+// Icon font families. Material Symbols (Outlined/Rounded/Sharp) is the
+// successor to Material Icons; both can dominate counts on icon-heavy UIs and
+// must not become Primary, and their ligature text ("chat") is an icon, not a
+// button label.
+export const ICON_RE = /(^material (icons|symbols)|font ?awesome|^feather$|heroicons|phosphor|^tabler([\s-]?icons?)?$|^lucide$|simple line icons|bootstrap.?icons|ionicons|^remixicon$|fontello)/i;
+
 /**
  * A button candidate is a box a hand can hit: 16px to 100px tall. The selector
  * also matches a 2px "expand image" control and 480px testimonial cards with
@@ -579,9 +585,6 @@ export function analyze(raw) {
   // "GeistMono" (no whitespace) where \b would not fire.
   const MONO_RE = /\bmono\b|menlo|consolas|courier|jetbrains|geistmono|sfmono|source code|fira code|cascadia|operator mono|ibm plex mono|figmamono|iosevka/i;
   const FALLBACK_RE = /^(times|times new roman|arial|helvetica|georgia|verdana|tahoma|trebuchet|courier|courier new)$/i;
-  // Material Symbols (Outlined/Rounded/Sharp) is the successor to Material Icons;
-  // both can dominate counts on icon-heavy UIs and must not become Primary.
-  const ICON_RE = /(^material (icons|symbols)|font awesome|^feather$|heroicons|phosphor|^tabler([\s-]?icons?)?$|^lucide$|simple line icons|bootstrap.?icons|ionicons|^remixicon$|fontello)/i;
   const isExcluded = (f) => !f || MONO_RE.test(f) || FALLBACK_RE.test(f) || ICON_RE.test(f);
   // Primary candidacy also requires minimum support (never a count-1 font).
   const pickNonExcluded = (arr) => arr.find((f) => !isExcluded(f) && hasSupport(f)) || null;

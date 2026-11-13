@@ -1,5 +1,5 @@
 import { chromium } from "playwright";
-import { buttonSized, visibleShadows } from "./analyze.js";
+import { ICON_RE, buttonSized, visibleShadows } from "./analyze.js";
 
 /**
  * Detect if the current page is a Cloudflare challenge / block.
@@ -203,7 +203,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       }
     });
 
-    const raw = await page.evaluate(() => {
+    const raw = await page.evaluate((iconFontSource) => {
       const colors = { background: {}, text: {}, border: {} };
       const fonts = {};
       // Brand fonts are often used on headings only, while body text falls back
@@ -233,6 +233,9 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         while ((m = re.exec(bgImage))) out.push(m[1]);
         return out;
       };
+      // Every colour stop in a gradient as written, read or not (oklch, lab).
+      const colourStops = (bgImage) => /gradient\(/i.test(bgImage || "")
+        ? bgImage.match(/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|hwb|oklch|oklab|lab|lch|color)\([^)]*\)/g) || [] : [];
 
       const elements = document.querySelectorAll("html, body, body *");
 
@@ -380,10 +383,109 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       // Extract real component styles from DOM
       const components = { buttons: [], cards: [], inputs: [] };
 
-      for (const btn of document.querySelectorAll('button, a[class*="btn"], a[class*="button"], [role="button"]')) {
+      // A button is a <button>, a role=button, a link classed btn or button in
+      // any case (CSS modules write Button_root), or a link painted like one: a
+      // fill, a gradient or a border that shows, a short label a reader sees,
+      // narrower than a banner. Linear's "Sign up" is an <a> with none of those
+      // classes. A text link has no paint; a promo bar is too wide and says too
+      // much.
+      // ponytail: a fill painted by a child span or a ::before is not seen; a link built that way stays a text link
+      // Computed colours are rgb() when opaque, rgba(..., 0) or "... / 0)" when clear.
+      const clear = (c) => !c || c === "transparent" || /^rgba\(.*,\s*0\)$/.test(c) || /\/\s*0\)$/.test(c);
+      // A gradient paints unless every stop is clear; clear() reads the alpha
+      // of any colour function, so an oklch stop is judged like an rgb one.
+      // A border counts on the top edge, so a link underlined with
+      // border-bottom stays a text link.
+      const painted = (s) => !clear(s.backgroundColor) || colourStops(s.backgroundImage).some((c) => !clear(c))
+        || (parseFloat(s.borderTopWidth) > 0 && s.borderTopStyle !== "none" && !clear(s.borderTopColor));
+      // Text a reader sees: its element is not visibility:hidden (inherited,
+      // so this holds for display:contents too), its fill colour is not
+      // transparent, it is not set in an icon font (a Material Symbols "chat"
+      // draws an icon), its nearest element with a box is not faded out, no
+      // box between it and the button is the 1px a screen-reader-only label is
+      // clipped to by clip-path or clip, and more than a pixel of it
+      // is left once cut to the button and to the boxes that clip it:
+      // text-indent:-9999px, left:-9999px or font-size:0 leave nothing.
+      // display:contents has no box and is looked through.
+      // ponytail: text painted by background-clip:text has a transparent colour and reads as hidden
+      // ponytail: clip-path and clip count only on a box of 1px; a larger box clipped to nothing (inset(50%)) still shows
+      const iconFont = new RegExp(iconFontSource, "i");
+      // The box an element is laid out in: the viewport (the root element
+      // stands for it) for a fixed one, the nearest positioned ancestor with a
+      // box for an absolute one, else its parent (always, for an element with
+      // no box of its own, whatever its position says).
+      // ponytail: a transformed ancestor also holds fixed and absolute boxes; not modelled
+      const laidOutIn = (x) => {
+        const { position: p, display } = getComputedStyle(x);
+        if (display === "contents") return x.parentElement;
+        if (p === "fixed") return document.documentElement;
+        let e = x.parentElement;
+        const free = (s) => s.position === "static" || s.display === "contents";
+        if (p === "absolute") while (e && e !== document.body && free(getComputedStyle(e))) e = e.parentElement;
+        return e;
+      };
+      // Whether more than 1px each way of rect is left once cut to `within`
+      // and to every box from `from` up its layout chain, below body, that
+      // hides its overflow along an axis (hidden or clip), and to the viewport
+      // for a fixed box, which no scrolling moves. A scroller does not clip:
+      // what it holds scrolls into its box, so along a scrolling axis the rect
+      // becomes that box, unless no more than a pixel of it was left. A box
+      // off that chain does not clip, nor does an inline box, which neither
+      // clips nor scrolls whatever its overflow says.
+      // ponytail: a box past the right edge of a page that hides overflow-x (an off-canvas menu) still shows
+      // ponytail: overflow clips at the padding box, this cuts at the border box, so text indented under a clipping box's border counts
+      const hides = (o) => o === "hidden" || o === "clip";
+      const scrolls = (o) => o === "auto" || o === "scroll";
+      const unclipped = (rect, from, within) => {
+        const box = { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+        const cut = (r, x, y) => {
+          if (x) { box.left = Math.max(box.left, r.left); box.right = Math.min(box.right, r.right); }
+          if (y) { box.top = Math.max(box.top, r.top); box.bottom = Math.min(box.bottom, r.bottom); }
+        };
+        if (within) cut(within.getBoundingClientRect(), true, true);
+        for (let e = from; e && e !== document.body; e = laidOutIn(e)) {
+          if (e === document.documentElement) { cut({ left: 0, top: 0, right: innerWidth, bottom: innerHeight }, true, true); break; }
+          const es = getComputedStyle(e);
+          if (es.display === "contents" || es.display === "inline") continue;
+          const r = e.getBoundingClientRect();
+          if (scrolls(es.overflowX) && box.right - box.left > 1) { box.left = r.left; box.right = r.right; }
+          if (scrolls(es.overflowY) && box.bottom - box.top > 1) { box.top = r.top; box.bottom = r.bottom; }
+          cut(r, hides(es.overflowX), hides(es.overflowY));
+        }
+        return box.right - box.left > 1 && box.bottom - box.top > 1;
+      };
+      const shown = (n, btn) => {
+        const t = getComputedStyle(n.parentElement);
+        if (t.visibility !== "visible" || clear(t.webkitTextFillColor || t.color) || iconFont.test(t.fontFamily.split(",")[0].replace(/["']/g, "").trim())) return false;
+        let boxed = null;
+        for (let e = n.parentElement; e; e = e.parentElement) {
+          const es = getComputedStyle(e);
+          if (es.display !== "contents") {
+            boxed ??= e;
+            const r = e.getBoundingClientRect();
+            if ((r.width <= 1 || r.height <= 1) && (es.clipPath !== "none" || es.clip !== "auto")) return false;
+          }
+          if (e === btn) break;
+        }
+        const range = document.createRange();
+        range.selectNodeContents(n);
+        return !!boxed && boxed.checkVisibility({ opacityProperty: true }) && unclipped(range.getBoundingClientRect(), n.parentElement, btn);
+      };
+      for (const btn of document.querySelectorAll('button, a, [role="button"]')) {
         const s = getComputedStyle(btn);
         const rect = btn.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) continue;
+        // The label is its seen text nodes joined as written, so a word set
+        // one span per letter stays one word; a blank node is a space.
+        let label = "";
+        const walker = document.createTreeWalker(btn, NodeFilter.SHOW_TEXT);
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+          if (!n.textContent.trim()) label += " ";
+          else if (shown(n, btn)) label += n.textContent;
+        }
+        label = label.trim().replace(/\s+/g, " ");
+        if (btn.localName === "a" && !btn.matches('[class*="btn" i], [class*="button" i], [role="button"]')
+          && !(painted(s) && label.length > 0 && label.length <= 30 && rect.width <= 480)) continue;
         // A gradient button is transparent to backgroundColor. Fall back to the
         // gradient stops so the CTA keeps a real fill instead of vanishing, and
         // keep the raw computed background-image so the output can print the
@@ -391,7 +493,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
         const stops = gradientStops(s.backgroundImage);
         // Stops gradientStops() cannot read (oklch, lab, color()) still count,
         // so a partially read gradient reads as incomplete downstream.
-        const stopTotal = /gradient\(/i.test(s.backgroundImage || "") ? (s.backgroundImage.match(/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?|hwb|oklch|oklab|lab|lch|color)\(/g) || []).length : 0;
+        const stopTotal = colourStops(s.backgroundImage).length;
         const transparentBg = s.backgroundColor === "rgba(0, 0, 0, 0)" || s.backgroundColor === "transparent";
         const bg = (transparentBg && stops.length) ? stops[0] : s.backgroundColor;
         components.buttons.push({
@@ -487,7 +589,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       );
 
       return { colors, fonts, fontsByRole, fontSizes, fontWeights, lineHeights, letterSpacings, typeSamples, spacings, radii, shadows, cssVars, components, motion, bodyTextLength, hasPasswordField, loginCopy };
-    });
+    }, ICON_RE.source);
 
     // Record where we actually landed. Playwright follows redirects silently,
     // so the requested URL and the extracted origin can differ (login walls,
