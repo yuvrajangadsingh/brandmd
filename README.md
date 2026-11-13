@@ -21,7 +21,7 @@ Pass multiple URLs to merge brand tokens across pages: `npx brandmd https://site
 Outputs to whatever your stack reads:
 
 - **`DESIGN.md`** (default): for Claude Code, Cursor, Gemini CLI, Codex, Stitch
-- **`--json`**: raw extracted tokens for scripts, MCP servers, and agent toolchains
+- **`--json`**: raw extracted tokens, in brandmd's internal shape (it can change in a 1.x release, see [Stability](#stability))
 - **`--css`**: CSS custom properties, drop into any project
 - **`--tailwind`**: Tailwind v4 `@theme` block
 - **`--html`**: visual, shareable brand guide
@@ -317,7 +317,7 @@ A self-contained dark-themed HTML page with color swatches, font specimens, spac
 
 ### JSON (`--json`)
 
-Raw extracted tokens for programmatic use.
+Raw extracted tokens for programmatic use. The shape is brandmd's internal one and can change in any 1.x release; see [Stability](#stability).
 
 ## Multi-page extraction
 
@@ -379,6 +379,27 @@ Then tell your agent: "extract the design system from https://linear.app"
 If brandmd saved you time, consider [starring the repo](https://github.com/yuvrajangadsingh/brandmd).
 
 Built by [Yuvraj Angad Singh](https://yuvrajangadsingh.com). Also: [vibecheck](https://github.com/yuvrajangadsingh/vibecheck) (catch AI-generated code smells) and [vemb](https://github.com/yuvrajangadsingh/vemb) (embeddings from the command line). [Follow on GitHub](https://github.com/yuvrajangadsingh) for new dev-tool experiments.
+
+## Stability
+
+From 1.0.0 brandmd follows [semver](https://semver.org/) for the parts below. A 1.x release can add to them (a flag, a section, a tool input); removing or changing one waits for 2.0.
+
+Covered:
+
+- **Commands and flags.** `brandmd <urls...>`, `brandmd diff`, `brandmd check` and `brandmd mcp`, with every flag their `--help` lists: `-o`, `--json`, `--css`, `--tailwind`, `--html`, `--dark`, `--vision`, `--agent`, `--allow-blocked`, `--debug`, `--cf-wait-ms`, `--viewport`, `--locale` and `--reduced-motion`; `diff --out`; `check --against`, `--report` and `--fail-on`.
+- **Exit codes.** `0`, `1`, `2` and `3`, as in the [table above](#refusals-and-exit-codes).
+- **The DESIGN.md shape.** The frontmatter keys `version`, `name`, `description`, `colors`, `typography`, `rounded`, `spacing` and `components`, and the sections Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components and Do's and Don'ts, plus Dark Mode Overrides with `--dark` and Visual Identity Beyond CSS with `--vision`. The linter it is checked against is `@google/design.md@0.3.0`: CI fails on any error or warning it reports for generated test files, and every example in the gallery lints clean. A later linter version counts as supported once a brandmd release says so.
+- **The MCP tool.** `extract_design_md`, its `urls` and `dark` inputs, and its result: the DESIGN.md as the first text block, warnings as a second one, and refusals and failures as tool errors carrying the CLI's message.
+- **Environment variables.** `GEMINI_API_KEY` or `GOOGLE_API_KEY` and `BRANDMD_VISION_MODEL` for `--vision`, and `BRANDMD_MCP_TIMEOUT` for the MCP server.
+- **Node 20 or newer.**
+
+Not covered, so any 1.x release can change them:
+
+- **The values.** brandmd measures a live page, so a site change or a better extraction changes colours, fonts and components. Pin the brandmd version and commit the `DESIGN.md` when you need the same file twice.
+- **The JSON from `--json` and `check --report`.** Both are internal JSON formats (`--json` prints the extracted tokens, `--report` the drift list), so field names and nesting can change. The MCP tool returns DESIGN.md, not this JSON. When a script needs something stable, read the DESIGN.md, or `check`'s exit code.
+- **What `--css`, `--tailwind` and `--html` print.** The flags stay; the variable names and layout follow the page.
+- **Wording.** Prose sentences, warnings and error messages.
+- **The MCP limits.** Today a call runs for at most 180 seconds (`BRANDMD_MCP_TIMEOUT`), two run at once, and a cancelled or timed-out call stops its run and closes its browser on macOS and Linux. Every extraction's scroll pass stops after 50 screens and starts no new screen after 15 seconds. These numbers can be tuned.
 
 ## License
 
