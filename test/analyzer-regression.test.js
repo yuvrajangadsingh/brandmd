@@ -957,3 +957,47 @@ test("a color(srgb ...) value counts in the palette", () => {
   assert.equal(t.palette.find((c) => c.hex === "#1366e2")?.freq, 40);
   assert.equal(t.palette.find((c) => c.hex === "#ff000099")?.freq, 30);
 });
+
+test("a border with a colour per side reads as its first side that paints", () => {
+  // openai's borders: oklab sides, or a transparent side listed first.
+  const t = analyze(rawSkeleton({
+    colors: {
+      background: {},
+      text: {},
+      border: {
+        "oklab(0 0 0 / 0.9) oklab(0 0 0 / 0.9) oklab(0.5 0 0 / 0.05)": 30,
+        "rgba(0, 0, 0, 0) rgb(255, 0, 0) rgb(255, 0, 0)": 20,
+      },
+    },
+  }));
+  assert.equal(t.palette.find((c) => c.hex === "#000000e6")?.freq, 30);
+  assert.equal(t.palette.find((c) => c.hex === "#ff0000")?.freq, 20);
+});
+
+test("a colour chroma rejects still reads through the rgb fallback", () => {
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgb(255, 0, 0, 0.5)": 30, "RGB(0, 0, 255)": 20 }, text: {}, border: {} },
+  }));
+  assert.equal(t.palette.find((c) => c.hex === "#ff000080")?.freq, 30);
+  assert.equal(t.palette.find((c) => c.hex === "#0000ff")?.freq, 20);
+});
+
+test("an hsl gradient variable is not read as a per-side list", () => {
+  const t = analyze(rawSkeleton({
+    colors: { background: { "#ff0000": 30 }, text: {}, border: {} },
+    cssVars: { "--brand-red": "#ff0000", "--hero-gradient": "linear-gradient(hsl(0 100% 50%), hsl(240 100% 50%))" },
+  }));
+  assert.equal(t.palette.find((c) => c.hex === "#ff0000")?.varName, "--brand-red");
+});
+
+test("a side with a percent alpha keeps its alpha", () => {
+  // chroma reads rgba(0, 0, 0, 20%) as opaque black.
+  const t = analyze(rawSkeleton({
+    colors: { background: { "rgba(0, 0, 0, 20%) rgb(255, 255, 255)": 10, "rgba(255, 0, 0, 60%)": 8 }, text: {}, border: {} },
+  }));
+  assert.equal(t.palette.find((c) => c.hex === "#00000033")?.freq, 10);
+  assert.equal(t.palette.find((c) => c.hex === "#ff000099")?.freq, 8);
+  // A spelling the rgb fallback cannot read still goes to chroma, as on main.
+  const u = analyze(rawSkeleton({ colors: { background: { "rgba(255 , 0 , 0 , 100%)": 5 }, text: {}, border: {} } }));
+  assert.equal(u.palette.find((c) => c.hex === "#ff0000")?.freq, 5);
+});

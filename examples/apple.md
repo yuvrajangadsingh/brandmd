@@ -6,7 +6,7 @@ colors:
   background: "#ffffff"
   on-background: "#1d1d1f"
   on-surface-variant: "#0000008f"
-  outline: "#ffffff14"
+  outline: "#1d1d1f"
   primary: "#0071e3"
   on-primary: "#ffffff"
   secondary: "#2997ff"
@@ -104,7 +104,6 @@ _The page background `#ffffff` is the surface that fills the viewport; it is not
 - **Black** (`#1d1d1f`): Primary text (dominant)
 - **Black** (`#000000`): Dark background / footer (dominant)
 - **Off-white** (`#f5f5f7`): Page background (dominant)
-- **Near-transparent White** (`#ffffff14`): Divider / border (dominant)
 - **Off-white** (`#e8e8ed`): Light text (on dark) (accent)
 - **Translucent Black** (`#0000008f`): Primary text (accent)
 - **Vivid Blue** (`#2997ff`): Secondary text (accent)

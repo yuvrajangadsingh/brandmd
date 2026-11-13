@@ -1,20 +1,36 @@
 import chroma from "chroma-js";
 
 /**
- * Parse a CSS color string (rgb, rgba, hex, color(srgb ...)) into a hex string.
- * Returns null if unparseable.
+ * Parse a CSS color string (rgb, rgba, hex, oklab, color(srgb ...)) into a hex
+ * string, or null if unparseable. A compound value (a border-color with a
+ * colour per side) reads as its first side that paints.
  */
 function toHex(cssColor) {
   if (!cssColor) return null;
+  const fn = /[a-z-]+\([^()]*\)/gi;
+  const sides = cssColor.match(fn) || [];
+  // Only a bare list of colours is per-side; a gradient or shadow is not.
+  if (sides.length > 1 && !cssColor.replace(fn, "").trim()) {
+    const hexes = sides.map(oneHex).filter(Boolean);
+    return hexes.find((h) => !/^#[0-9a-f]{6}00$/i.test(h)) || hexes[0] || null;
+  }
+  return oneHex(cssColor);
+}
+
+function oneHex(css) {
   // Chrome serializes some computed colours as color(srgb r g b / a), channels
   // 0 to 1, which chroma cannot read.
-  const srgb = cssColor.match(/^color\(srgb ([\d.e+-]+) ([\d.e+-]+) ([\d.e+-]+)(?: \/ ([\d.]+))?\)$/i);
+  const srgb = css.match(/^color\(srgb ([\d.e+-]+) ([\d.e+-]+) ([\d.e+-]+)(?: \/ ([\d.]+))?\)$/i);
+  // chroma reads a comma rgba() with a percent alpha, rgba(0, 0, 0, 20%), as
+  // opaque; the fallback below reads the percent.
+  const pctAlpha = /^rgba\(\s*\d+,\s*\d+,\s*\d+,\s*[\d.]+%\s*\)$/i.test(css);
   try {
     if (srgb) return chroma.gl(+srgb[1], +srgb[2], +srgb[3], +(srgb[4] ?? 1)).hex();
-    return chroma(cssColor).hex();
+    if (!pctAlpha) return chroma(css).hex();
+    throw new Error("percent alpha");
   } catch {
     // Try parsing rgb/rgba manually
-    const match = cssColor.match(
+    const match = css.match(
       /rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+)(%?))?\s*\)/i
     );
     if (match) {
