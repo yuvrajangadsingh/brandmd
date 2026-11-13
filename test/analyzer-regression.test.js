@@ -944,3 +944,16 @@ test("a chromatic button fill competes with the accent roles on vividness", () =
   assert.equal(primary([btn("rgb(17, 17, 17)")]), "#7f7dfc", "a neutral button still defers to the accent");
   assert.equal(primary([btn("rgb(14, 126, 78)")]), "#7f7dfc", "a duller chromatic button competes and loses");
 });
+
+test("a color(srgb ...) value counts in the palette", () => {
+  // Chrome serializes some computed colours this way, channels 0 to 1.
+  const t = analyze(rawSkeleton({
+    colors: {
+      background: { "color(srgb 0.0745341 0.399346 0.886564)": 40, "color(srgb 1 0 0 / 0.6)": 30 },
+      text: {},
+      border: {},
+    },
+  }));
+  assert.equal(t.palette.find((c) => c.hex === "#1366e2")?.freq, 40);
+  assert.equal(t.palette.find((c) => c.hex === "#ff000099")?.freq, 30);
+});

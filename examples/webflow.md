@@ -10,6 +10,8 @@ colors:
   outline-variant: "#000000"
   primary: "#146ef5"
   on-primary: "#ffffff"
+  secondary: "#1366e2"
+  on-secondary: "#ffffff"
 typography:
   display:
     fontFamily: WF Visual Sans
@@ -109,6 +111,7 @@ Palette extracted from the live page. Token names below map to the machine-reada
 - **Near-transparent White** (`#ffffff29`): Overlay / scrim (accent)
 - **Translucent Black** (`#00000040`): Overlay / scrim (accent)
 - **Translucent Black** (`#00000080`): Dark background / footer (accent)
+- **Blue** (`#1366e2`): Secondary text (accent)
 
 ## Typography
 
