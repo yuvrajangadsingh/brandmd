@@ -139,13 +139,40 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
   try {
     const page = await context.newPage();
     const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
-    const httpStatus = response ? response.status() : null;
+    let httpStatus = response ? response.status() : null;
+
+    // Who still shows a bot check after the wait: "AWS WAF" or "Cloudflare".
+    let challenged = null;
+
+    // AWS WAF answers a bot check with a blank 202 page whose script solves it
+    // and reloads the URL, 1 to 3 s after load on dribbble.com. Reads before
+    // the reload die with the page ("Execution context was destroyed") or run
+    // in the next page before it has a body. So poll until the page is not a
+    // challenge page (those define window.gokuProps) and has fired
+    // DOMContentLoaded, the point goto waits for. Polling the page, not waiting
+    // for a navigation event, also covers a reload into a second challenge, a
+    // history.replaceState on the challenge page, and a reload that landed
+    // before goto returned. The challenge gets the Cloudflare budget and one
+    // still up after it is a block page, like a Cloudflare one; the page behind
+    // it gets goto's 45 s to parse.
+    if (response?.headers()["x-amzn-waf-action"] === "challenge") {
+      let state;
+      for (const start = Date.now(); ; await page.waitForTimeout(250)) {
+        state = await page.evaluate(() => ("gokuProps" in window ? "challenge"
+          : performance.getEntriesByType("navigation")[0]?.domContentLoadedEventEnd > 0 ? "ready" : "loading"))
+          .catch(() => "unknown"); // mid-navigation
+        if (state === "ready" || Date.now() - start >= cfWaitMs + (state === "challenge" ? 0 : 45000)) break;
+      }
+      if (state === "challenge") challenged = "AWS WAF";
+      else if (state !== "ready") throw new Error(`${url} did not finish loading after its AWS WAF challenge`);
+      else httpStatus = await page.evaluate(() => performance.getEntriesByType("navigation")[0]?.responseStatus || null)
+        .catch(() => httpStatus);
+    }
     await page.waitForTimeout(2000);
 
     // Tier B: if Cloudflare challenge is up, give it time to auto-resolve.
     // Most JS challenges clear in 5-10s; some take longer on first visit.
     // Default 20s, configurable via cfWaitMs option.
-    let challenged = false;
     if ((await isCloudflareChallenge(page)) === "yes") {
       const start = Date.now();
       while (Date.now() - start < cfWaitMs) {
@@ -158,8 +185,8 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
       // so it is extracted and refused like any other (exit 2, unless
       // --allow-blocked). Throwing made it an error (exit 1), or dropped it
       // from a multi-page run with only a warning.
-      challenged = (await isCloudflareChallenge(page)) === "yes";
-      if (!challenged) {
+      if ((await isCloudflareChallenge(page)) === "yes") challenged = "Cloudflare";
+      else {
         // Resolved (or unknown) — wait for the real page to be loaded enough
         // to extract from, then give it a small settle window.
         await page.waitForLoadState("domcontentloaded", { timeout: 5000 }).catch(() => {});
@@ -635,7 +662,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
 
     const title = await page.title();
 
-    const blockLikely = challenged || detectBlockLikely({
+    const blockLikely = !!challenged || detectBlockLikely({
       title,
       httpStatus,
       bodyTextLength: raw.bodyTextLength,
@@ -644,7 +671,7 @@ async function extractPage(browser, url, colorScheme = "light", { vision = false
     });
     if (challenged) {
       process.stderr.write(
-        `Warning: Cloudflare challenge still active on ${url} after ${cfWaitMs}ms. The site is bot-protected. ` +
+        `Warning: ${challenged} challenge still active on ${url} after ${cfWaitMs}ms. The site is bot-protected. ` +
         `Try a non-protected page (e.g. /docs, /pricing) or run from a residential IP.\n`
       );
     } else if (blockLikely) {

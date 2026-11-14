@@ -179,8 +179,8 @@ brandmd https://github.com --dark
 # (CSS can't see these; Gemini reads the screenshot.)
 export GEMINI_API_KEY=your-key-here  # free: https://aistudio.google.com/apikey
 brandmd https://linear.app --vision
-# Cloudflare-protected sites: brandmd waits up to 20s for the JS challenge
-# to auto-resolve. If your site needs longer, pass --cf-wait-ms 30000.
+# Sites behind Cloudflare or AWS WAF: brandmd waits up to 20s for the JS
+# challenge to auto-resolve. If your site needs longer, pass --cf-wait-ms 30000.
 # If the challenge persists, brandmd refuses (exit 2) rather than writing garbage tokens.
 
 # CSS custom properties
@@ -245,7 +245,7 @@ Colours are compared **by role**, not as a set of hexes. One hex legitimately fi
 | `--report <file>` | write the drift as JSON for CI annotations |
 | `--fail-on <level>` | `major` (default), `any`, or `none` |
 | `--allow-blocked` | compare anyway if the page is refused (blocked, thin, or a login wall) |
-| `--cf-wait-ms <ms>` | how long to wait for a Cloudflare challenge (default `20000`) |
+| `--cf-wait-ms <ms>` | how long to wait for a Cloudflare or AWS WAF challenge (default `20000`) |
 | `--debug` | print the raw error instead of a one-line remediation |
 | `--viewport <WxH>` | pin the viewport (default `1440x900`) |
 | `--locale <tag>` | pin the browser locale |
