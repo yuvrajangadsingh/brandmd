@@ -1030,6 +1030,18 @@ export async function scrollPass() {
  */
 export async function extractFromUrls(urls, { dark = false, vision = false, cfWaitMs = 20000, capture = {} } = {}) {
   const browser = await chromium.launch({ headless: true });
+  // SIGTERM or SIGHUP makes Playwright close the browser, and the page in
+  // flight fails with a plain navigation error while the browser still reads
+  // as connected. Flagged when the signal lands, so the pages that finished
+  // before it are never written as if they were the whole run.
+  let stopped = false;
+  const stop = () => (stopped = true);
+  for (const sig of ["SIGTERM", "SIGHUP"]) process.once(sig, stop);
+  browser.on("disconnected", stop);
+  const failed = (err, what) => {
+    if (stopped) throw new Error("the browser closed before every page was read", { cause: err });
+    process.stderr.write(`Warning: ${what}: ${err.message}\n`);
+  };
   try {
     // Light mode extraction. Only the first URL gets vision data — the screenshot
     // represents the brand hero, not a multi-page average.
@@ -1038,7 +1050,7 @@ export async function extractFromUrls(urls, { dark = false, vision = false, cfWa
       try {
         lightPages.push(await extractPage(browser, urls[i], "light", { vision: vision && i === 0, cfWaitMs, capture }));
       } catch (err) {
-        process.stderr.write(`Warning: failed to extract ${urls[i]}: ${err.message}\n`);
+        failed(err, `failed to extract ${urls[i]}`);
       }
     }
     const light = mergeRaw(lightPages);
@@ -1054,7 +1066,7 @@ export async function extractFromUrls(urls, { dark = false, vision = false, cfWa
         try {
           darkPages.push(await extractPage(browser, url, "dark", { cfWaitMs, capture }));
         } catch (err) {
-          process.stderr.write(`Warning: failed dark extraction for ${url}: ${err.message}\n`);
+          failed(err, `failed dark extraction for ${url}`);
         }
       }
       if (darkPages.length > 0) {
@@ -1064,6 +1076,7 @@ export async function extractFromUrls(urls, { dark = false, vision = false, cfWa
 
     return { light, dark: darkTokens };
   } finally {
+    for (const sig of ["SIGTERM", "SIGHUP"]) process.off(sig, stop);
     await browser.close();
   }
 }
