@@ -44,6 +44,12 @@ For Cursor, Claude Desktop, and other clients that read an `mcpServers` config:
 { "mcpServers": { "brandmd": { "command": "npx", "args": ["-y", "brandmd", "mcp"] } } }
 ```
 
+Or in one click, which adds that same config:
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=brandmd&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImJyYW5kbWQiLCJtY3AiXX0%3D) [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=brandmd&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22brandmd%22%2C%22mcp%22%5D%7D)
+
+It is also in the [MCP Registry](https://registry.modelcontextprotocol.io) as `io.github.yuvrajangadsingh/brandmd`.
+
 The tool takes one or more pages of a site (`urls`) and an optional `dark` flag, and refuses block pages and login walls the same way the CLI does. It renders pages in Playwright's headless Chromium; if that browser is missing, the call fails with the command that installs it.
 
 A call runs for at most 180 seconds (set `BRANDMD_MCP_TIMEOUT` in seconds to change it), and at most two run at once (a third gets an error asking it to retry). Cancelling a call, or running out of time, stops it and closes its browser on macOS and Linux. On Windows the run is ended outright and the browser may be left open (untested).
