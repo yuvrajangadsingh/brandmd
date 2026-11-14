@@ -2,7 +2,7 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
-## [1.0.0] - 2026-11-13
+## [1.0.0] - 2026-11-14
 
 The first stable release. The README's [Stability](README.md#stability) section says what 1.x keeps: the commands, flags and exit codes, the DESIGN.md frontmatter keys and sections, the MCP tool and its inputs, and the environment variables. Measured values, wording and the `--json` shape are not frozen.
 
