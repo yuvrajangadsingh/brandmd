@@ -7,6 +7,7 @@ All notable changes to brandmd are documented here. The format roughly follows [
 ### Added
 
 - **`brandmd mcp` is in the MCP Registry** as `io.github.yuvrajangadsingh/brandmd`. The release workflow publishes `server.json` there after npm, and checks first that its name and versions match `package.json`.
+- **One-click install links for Cursor and VS Code** in the README's MCP section. Both add the same `npx -y brandmd mcp` config.
 
 ### Fixed
 
