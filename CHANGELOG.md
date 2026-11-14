@@ -2,6 +2,12 @@
 
 All notable changes to brandmd are documented here. The format roughly follows [Keep a Changelog](https://keepachangelog.com/), versions follow [Semver](https://semver.org/).
 
+## [1.0.1] - 2026-11-14
+
+### Fixed
+
+- **Sites behind an AWS WAF bot check are read after the check, not during it.** AWS WAF answers with a blank 202 page that solves the check and reloads the URL 1 to 3 seconds later, in the middle of the reads: dribbble.com failed some runs with "Execution context was destroyed" or a null `scrollHeight`. brandmd now waits for the check to pass, within the `--cf-wait-ms` budget, and then for the page behind it to fire DOMContentLoaded, the same point it waits for on any page. A check still up after the budget is refused as a block page (exit 2), like a Cloudflare one; one that reloads later, mid-read, fails that page like any other page error.
+
 ## [1.0.0] - 2026-11-14
 
 The first stable release. The README's [Stability](README.md#stability) section says what 1.x keeps: the commands, flags and exit codes, the DESIGN.md frontmatter keys and sections, the MCP tool and its inputs, and the environment variables. Measured values, wording and the `--json` shape are not frozen.

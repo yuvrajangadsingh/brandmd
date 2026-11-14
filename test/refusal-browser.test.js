@@ -16,6 +16,20 @@ const BODY = `<body style="margin:0;background:#0b1020;color:#e6e9f2;font-family
 <p style="font-size:16px">A small local page with enough text, colour and type for brandmd to accept it.</p>
 <a href="#" class="btn" style="display:inline-block;background:#3b82f6;color:#fff;padding:12px 20px;border-radius:8px">Get started</a>`;
 const PAGES = {
+  // AWS WAF's bot check: a blank 202 whose script bumps the token cookie and
+  // reloads, 2.3 s in, while the CLI reads after its 2 s settle. It challenges
+  // twice, then the server sends /waf-ok. A replaceState on the challenge
+  // page, and the second challenge, must not end the wait, nor may the page
+  // be read before its deferred script (served 3 s late) has run.
+  "/waf": { waf: `<script>setTimeout(() => history.replaceState(null, "", location.href), 100);
+setTimeout(() => {
+  const n = Number(document.cookie.match(/aws-waf-token=(\\d+)/)?.[1] ?? 0);
+  document.cookie = "aws-waf-token=" + (n + 1) + "; path=/";
+  location.reload();
+}, 2300);</script>` },
+  "/waf-stuck": { waf: "" },
+  "/waf-ok": `<!doctype html><title>Acme</title><script defer src="/slow.js"></script>${BODY}`,
+  "/slow.js": { js: `document.body.style.background = "#5b21b6";` },
   // A Cloudflare marker that never goes away, on an otherwise real page.
   "/challenge": `<!doctype html><title>Just a moment...</title>${BODY}<div id="cf-challenge-running"></div>`,
   "/ok": `<!doctype html><title>Acme</title>${BODY}`,
@@ -73,6 +87,12 @@ const server = createServer((req, res) => {
     const location = typeof page.redirect === "function" ? page.redirect() : page.redirect;
     return res.writeHead(302, { location }), res.end();
   }
+  if (page.js) return setTimeout(() => res.writeHead(200, { "content-type": "text/javascript" }).end(page.js), 3000);
+  if (page.waf !== undefined) {
+    if (/aws-waf-token=2/.test(req.headers.cookie ?? "")) return res.writeHead(200, { "content-type": "text/html" }), res.end(PAGES["/waf-ok"]);
+    return res.writeHead(202, { "content-type": "text/html", "x-amzn-waf-action": "challenge" }),
+      res.end(`<!doctype html><title></title><script>window.gokuProps = {};</script>${page.waf}`);
+  }
   res.setHeader("content-type", "text/html");
   res.end(page);
 });
@@ -106,6 +126,16 @@ function run(t, args) {
   child.stderr.setEncoding("utf8").on("data", (d) => (stderr += d));
   return once(child, "close").then(([status]) => ({ status, stdout, stderr }));
 }
+
+test("an AWS WAF challenge is waited out until it reloads, and refused when it never does", { timeout: 120000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  let r = await run(t, [`${base}/waf`]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /#5b21b6/, "the page behind the check was read, after its deferred script");
+  r = await run(t, [`${base}/waf-stuck`, "--cf-wait-ms", "1000"]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /AWS WAF challenge still active on \S+ after 1000ms/);
+});
 
 test("Cloudflare's detections loader on a real page is no challenge; its orchestrate script is", { timeout: 120000 }, async (t) => {
   if (!(await browserOk(t))) return;
