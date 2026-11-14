@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.yuvrajangadsingh/brandmd",
+  "title": "brandmd",
+  "description": "Turn any website into a DESIGN.md: its colors, type and components, for your coding agent.",
+  "repository": {
+    "url": "https://github.com/yuvrajangadsingh/brandmd",
+    "source": "github",
+    "id": "1191491499"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "brandmd",
+      "version": "1.0.0",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        { "type": "positional", "value": "mcp" }
+      ]
+    }
+  ]
+}

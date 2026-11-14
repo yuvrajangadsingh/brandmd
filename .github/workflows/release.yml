@@ -42,9 +42,16 @@ jobs:
 
       - run: npm ci
 
-      # Publish only what CI tested, under the version the tag names.
-      - name: Tag matches package.json
-        run: test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+      # Publish only what CI tested, under the version the tag names. server.json
+      # is the MCP Registry entry, so its name and versions follow package.json.
+      - name: Tag matches package.json and server.json
+        run: |
+          test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+          node -e '
+            const p = require("./package.json"), s = require("./server.json");
+            if (s.name !== p.mcpName || s.version !== p.version || s.packages[0].version !== p.version)
+              throw new Error("server.json name or version does not match package.json");
+          '
 
       - name: CI passed on this commit
         env:
@@ -66,3 +73,23 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" --verify-tag --latest \
             --title "$(git log -1 --format=%s)" --notes-file "$RUNNER_TEMP/notes.md"
+
+      # The MCP Registry entry, from server.json, signed in by this workflow's
+      # OIDC token. After npm, because the registry checks mcpName on the
+      # published package, which npm can take minutes to serve: hence ten
+      # attempts a minute apart. Each first asks the registry for this version,
+      # so one that landed with its response lost ends green. If only this
+      # step fails, run mcp-publisher login github and publish by hand.
+      - name: MCP Registry
+        timeout-minutes: 15
+        run: |
+          curl -sfL https://github.com/modelcontextprotocol/registry/releases/download/v1.8.9/mcp-publisher_linux_amd64.tar.gz -o "$RUNNER_TEMP/mcp-publisher.tar.gz"
+          echo "4d527ca8f1ced0394c962dc925c2a4a4addef441cbefd62501c875e9481823a8  $RUNNER_TEMP/mcp-publisher.tar.gz" | sha256sum -c -
+          tar xzf "$RUNNER_TEMP/mcp-publisher.tar.gz" -C "$RUNNER_TEMP" mcp-publisher
+          entry="https://registry.modelcontextprotocol.io/v0.1/servers/$(node -p 'encodeURIComponent(require("./server.json").name)')/versions/${GITHUB_REF_NAME#v}"
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            curl -sf -o /dev/null "$entry" && exit 0
+            "$RUNNER_TEMP/mcp-publisher" login github-oidc && "$RUNNER_TEMP/mcp-publisher" publish && exit 0
+            sleep 60
+          done
+          curl -sf -o /dev/null "$entry"
