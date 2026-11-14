@@ -7,6 +7,9 @@ import { createServer } from "node:http";
 import { createInterface } from "node:readline";
 import { once } from "node:events";
 import { fileURLToPath } from "node:url";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { chromium } from "playwright";
 
 const BIN = fileURLToPath(new URL("../bin/brandmd.js", import.meta.url));
@@ -102,4 +105,31 @@ test("a CLI run sent SIGTERM mid page load closes its browser", { skip: process.
   assert.deepEqual(exit, [1, null], "a run cut short exits with the CLI's error code");
   for (let i = 0; i < 50 && groupLives(); i++) await new Promise((r) => setTimeout(r, 100));
   assert.ok(!groupLives(), "nothing in the browser's process group outlives the CLI");
+});
+
+// Pages that finished before a signal are not the site. The second page never
+// answers, and the test sends SIGTERM once Chromium asks for it; the favicon
+// and the first page get a real answer, so the first page completes.
+test("a multi-page CLI run sent SIGTERM writes nothing", { skip: process.platform === "win32", timeout: 60000 }, async (t) => {
+  if (!(await browserOk(t))) return;
+  let reached;
+  const hanging = new Promise((r) => (reached = r));
+  const server = createServer((req, res) => (req.url === "/hang" ? reached() : res.end(PAGE))).listen(0, "127.0.0.1");
+  t.after(() => (server.closeAllConnections(), server.close()));
+  await once(server, "listening");
+  const dir = mkdtempSync(join(tmpdir(), "brandmd-sigterm-"));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const out = join(dir, "DESIGN.md");
+  const base = `http://127.0.0.1:${server.address().port}`;
+  const env = { ...process.env };
+  delete env.BRANDMD_RAW_FILE;
+  const cli = spawn(process.execPath, [BIN, `${base}/`, `${base}/hang`, "-o", out], { env, stdio: ["ignore", "ignore", "pipe"] });
+  t.after(() => cli.kill("SIGTERM")); // a no-op once it has exited
+  let log = "";
+  cli.stderr.setEncoding("utf8").on("data", (d) => (log += d));
+  const closed = once(cli, "close");
+  await Promise.race([hanging, closed.then(() => assert.fail(`the CLI exited before loading the second page:\n${log}`))]);
+  cli.kill("SIGTERM");
+  assert.deepEqual(await closed, [1, null], log);
+  assert.ok(!existsSync(out), `nothing is written:\n${log}`);
 });
