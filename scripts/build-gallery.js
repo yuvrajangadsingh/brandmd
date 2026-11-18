@@ -16,6 +16,24 @@ const GA_TAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=G
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0SXZRXRB0D');</script>`;
 const ANALYTICS_NOTE = '<p>This page counts visits with Google Analytics.</p>';
 
+// Link previews need absolute URLs, so this is where GitHub Pages serves docs/.
+const SITE_URL = 'https://yuvrajangadsingh.me/brandmd/';
+
+function headMeta(title, description, pageUrl) {
+  return `<meta name="description" content="${esc(description)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="brandmd">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${esc(pageUrl)}">
+<meta property="og:image" content="${SITE_URL}assets/og-gallery.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="brandmd gallery: design system snapshots of public brand sites">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="./assets/favicon.png">`;
+}
+
 function parseBrandsYml(text) {
   const brands = [];
   let current = null;
@@ -165,7 +183,7 @@ function renderBrandPage(brand, design) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(brand.name)} brand snapshot — brandmd</title>
-<meta name="description" content="${esc(brand.name)} design system snapshot extracted by brandmd from ${esc(brand.url)}">
+${headMeta(`${brand.name} brand snapshot by brandmd`, `${brand.name} design system snapshot extracted by brandmd from ${brand.url}`, `${SITE_URL}${brand.slug}.html`)}
 <style>${BASE_CSS}</style>
 ${GA_TAG}
 </head>
@@ -227,7 +245,7 @@ function renderIndex(brands, designs) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>brandmd gallery — brand design system snapshots</title>
-<meta name="description" content="Snapshots of public brand design systems extracted by brandmd. Use as references for AI coding agents.">
+${headMeta('brandmd gallery: brand design system snapshots', 'Snapshots of public brand design systems extracted by brandmd. Use as references for AI coding agents.', SITE_URL)}
 <style>${BASE_CSS}</style>
 ${GA_TAG}
 </head>
